@@ -1,0 +1,36 @@
+.row-1 {
+  background: #2b2b28;
+  height: 51px;
+  gap: 22.82px;
+}
+
+.row-1 img {
+  width: 21px;
+  height: 21px;
+}
+
+.row-1 p {
+  color: #fdfdfd;
+  font-family: Montserrat;
+  font-size: 21.474px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 33.553px;
+  /* 156.25% */
+  text-transform: lowercase;
+  margin: 0;
+}
+
+.row-2 {
+  padding: 26px 40px;
+}
+
+.row-2 .row-2-search {
+  padding: 8px 12px;
+  border-radius: 24px;
+  background: #EFEEEE;
+}
+
+.row-2 .row-2-search input {
+  border: 0;
+}
