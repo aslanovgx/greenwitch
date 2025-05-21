@@ -48,6 +48,8 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+  cursor: pointer;
+  object-fit: contain;
 }
 
 .row-2-icons {
@@ -59,4 +61,3 @@
   height: 30px;
   cursor: pointer;
 }
-

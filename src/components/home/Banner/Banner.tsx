@@ -17,21 +17,21 @@ export default function Banner() {
 
             <div className={`${styles.row_4} flex justify-center items-center`}>
                 <Image
-                    src={'/assets/home/navbar/banner-1.jpg'}
+                    src={'/assets/navbar/banner-1.jpg'}
                     alt='banner-1'
                     width={302}
                     height={302}
                     className={`${styles.banner_1} object-cover`}
                 />
                 <Image
-                    src={'/assets/home/navbar/banner-2.jpg'}
+                    src={'/assets/navbar/banner-2.jpg'}
                     alt='banner-2'
                     width={658}
                     height={302}
                     className={`${styles.banner_2} object-cover`}
                 />
                 <Image
-                    src={'/assets/home/navbar/banner-3.jpg'}
+                    src={'/assets/navbar/banner-3.jpg'}
                     alt='banner-3'
                     width={284}
                     height={302}

@@ -29,9 +29,7 @@
 
 /* ----------------------- row-2 --------------------- */
 /* ----------------------- row-2 --------------------- */
-@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
 
-.row_2 {}
 
 .row_2 p {
     color: #000;
@@ -40,4 +38,40 @@
     font-weight: 600;
     line-height: normal;
     font-family: var(--font-lato);
+}
+
+
+/* ----------------------- row-3 --------------------- */
+/* ----------------------- row-3 --------------------- */
+
+.row_3 {
+    padding: 42px 0 138px 0;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.row_3 .cards {
+    padding: 26px 16px 19px 16px;
+}
+
+.row_3 .cards h3 {
+    color: #100F0F;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-transform: uppercase;
+    padding: 0 0 8px 0;
+    margin: 0;
+}
+
+.row_3 .cards p {
+    color: #1E1D1D;
+    text-align: center;
+    font-family: Montserrat;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
 }
