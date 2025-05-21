@@ -1,0 +1,39 @@
+
+/* ----------------------- row-3 --------------------- */
+/* ----------------------- row-3 --------------------- */
+
+.row_3 {
+  padding: 60px 0;
+}
+
+.row_3 ul {
+  gap: 40px;
+}
+
+.row_3 ul li {
+  color: #000;
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: normal;
+  line-height: normal;
+}
+
+
+/* ----------------------- row-4 --------------------- */
+/* ----------------------- row-4 --------------------- */
+
+.row_4 {
+  gap: 22px;
+}
+
+.row_4 .banner_1 {
+  height: 302px;
+}
+
+.row_4 .banner_2 {
+  height: 302px;
+}
+
+.row_4 .banner_3 {
+  height: 302px;
+}

@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import '@/components/layout/Navbar.css';
-import { Heart } from 'lucide-react';
+// import { Heart } from 'lucide-react';
 export default function Navbar() {
     return (
         <nav className="w-full bg-white">
@@ -16,15 +16,15 @@ export default function Navbar() {
                 <p>100% Sertifikatlı Orijinal </p>
             </div>
 
-            <div className="row-2 mx-auto px-4 py-3 flex items-center justify-between">
+            <div className="row-2 relative mx-auto flex items-center justify-between">
                 {/* Search */}
                 <div className="row-2-search flex items-center">
                     {/* <Search size={24} className="text-gray-600" /> */}
                     <Image
                         src={'/assets/icons/search.svg'}
-                        alt='vector-icon'
-                        width={24}
-                        height={24}
+                        alt='search-icon'
+                        width={30}
+                        height={30}
                         className="object-contain"
                     />
                     <input
@@ -35,15 +35,40 @@ export default function Navbar() {
                 </div>
 
                 {/* Logo */}
-                <div className="text-xl font-bold text-gray-800">Greenwitch</div>
+                <Image
+                    src={'/assets/icons/logo.png'}
+                    alt='logo-png'
+                    width={200}
+                    height={30}
+                    className="logo"
+                />
 
                 {/* Favorite Icon */}
-                <button className="relative">
-                    <Heart size={22} className="text-gray-700" />
+                <div className='row-2-icons flex items-center justify-center'>
+                    <Image
+                        src={'/assets/icons/shopping.svg'}
+                        alt='shopping-icon'
+                        width={30}
+                        height={30}
+                        className="object-contain"
+                    />
+                    <Image
+                        src={'/assets/icons/heart.svg'}
+                        alt='heart-icon'
+                        width={30}
+                        height={30}
+                        className="object-contain"
+                    />
+                    <Image
+                        src={'/assets/icons/account.svg'}
+                        alt='account-icon'
+                        width={30}
+                        height={30}
+                        className="object-contain"
+                    />
                     {/* Favorit sayı badge-lə əlavə oluna bilər */}
-                </button>
+                </div>
             </div>
-
         </nav>
-    );
+    )
 }

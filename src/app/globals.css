@@ -1,14 +1,19 @@
 @import "tailwindcss";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+:root {
+  --font-montserrat: 'Montserrat', sans-serif;
+  --font-lato: 'Lato', sans-serif;
+}
 
 
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-montserrat);
   background-color: #fff;
   color: #333;
+}
+
+.font-lato {
+  font-family: var(--font-lato);
 }

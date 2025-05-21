@@ -1,0 +1,43 @@
+/* ----------------------- row-1 --------------------- */
+/* ----------------------- row-1 --------------------- */
+
+.row_1 {
+    padding: 51px 0 29px 0;
+}
+
+.row_1 ul {
+    gap: 30px;
+}
+
+.row_1 ul li {
+    color: #000;
+    font-family: Montserrat;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    cursor: pointer;
+}
+
+.row_1 ul :nth-child(2) {
+    opacity: 0.21;
+}
+
+.row_1 ul :nth-child(3) {
+    opacity: 0.21;
+}
+
+/* ----------------------- row-2 --------------------- */
+/* ----------------------- row-2 --------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+.row_2 {}
+
+.row_2 p {
+    color: #000;
+    font-size: 19.446px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    font-family: var(--font-lato);
+}
