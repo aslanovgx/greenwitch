@@ -1,74 +1,108 @@
-import Image from 'next/image'
-import '@/components/layout/Navbar.css';
-// import { Heart } from 'lucide-react';
+"use client";
+import React, { useEffect, useState, useRef } from "react";
+import Image from "next/image";
+import "@/components/layout/Navbar.css";
+
 export default function Navbar() {
-    return (
-        <nav className="w-full bg-white">
-            <div className="row-1 w-full bg-darkBg text-center flex justify-center items-center">
-                <Image
-                    src={'/assets/icons/vector.svg'}
-                    alt='vector-icon'
-                    width={21}
-                    height={21}
-                    className="object-contain"
-                />
+  const [fixed, setFixed] = useState(false);
+  const row1Ref = useRef(null);
+  const row2Ref = useRef(null);
 
-                <p>100% Sertifikatlı Orijinal </p>
-            </div>
+  useEffect(() => {
+    function handleScroll() {
+      if (!row1Ref.current) return;
 
-            <div className="row-2 relative mx-auto flex items-center justify-between">
-                {/* Search */}
-                <div className="row-2-search flex items-center">
-                    {/* <Search size={24} className="text-gray-600" /> */}
-                    <Image
-                        src={'/assets/icons/search.svg'}
-                        alt='search-icon'
-                        width={30}
-                        height={30}
-                        className="object-contain"
-                    />
-                    <input
-                        type="text"
-                        placeholder="Axtar..."
-                        className="border rounded px-2 py-1 text-sm focus:outline-none"
-                    />
-                </div>
+      const row1Bottom = row1Ref.current.getBoundingClientRect().bottom;
+      if (row1Bottom <= 0) {
+        setFixed(true);
+      } else {
+        setFixed(false);
+      }
+    }
 
-                {/* Logo */}
-                <Image
-                    src={'/assets/icons/logo.png'}
-                    alt='logo-png'
-                    width={200}
-                    height={30}
-                    className="logo"
-                />
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-                {/* Favorite Icon */}
-                <div className='row-2-icons flex items-center justify-center'>
-                    <Image
-                        src={'/assets/icons/shopping.svg'}
-                        alt='shopping-icon'
-                        width={30}
-                        height={30}
-                        className="object-contain"
-                    />
-                    <Image
-                        src={'/assets/icons/heart.svg'}
-                        alt='heart-icon'
-                        width={30}
-                        height={30}
-                        className="object-contain"
-                    />
-                    <Image
-                        src={'/assets/icons/account.svg'}
-                        alt='account-icon'
-                        width={30}
-                        height={30}
-                        className="object-contain"
-                    />
-                    {/* Favorit sayı badge-lə əlavə oluna bilər */}
-                </div>
-            </div>
-        </nav>
-    )
+  return (
+    <nav className="w-full bg-white">
+      <div
+        ref={row1Ref}
+        className="row-1 w-full bg-darkBg text-center flex justify-center items-center"
+      >
+        <Image
+          src={"/assets/icons/vector.svg"}
+          alt="vector-icon"
+          width={21}
+          height={21}
+          className="object-contain"
+        />
+        <p>100% Sertifikatlı Orijinal </p>
+      </div>
+
+      {/* Placeholder div — row-2 fixed olduqda burada yer saxlayır */}
+      {fixed && (
+        <div
+          style={{ height: row2Ref.current ? row2Ref.current.offsetHeight : 0 }}
+        />
+      )}
+
+      <div
+        ref={row2Ref}
+        className={`row-2 relative mx-auto flex items-center justify-between ${
+          fixed ? "fixed-row" : ""
+        }`}
+      >
+        {/* Search */}
+        <div className="row-2-search flex items-center">
+          <Image
+            src={"/assets/icons/search.svg"}
+            alt="search-icon"
+            width={30}
+            height={30}
+            className="object-contain"
+          />
+          <input
+            type="text"
+            placeholder="Axtar..."
+            className="border rounded px-2 py-1 text-sm focus:outline-none"
+          />
+        </div>
+
+        {/* Logo */}
+        <Image
+          src={"/assets/icons/logo.png"}
+          alt="logo-png"
+          width={168}
+          height={46}
+          className="logo object-contain"
+        />
+
+        {/* Favorite Icon */}
+        <div className="row-2-icons flex items-center justify-center">
+          <Image
+            src={"/assets/icons/shopping.svg"}
+            alt="shopping-icon"
+            width={30}
+            height={30}
+            className="object-contain"
+          />
+          <Image
+            src={"/assets/icons/heart.svg"}
+            alt="heart-icon"
+            width={30}
+            height={30}
+            className="object-contain"
+          />
+          <Image
+            src={"/assets/icons/account.svg"}
+            alt="account-icon"
+            width={30}
+            height={30}
+            className="object-contain"
+          />
+        </div>
+      </div>
+    </nav>
+  );
 }

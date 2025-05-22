@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image'
 import styles from './Products.module.css';
+import mehsullar from '@/components/Mock/Home/mehsullar.json';
 
 interface Product {
     id: number;
@@ -42,65 +43,145 @@ export default function Products() {
             </div>
 
             <div className={`${styles.row_3} flex justify-center items-center`}>
-                {products.slice(0,10).map(product => (
-                    <div key={product.id} className={`${styles.cards} rounded shadow w-[243px] h-[376px] text-center`}>
-                        <div className="relative w-[136px] h-[259px] mx-auto">
+
+                {
+                    mehsullar.map((item,index) => (<div
+                        key={item.id || index}
+                        className={`${styles.cards} relative group rounded shadow w-[243px] h-[376px] text-center`}
+                    >
+                        <div className={`${styles.cards_image} relative w-full h-[259px] mx-auto`}>
                             <Image
-                                src={product.image}
-                                alt={product.title}
+                                src={item.image}
+                                alt={item.title}
                                 fill
-                                style={{ objectFit: 'contain' }}
+                                // unoptimized
+                                // priority
+                                className='w-full h-full transition-opacity duration-600 group-hover:opacity-0'
+                                style={{ objectFit: "cover" }}
+                            />
+                            <Image
+                                src={item.hoverImage}
+                                alt={item.hoverImage}
+                                fill
+                                // unoptimized
+                                // priority
+                                className='w-full h-full  absolute top-0 left-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100'
+                                style={{ objectFit: "cover" }}
+                            />
+
+                        </div>
+                        <div className={styles.cards_desc}>
+                            <h3 className="transition-all duration-700 ">{item.title}</h3>
+                            <p>{item.desc}</p>
+
+                            <p className="opacity-0 group-hover:opacity-100 transition-opacity duration-700 !font-bold">
+                                {item.price}
+                            </p>
+                        </div>
+                        <div className="absolute top-3 left-3 z-10 cursor-pointer">
+                            <Image
+                                src="/assets/icons/heart.svg"
+                                alt="favorite"
+                                width={32}
+                                height={32}
+                                className="object-contain transition-transform duration-300 hover:scale-110"
                             />
                         </div>
-                        <h3 className="mt-2 font-semibold">{product.title.substring(0,8)}</h3>
-                        <p className="text-sm mt-1">{product.description.substring(0, 40)}...</p>
-                        {/* <p className="mt-2 font-bold">${product.price}</p> */}
+                        <div className={`${styles.new_card} absolute top-3 right-3 z-10 cursor-pointer`}>
+                            <span>NEW</span>
+                        </div>
+                    </div>))
+                }
+
+
+                {/* <div
+                    className={`${styles.cards} rounded shadow w-[243px] h-[376px] text-center`}
+                >
+                    <div className="relative w-full h-[259px] mx-auto">
+                        <Image
+                            src={'/assets/home/cards/olivia-pink.png'}
+                            alt='olivia-pink'
+                            fill
+                            // unoptimized
+                            // priority
+                            style={{ objectFit: "cover" }}
+                        />
                     </div>
-                ))}
-                {/* <div className={`${styles.cards}`}>
-                    <Image
-                        src={'/assets/home/cards/michael.png'}
-                        alt='michael'
-                        // fill
-                        // unoptimized
-                        // priority
-                        width={400}
-                        height={300}
-                        objectFit="cover"
-                    />
+                    <h3>OLIVIA BURTON</h3>
+                    <p>Wonderland <br />
+                        30mm White & Rose Gold Mesh</p>
+                </div>
+                <div
+                    className={`${styles.cards} rounded shadow w-[243px] h-[376px] text-center`}
+                >
+                    <div className="relative w-full h-[259px] mx-auto">
+                        <Image
+                            src={'/assets/home/cards/hilfiger.png'}
+                            alt='hilfiger'
+                            fill
+                            // unoptimized
+                            // priority
+                            style={{ objectFit: "cover" }}
+                        />
+                    </div>
+                    <h3>HİLFİGER</h3>
+                    <p>32MM Monochrome Mesh Bracelet Watch</p>
+                </div>
+                <div
+                    className={`${styles.cards} rounded shadow w-[243px] h-[376px] text-center`}
+                >
+                    <div className="relative w-full h-[259px] mx-auto">
+                        <Image
+                            src={'/assets/home/cards/olivia-black.png'}
+                            alt='olivia-black'
+                            fill
+                            // unoptimized
+                            // priority
+                            style={{ objectFit: "cover" }}
+                        />
+                    </div>
+                    <h3>OLIVIA BURTON</h3>
+                    <p>32mm Dimension T-Bar Gold&Black Leather Strap Watch</p>
+                </div>
+                <div
+                    className={`${styles.cards} rounded shadow w-[243px] h-[376px] text-center`}
+                >
+                    <div className="relative w-full h-[259px] mx-auto">
+                        <Image
+                            src={'/assets/home/cards/swiss.png'}
+                            alt='swiss'
+                            fill
+                            // unoptimized
+                            // priority
+                            //  className="w-full h-full object-cover"
+                            style={{ objectFit: "cover" }}
+                        />
+                    </div>
+                    <h3>SWISS MILITARY</h3>
+                    <p>MAJESTE PIONER</p>
                 </div> */}
-                {/* <div className={`${styles.cards} `}>
-                    <Image
-                        src={'/assets/home/cards/olivia-pink.png'}
-                        alt='olivia-pink'
-                        // fill
-                        className={` object-cover`}
-                    />
-                </div>
-                <div className={`${styles.cards} `}>
-                    <Image
-                        src={'/assets/home/cards/hilfiger.png'}
-                        alt='banner-1'
-                        fill
-                        className={` object-cover`}
-                    />
-                </div>
-                <div className={`${styles.cards} `}>
-                    <Image
-                        src={'/assets/home/cards/olivia-black.png'}
-                        alt='banner-1'
-                        fill
-                        className={`object-cover`}
-                    />
-                </div>
-                <div className={`${styles.cards} `}>
-                    <Image
-                        src={'/assets/home/cards/swiss.png'}
-                        alt='banner-1'
-                        fill
-                        className={`object-cover`}
-                    />
-                </div> */}
+
+                {/* {
+                    products.slice(0, 10).map((product) => {
+                        return (
+                            <div
+                                key={product.id}
+                                className={`${styles.cards} rounded shadow w-[243px] h-[376px] text-center`}
+                            >
+                                <div className="relative w-[136px] h-[259px] mx-auto">
+                                    <Image
+                                        src={product.image}
+                                        alt={product.title}
+                                        fill
+                                        style={{ objectFit: "contain" }}
+                                    />
+                                </div>
+                                <h3 className="mt-2 font-semibold">{product.title.substring(0, 8)}</h3>
+                                <p className="text-sm mt-1">{product.description.substring(0, 40)}...</p>
+                            </div>
+                        );
+                    })
+                } */}
             </div>
         </>
     );
