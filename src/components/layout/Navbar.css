@@ -35,7 +35,7 @@
   font-weight: 500;
   line-height: 33.553px;
   /* 156.25% */
-  text-transform: lowercase;
+  /* text-transform: lowercase; */
   margin: 0;
 }
 
@@ -46,16 +46,9 @@
 
 
 .row-2 {
-  padding: 26px 40px;
+  /* padding: 26px 40px; */
 
   padding: 20px 40px;
-  /* background: #e5e5e0; */
-  /* position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000; 
-  /* background-color: #EFEEEE; */
 
 }
 
@@ -92,7 +85,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 9999;
+  z-index: 2;
   background-color: white;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
