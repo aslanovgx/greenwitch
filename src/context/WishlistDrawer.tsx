@@ -1,6 +1,6 @@
 // components/WishlistDrawer.tsx
 "use client";
-import { useFavorites    } from "@/context/FavoritesContext";
+import { useFavorites } from "@/context/FavoritesContext";
 import Image from "next/image";
 import { X } from "lucide-react";
 
@@ -27,17 +27,17 @@ export default function WishlistDrawer({ isOpen, onClose }: { isOpen: boolean; o
                         <div className="ml-2">
                             <p className="font-semibold">{product.title}</p>
                             {/* <p className="line-through text-sm text-gray-500">${product.originalPrice}</p> */}
-                            <p className="text-red-500 font-bold">${product.price}</p>
+                            <p className="text-red-950 font-bold">${product.price}</p>
                             {product.coupon && (
                                 <span className="bg-orange-200 text-orange-700 text-xs px-2 py-1 rounded">
                                     ${product.coupon} coupon
                                 </span>
                             )}
                             <button
-                                className="text-sm text-red-500 mt-1 cursor-pointer"
+                                className="text-sm text-white mt-1 cursor-pointer px-3 py-1 bg-black rounded-sm"
                                 onClick={() => removeFromFavorites(product.id)}
                             >
-                                Remove
+                                Sil
                             </button>
                         </div>
                     </div>

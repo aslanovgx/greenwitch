@@ -64,14 +64,14 @@ export default function Products() {
                     mehsullar.map((item: Product) => (
                         <div
                             key={item.id}
-                            className={`${styles.cards} relative group rounded shadow w-[243px] h-[376px] text-center`}
+                            className={`${styles.cards} relative group rounded shadow w-[243px] h-[420px] text-center`}
                         >
                             <div className={`${styles.cards_image} relative w-full h-[259px] mx-auto`}>
                                 <Image
                                     src={item.image}
                                     alt={item.title}
                                     fill
-                                    className='w-full h-full transition-opacity duration-600 group-hover:opacity-0'
+                                    className='w-full h-full scale-105 transition-opacity duration-600 group-hover:opacity-0'
                                     style={{ objectFit: "cover" }}
                                 />
                                 {item.hoverImage && (
@@ -79,17 +79,21 @@ export default function Products() {
                                         src={item.hoverImage}
                                         alt={item.title}
                                         fill
-                                        className='w-full h-full absolute top-0 left-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100'
+                                        className={`${styles.hoverImage} scale-95 w-full h-full absolute top-0 left-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100`}
                                         style={{ objectFit: "cover" }}
                                     />
                                 )}
                             </div>
-                            <div className={styles.cards_desc}>
+                            <div className={`${styles.cards_desc}`}>
                                 <h3 className="transition-all duration-700 ">{item.title}</h3>
                                 <p>{item.desc}</p>
                                 <p className="opacity-0 group-hover:opacity-100 transition-opacity duration-700 !font-bold">
                                     {item.price}
                                 </p>
+                                <div className={`${styles.card_buttons} absolute bottom-0 left-0 flex justify-between opacity-0 transition-opacity duration-700 group-hover:opacity-100`}>
+                                    <button>al</button>
+                                    <button>səbətə at</button>
+                                </div>
                             </div>
                             <div
                                 onClick={() =>

@@ -82,6 +82,38 @@
     line-height: normal;
 }
 
+.row_3 .cards .cards_desc .card_buttons {
+    width: 100%;
+    padding: 0 5px;
+    bottom: 15px;
+}
+
+.row_3 .cards .cards_desc .card_buttons button {
+    color: #FFF;
+    text-align: center;
+    /* font-family: Lato; */
+    font-size: 15.965px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: uppercase;
+    display: flex;
+    width: 77.832px;
+    height: 28.937px;
+    padding: 9.978px;
+    justify-content: center;
+    align-items: center;
+    /* gap: 9.978px; */
+    flex-shrink: 0;
+    cursor: pointer;
+    border-radius: 7.983px;
+    background: #1E1D1D;
+}
+
+.row_3 .cards .cards_desc .card_buttons :nth-child(2) {
+    width: 141.693px;
+}
+
 .row_3 .new_card {
     display: inline-flex;
     height: 49px;
