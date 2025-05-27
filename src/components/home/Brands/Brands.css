@@ -1,0 +1,7 @@
+.swiper-wrapper {
+    transition-timing-function: linear !important;
+}
+
+.image_div img {
+    padding: 0 20px !important;
+}

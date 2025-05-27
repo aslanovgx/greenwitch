@@ -76,9 +76,9 @@
 }
 
 .oliviaWatchesDesc :nth-child(1) {
-    top: -61px;
+    top: -77px;
     /* left: -11px; */
-    left: 0;
+    left:7px;
 }
 
 .oliviaWatchesDesc :nth-child(2) {

@@ -4,8 +4,9 @@ import Image from 'next/image'
 import styles from './Products.module.css';
 import mehsullar from '@/components/Mock/Home/mehsullar.json';
 import { useFavorites } from "@/context/FavoritesContext";
-// import HeartIcon from './../../../../public/assets/icons/heart.svg';
 import { Heart } from "lucide-react";
+
+
 
 interface Product {
     id: number;
@@ -29,7 +30,6 @@ export default function Products() {
 
     // const { toggleFavorite } = useFavorite();
     const { favorites, toggleFavorite } = useFavorites();
-
 
     useEffect(() => {
         fetch('https://fakestoreapi.com/products')
@@ -139,6 +139,7 @@ export default function Products() {
                         })
                     } */}
             </div>
+
         </>
     );
 }
