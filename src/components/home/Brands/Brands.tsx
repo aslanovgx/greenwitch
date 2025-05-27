@@ -18,8 +18,8 @@ export default function Brands() {
 
     return (
         <>
-            <div className={`${styles.brands} py-10`}>
-                <h2 className="text-center text-xl font-bold">Brendlər</h2>
+            <div className={`${styles.brands} pb-10`}>
+                <h2 className="text-center">Brendlər</h2>
                 <AutoSwiper slides={logos} />
             </div>
         </>

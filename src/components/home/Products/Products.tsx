@@ -1,24 +1,15 @@
 "use client";
 import { useEffect, useState } from 'react';
 import Image from 'next/image'
-import styles from './Products.module.css';
+
+import productStyles from './Products.module.css';
+import cardStyles  from '@/components/common/ProductCard.module.css';
+
 import mehsullar from '@/components/Mock/Home/mehsullar.json';
+
 import { useFavorites } from "@/context/FavoritesContext";
 import { Heart } from "lucide-react";
-
-
-
-interface Product {
-    id: number;
-    title: string;
-    desc?: string; // optional etmək daha uyğundur
-    price: number | string;
-    image: string;
-    hoverImage?: string; // optional etmək daha uyğundur
-    originalPrice?: number;
-    coupon?: number;
-}
-
+import { Product } from '@/types/Product';
 
 
 export default function Products() {
@@ -42,9 +33,11 @@ export default function Products() {
             .catch(console.error);
     }, []);
 
+
+
     return (
         <>
-            <div className={styles.row_1}>
+            <div className={productStyles.row_1}>
                 <ul className='flex justify-center items-center'>
                     <li>Yeni Gələnlər</li>
                     <li>Məhsullar</li>
@@ -52,21 +45,21 @@ export default function Products() {
                 </ul>
             </div>
 
-            <div className={`${styles.row_2} flex justify-center items-center`}>
+            <div className={`${productStyles.row_2} flex justify-center items-center pb-12`}>
                 <p>İlk siz kəşf edin – ən son saat trendləri bu bölmədə</p>
             </div>
 
             {/* <HeartIcon className="text-red-500" fill="red" /> */}
 
-            <div className={`${styles.row_3} flex justify-center items-center`}>
+            <div className={`${cardStyles.cards_container} flex justify-center items-center`}>
 
                 {
                     mehsullar.map((item: Product) => (
                         <div
                             key={item.id}
-                            className={`${styles.cards} relative group rounded shadow w-[243px] h-[420px] text-center`}
+                            className={`${cardStyles.cards} relative group rounded shadow w-[243px] h-[420px] text-center`}
                         >
-                            <div className={`${styles.cards_image} relative w-full h-[259px] mx-auto`}>
+                            <div className={`${cardStyles.cards_image} relative w-full h-[259px] mx-auto`}>
                                 <Image
                                     src={item.image}
                                     alt={item.title}
@@ -79,18 +72,18 @@ export default function Products() {
                                         src={item.hoverImage}
                                         alt={item.title}
                                         fill
-                                        className={`${styles.hoverImage} scale-95 w-full h-full absolute top-0 left-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100`}
+                                        className={`${cardStyles.hoverImage} scale-95 w-full h-full absolute top-0 left-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100`}
                                         style={{ objectFit: "cover" }}
                                     />
                                 )}
                             </div>
-                            <div className={`${styles.cards_desc}`}>
+                            <div className={`${cardStyles.cards_desc}`}>
                                 <h3 className="transition-all duration-700 ">{item.title}</h3>
                                 <p>{item.desc}</p>
                                 <p className="opacity-0 group-hover:opacity-100 transition-opacity duration-700 !font-bold">
                                     {item.price}
                                 </p>
-                                <div className={`${styles.card_buttons} absolute bottom-0 left-0 flex justify-between opacity-0 transition-opacity duration-700 group-hover:opacity-100`}>
+                                <div className={`${cardStyles.card_buttons} absolute bottom-0 left-0 flex justify-between opacity-0 transition-opacity duration-700 group-hover:opacity-100`}>
                                     <button>al</button>
                                     <button>səbətə at</button>
                                 </div>
@@ -110,11 +103,11 @@ export default function Products() {
                             >
                                 {favorites.some((fav) => fav.id === item.id) ? <Heart fill="black" /> : <Heart />}
                             </div>
-                            <div className={`${styles.new_card} absolute top-3 right-3 z-10 cursor-pointer`}>
+                            <div className={`${cardStyles.new_card} absolute top-3 right-3 z-10 cursor-pointer`}>
                                 <span>NEW</span>
                             </div>
                         </div>
-                    ))};
+                    ))}
 
 
                 {/* {

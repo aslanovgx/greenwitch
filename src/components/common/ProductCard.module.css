@@ -1,0 +1,91 @@
+.cards_container {
+    padding: 0 0 138px 0;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.cards {
+    padding: 26px 16px 19px 16px;
+}
+
+.cards .cards_desc h3 {
+    color: #100F0F;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-transform: uppercase;
+    padding: 3px 0 8px 0;
+    margin: 0;
+    /* font-weight: 500; */
+}
+
+ .cards:hover .cards_desc h3 {
+    padding: 0 0 5px 0;
+    /* margin: 0 0 10px 0; */
+}
+
+ .cards .cards_desc p {
+    color: #1E1D1D;
+    text-align: center;
+    font-family: Montserrat;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+ .cards .cards_desc .card_buttons {
+    width: 100%;
+    padding: 0 5px;
+    bottom: 15px;
+}
+
+ .cards .cards_desc .card_buttons button {
+    color: #FFF;
+    text-align: center;
+    /* font-family: Lato; */
+    font-size: 15.965px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: uppercase;
+    display: flex;
+    width: 77.832px;
+    height: 28.937px;
+    padding: 9.978px;
+    justify-content: center;
+    align-items: center;
+    /* gap: 9.978px; */
+    flex-shrink: 0;
+    cursor: pointer;
+    border-radius: 7.983px;
+    background: #1E1D1D;
+}
+
+ .cards .cards_desc .card_buttons :nth-child(2) {
+    width: 141.693px;
+}
+
+ .new_card {
+    display: inline-flex;
+    height: 49px;
+    padding: 16.066px 8.967px 16.934px 8.033px;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+
+    border-radius: 245px;
+    background: linear-gradient(222deg, #DADADA 11.07%, #DADADA 34.55%, #FFF 46%, #DADADA 62%);
+}
+
+ .new_card span {
+    color: #000;
+    text-align: center;
+    /* font-family: Lato; */
+    font-size: 13.224px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
