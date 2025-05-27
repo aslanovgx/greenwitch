@@ -1,0 +1,22 @@
+.desc {
+    background: rgba(255, 255, 255, 0.20);
+    backdrop-filter: blur(2.8499999046325684px);
+    padding: 24px 28px;
+}
+
+.desc p {
+    color: #FFF;
+    text-align: center;
+    font-family: Montserrat;
+    font-size: 32.981px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.desc span span {
+    /* width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    background-color: #EBEBEB; */
+}
