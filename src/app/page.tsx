@@ -4,6 +4,7 @@ import Olivia from "@/components/home/Olivia/Olivia";
 import Brands from "@/components/home/Brands/Brands";
 import MostSales from "@/components/home/MostSales/MostSales";
 import SpecialOffer from "@/components/home/SpecialOffer/SpecialOffer";
+import IconInfo from "@/components/home/IconInfo/IconInfo";
 
 export default function Home() {
   return (
@@ -30,6 +31,10 @@ export default function Home() {
 
       <section>
         <SpecialOffer />
+      </section>
+
+      <section>
+        <IconInfo />
       </section>
     </>
   );
