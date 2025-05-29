@@ -10,6 +10,11 @@ export default function WishlistDrawer({ isOpen, onClose }: { isOpen: boolean; o
     if (!isOpen) return null;
 
     return (
+        //         <div className={`
+        //     fixed top-0 right-0 h-full w-[350px] bg-white shadow-xl z-50 p-4 overflow-y-auto
+        //     transition-transform duration-300 ease-in-out
+        //     transform ${isOpen ? 'translate-x-0' : 'translate-x-full'}
+        //   `}>
         <div className="fixed top-0 right-0 h-full w-[350px] bg-white shadow-xl z-50 p-4 overflow-y-auto">
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-bold">Wishlist ({favorites.length})</h2>
@@ -18,31 +23,40 @@ export default function WishlistDrawer({ isOpen, onClose }: { isOpen: boolean; o
                 </button>
             </div>
 
-            {favorites.length === 0 ? (
-                <p>Wishlist boşdur.</p>
-            ) : (
-                favorites.map((product) => (
-                    <div key={product.id} className="mb-4 border-b pb-2">
-                        <Image src={product.image} alt={product.title} width={60} height={60} />
-                        <div className="ml-2">
-                            <p className="font-semibold">{product.title}</p>
-                            {/* <p className="line-through text-sm text-gray-500">${product.originalPrice}</p> */}
-                            <p className="text-red-950 font-bold">${product.price}</p>
-                            {product.coupon && (
+            {
+                favorites.length === 0 ? (
+                    <p>Wishlist boşdur.</p>
+                ) : (
+                    favorites.map((product) => (
+                        <div key={product.id} className="mb-4 border-b pb-4 flex items-center gap-3">
+                            <Image src={product.image} alt={product.title} width={60} height={60} className="rounded object-cover" />
+                            <div className="flex-1">
+                                <p className="font-semibold text-sm">{product.title}</p>
+                                <p className="text-red-950 font-bold text-sm">{product.price} AZN</p>
+                                {Number(product.coupon) > 0 ? (
+                                    <span className="bg-orange-200 text-orange-700 text-xs px-2 py-1 rounded">
+                                        {product.coupon} AZN endirim
+                                    </span>
+                                ) : (
+                                    <span className="text-gray-400 text-xs"></span>
+                                )}
+                                {/* {product.coupon && (
                                 <span className="bg-orange-200 text-orange-700 text-xs px-2 py-1 rounded">
-                                    ${product.coupon} coupon
+                                    {product.coupon} AZN endirim
                                 </span>
-                            )}
+                            )} */}
+                            </div>
                             <button
-                                className="text-sm text-white mt-1 cursor-pointer px-3 py-1 bg-black rounded-sm"
+                                className="text-xs text-white cursor-pointer bg-red-600 px-2 py-1 rounded hover:bg-red-700 "
                                 onClick={() => removeFromFavorites(product.id)}
                             >
                                 Sil
                             </button>
                         </div>
-                    </div>
-                ))
-            )}
-        </div>
+
+                    ))
+                )
+            }
+        </div >
     );
 }

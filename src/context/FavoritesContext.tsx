@@ -1,15 +1,6 @@
 "use client";
-import React, { createContext, useContext, useState } from "react";
-import { Product } from '@/types/Product';
-
-// interface Product {
-//   id: number;
-//   title: string;
-//   price: number;
-//   image: string;
-//   originalPrice?: number;
-//   coupon?: number;
-// }
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { Product } from "@/types/Product";
 
 interface FavoriteContextType {
   favorites: Product[];
@@ -30,6 +21,19 @@ export const useFavorites = () => useContext(FavoriteContext);
 export const FavoriteProvider = ({ children }: { children: React.ReactNode }) => {
   const [favorites, setFavorites] = useState<Product[]>([]);
 
+  // 🔁 localStorage-dan oxu (yalnız clientdə)
+  useEffect(() => {
+    const stored = localStorage.getItem("favorites");
+    if (stored) {
+      setFavorites(JSON.parse(stored));
+    }
+  }, []);
+
+  // 💾 favorites dəyişdikcə localStorage-a yaz
+  useEffect(() => {
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+  }, [favorites]);
+
   const toggleFavorite = (product: Product) => {
     setFavorites((prev) => {
       const exists = prev.some((p) => p.id === product.id);
@@ -48,7 +52,9 @@ export const FavoriteProvider = ({ children }: { children: React.ReactNode }) =>
   const isFavorite = (id: number) => favorites.some((p) => p.id === id);
 
   return (
-    <FavoriteContext.Provider value={{ favorites, toggleFavorite, removeFromFavorites, isFavorite }}>
+    <FavoriteContext.Provider
+      value={{ favorites, toggleFavorite, removeFromFavorites, isFavorite }}
+    >
       {children}
     </FavoriteContext.Provider>
   );
