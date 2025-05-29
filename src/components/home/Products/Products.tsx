@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image'
 
 import productStyles from './Products.module.css';
-import cardStyles  from '@/components/common/ProductCard.module.css';
+import cardStyles from '@/components/common/ProductCard.module.css';
 
 import mehsullar from '@/components/Mock/Home/mehsullar.json';
 
@@ -22,6 +22,18 @@ export default function Products() {
     // const { toggleFavorite } = useFavorite();
     const { favorites, toggleFavorite } = useFavorites();
 
+
+    // useEffect(() => {
+    //     fetch('https://fakestoreapi.com/products')
+    //         .then(res => res.json())
+    //         .then(data => {
+    //             // console.log(data);        // bütün array-i göstərir
+    //             // console.log(data[0].id);  // array-in 1-ci elementinin id-sini göstərir
+    //             setProducts(data);
+    //         })
+    //         .catch(console.error);
+    // }, []);
+
     useEffect(() => {
         fetch('https://fakestoreapi.com/products')
             .then(res => res.json())
@@ -33,15 +45,40 @@ export default function Products() {
             .catch(console.error);
     }, []);
 
+    const [activeCategory, setActiveCategory] = useState<string>("all");
 
+
+    const filteredProducts = mehsullar.filter((item) => {
+        if (activeCategory === "new") return item.isNew;
+        if (activeCategory === "discount") return item.coupon && item.coupon > 0;
+        return true; // "all" üçün hamısı
+    });
 
     return (
         <>
             <div className={productStyles.row_1}>
                 <ul className='flex justify-center items-center'>
-                    <li>Yeni Gələnlər</li>
-                    <li>Məhsullar</li>
-                    <li>Endirimdə olanlar</li>
+                    <li
+                        onClick={() => setActiveCategory("new")}
+                        className={`cursor-pointer ${activeCategory === "new" ? "opacity-100" : "opacity-30"
+                            }`}
+                    >
+                        Yeni Gələnlər
+                    </li>
+                    <li
+                        onClick={() => setActiveCategory("all")}
+                        className={`cursor-pointer ${activeCategory === "all" ? "opacity-100" : "opacity-30"
+                            }`}
+                    >
+                        Məhsullar
+                    </li>
+                    <li
+                        onClick={() => setActiveCategory("discount")}
+                        className={`cursor-pointer ${activeCategory === "discount" ? "opacity-100" : "opacity-30"
+                            }`}
+                    >
+                        Endirimdə olanlar
+                    </li>
                 </ul>
             </div>
 
@@ -54,7 +91,7 @@ export default function Products() {
             <div className={`${cardStyles.cards_container} flex justify-center items-center`}>
 
                 {
-                    mehsullar.map((item: Product) => (
+                    filteredProducts.map((item: Product) => (
                         <div
                             key={item.id}
                             className={`${cardStyles.cards} relative group rounded shadow w-[243px] h-[420px] text-center`}
@@ -103,9 +140,33 @@ export default function Products() {
                             >
                                 {favorites.some((fav) => fav.id === item.id) ? <Heart fill="black" /> : <Heart />}
                             </div>
-                            <div className={`${cardStyles.new_card} absolute top-3 right-3 z-10 cursor-pointer`}>
-                                <span>NEW</span>
-                            </div>
+                            {activeCategory === "new" && item.isNew && (
+                                <div className={`${cardStyles.new_card} absolute top-3 right-3 z-10 cursor-pointer`}>
+                                    <span>NEW</span>
+                                </div>
+                            )}
+
+                            {activeCategory === "discount" && item.coupon > 0 && (
+                                <div className={`${cardStyles.new_card} ${cardStyles.discountBadge}  absolute top-3 right-3 z-10 cursor-pointer`}>
+                                    <span>ENDİRİM</span>
+                                </div>
+                            )}
+
+                            {activeCategory === "all" && (
+                                <>
+                                    {item.isNew && (
+                                        <div className={`${cardStyles.new_card} absolute top-3 right-3 z-10 cursor-pointer`}>
+                                            <span>NEW</span>
+                                        </div>
+                                    )}
+                                    {!item.isNew && item.coupon > 0 && (
+                                        <div className={`${cardStyles.new_card} ${cardStyles.discountBadge} absolute top-3 right-3 z-10 cursor-pointer`}>
+                                            <span>ENDİRİM</span>
+                                        </div>
+                                    )}
+                                </>
+                            )}
+
                         </div>
                     ))}
 

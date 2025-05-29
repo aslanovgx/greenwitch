@@ -5,7 +5,9 @@
     "hoverImage": "/assets/home/cards_position/michael.png",
     "title": "MİCHAEL KORS",
     "desc": "Slim Runway Gold-Tone Curb-Link Watch",
-    "price": "379AZN"
+    "price": "379AZN",
+    "isNew": false,
+    "coupon": 20
   },
   {
     "id": 2,
@@ -13,7 +15,9 @@
     "hoverImage": "/assets/home/cards_position/olivia-pink.png",
     "title": "OLIVIA BURTON",
     "desc": "Wonderland 30mm White & Rose Gold Mesh",
-    "price": "200AZN"
+    "price": "200AZN",
+    "isNew": true,
+    "coupon": 10
   },
   {
     "id": 3,
@@ -21,7 +25,9 @@
     "hoverImage": "/assets/home/cards_position/hilfiger.png",
     "title": "HİLFİGER",
     "desc": "32MM Monochrome Mesh Bracelet Watch",
-    "price": "400AZN"
+    "price": "400AZN",
+    "isNew": false,
+    "coupon": 0
   },
   {
     "id": 4,
@@ -29,7 +35,9 @@
     "hoverImage": "/assets/home/cards_position/olivia-black.png",
     "title": "OLIVIA BURTON",
     "desc": "32mm Dimension T-Bar Gold&Black Leather Strap Watch",
-    "price": "450AZN"
+    "price": "450AZN",
+    "isNew": true,
+    "coupon": 0
   },
   {
     "id": 5,
@@ -37,6 +45,8 @@
     "hoverImage": "/assets/home/cards_position/swiss.png",
     "title": "SWISS MILITARY",
     "desc": "MAJESTE PIONER",
-    "price": "365AZN"
+    "price": "365AZN",
+    "isNew": false,
+    "coupon": 20
   }
 ]

@@ -7,4 +7,5 @@ export interface Product {
     hoverImage?: string; // optional etmək daha uyğundur
     originalPrice?: number;
     coupon?: number;
+    isNew?: boolean;
 }

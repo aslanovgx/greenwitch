@@ -1,14 +1,15 @@
 "use client";
 import React, { createContext, useContext, useState } from "react";
+import { Product } from '@/types/Product';
 
-interface Product {
-  id: number;
-  title: string;
-  price: number;
-  image: string;
-  originalPrice?: number;
-  coupon?: number;
-}
+// interface Product {
+//   id: number;
+//   title: string;
+//   price: number;
+//   image: string;
+//   originalPrice?: number;
+//   coupon?: number;
+// }
 
 interface FavoriteContextType {
   favorites: Product[];
@@ -19,8 +20,8 @@ interface FavoriteContextType {
 
 const FavoriteContext = createContext<FavoriteContextType>({
   favorites: [],
-  toggleFavorite: () => {},
-  removeFromFavorites: () => {},
+  toggleFavorite: () => { },
+  removeFromFavorites: () => { },
   isFavorite: () => false,
 });
 

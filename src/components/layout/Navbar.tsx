@@ -8,8 +8,8 @@ import WishlistDrawer from "@/context/WishlistDrawer";
 
 export default function Navbar() {
   const [fixed, setFixed] = useState(false);
-  const row1Ref = useRef(null);
-  const row2Ref = useRef(null);
+  const row1Ref = useRef<HTMLDivElement>(null);
+  const row2Ref = useRef<HTMLDivElement>(null);
   const { favorites } = useFavorites();
   const [wishlistOpen, setWishlistOpen] = useState(false);
 
@@ -30,12 +30,11 @@ export default function Navbar() {
       if (!row1Ref.current) return;
 
       const row1Bottom = row1Ref.current.getBoundingClientRect().bottom;
-      if (row1Bottom <= 0) {
-        setFixed(true);
-      } else {
-        setFixed(false);
-      }
+      setFixed(row1Bottom <= 0);
     }
+
+    // ✅ İlk render zamanı bir dəfə çağır (səhifə reload olsa belə)
+    handleScroll();
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
