@@ -1,0 +1,67 @@
+.contactSection {
+    padding: 80px 0 53px 0;
+    background: #F9F9F9;
+}
+
+.contactSection .contactBox {
+    max-width: 1148px;
+    margin: 0 auto;
+    background: #131313;
+    padding: 56px 41px 105px 60px;
+}
+
+.contactSection .contactBox .leftSide {
+    width: 537px;
+}
+
+.contactSection .contactBox .leftSide h1 {
+    color: #F0F0F0;
+    font-family: Montserrat;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    padding-bottom: 16px;
+}
+
+.contactSection .contactBox .leftSide p {
+    color: #FFF;
+    font-family: Montserrat;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+
+/* ///////////////////////////// Right Side ///////////////////////// */
+.contactSection .contactBox .rightSide .sendEmail input {
+    color: #FFF;
+    /* text-align: center; */
+    font-family: Montserrat;
+    font-size: 14.587px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    background: rgba(240, 240, 240, 0.50);
+    backdrop-filter: blur(2.75px);
+    width: 296.221px;
+    padding-left: 4px;
+    /* line-height: 1.1; */
+}
+
+.contactSection .contactBox .rightSide .sendEmail button {
+    color: #FFF;
+    text-align: center;
+    font-family: Montserrat;
+    font-size: 17.953px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    padding: 22.441px 35.906px;
+    background: var(--first-color-action-dark, #3D3D3D);
+}
+
+.contactSection .contactBox .rightSide .sendEmail button:hover {
+    background: #2a2a2a;
+}

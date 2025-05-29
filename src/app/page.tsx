@@ -6,6 +6,7 @@ import MostSales from "@/components/home/MostSales/MostSales";
 import SpecialOffer from "@/components/home/SpecialOffer/SpecialOffer";
 import IconInfo from "@/components/home/IconInfo/IconInfo";
 import ImageGrid from "@/components/home/ImageGrid/ImageGrid";
+import Contact from "@/components/home/Contact/Contact";
 
 export default function Home() {
   return (
@@ -40,6 +41,10 @@ export default function Home() {
 
       <section>
         <ImageGrid />
+      </section>
+
+      <section>
+        <Contact />
       </section>
     </>
   );
