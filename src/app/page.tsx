@@ -5,6 +5,7 @@ import Brands from "@/components/home/Brands/Brands";
 import MostSales from "@/components/home/MostSales/MostSales";
 import SpecialOffer from "@/components/home/SpecialOffer/SpecialOffer";
 import IconInfo from "@/components/home/IconInfo/IconInfo";
+import ImageGrid from "@/components/home/ImageGrid/ImageGrid";
 
 export default function Home() {
   return (
@@ -35,6 +36,10 @@ export default function Home() {
 
       <section>
         <IconInfo />
+      </section>
+
+      <section>
+        <ImageGrid />
       </section>
     </>
   );
