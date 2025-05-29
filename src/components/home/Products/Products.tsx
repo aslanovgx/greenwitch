@@ -12,6 +12,7 @@ import { Heart } from "lucide-react";
 import { Product } from '@/types/Product';
 
 
+
 export default function Products() {
     // export default function Products({ products }: { products: Product[] }) {
 
@@ -53,6 +54,23 @@ export default function Products() {
         if (activeCategory === "discount") return item.coupon && item.coupon > 0;
         return true; // "all" üçün hamısı
     });
+    // const [searchTerm, setSearchTerm] = useState("");
+    // const debouncedSearchTerm = useDebounce(searchTerm, 500); // 500ms gözləmə ilə
+
+    // const filteredProducts = mehsullar.filter((item) => {
+    //     const matchesSearch =
+    //         item.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
+    //         (item.desc && item.desc.toLowerCase().includes(debouncedSearchTerm.toLowerCase()));
+
+    //     const matchesCategory =
+    //         activeCategory === "new"
+    //             ? item.isNew
+    //             : activeCategory === "discount"
+    //                 ? item.coupon && item.coupon > 0
+    //                 : true;
+
+    //     return matchesSearch && matchesCategory;
+    // });
 
     return (
         <>

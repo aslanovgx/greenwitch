@@ -5,7 +5,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { FavoriteProvider } from "@/context/FavoritesContext";
 
-
+import { SearchProvider } from "@/context/SearchContext";
 
 export const metadata: Metadata = {
   title: "greenwitch",
@@ -22,13 +22,13 @@ export default function RootLayout({
       <body
         className={`${montserrat.variable} ${lato.variable} antialiased`}
       >
-        <FavoriteProvider>
-          <Navbar />
-          <main className="container mx-auto max-w-[1440px]">
-            {children}
-          </main>
-          <Footer />
-        </FavoriteProvider>
+        <SearchProvider>
+          <FavoriteProvider>
+            <Navbar />
+            <main>{children}</main>
+            <Footer />
+          </FavoriteProvider>
+        </SearchProvider>
       </body>
     </html>
   );
