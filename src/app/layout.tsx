@@ -4,8 +4,9 @@ import { montserrat, lato } from './../fonts';
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { FavoriteProvider } from "@/context/FavoritesContext";
-
 import { SearchProvider } from "@/context/SearchContext";
+import { ToastContainer } from "react-toastify"; // ✅ toastify əlavə olunur
+import "react-toastify/dist/ReactToastify.css";   // ✅ toastify CSS-i
 
 export const metadata: Metadata = {
   title: "greenwitch",
@@ -27,6 +28,17 @@ export default function RootLayout({
             <Navbar />
             <main>{children}</main>
             <Footer />
+
+            {/* ✅ ToastContainer sağ yuxarı üçün */}
+            <ToastContainer
+              position="top-right"
+              autoClose={2000}
+              hideProgressBar={false}
+              closeOnClick
+              pauseOnHover
+              draggable
+              theme="light" // istəsən 'dark' da yaza bilərsən
+            />
           </FavoriteProvider>
         </SearchProvider>
       </body>

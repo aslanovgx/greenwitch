@@ -1,8 +1,11 @@
+'use client';
+import { toast } from 'react-toastify';
 import styles from './Contact.module.css';
-// import Image from "next/image";
 
 export default function Contact() {
-
+    const handleSubmit = () => {
+        toast.success("Mesaj göndərildi ✅");
+    };
     return (
 
         <>
@@ -19,7 +22,10 @@ export default function Contact() {
                                 placeholder="Enter your email"
                                 className={` placeholder-white outline-none`}
                             />
-                            <button className='hover:bg-gray-950 transition cursor-pointer'>
+                            <button
+                                // onClick={() => alert("Mesaj göndərildi ✅")}
+                                onClick={handleSubmit}
+                                className='hover:bg-gray-950 transition cursor-pointer'>
                                 Göndər
                             </button>
                         </div>
