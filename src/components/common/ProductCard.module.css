@@ -1,5 +1,5 @@
 .cards_container {
-    padding: 0 0 138px 0;
+    /* padding: 0 0 77px 0; */
     flex-wrap: wrap;
     gap: 16px;
 }
@@ -91,7 +91,10 @@
 }
 
 .discountBadge {
-    background: #ff8935;
+    /* border-radius: 260.332px; */
+    /* border-radius: 260.332px; */
+    background: linear-gradient(212deg, #FFB986 9.76%, #FFB986 33.85%, #FFF 45.6%, #FFB986 62.02%);
+    /* background: linear-gradient(212deg, #F26600 9.76%, #F26600 33.85%, #FFF 45.6%, #F26600 62.02%); */
 }
 
 .discountBadge span {

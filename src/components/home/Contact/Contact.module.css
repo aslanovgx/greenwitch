@@ -1,11 +1,11 @@
 .contactSection {
     padding: 80px 0 53px 0;
-    background: #F9F9F9;
+    /* background: #F9F9F9; */
 }
 
 .contactSection .contactBox {
-    max-width: 1148px;
-    margin: 0 auto;
+    /* max-width: 1148px; */
+    /* margin: 0 auto; */
     background: #131313;
     padding: 56px 41px 105px 60px;
 }
@@ -46,7 +46,7 @@
     background: rgba(240, 240, 240, 0.50);
     backdrop-filter: blur(2.75px);
     width: 296.221px;
-    padding-left: 4px;
+    padding-left: 19px;
     /* line-height: 1.1; */
 }
 
