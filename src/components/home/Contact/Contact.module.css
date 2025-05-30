@@ -43,7 +43,8 @@
     font-style: normal;
     font-weight: 800;
     line-height: normal;
-    background: rgba(240, 240, 240, 0.50);
+    /* background: rgba(240, 240, 240, 0.50); */
+    background: rgb(240 240 240 / 36%);
     backdrop-filter: blur(2.75px);
     width: 296.221px;
     padding-left: 19px;
