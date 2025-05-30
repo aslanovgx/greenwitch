@@ -15,8 +15,8 @@ const imageSets = [
       title: "olivia burton",
     },
     rightBottom: {
-      src: "/assets/home/imageGrid/olivia-pink.jpg",
-      title: "olivia burton",
+      src: "/assets/home/imageGrid/fossil.png",
+      title: "fossil",
     },
   },
   {
