@@ -19,3 +19,16 @@ body {
 .font-lato {
   font-family: var(--font-lato);
 }
+
+.react-window::-webkit-scrollbar {
+  height: 6px;
+}
+
+.react-window::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.react-window::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

@@ -10,14 +10,15 @@ import mehsullar from '@/components/Mock/Home/mehsullar.json';
 import { useFavorites } from "@/context/FavoritesContext";
 import { Heart } from "lucide-react";
 import { Product } from '@/types/Product';
+import RightArrow from './../../../../public/assets/icons/right-arrow.svg'
 
-
+// import VirtualProductList from '@/components/common/VirtualProductList';
 
 export default function Products() {
     // export default function Products({ products }: { products: Product[] }) {
 
     // const [products, setProducts] = useState([]);
-    const [products, setProducts] = useState<Product[]>([]);
+    // const [products, setProducts] = useState<Product[]>([]);
     // console.log(products);
 
     // const { toggleFavorite } = useFavorite();
@@ -35,43 +36,29 @@ export default function Products() {
     //         .catch(console.error);
     // }, []);
 
-    useEffect(() => {
-        fetch('https://fakestoreapi.com/products')
-            .then(res => res.json())
-            .then(data => {
-                // console.log(data);        // bütün array-i göstərir
-                // console.log(data[0].id);  // array-in 1-ci elementinin id-sini göstərir
-                setProducts(data);
-            })
-            .catch(console.error);
-    }, []);
+    // useEffect(() => {
+    //     fetch('https://fakestoreapi.com/products')
+    //         .then(res => res.json())
+    //         .then(data => {
+    //             // console.log(data);        // bütün array-i göstərir
+    //             // console.log(data[0].id);  // array-in 1-ci elementinin id-sini göstərir
+    //             setProducts(data);
+    //         })
+    //         .catch(console.error);
+    // }, []);
 
     const [activeCategory, setActiveCategory] = useState<string>("all");
 
+    // const extendedProducts = Array.from({ length: 100 }).map((_, i) => ({
+    //     ...mehsullar[i % mehsullar.length],
+    //     id: i + 1,
+    // }));
 
     const filteredProducts = mehsullar.filter((item) => {
         if (activeCategory === "new") return item.isNew;
         if (activeCategory === "discount") return item.coupon && item.coupon > 0;
         return true; // "all" üçün hamısı
     });
-    // const [searchTerm, setSearchTerm] = useState("");
-    // const debouncedSearchTerm = useDebounce(searchTerm, 500); // 500ms gözləmə ilə
-
-    // const filteredProducts = mehsullar.filter((item) => {
-    //     const matchesSearch =
-    //         item.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
-    //         (item.desc && item.desc.toLowerCase().includes(debouncedSearchTerm.toLowerCase()));
-
-    //     const matchesCategory =
-    //         activeCategory === "new"
-    //             ? item.isNew
-    //             : activeCategory === "discount"
-    //                 ? item.coupon && item.coupon > 0
-    //                 : true;
-
-    //     return matchesSearch && matchesCategory;
-    // });
-
     return (
         <>
             <div className={productStyles.row_1}>
@@ -212,6 +199,14 @@ export default function Products() {
                     } */}
             </div>
 
+            <div className={`${productStyles.moreButton} w-full mx-auto text-center py-5`}>
+                <button className=" bg-black text-white cursor-pointer hover:bg-white hover:text-black hover:font-semibold transition-all duration-300">
+                    Daha çox
+                </button>
+            </div>
+
+
+            {/* <VirtualProductList products={extendedProducts} /> */}
         </>
     );
 }

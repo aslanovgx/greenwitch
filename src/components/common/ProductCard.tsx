@@ -5,7 +5,7 @@ import { useFavorites } from '@/context/FavoritesContext';
 import styles from '@/components/common/ProductCard.module.css';
 import { Product } from '@/types/Product';
 
-export default function ProductCard({ item }: { item: Product }) {
+export default function ProductCard({ item, isMostSales = false }: { item: Product, isMostSales?: boolean }) {
     const { favorites, toggleFavorite } = useFavorites();
 
     return (
@@ -60,8 +60,11 @@ export default function ProductCard({ item }: { item: Product }) {
                 {favorites.some((fav) => fav.id === item.id) ? <Heart fill="black" /> : <Heart />}
             </div>
 
-            <div className={`${styles.new_card} absolute top-3 right-3 z-10 cursor-pointer`}>
-                <span>NEW</span>
+            <div className={`${styles.new_card} ${isMostSales ? styles.bestSpan : ''
+                } absolute top-3 right-3 z-10 cursor-pointer`}>
+                <span>
+                    {isMostSales ? 'BEST' : 'NEW'}
+                </span>
             </div>
         </div>
     );

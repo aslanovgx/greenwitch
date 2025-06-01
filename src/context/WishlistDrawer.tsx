@@ -10,14 +10,9 @@ export default function WishlistDrawer({ isOpen, onClose }: { isOpen: boolean; o
     if (!isOpen) return null;
 
     return (
-        //         <div className={`
-        //     fixed top-0 right-0 h-full w-[350px] bg-white shadow-xl z-50 p-4 overflow-y-auto
-        //     transition-transform duration-300 ease-in-out
-        //     transform ${isOpen ? 'translate-x-0' : 'translate-x-full'}
-        //   `}>
         <div className="fixed top-0 right-0 h-full w-[350px] bg-white shadow-xl z-50 p-4 overflow-y-auto">
             <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-bold">Wishlist ({favorites.length})</h2>
+                <h2 className="text-xl font-bold">Favoritlər ({favorites.length})</h2>
                 <button onClick={onClose} className="cursor-pointer">
                     <X />
                 </button>
@@ -25,13 +20,13 @@ export default function WishlistDrawer({ isOpen, onClose }: { isOpen: boolean; o
 
             {
                 favorites.length === 0 ? (
-                    <p>Wishlist boşdur.</p>
+                    <p>Favoritlər boşdur.</p>
                 ) : (
                     favorites.map((product) => (
                         <div key={product.id} className="mb-4 border-b pb-4 flex items-center gap-3">
                             <Image src={product.image} alt={product.title} width={60} height={60} className="rounded object-cover" />
                             <div className="flex-1">
-                                <p className="font-semibold text-sm">{product.title}</p>
+                                <p className="font-semibold text-sm uppercase">{product.title}</p>
                                 <p className="text-red-950 font-bold text-sm">{product.price} AZN</p>
                                 {Number(product.coupon) > 0 ? (
                                     <span className="bg-orange-200 text-orange-700 text-xs px-2 py-1 rounded">
