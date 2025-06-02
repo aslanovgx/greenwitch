@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image'
 import styles from './Banner.module.css';
 import TextSwitcher from "@/components/ui/TextSwitcher";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 const bannerSets = [
     {

@@ -19,7 +19,7 @@ export default function Navbar() {
   const [fixed, setFixed] = useState(false);
   const row1Ref = useRef<HTMLDivElement>(null);
   const row2Ref = useRef<HTMLDivElement>(null);
-  const { favorites } = useFavorites();
+  // const { favorites } = useFavorites();
   const [wishlistOpen, setWishlistOpen] = useState(false);
 
   // Yazı state-i burada yaradılır:
@@ -28,7 +28,7 @@ export default function Navbar() {
 
 
 
-  const { searchTerm, setSearchTerm } = useSearch();
+  const { searchTerm } = useSearch();
   const debouncedSearchTerm = useDebounce(searchTerm, 1500);
 
   const filteredResults = useMemo(() => {
