@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from 'react';
+// import { useState } from 'react';
 import Image from 'next/image'
 import styles from './Banner.module.css';
-import TextSwitcher from "@/components/ui/TextSwitcher";
 import { motion } from "framer-motion";
+// import AutoSwitcher from "@/components/ui/AutoSwitcher"; // yeni komponent
+import { useAutoSwitcher } from "@/hooks/useAutoSwitcher";
 
 const bannerSets = [
     {
@@ -31,8 +32,7 @@ const bannerSets = [
 ];
 
 export default function Banner() {
-    const [activeIndex, setActiveIndex] = useState(0);
-    // const [isFading, setIsFading] = useState(false);
+    const activeIndex = useAutoSwitcher(bannerSets.length, 3000);
     const currentSet = bannerSets[activeIndex];
     return (
         <>
@@ -48,32 +48,28 @@ export default function Banner() {
             </div>
 
             <div className={`${styles.row_4} max-w-[1262px] mx-auto flex justify-center items-center`}>
-                {currentSet.images.map((img, idx) => (
-                    <motion.div
-                        key={`${activeIndex}-${img.src}`}
-                        initial={{ opacity: 0, scale: 0.98 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        // transition={{ duration: 0.8, ease: "easeInOut" }}
-                        transition={{ type: "spring", stiffness: 60, damping: 12 }}
-                        className={`relative ${styles[`banner_${idx + 1}`]}`}
-                        style={{ width: img.width, height: 302 }}
-                    >
-                        <Image
-                            src={img.src}
-                            alt={img.alt}
-                            fill
-                            className="object-cover"
-                        />
-                    </motion.div>
-                ))}
-
-                {/* Interval üçün TextSwitcher */}
-                <TextSwitcher
-                    texts={["", "", ""]}
-                    onIndexChange={(i) => {
-                        setActiveIndex(i); // artıq fade effekti Framer Motion-da
-                    }}
-                />
+                <motion.div
+                    key={activeIndex}
+                    animate={{ opacity: 1 }}
+                    initial={false}
+                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                    className="flex justify-center items-center w-full gap-6"
+                >
+                    {currentSet.images.map((img, idx) => (
+                        <div
+                            key={img.src}
+                            className={`relative ${styles[`banner_${idx + 1}`]}`}
+                            style={{ width: img.width, height: 302 }}
+                        >
+                            <Image
+                                src={img.src}
+                                alt={img.alt}
+                                fill
+                                className="object-cover"
+                            />
+                        </div>
+                    ))}
+                </motion.div>
 
             </div>
         </>
