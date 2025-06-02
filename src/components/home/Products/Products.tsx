@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image'
 
 import productStyles from './Products.module.css';
@@ -10,7 +10,7 @@ import mehsullar from '@/components/Mock/Home/mehsullar.json';
 import { useFavorites } from "@/context/FavoritesContext";
 import { Heart } from "lucide-react";
 import { Product } from '@/types/Product';
-import RightArrow from './../../../../public/assets/icons/right-arrow.svg'
+// import RightArrow from './../../../../public/assets/icons/right-arrow.svg'
 
 // import VirtualProductList from '@/components/common/VirtualProductList';
 

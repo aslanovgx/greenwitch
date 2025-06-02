@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useRef, useMemo } from "react";
 import Image from "next/image";
 import "@/components/layout/Navbar.css";
-import { useFavorites } from "@/context/FavoritesContext";
+// import { useFavorites } from "@/context/FavoritesContext";
 // import { Heart } from "lucide-react";
 import WishlistDrawer from "@/context/WishlistDrawer";
 
