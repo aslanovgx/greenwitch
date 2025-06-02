@@ -22,19 +22,28 @@ export default function ImageGrid() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [prevIndex, setPrevIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setHasStarted(true); // SSR sonrası client başladı
+    }, 0);
+
+    return () => clearTimeout(timeout);
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setPrevIndex(activeIndex);
       setActiveIndex((prev) => (prev + 1) % imageSets.length);
       setIsTransitioning(true);
-      setTimeout(() => setIsTransitioning(false), 600);
-    }, 5000);
+      setTimeout(() => setIsTransitioning(false), 400);
+    }, 3000);
 
     return () => clearInterval(interval);
   }, [activeIndex]);
 
-  const transition = { duration: 0.6, ease: "easeInOut" };
+  const transition = { duration: 0.4, ease: "easeInOut" };
 
   const fadeImage = (
     currSrc: string,
@@ -43,25 +52,27 @@ export default function ImageGrid() {
     prevTitle: string
   ) => (
     <div className="relative w-full h-full">
-      {/* Previous image + title */}
-      <motion.div
-        key={`prev-${prevSrc}`}
-        initial={{ opacity: 1 }}
-        animate={{ opacity: isTransitioning ? 1 : 0 }}
-        transition={transition}
-        className="absolute inset-0 z-0"
-      >
-        <Image src={prevSrc} alt="" fill className="object-cover" />
-        <div className={styles.img_desc}>
-          <span>{prevTitle}</span>
-        </div>
-      </motion.div>
+      {/* Only render previous image if it's different */}
+      {hasStarted && prevSrc !== currSrc && (
+        <motion.div
+          key={`prev-${prevSrc}`}
+          initial={{ opacity: 1 }}
+          animate={{ opacity: isTransitioning ? 1 : 0 }}
+          transition={transition}
+          className="absolute inset-0 z-0"
+        >
+          <Image src={prevSrc} alt="" fill className="object-cover" />
+          <div className={styles.img_desc}>
+            <span>{prevTitle}</span>
+          </div>
+        </motion.div>
+      )}
 
-      {/* Current image + title */}
+      {/* Current image */}
       <motion.div
         key={`curr-${currSrc}`}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: isTransitioning ? 0 : 1 }}
+        initial={{ opacity: hasStarted ? 0 : 1 }}
+        animate={{ opacity: 1 }}
         transition={transition}
         className="absolute inset-0 z-10"
       >
