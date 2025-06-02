@@ -3,6 +3,7 @@
 import Image from "next/image";
 import styles from "./Banner.module.css";
 import { useAutoSwitcher } from "@/hooks/useAutoSwitcher";
+import { useState, useEffect } from "react";
 
 const bannerSets = [
   {
@@ -29,8 +30,15 @@ const bannerSets = [
 ];
 
 export default function Banner() {
+  const [isMounted, setIsMounted] = useState(false);
   const activeIndex = useAutoSwitcher(bannerSets.length, 3000);
-  const currentSet = bannerSets[activeIndex];
+
+  useEffect(() => {
+    const timeout = setTimeout(() => setIsMounted(true), 50); // qısa gecikmə smooth hiss verir
+    return () => clearTimeout(timeout);
+  }, []);
+
+  const currentSet = bannerSets[isMounted ? activeIndex : 0];
 
   return (
     <>
@@ -51,7 +59,7 @@ export default function Banner() {
         <div className="flex justify-center items-center w-full gap-6">
           {currentSet.images.map((img, idx) => (
             <div
-              key={img.src}
+              key={`${img.src}-${idx}`} // SSR üçün unikal key vacibdir
               className={`relative ${styles[`banner_${idx + 1}`]}`}
               style={{ width: img.width, height: 302 }}
             >
