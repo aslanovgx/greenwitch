@@ -3,16 +3,34 @@
 }
 
 .footer .footerBox {
-    border-bottom: 1px solid linear-gradient(90deg, #FFF 0%, #000 29.38%, #000 51.41%, #000 71.33%, #FFF 100%);
     padding-bottom: 37px;
+    justify-content: space-evenly;
+}
 
+@media (max-width: 1024px) {
+    .footer .footerBox {
+        padding-bottom: 26px;
+    }
 }
 
 .footer .footerBox ul {
-    /* width: 250px; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-self: start;
-
+    align-items: start;
+    /* word-break: break-all; */
+    gap: 8px;
+    max-width: 240px;
 }
+
+@media (max-width: 1024px) {
+    .footer .footerBox ul {
+        /* max-width: 210px; */
+    }
+}
+
+
 
 .footer .footerBox ul li {
     color: #1E1D1D;
@@ -21,21 +39,16 @@
     font-style: normal;
     font-weight: 400;
     line-height: normal;
-
     display: flex;
     /* justify-content: start; */
     align-items: center;
     gap: 10px;
 }
 
-.footer .footerBox ul li span {
-    width: 24px;
-    height: 24px;
-    align-self: start;
-}
-
-.footer .footerBox ul li span svg {
-    object-fit: contain;
+@media (max-width: 1024px) {
+    .footer .footerBox ul li {
+        font-size: 12.766px;
+    }
 }
 
 .footer .footerBox ul li:nth-child(1) {
@@ -48,19 +61,45 @@
     padding-bottom: 10px;
 }
 
+@media (max-width: 1024px) {
+    .footer .footerBox ul li:nth-child(1) {
+        font-size: 15.766px;
+    }
+}
+
+
+.footer .footerBox ul li span {
+    width: 14px;
+    height: 14px;
+    align-self: start;
+}
+
+.footer .footerBox ul li span svg {
+    object-fit: contain;
+}
+
+
 .footerGradientLine {
-    width: 1147.856px;
     height: 1.122px;
     background: linear-gradient(90deg, #FFF 0%, #000 29.38%, #000 51.41%, #000 71.33%, #FFF 100%);
-    margin-bottom: 36px;
 }
 
 
 .greenwich2025 span:last-child {
     color: #1E1D1D;
     font-family: Roboto;
-    font-size: 14.587px;
-    font-style: normal;
+    /* font-size: 14.587px; */
     font-weight: 400;
-    line-height: normal;
+}
+
+@media (max-width: 1440px) {
+    .greenwich2025 span:last-child {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .greenwich2025 span:last-child {
+        font-size: 10px;
+    }
 }

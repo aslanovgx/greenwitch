@@ -1,4 +1,5 @@
 import styles from './Footer.module.css';
+import Container from './Container';
 
 import Phone from './../../../public/assets/footer/phone.svg'
 import Location from './../../../public/assets/footer/location.svg'
@@ -10,42 +11,53 @@ import Copyright from './../../../public/assets/footer/bx-copyright.svg.svg'
 export default function Footer() {
     return (
         <footer className={styles.footer}>
-            <div className={`${styles.footerBox} columns flex flex-wrap justify-evenly items-center`}>
-                <ul className='flex flex-col flex-1 max-w-[240px] break-words items-start gap-2 '>
-                    <li>Əlaqə</li>
-                    <li><span><Phone /></span>+9942002020</li>
-                    <li className='relative'><span><Location /></span>Nizami küçəsi 96C, AF Mall, 3-cü mərtəbə, Bakı, Azərbaycan -cü mərtəbə, Bakı, Azərbaycan</li>
-                </ul>
-                <ul className='flex flex-col justify-center items-start gap-2 flex-1 max-w-[240px] break-words'>
-                    <li>Haqqımızda</li>
-                    <li>Missiyamız</li>
-                    <li>Dəyərlərimiz</li>
-                    <li>Brendlərimiz</li>
-                    <li>Niyə Biz?</li>
-                </ul>
-                <ul className='flex flex-col justify-center items-start gap-2 flex-1 max-w-[240px] break-words'>
-                    <li>Məhsullar</li>
-                    <li>Yeni gələnlər</li>
-                    <li>Ən çox satanlar</li>
-                    <li>Qadın</li>
-                    <li>Kişi</li>
-                    <li>Uşaq</li>
-                </ul>
-                <ul className='flex flex-col justify-center items-start gap-2 flex-1 max-w-[240px] break-words'>
-                    <li>Social</li>
-                    <li>
-                        <span><Facebook /></span>
-                        <span><Twitter /></span>
-                        <span><Instagram /></span>
-                    </li>
-                </ul>
-            </div>
-            {/* <div className="w-full h-[1px] bg-gradient-to-r from-white via-black to-white" /> */}
-            <div className={`${styles.footerGradientLine} mx-auto`}></div>
-            <div className={`${styles.greenwich2025} flex justify-center gap-1 items-center`}>
-                <span><Copyright width={14} height={14} /></span>
-                <span>Greenwich 2025</span>
-            </div>
+            <Container>
+                <div className={`${styles.footerBox} columns flex flex-wrap items-center`}>
+                    <ul className=''>
+                        <li>Əlaqə</li>
+                        <li><span><Phone /></span>+9942002020</li>
+                        <li className='relative'><span><Location /></span>Nizami küçəsi 96C, AF Mall, 3-cü mərtəbə, Bakı, Azərbaycan</li>
+                    </ul>
+                    <ul className=''>
+                        <li>Haqqımızda</li>
+                        <li>Missiyamız</li>
+                        <li>Dəyərlərimiz</li>
+                        <li>Brendlərimiz</li>
+                        <li>Niyə Biz?</li>
+                    </ul>
+                    <ul className=''>
+                        <li>Məhsullar</li>
+                        <li>Yeni gələnlər</li>
+                        <li>Ən çox satanlar</li>
+                        <li>Qadın</li>
+                        <li>Kişi</li>
+                        <li>Uşaq</li>
+                    </ul>
+                    <ul className=''>
+                        <li>Social</li>
+                        <li>
+                            <span><Facebook /></span>
+                            <span><Twitter /></span>
+                            <span><Instagram /></span>
+                        </li>
+                    </ul>
+                </div>
+                <div className={`${styles.footerGradientLine} 
+                mx-auto
+                lg:w-[816px]
+                lg:mb-3
+                2xl:w-[1148px]
+                2xl:mb-9`}>
+                </div>
+                <div className={`${styles.greenwich2025}
+                flex
+                justify-center
+                gap-1
+                items-center`}>
+                    <span><Copyright width={14} height={14} /></span>
+                    <span>Greenwich 2025</span>
+                </div>
+            </Container>
         </footer>
     );
 }

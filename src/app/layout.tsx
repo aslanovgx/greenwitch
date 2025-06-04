@@ -7,6 +7,7 @@ import { FavoriteProvider } from "@/context/FavoritesContext";
 import { SearchProvider } from "@/context/SearchContext";
 import { ToastContainer } from "react-toastify"; // ✅ toastify əlavə olunur
 import "react-toastify/dist/ReactToastify.css";   // ✅ toastify CSS-i
+import Container from "@/components/layout/Container";
 
 export const metadata: Metadata = {
   title: "greenwitch",
@@ -26,7 +27,9 @@ export default function RootLayout({
         <SearchProvider>
           <FavoriteProvider>
             <Navbar />
-            <main>{children}</main>
+            <Container>
+              <main className="hidden">{children}</main>
+            </Container>
             <Footer />
 
             {/* ✅ ToastContainer sağ yuxarı üçün */}

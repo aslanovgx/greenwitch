@@ -88,7 +88,7 @@ export default function ImageGrid() {
   const prev = imageSets[prevIndex];
 
   return (
-    <div className={`${styles.ImageGrid} flex justify-self-center gap-x-[46px]`}>
+    <div className={`${styles.ImageGrid} flex flex-wrap justify-self-center gap-x-[46px]`}>
       {/* LEFT */}
       <div className={`${styles.leftImage} relative`}>
         <div className={`${styles.img} relative w-[680px] h-[706px]`}>
