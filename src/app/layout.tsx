@@ -27,9 +27,9 @@ export default function RootLayout({
         <SearchProvider>
           <FavoriteProvider>
             <Navbar />
-            <Container>
+            {/* <Container> */}
               <main>{children}</main>
-            </Container>
+            {/* </Container> */}
             <Footer />
 
             {/* ✅ ToastContainer sağ yuxarı üçün */}
