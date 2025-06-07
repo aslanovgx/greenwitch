@@ -115,7 +115,7 @@ export default function Banner() {
         <>
             {/* Navigation Row */}
             <div className={styles.row_3}>
-                <ul className="flex justify-center items-center gap-6">
+                <ul className="flex justify-center items-center">
                     <li>Kişi</li>
                     <li>Qadın</li>
                     <li>Uşaq</li>

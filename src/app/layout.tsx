@@ -28,7 +28,7 @@ export default function RootLayout({
           <FavoriteProvider>
             <Navbar />
             <Container>
-              <main className="hidden">{children}</main>
+              <main>{children}</main>
             </Container>
             <Footer />
 

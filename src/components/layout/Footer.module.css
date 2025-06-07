@@ -26,9 +26,10 @@
 
 @media (max-width: 1024px) {
     .footer .footerBox ul {
-        /* max-width: 210px; */
+        max-width: 169px;
     }
 }
+
 
 
 
@@ -43,12 +44,19 @@
     /* justify-content: start; */
     align-items: center;
     gap: 10px;
+    cursor: pointer;
 }
 
 @media (max-width: 1024px) {
     .footer .footerBox ul li {
         font-size: 12.766px;
+        gap: 6px;
     }
+
+    .footer .footerBox ul svg {
+        font-size: 16px;
+    }
+
 }
 
 .footer .footerBox ul li:nth-child(1) {
@@ -67,14 +75,9 @@
     }
 }
 
-
-.footer .footerBox ul li span {
-    width: 14px;
-    height: 14px;
-    align-self: start;
-}
-
 .footer .footerBox ul li span svg {
+    width: 22px;
+    height: 22px;
     object-fit: contain;
 }
 
@@ -88,7 +91,6 @@
 .greenwich2025 span:last-child {
     color: #1E1D1D;
     font-family: Roboto;
-    /* font-size: 14.587px; */
     font-weight: 400;
 }
 

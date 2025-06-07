@@ -12,12 +12,12 @@ export default function SearchInput() {
                 alt="search-icon"
                 width={30}
                 height={30}
-                className="object-contain"
+                className="object-contain lg:w-[22px] lg:h-[22px] 2xl:w-[30px] 2xl:h-[30px]"
             />
             <input
                 type="text"
                 placeholder="Axtar..."
-                className="border rounded px-2 py-1 text-sm focus:outline-none"
+                className="border rounded px-2 py-1 text-sm lg:text-[11px] focus:outline-none"
                 value={searchTerm}
                 // onChange={(e) => setSearchTerm(e.target.value)}
                 onChange={(e) => setSearchTerm(e.target.value)}
