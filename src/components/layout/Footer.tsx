@@ -1,6 +1,4 @@
 import styles from './Footer.module.css';
-import Container from './Container';
-
 import Phone from './../../../public/assets/footer/phone.svg'
 import Location from './../../../public/assets/footer/location.svg'
 import Facebook from './../../../public/assets/footer/facebook.svg'
@@ -11,7 +9,6 @@ import Copyright from './../../../public/assets/footer/bx-copyright.svg.svg'
 export default function Footer() {
     return (
         <footer className={styles.footer}>
-            <Container>
                 <div className={`${styles.footerBox} columns flex flex-wrap items-center`}>
                     <ul className=''>
                         <li>Əlaqə</li>
@@ -57,7 +54,6 @@ export default function Footer() {
                     <span><Copyright width={14} height={14} /></span>
                     <span>Greenwich 2025</span>
                 </div>
-            </Container>
         </footer>
     );
 }

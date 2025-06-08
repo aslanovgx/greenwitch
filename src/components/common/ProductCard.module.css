@@ -6,6 +6,13 @@
 
 .cards {
     padding: 26px 16px 19px 16px;
+    width: 243px;
+    height: 420px;
+}
+
+.cards_image {
+    width: 100%;
+    height: 259px;
 }
 
 .cards .cards_desc h3 {
@@ -40,6 +47,8 @@
     width: 100%;
     padding: 0 5px;
     bottom: 15px;
+    justify-content: space-between;
+
 }
 
 .cards .cards_desc .card_buttons button {
@@ -54,7 +63,6 @@
     display: flex;
     width: 77.832px;
     height: 28.937px;
-    padding: 9.978px;
     justify-content: center;
     align-items: center;
     /* gap: 9.978px; */
@@ -100,4 +108,79 @@
 
 .bestSpan {
     background: linear-gradient(222deg, #EFEBAA 11.07%, #EFEBAA 34.55%, #FFF 46%, #EFEBAA 62%) !important;
+}
+
+
+
+@media (max-width: 1024px) {
+    .cards_container {
+        gap: 7px;
+    }
+
+    .cards {
+        padding: 8px 8px 11px 8px;
+        width: 172px;
+        height: 276px;
+    }
+
+    .cards_image {
+        height: 183px;
+    }
+
+    .cards .cards_desc h3 {
+        font-size: 11.359px;
+        padding: 3px 0 8px 0;
+    }
+
+    .cards:hover .cards_desc h3 {
+        padding: 0 0 5px 0;
+    }
+
+    .cards .cards_desc p {
+        font-size: 8.519px;
+    }
+
+    .cards .cards_desc .card_buttons {
+        width: 100%;
+        padding: 0 5px;
+        bottom: 6px;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .cards .cards_desc .card_buttons button {
+        font-size: 8.965px;
+        width: 37.832px;
+        height: 22px;
+        border-radius: 5.983px;
+        background: #1E1D1D;
+    }
+
+    .cards .cards_desc .card_buttons :nth-child(2) {
+        width: 81.693px;
+    }
+
+    .new_card {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: linear-gradient(222deg, #DADADA 11.07%, #DADADA 34.55%, #FFF 46%, #DADADA 62%);
+    }
+
+    .new_card span {
+        font-size: 10.224px;
+    }
+
+    .discountBadge {
+        background: linear-gradient(212deg, #FFB986 9.76%, #FFB986 33.85%, #FFF 45.6%, #FFB986 62.02%);
+    }
+
+    .discountBadge span {
+        font-size: 6.5px;
+    }
+
+    .bestSpan {
+        background: linear-gradient(222deg, #EFEBAA 11.07%, #EFEBAA 34.55%, #FFF 46%, #EFEBAA 62%) !important;
+    }
+
 }

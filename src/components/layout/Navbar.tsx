@@ -107,7 +107,7 @@ export default function Navbar() {
           alt="logo-png"
           width={168}
           height={46}
-          className="logo object-contain lg:w-[119px] lg:h-[32px] 2xl:w-[168px] 2xl:h-[46px]"
+          className="logo object-contain"
           priority
         />
 

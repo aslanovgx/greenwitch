@@ -52,8 +52,8 @@
 
 @media (max-width: 1024px) {
   .row-2 {
-  padding: 10px 30px;
-}
+    padding: 18px 28px;
+  }
 
 }
 
@@ -70,8 +70,17 @@
   }
 }
 
-.row-2 .row-2-search input {
-  border: 0;
+@media (max-width: 1024px) {
+  .row-2 .row-2-search img {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .row-2 .row-2-search input {
+    font-size: 11px;
+  }
 }
 
 .row-2 .logo {
@@ -80,6 +89,13 @@
   transform: translateX(-50%);
   cursor: pointer;
   object-fit: contain;
+}
+
+@media (max-width: 1024px) {
+  .row-2 .logo {
+    width: 119px;
+    height: 32px;
+  }
 }
 
 .row-2-icons {

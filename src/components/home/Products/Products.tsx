@@ -10,9 +10,6 @@ import mehsullar from '@/components/Mock/Home/mehsullar.json';
 import { useFavorites } from "@/context/FavoritesContext";
 import { Heart } from "lucide-react";
 import { Product } from '@/types/Product';
-// import RightArrow from './../../../../public/assets/icons/right-arrow.svg'
-
-// import VirtualProductList from '@/components/common/VirtualProductList';
 
 export default function Products() {
     // export default function Products({ products }: { products: Product[] }) {
@@ -48,12 +45,6 @@ export default function Products() {
     // }, []);
 
     const [activeCategory, setActiveCategory] = useState<string>("all");
-
-    // const extendedProducts = Array.from({ length: 100 }).map((_, i) => ({
-    //     ...mehsullar[i % mehsullar.length],
-    //     id: i + 1,
-    // }));
-
     const filteredProducts = mehsullar.filter((item) => {
         if (activeCategory === "new") return item.isNew;
         if (activeCategory === "discount") return item.coupon && item.coupon > 0;
@@ -87,7 +78,7 @@ export default function Products() {
                 </ul>
             </div>
 
-            <div className={`${productStyles.row_2} flex justify-center items-center pb-12`}>
+            <div className={`${productStyles.row_2} flex justify-center items-center`}>
                 <p>İlk siz kəşf edin – ən son saat trendləri bu bölmədə</p>
             </div>
 
@@ -99,9 +90,9 @@ export default function Products() {
                     filteredProducts.map((item: Product) => (
                         <div
                             key={item.id}
-                            className={`${cardStyles.cards} relative group rounded shadow w-[243px] h-[420px] text-center`}
+                            className={`${cardStyles.cards} relative group rounded shadow text-center`}
                         >
-                            <div className={`${cardStyles.cards_image} relative w-full h-[259px] mx-auto`}>
+                            <div className={`${cardStyles.cards_image} relative mx-auto`}>
                                 <Image
                                     src={item.image}
                                     alt={item.title}
@@ -199,7 +190,7 @@ export default function Products() {
                     } */}
             </div>
 
-            <div className={`${productStyles.moreButton} w-full mx-auto text-center py-5`}>
+            <div className={`${productStyles.moreButton} w-full mx-auto text-center`}>
                 <button className=" bg-black text-white cursor-pointer hover:bg-white hover:text-black hover:font-semibold transition-all duration-300">
                     Daha çox
                 </button>

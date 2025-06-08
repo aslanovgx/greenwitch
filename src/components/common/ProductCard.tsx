@@ -11,9 +11,9 @@ export default function ProductCard({ item, isMostSales = false }: { item: Produ
     return (
         <div
             key={item.id}
-            className={`${styles.cards} relative group rounded shadow w-[243px] h-[420px] text-center`}
+            className={`${styles.cards} relative group rounded shadow text-center`}
         >
-            <div className={`${styles.cards_image} relative w-full h-[259px] mx-auto`}>
+            <div className={`${styles.cards_image} relative mx-auto`}>
                 <Image
                     src={item.image}
                     alt={item.title}
@@ -38,7 +38,7 @@ export default function ProductCard({ item, isMostSales = false }: { item: Produ
                 <p className="opacity-0 group-hover:opacity-100 transition-opacity duration-700 !font-bold">
                     {item.price}
                 </p>
-                <div className={`${styles.card_buttons} absolute bottom-0 left-0 flex justify-between opacity-0 transition-opacity duration-700 group-hover:opacity-100`}>
+                <div className={`${styles.card_buttons} absolute bottom-0 left-0 flex opacity-0 transition-opacity duration-700 group-hover:opacity-100`}>
                     <button>al</button>
                     <button>səbətə at</button>
                 </div>
