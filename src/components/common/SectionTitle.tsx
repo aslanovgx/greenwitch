@@ -1,4 +1,7 @@
 // components/common/SectionTitle.tsx
+import styles from './SectionTitle.module.css';
+
+
 interface SectionTitleProps {
     children: React.ReactNode;
     className?: string;
@@ -6,7 +9,7 @@ interface SectionTitleProps {
 
 export default function SectionTitle({ children, className = '' }: SectionTitleProps) {
     return (
-        <h2 className={`text-[32px] text-center mb-[44px] ${className}`}>
+        <h2 className={`${styles.sectionTitle} text-center ${className}`}>
             {children}
         </h2>
     );

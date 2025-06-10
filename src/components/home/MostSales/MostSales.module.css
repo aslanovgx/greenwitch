@@ -3,3 +3,9 @@
     flex-wrap: wrap;
     gap: 16px;
 }
+
+@media (max-width:1025px) {
+    .cards_container {
+        padding: 0 0 35px 0;
+    }
+}

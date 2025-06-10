@@ -2,6 +2,32 @@
     transition-timing-function: linear !important;
 }
 
+.image_div {
+    width: 240px;
+    height: 64px;
+}
+
 .image_div img {
     padding: 0 20px !important;
+}
+
+.swiperSlide {
+    width: 240px !important;
+    height: 64px !important;
+}
+
+@media screen and (max-width: 1025px) {
+    .swiperSlide {
+        width: 180px !important;
+        height: 56px !important;
+    }
+
+    .image_div {
+        width: 180px;
+        height: 56px;
+    }
+
+    .image_div img {
+        padding: 0 17px !important;
+    }
 }

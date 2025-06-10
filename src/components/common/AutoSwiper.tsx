@@ -26,7 +26,7 @@ export default function AutoSwiper({ slides }: AutoSwiperProps) {
             <Swiper
                 modules={[Autoplay]}
                 slidesPerView="auto"
-                spaceBetween={24}
+                // spaceBetween={24}
                 speed={4000}
                 loop={true}
                 autoplay={{
@@ -39,9 +39,9 @@ export default function AutoSwiper({ slides }: AutoSwiperProps) {
                 {repeatedSlides.map((slide, idx) => (
                     <SwiperSlide
                         key={idx}
-                        className="!w-[240px] !h-[64px] flex items-center justify-center"
+                        className="swiperSlide flex items-center justify-center"
                     >
-                        <div className={`${styles.image_div} image_div relative w-[240px] h-[64px]`}>
+                        <div className={`${styles.image_div} image_div relative`}>
                             <Image
                                 src={slide.image}
                                 alt={slide.alt || `slide-${idx}`}

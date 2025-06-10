@@ -11,6 +11,8 @@ import { useFavorites } from "@/context/FavoritesContext";
 import { Heart } from "lucide-react";
 import { Product } from '@/types/Product';
 
+import MoreButton from '@/components/ui/MoreButton';
+
 export default function Products() {
     // export default function Products({ products }: { products: Product[] }) {
 
@@ -190,14 +192,7 @@ export default function Products() {
                     } */}
             </div>
 
-            <div className={`${productStyles.moreButton} w-full mx-auto text-center`}>
-                <button className=" bg-black text-white cursor-pointer hover:bg-white hover:text-black hover:font-semibold transition-all duration-300">
-                    Daha çox
-                </button>
-            </div>
-
-
-            {/* <VirtualProductList products={extendedProducts} /> */}
+            <MoreButton>Daha çox</MoreButton>
         </>
     );
 }

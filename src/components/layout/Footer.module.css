@@ -7,7 +7,7 @@
     justify-content: space-evenly;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1025px) {
     .footer .footerBox {
         padding-bottom: 26px;
     }
@@ -24,7 +24,7 @@
     max-width: 240px;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1025px) {
     .footer .footerBox ul {
         max-width: 169px;
     }
@@ -47,7 +47,7 @@
     cursor: pointer;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1025px) {
     .footer .footerBox ul li {
         font-size: 12.766px;
         gap: 6px;
@@ -69,7 +69,7 @@
     padding-bottom: 10px;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1025px) {
     .footer .footerBox ul li:nth-child(1) {
         font-size: 15.766px;
     }
@@ -100,7 +100,7 @@
     }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1025px) {
     .greenwich2025 span:last-child {
         font-size: 10px;
     }

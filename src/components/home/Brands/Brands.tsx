@@ -3,6 +3,7 @@
 import styles from './Brands.module.css';
 import '@/components/home/Brands/Brands.css'
 import AutoSwiper from '@/components/common/AutoSwiper';
+import SectionTitle from '@/components/common/SectionTitle';
 
 
 const logos = [
@@ -18,8 +19,8 @@ export default function Brands() {
 
     return (
         <>
-            <div className={`${styles.brands} pb-10`}>
-                <h2 className="text-center">Brendlər</h2>
+            <div className={`${styles.brands}`}>
+                <SectionTitle>Brendlər</SectionTitle>
                 <AutoSwiper slides={logos} />
             </div>
         </>
