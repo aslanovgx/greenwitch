@@ -37,18 +37,15 @@
 /* ///////////////////////////// Right Side ///////////////////////// */
 .contactSection .contactBox .rightSide .sendEmail input {
     color: #FFF;
-    /* text-align: center; */
     font-family: Montserrat;
     font-size: 14.587px;
     font-style: normal;
-    font-weight: 800;
+    font-weight: 600;
     line-height: normal;
-    /* background: rgba(240, 240, 240, 0.50); */
     background: rgb(240 240 240 / 36%);
     backdrop-filter: blur(2.75px);
     width: 296.221px;
     padding-left: 19px;
-    /* line-height: 1.1; */
 }
 
 .contactSection .contactBox .rightSide .sendEmail button {
@@ -65,4 +62,38 @@
 
 .contactSection .contactBox .rightSide .sendEmail button:hover {
     background: #2a2a2a;
+}
+
+@media (max-width: 1025px) {
+    .contactSection {
+        padding: 57px 0 38px 0;
+    }
+
+    .contactSection .contactBox {
+        padding: 40px 29px 74px 42px;
+    }
+
+    .contactSection .contactBox .leftSide {
+        max-width: 382px;
+    }
+
+    .contactSection .contactBox .leftSide h1 {
+        font-size: 25.6px;
+    }
+
+    .contactSection .contactBox .leftSide p {
+        font-size: 12.8px;
+    }
+
+
+    /* ///////////////////////////// Right Side ///////////////////////// */
+    .contactSection .contactBox .rightSide .sendEmail input {
+        font-size: 12.373px;
+        width: 210px;
+    }
+
+    .contactSection .contactBox .rightSide .sendEmail button {
+        padding: 14px 30.906px;
+        font-size: 14.766px;
+    }
 }

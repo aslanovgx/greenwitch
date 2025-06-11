@@ -91,14 +91,14 @@ export default function ImageGrid() {
     <div className={`${styles.ImageGrid} flex flex-wrap justify-self-center gap-x-[46px]`}>
       {/* LEFT */}
       <div className={`${styles.leftImage} relative`}>
-        <div className={`${styles.img} relative w-[680px] h-[706px]`}>
+        <div className={`${styles.img} relative`}>
           {fadeImage(curr.left.src, prev.left.src, curr.left.title, prev.left.title)}
         </div>
       </div>
 
       {/* RIGHT */}
-      <div className={`${styles.rightImage} flex flex-col gap-y-[36px] w-[456px] h-[706px]`}>
-        <div className={`${styles.img} relative w-[456px] h-[341px]`}>
+      <div className={`${styles.rightImage} flex flex-col`}>
+        <div className={`${styles.img} relative`}>
           {fadeImage(
             curr.rightTop.src,
             prev.rightTop.src,
@@ -106,7 +106,7 @@ export default function ImageGrid() {
             prev.rightTop.title
           )}
         </div>
-        <div className={`${styles.img} relative w-[456px] h-[328px]`}>
+        <div className={`${styles.img} relative`}>
           {fadeImage(
             curr.rightBottom.src,
             prev.rightBottom.src,

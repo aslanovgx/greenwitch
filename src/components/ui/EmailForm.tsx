@@ -32,7 +32,7 @@ export default function EmailForm({ className = '' }: EmailFormProps) {
     };
 
     return (
-        <div className={`flex h-[66px] justify-center ${className}`}>
+        <div className={`flex justify-center ${className}`}>
             <input
                 type="email"
                 placeholder="Email daxil et"

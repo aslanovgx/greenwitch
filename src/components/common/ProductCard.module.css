@@ -1,5 +1,5 @@
 .cards_container {
-    /* padding: 0 0 77px 0; */
+    padding-bottom: 60px;
     flex-wrap: wrap;
     gap: 16px;
 }
@@ -115,6 +115,7 @@
 @media (max-width: 1025px) {
     .cards_container {
         gap: 7px;
+        padding-bottom: 35px;
     }
 
     .cards {

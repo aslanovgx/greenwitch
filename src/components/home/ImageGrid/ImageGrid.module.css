@@ -1,5 +1,11 @@
 .ImageGrid {
     padding: 80px 0;
+    align-items: stretch;
+}
+
+.ImageGrid .leftImage .img {
+    width: 680px;
+    height: 706px;
 }
 
 .ImageGrid .img_desc span {
@@ -17,6 +23,21 @@
     line-height: 1.13;
 }
 
+.ImageGrid .rightImage {
+    justify-content: space-between;
+    gap: 0;
+}
+
+.ImageGrid .rightImage .img:first-child {
+    width: 456px;
+    height: 341px;
+}
+
+.ImageGrid .rightImage .img:last-child {
+    width: 456px;
+    height: 328px;
+}
+
 .ImageGrid .rightImage .img:nth-of-type(1) .img_desc span {
     font-size: 37.556px;
     bottom: 20px;
@@ -27,4 +48,42 @@
     font-size: 37.556px;
     bottom: 20px;
     right: 30px;
+}
+
+@media (max-width: 1025px) {
+    .ImageGrid {
+        padding: 57px 0;
+    }
+
+    .ImageGrid .leftImage .img {
+        width: 483.432px;
+        height: 502.07px;
+    }
+
+    .ImageGrid .leftImage .img_desc span {
+        font-size: 56.548px;
+        left: 37px;
+    }
+
+    .ImageGrid .rightImage .img:first-child {
+        width: 324.915px;
+        height: 242.592px;
+    }
+
+    .ImageGrid .rightImage .img:last-child {
+        width: 324.915px;
+        height: 233.834px;
+    }
+
+    .ImageGrid .rightImage .img:nth-of-type(1) .img_desc span {
+        font-size: 26.706px;
+        bottom: 20px;
+        left: 45px;
+    }
+
+    .ImageGrid .rightImage .img:nth-of-type(2) .img_desc span {
+        font-size: 26.706px;
+        bottom: 20px;
+        right: 30px;
+    }
 }

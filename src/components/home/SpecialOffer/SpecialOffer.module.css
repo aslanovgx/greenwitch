@@ -1,7 +1,12 @@
-.brands .cards_container:nth-child(2) img{
-    object-position: bottom;
+.specialOffer .cards_container .specialOfferCard {
+    width: 100%;
+    max-width: 100%;
+    height: 367px;
 }
 
+.specialOffer .cards_container:nth-child(2) img {
+    object-position: bottom;
+}
 
 .desc {
     background: rgba(255, 255, 255, 0.20);
@@ -17,4 +22,46 @@
     font-style: normal;
     font-weight: 500;
     line-height: normal;
+}
+
+.desc .etrafliSpan {
+    font-size: 20px;
+}
+
+.desc .generalEyeSpan {
+    width: 42px;
+    height: 42px;
+}
+
+.desc .generalEyeSpan span {
+    width: 6px;
+    height: 6px;
+    top: 12px;
+}
+
+@media (max-width: 1025px) {
+    .specialOffer .cards_container .specialOfferCard {
+        height: 260.978px;
+    }
+
+    .desc {
+        padding: 17px 19px;
+    }
+
+    .desc p {
+        font-size: 23.453px;
+    }
+
+    .desc .etrafliSpan {
+        font-size: 17px;
+    }
+
+    .desc .generalEyeSpan {
+        width: 30px;
+        height: 30px;
+    }
+
+    .desc .generalEyeSpan span {
+        top: 10px;
+    }
 }

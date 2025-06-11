@@ -13,12 +13,13 @@ export default function IconInfo() {
 
     ];
     return (
-
         <>
-            <div className={`${styles.iconInfo} flex items-center justify-between`}>
+            <div className={`${styles.iconInfo} flex items-center`}>
                 {icons.map((icon) => (
                     <div key={icon.id} className={`${styles.icon_desc} flex flex-col items-center justify-center `}>
-                        {icon.image}
+                        <span>
+                            {icon.image}
+                        </span>
                         <p>{icon.desc}</p>
                     </div>
                 ))}
