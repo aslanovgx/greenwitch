@@ -36,7 +36,7 @@ export default function EmailForm({ className = '' }: EmailFormProps) {
             <input
                 type="email"
                 placeholder="Email daxil et"
-                className={` placeholder-white outline-none`}
+                className={`outline-none`}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
             />

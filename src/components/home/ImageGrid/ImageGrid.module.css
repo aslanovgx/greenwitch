@@ -127,3 +127,23 @@
         right: 17px;
     }
 }
+
+@media (max-width: 376px) {
+    .ImageGrid {
+        padding: 40px 0 60px 0;
+    }
+
+    .ImageGrid .leftImage .img {
+        max-width: 343px;
+        height: 356.224px;
+    }
+
+    .ImageGrid .leftImage .img_desc span {
+        font-size: 40.121px;
+        left: 37px;
+    }
+
+    .ImageGrid .rightImage {
+        display: none;
+    }
+}

@@ -5,7 +5,7 @@ export default function Contact() {
     return (
         <>
             <div className={`${styles.contactSection}`}>
-                <div className={`${styles.contactBox} flex gap-[40px] justify-evenly`}>
+                <div className={`${styles.contactBox}`}>
                     <div className={`${styles.leftSide}`}>
                         <h1>Əlavə məlumat və ya dəstək üçün bizimlə birbaşa əlaqə saxlayın.</h1>
                         <p>Ən qısa zamanda cavab almaq üçün formu doldurun və göndərin.</p>

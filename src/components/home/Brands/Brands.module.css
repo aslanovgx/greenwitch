@@ -17,17 +17,14 @@
     background: linear-gradient(90deg, #FFF 0%, #000 22.32%, #000 50.26%, #000 70.08%, #FFF 100%);
 }
 
-/* .brands h2 {
-    color: #000;
-    font-family: Montserrat;
-    font-size: 32px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-} */
-
 @media screen and (max-width: 1025px) {
     .brands {
+        padding-bottom: 20px;
+    }
+}
+@media screen and (max-width: 376px) {
+    .brands {
+        padding-top: 60px;
         padding-bottom: 20px;
     }
 }

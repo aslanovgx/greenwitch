@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import styles from './Footer.module.css';
 import Phone from './../../../public/assets/footer/phone.svg'
 import Location from './../../../public/assets/footer/location.svg'
@@ -10,27 +11,58 @@ export default function Footer() {
     return (
         <footer className={styles.footer}>
             <div className={`${styles.footerBox} columns flex flex-wrap items-center`}>
-                <ul className=''>
-                    <li>Əlaqə</li>
+                <ul className={`${styles.footerLists}`}>
+                    <li><span>Əlaqə</span>
+                        <span>
+                            <Image
+                                src={"/assets/icons/plus.svg"}
+                                alt="plus-icon"
+                                width={21}
+                                height={21}
+                                className="object-contain"
+                            />
+                        </span>
+                    </li>
                     <li><span><Phone /></span>+9942002020</li>
                     <li className='relative'><span><Location /></span>Nizami küçəsi 96C, AF Mall, 3-cü mərtəbə, Bakı, Azərbaycan</li>
+
                 </ul>
-                <ul className=''>
-                    <li>Haqqımızda</li>
+                <ul className={`${styles.footerLists}`}>
+                    <li><span>Haqqımızda</span>
+                        <span>
+                            <Image
+                                src={"/assets/icons/plus.svg"}
+                                alt="plus-icon"
+                                width={21}
+                                height={21}
+                                className="object-contain"
+                            />
+                        </span>
+                    </li>
                     <li>Missiyamız</li>
                     <li>Dəyərlərimiz</li>
                     <li>Brendlərimiz</li>
                     <li>Niyə Biz?</li>
                 </ul>
-                <ul className=''>
-                    <li>Məhsullar</li>
+                <ul className={`${styles.footerLists}`}>
+                    <li><span>Məhsullar</span>
+                        <span>
+                            <Image
+                                src={"/assets/icons/plus.svg"}
+                                alt="plus-icon"
+                                width={21}
+                                height={21}
+                                className="object-contain"
+                            />
+                        </span>
+                    </li>
                     <li>Yeni gələnlər</li>
                     <li>Ən çox satanlar</li>
                     <li>Qadın</li>
                     <li>Kişi</li>
                     <li>Uşaq</li>
                 </ul>
-                <ul className=''>
+                <ul className={`${styles.socialContainer}`}>
                     <li>Social</li>
                     <li>
                         <span><Facebook /></span>
