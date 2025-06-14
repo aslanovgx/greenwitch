@@ -1,6 +1,7 @@
 .ImageGrid {
     padding: 80px 0;
     align-items: stretch;
+    gap: 46px;
 }
 
 .ImageGrid .leftImage .img {
@@ -53,6 +54,7 @@
 @media (max-width: 1025px) {
     .ImageGrid {
         padding: 57px 0;
+        gap: 25.7px;
     }
 
     .ImageGrid .leftImage .img {
@@ -85,5 +87,43 @@
         font-size: 26.706px;
         bottom: 20px;
         right: 30px;
+    }
+}
+
+@media (max-width: 769px) {
+    .ImageGrid {
+        gap: 21.5px;
+    }
+
+    .ImageGrid .leftImage .img {
+        width: 405.167px;
+        height: 420.788px;
+    }
+
+    .ImageGrid .leftImage .img_desc span {
+        font-size: 47.393px;
+        left: 37px;
+    }
+
+    .ImageGrid .rightImage .img:first-child {
+        width: 272.314px;
+        height: 203.318px;
+    }
+
+    .ImageGrid .rightImage .img:last-child {
+        width: 272.314px;
+        height: 195.978px;
+    }
+
+    .ImageGrid .rightImage .img:nth-of-type(1) .img_desc span {
+        font-size: 22.383px;
+        bottom: 26px;
+        left: 27px;
+    }
+
+    .ImageGrid .rightImage .img:nth-of-type(2) .img_desc span {
+        font-size: 22.383px;
+        bottom: 15px;
+        right: 17px;
     }
 }

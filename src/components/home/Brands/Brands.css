@@ -31,3 +31,18 @@
         padding: 0 17px !important;
     }
 }
+@media screen and (max-width: 769px) {
+    .swiperSlide {
+        width: 160px !important;
+        height: 46px !important;
+    }
+
+    .image_div {
+        width: 160px;
+        height: 46px;
+    }
+
+    .image_div img {
+        padding: 0 13.16px !important;
+    }
+}

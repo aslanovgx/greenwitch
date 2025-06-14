@@ -7,12 +7,6 @@
     justify-content: space-evenly;
 }
 
-@media (max-width: 1025px) {
-    .footer .footerBox {
-        padding-bottom: 26px;
-    }
-}
-
 .footer .footerBox ul {
     display: flex;
     flex-direction: column;
@@ -23,15 +17,6 @@
     gap: 8px;
     max-width: 240px;
 }
-
-@media (max-width: 1025px) {
-    .footer .footerBox ul {
-        max-width: 169px;
-    }
-}
-
-
-
 
 .footer .footerBox ul li {
     color: #1E1D1D;
@@ -47,17 +32,6 @@
     cursor: pointer;
 }
 
-@media (max-width: 1025px) {
-    .footer .footerBox ul li {
-        font-size: 12.766px;
-        gap: 6px;
-    }
-
-    .footer .footerBox ul svg {
-        font-size: 16px;
-    }
-
-}
 
 .footer .footerBox ul li:nth-child(1) {
     color: #1E1D1D;
@@ -67,12 +41,6 @@
     font-weight: 600;
     line-height: normal;
     padding-bottom: 10px;
-}
-
-@media (max-width: 1025px) {
-    .footer .footerBox ul li:nth-child(1) {
-        font-size: 15.766px;
-    }
 }
 
 .footer .footerBox ul li span svg {
@@ -94,14 +62,83 @@
     font-weight: 400;
 }
 
-@media (max-width: 1440px) {
+
+@media (max-width: 1025px) {
+    .footer {
+        padding: 45px 0 18px 0;
+    }
+
+    .footer .footerBox {
+        padding-bottom: 26px;
+    }
+
+    .footer .footerBox ul {
+        max-width: 169px;
+    }
+
+    .footer .footerBox ul li {
+        font-size: 12.766px;
+        gap: 6px;
+    }
+
+    .footer .footerBox ul svg {
+        font-size: 16px;
+    }
+
+    .footer .footerBox ul li:nth-child(1) {
+        font-size: 15.766px;
+    }
+
     .greenwich2025 span:last-child {
         font-size: 14px;
     }
-}
 
-@media (max-width: 1025px) {
     .greenwich2025 span:last-child {
         font-size: 10px;
+    }
+
+    .footerGradientLine {
+        width: 816px;
+        margin-bottom: 38px;
+    }
+}
+
+@media (max-width: 769px) {
+    .footer {
+        padding: 45px 0 13px 0;
+    }
+
+    .footer .footerBox {
+        padding-bottom: 20px;
+    }
+
+    .footer .footerBox ul {
+        max-width: 165px;
+    }
+
+    .footer .footerBox ul li {
+        font-size: 11.575px;
+        gap: 6px;
+    }
+
+    .footer .footerBox ul svg {
+        font-size: 16px;
+    }
+
+    .footer .footerBox ul li:nth-child(1) {
+        font-size: 12.969px;
+    }
+
+    .greenwich2025 span:last-child {
+        font-size: 14px;
+    }
+
+    .greenwich2025 span:last-child {
+        font-size: 10px;
+    }
+
+    .footerGradientLine {
+        width: 612px;
+        margin-bottom: 28px;
     }
 }

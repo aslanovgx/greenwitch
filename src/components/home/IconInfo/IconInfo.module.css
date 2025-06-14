@@ -32,3 +32,9 @@
         height: 40.06px !important;
     } */
 }
+
+@media (max-width: 769px) {
+    .icon_desc {
+        font-size: 10.467px;
+    }
+}

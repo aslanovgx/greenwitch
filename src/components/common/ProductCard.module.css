@@ -185,3 +185,72 @@
     }
 
 }
+
+@media (max-width: 769px) {
+    .cards_container {
+        gap: 7px;
+        padding-bottom: 33px;
+    }
+
+    .cards {
+        padding: 8px 8px 11px 8px;
+        width: 150px;
+        height: 262.5px;
+    }
+
+    .cards_image {
+        height: 170.508px;
+    }
+
+    .cards .cards_desc h3 {
+        font-size: 10.533px;
+        padding: 3px 0 8px 0;
+    }
+
+    .cards:hover .cards_desc h3 {
+        padding: 0 0 5px 0;
+    }
+
+    .cards .cards_desc p {
+        font-size: 8.519px;
+    }
+
+    .cards .cards_desc .card_buttons {
+        width: 100%;
+        padding: 0 5px;
+        bottom: 6px;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .cards .cards_desc .card_buttons button {
+        font-size: 7.965px;
+        width: 30.832px;
+        height: 22px;
+        border-radius: 2.983px;
+    }
+
+    .cards .cards_desc .card_buttons :nth-child(2) {
+        width: 65.693px;
+    }
+
+    .new_card {
+        width: 32px;
+        height: 32px;
+    }
+
+    .new_card span {
+        font-size: 8.706px;
+    }
+
+    .discountBadge span {
+        font-size: 6px;
+    }
+}
+
+@media (max-width: 376px) {
+    .cards_container {
+        gap: 8px;
+        padding-bottom: 30px;
+    }
+}

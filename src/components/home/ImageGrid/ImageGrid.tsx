@@ -9,11 +9,11 @@ const imageSets = [
   {
     left: { src: "/assets/home/imageGrid/hilfiger.png", title: "hilfiger" },
     rightTop: { src: "/assets/home/imageGrid/olivia-black.jpg", title: "olivia burton" },
-    rightBottom: { src: "/assets/home/imageGrid/fossil.png", title: "fossil" },
+    rightBottom: { src: "/assets/home/imageGrid/olivia-pink.jpg", title: "olivia burton" },
   },
   {
     left: { src: "/assets/home/imageGrid/frederique.jpg", title: "frederique Constant" },
-    rightTop: { src: "/assets/home/imageGrid/olivia-pink.jpg", title: "olivia burton" },
+    rightTop: { src: "/assets/home/imageGrid/fossil.png", title: "fossil" },
     rightBottom: { src: "/assets/home/imageGrid/swiss.png", title: "swiss-military" },
   },
 ];
@@ -88,7 +88,7 @@ export default function ImageGrid() {
   const prev = imageSets[prevIndex];
 
   return (
-    <div className={`${styles.ImageGrid} flex flex-wrap justify-self-center gap-x-[46px]`}>
+    <div className={`${styles.ImageGrid} flex flex-wrap justify-self-center`}>
       {/* LEFT */}
       <div className={`${styles.leftImage} relative`}>
         <div className={`${styles.img} relative`}>

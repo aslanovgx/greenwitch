@@ -1,6 +1,5 @@
 .oliviaGroup {
     gap: 27px;
-    /* margin: 60px 0 0 0; */
     padding-top: 60px;
 }
 
@@ -8,6 +7,9 @@
     padding: 26px 0 25px 20px;
 }
 
+/* .oliviaRight {
+    max-width: 314px;
+} */
 
 .oliviaRight p {
     color: #000;
@@ -109,8 +111,7 @@
 
     .oliviaGroup {
         gap: 27px;
-        /* margin: 60px 0 0 0; */
-        padding-top: 60px;
+        padding-top: 20px;
     }
 
     .oliviaLeft {
@@ -186,4 +187,137 @@
         font-size: 11.707px;
     }
 
+}
+
+@media (max-width: 769px) {
+
+    .oliviaGroup {
+        gap: 14px;
+    }
+
+    .oliviaLeft {
+        padding: 26px 0 25px 20px;
+    }
+
+    .oliviaLeft img {
+        max-width: 266px;
+    }
+
+    .oliviaGroup .oliviaWatches img:nth-child(1) {
+        width: 80px;
+        height: 80px;
+    }
+
+    .oliviaGroup .oliviaWatches img:nth-child(2) {
+        width: 56.327px;
+        height: 75.102px;
+    }
+
+    .oliviaGroup .oliviaWatches img:nth-child(3) {
+        width: 60.918px;
+        height: 70.308px;
+    }
+
+    .oliviaRight p {
+        font-size: 15.979px;
+        padding-bottom: 14.45px;
+        max-width: 300px;
+    }
+
+    .oliviaRight button {
+        font-size: 11.031px;
+        width: 77px;
+        height: 25px;
+    }
+
+    .oliviaRight .handImage {
+        width: 260px;
+    }
+
+    .oliviaWatches :nth-child(1) {
+        top: -4px;
+        left: 45px;
+    }
+
+    .oliviaWatches :nth-child(2) {
+        top: 27px;
+        right: 42px;
+    }
+
+    .oliviaWatches :nth-child(3) {
+        bottom: 49%;
+        left: 45%;
+    }
+
+
+
+    .oliviaWatchesDesc :nth-child(1) {
+        top: -41px;
+        left: 25px;
+    }
+
+    .oliviaWatchesDesc :nth-child(2) {
+        top: -10px;
+        right: 21px;
+    }
+
+    .oliviaWatchesDesc :nth-child(3) {
+        bottom: 38%;
+        left: 26%;
+    }
+
+    .oliviaWatchesDesc div {
+        gap: 6px;
+    }
+
+    .oliviaWatchesDesc div span {
+        padding: 5px;
+        cursor: pointer;
+
+    }
+
+    /* .oliviaWatchesDesc div span svg {
+        width: 12.783px;
+        height: 12.783px;
+    } */
+
+    .oliviaWatchesDesc p {
+        font-size: 8.768px;
+    }
+}
+
+@media (max-width: 376px) {
+
+    .oliviaGroup {
+        display: block;
+        margin-bottom: 60px;
+    }
+
+    .oliviaLeft {
+        display: none;
+    }
+
+    .oliviaRight {
+        display: block;
+        padding: 0 25px 0 16px;
+    }
+
+    .oliviaRight p {
+        font-size: 16.954px;
+        padding-bottom: 14.45px;
+    }
+
+    .oliviaRight button {
+        font-size: 11.031px;
+        width: 77px;
+        height: 25px;
+    }
+
+    .oliviaRight .handImage {
+        position: absolute;
+        width: 149.659px;
+        height: 155.595px;
+        right: 0;
+        top: 44px;
+    }
 }

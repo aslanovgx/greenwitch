@@ -12,6 +12,7 @@
     background: rgba(255, 255, 255, 0.20);
     backdrop-filter: blur(2.8499999046325684px);
     padding: 24px 28px;
+    height: 96px;
 }
 
 .desc p {
@@ -63,5 +64,35 @@
 
     .desc .generalEyeSpan span {
         top: 10px;
+    }
+}
+
+@media (max-width: 769px) {
+    .specialOffer .cards_container .specialOfferCard {
+        height: 254.441px;
+    }
+
+    .desc {
+        padding: 16px 13px;
+        height: 53px;
+    }
+
+    .desc p {
+        font-size: 18.363px;
+    }
+
+    .desc .etrafliSpan {
+        font-size: 14px;
+    }
+
+    .desc .generalEyeSpan {
+        width: 25px;
+        height: 25px;
+    }
+
+    .desc .generalEyeSpan span {
+        top: 7px;
+        width: 4px;
+        height: 4px;
     }
 }

@@ -97,3 +97,38 @@
         font-size: 14.766px;
     }
 }
+
+@media (max-width: 769px) {
+    .contactSection {
+        padding: 27px 0 38px 0;
+    }
+
+    .contactSection .contactBox {
+        padding: 40px 29px 74px 42px;
+    }
+
+    .contactSection .contactBox .leftSide {
+        max-width: 286px;
+    }
+
+    .contactSection .contactBox .leftSide h1 {
+        font-size: 19.2px;
+    }
+
+    .contactSection .contactBox .leftSide p {
+        font-size: 9.6px;
+    }
+
+
+    /* ///////////////////////////// Right Side ///////////////////////// */
+    .contactSection .contactBox .rightSide .sendEmail input {
+        font-size: 9.6px;
+        width: 157px;
+        padding-left: 9px;
+    }
+
+    .contactSection .contactBox .rightSide .sendEmail button {
+        padding: 15px 25.906px;
+        font-size: 9.575px;
+    }
+}

@@ -101,6 +101,17 @@ export default function Navbar() {
         {/* Search */}
         <SearchInput />
 
+        {/* Mobile Burger Icon */}
+        <div className='burgerIcon'>
+          <Image
+            src={"/assets/icons/burger.svg"}
+            alt="burger-icon"
+            width={19}
+            height={19}
+            className="object-contain"
+          />
+        </div>
+
         {/* Logo */}
         <Image
           src={"/assets/icons/logo.png"}
@@ -113,6 +124,13 @@ export default function Navbar() {
 
         {/* Favorite Icon */}
         <div className="row-2-icons flex items-center justify-center">
+          <Image
+            src={"/assets/icons/searchMobile.svg"}
+            alt="search-icon"
+            width={20}
+            height={20}
+            className="object-contain searchMobile"
+          />
           <Image
             src={"/assets/icons/shopping.svg"}
             alt="shopping-icon"
@@ -140,7 +158,6 @@ export default function Navbar() {
         onClose={() => setIsModalOpen(false)}
         results={filteredResults}
       />
-
     </nav>
   );
 }

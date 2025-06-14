@@ -13,5 +13,11 @@
         margin-bottom: 31px;
         font-size: 22.756px;
     }
+}
 
+@media (max-width: 769px) {
+    .sectionTitle {
+        margin-bottom: 30px;
+        font-size: 22.756px;
+    }
 }
