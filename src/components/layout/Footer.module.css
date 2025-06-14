@@ -142,3 +142,42 @@
         margin-bottom: 28px;
     }
 }
+@media (max-width: 376px) {
+    .footer {
+        padding: 45px 0 13px 0;
+    }
+
+    .footer .footerBox {
+        padding-bottom: 20px;
+    }
+
+    .footer .footerBox ul {
+        max-width: 165px;
+    }
+
+    .footer .footerBox ul li {
+        font-size: 11.575px;
+        gap: 6px;
+    }
+
+    .footer .footerBox ul svg {
+        font-size: 16px;
+    }
+
+    .footer .footerBox ul li:nth-child(1) {
+        font-size: 12.969px;
+    }
+
+    .greenwich2025 span:last-child {
+        font-size: 14px;
+    }
+
+    .greenwich2025 span:last-child {
+        font-size: 10px;
+    }
+
+    .footerGradientLine {
+        width: 204px;
+        margin-bottom: 28px;
+    }
+}
