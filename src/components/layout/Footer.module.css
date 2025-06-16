@@ -33,8 +33,13 @@
 }
 
 .footer .footerBox .footerLists li {
-    display: block;
+    display: flex;
 }
+
+.footer .footerBox .footerLists li .plusIcon {
+    display: none;
+}
+
 
 .footer .footerBox ul li:nth-child(1) {
     color: #1E1D1D;
@@ -174,6 +179,10 @@
     .footer .footerBox .footerLists li {
         display: flex;
         display: none;
+    }
+
+    .footer .footerBox .footerLists li .plusIcon {
+        display: block;
     }
 
     .footer .footerBox .footerLists li:first-child {

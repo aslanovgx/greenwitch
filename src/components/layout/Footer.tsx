@@ -12,8 +12,9 @@ export default function Footer() {
         <footer className={styles.footer}>
             <div className={`${styles.footerBox} columns flex flex-wrap items-center`}>
                 <ul className={`${styles.footerLists}`}>
-                    <li><span>Əlaqə</span>
-                        <span>
+                    <li>
+                        <span>Əlaqə</span>
+                        <span className={`${styles.plusIcon}`}>
                             <Image
                                 src={"/assets/icons/plus.svg"}
                                 alt="plus-icon"
@@ -28,8 +29,9 @@ export default function Footer() {
 
                 </ul>
                 <ul className={`${styles.footerLists}`}>
-                    <li><span>Haqqımızda</span>
-                        <span>
+                    <li>
+                        <span>Haqqımızda</span>
+                        <span className={`${styles.plusIcon}`}>
                             <Image
                                 src={"/assets/icons/plus.svg"}
                                 alt="plus-icon"
@@ -45,8 +47,9 @@ export default function Footer() {
                     <li>Niyə Biz?</li>
                 </ul>
                 <ul className={`${styles.footerLists}`}>
-                    <li><span>Məhsullar</span>
-                        <span>
+                    <li>
+                        <span>Məhsullar</span>
+                        <span className={`${styles.plusIcon}`}>
                             <Image
                                 src={"/assets/icons/plus.svg"}
                                 alt="plus-icon"
