@@ -7,9 +7,9 @@
     padding: 26px 0 25px 20px;
 }
 
-/* .oliviaRight {
-    max-width: 314px;
-} */
+.oliviaRight {
+    /* flex-wrap: wrap; */
+}
 
 .oliviaRight p {
     color: #000;
@@ -189,10 +189,11 @@
 
 }
 
-@media (max-width: 769px) {
+/* @media (max-width: 769px) {
 
     .oliviaGroup {
         gap: 14px;
+        flex-direction: column;
     }
 
     .oliviaLeft {
@@ -276,13 +277,14 @@
 
     }
 
-    /* .oliviaWatchesDesc div span svg {
-        width: 12.783px;
-        height: 12.783px;
-    } */
-
     .oliviaWatchesDesc p {
         font-size: 8.768px;
+    }
+} */
+
+@media (max-width: 769px) {
+    .oliviaGroup {
+        flex-direction: column;
     }
 }
 
