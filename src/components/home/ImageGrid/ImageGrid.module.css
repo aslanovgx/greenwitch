@@ -133,10 +133,14 @@
         padding: 40px 0 60px 0;
     }
 
+    .ImageGrid .leftImage {
+        margin: 0 auto;
+    }
+
     .ImageGrid .leftImage .img {
         max-width: 343px;
         height: 356.224px;
-        margin: 0 auto;
+
     }
 
     .ImageGrid .leftImage .img_desc span {
