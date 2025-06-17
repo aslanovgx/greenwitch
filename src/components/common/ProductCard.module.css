@@ -8,6 +8,7 @@
     padding: 26px 16px 19px 16px;
     width: 243px;
     height: 420px;
+    cursor: pointer;
 }
 
 .cards_image {
