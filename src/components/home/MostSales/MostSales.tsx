@@ -1,5 +1,5 @@
 "use client";
-// import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styles from './MostSales.module.css';
 import SectionTitle from '@/components/common/SectionTitle';
 import mehsullar from '@/components/Mock/Home/mehsullar.json';
@@ -16,6 +16,7 @@ export default function MostSales() {
     //         .then(data => setProducts(data))
     //         .catch(console.error);
     // }, []);
+    const [activeCardId, setActiveCardId] = useState<number | null>(null);
 
 
     return (
@@ -24,7 +25,13 @@ export default function MostSales() {
                 <SectionTitle>Ən Çox Satılanlar</SectionTitle>
                 <div className={`${styles.cards_container} flex justify-center items-center`}>
                     {mehsullar.map((item: Product) => (
-                        <ProductCard key={item.id} item={item} isMostSales={true} />
+                        <ProductCard
+                            key={item.id}
+                            item={item}
+                            isMostSales={true}
+                            activeCardId={activeCardId}
+                            setActiveCardId={setActiveCardId}
+                        />
                     ))}
                 </div>
                 <MoreButton>Daha çox</MoreButton>
