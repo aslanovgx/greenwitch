@@ -31,6 +31,7 @@
         padding: 0 17px !important;
     }
 }
+
 @media screen and (max-width: 769px) {
     .swiperSlide {
         width: 160px !important;
@@ -44,5 +45,21 @@
 
     .image_div img {
         padding: 0 13.16px !important;
+    }
+}
+
+@media screen and (max-width: 376px) {
+    .swiperSlide {
+        width: 140px !important;
+        height: 30px !important;
+    }
+
+    .image_div {
+        width: 140px;
+        height: 30px;
+    }
+
+    .image_div img {
+        padding: 0 11.39px !important;
     }
 }

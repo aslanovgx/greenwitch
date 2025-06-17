@@ -38,3 +38,9 @@
         font-size: 10.467px;
     }
 }
+
+@media (max-width: 769px) {
+    .icon_desc  {
+       display: none;
+    }
+}

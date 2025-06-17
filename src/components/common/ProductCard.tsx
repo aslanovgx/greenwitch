@@ -5,6 +5,7 @@ import { useFavorites } from '@/context/FavoritesContext';
 import styles from '@/components/common/ProductCard.module.css';
 import { Product } from '@/types/Product';
 
+
 export default function ProductCard({ item, isMostSales = false }: { item: Product, isMostSales?: boolean }) {
     const { favorites, toggleFavorite } = useFavorites();
 

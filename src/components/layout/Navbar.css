@@ -184,6 +184,7 @@
 
   .row-2 .burgerIcon {
     display: block;
+    cursor: pointer;
   }
 
   .row-2 .logo {

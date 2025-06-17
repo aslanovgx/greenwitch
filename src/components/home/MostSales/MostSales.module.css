@@ -1,3 +1,6 @@
+.brands {
+    margin-top: 40px;
+}
 .cards_container {
     padding: 0 0 60px 0;
     flex-wrap: wrap;
@@ -7,5 +10,10 @@
 @media (max-width:1025px) {
     .cards_container {
         padding: 0 0 35px 0;
+    }
+}
+@media (max-width:376px) {
+    .brands {
+        margin-top: 20px;
     }
 }

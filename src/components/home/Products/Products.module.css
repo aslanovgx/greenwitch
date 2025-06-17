@@ -85,7 +85,8 @@
     }
 
     .row_1 ul li {
-        font-size: 14px;
+        font-size: 13px;
+        text-align: center;
     }
 
     .row_2 {

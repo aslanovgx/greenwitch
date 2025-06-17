@@ -96,3 +96,7 @@
         height: 4px;
     }
 }
+
+@media (max-width: 376px) {
+    .specialOffer { display: none;}
+}

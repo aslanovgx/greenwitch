@@ -21,3 +21,10 @@
         font-size: 22.756px;
     }
 }
+
+@media (max-width: 376px) {
+    .sectionTitle {
+        margin-bottom: 28px;
+        font-size: 18px;
+    }
+}

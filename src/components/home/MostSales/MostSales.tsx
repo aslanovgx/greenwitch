@@ -20,7 +20,7 @@ export default function MostSales() {
 
     return (
         <>
-            <div className={`${styles.brands} pt-10`}>
+            <div className={`${styles.brands}`}>
                 <SectionTitle>Ən Çox Satılanlar</SectionTitle>
                 <div className={`${styles.cards_container} flex justify-center items-center`}>
                     {mehsullar.map((item: Product) => (
