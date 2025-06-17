@@ -3,6 +3,7 @@ import { memo } from 'react';
 import Image from 'next/image';
 import { Heart } from 'lucide-react';
 import { useFavorites } from '@/context/FavoritesContext';
+import { useRouter } from 'next/navigation';
 import styles from '@/components/common/ProductCard.module.css';
 import { Product } from '@/types/Product';
 import useIsTouchDevice from '@/hooks/useIsTouchDevice';
@@ -24,10 +25,24 @@ function ProductCardComponent({
 }: Props) {
     const { favorites, toggleFavorite } = useFavorites();
     const isTouch = useIsTouchDevice();
+    const router = useRouter();
     const isActive = isTouch && activeCardId === item.id;
-    const handleToggleDetails = () => {
+
+    // const handleCardTouch = () => {
+    //     if (!isActive && setActiveCardId) {
+    //         setActiveCardId(item.id);
+    //     }
+    // };
+
+    const handleClick = () => {
         if (isTouch && setActiveCardId) {
-            setActiveCardId(isActive ? null : item.id);
+            if (activeCardId !== item.id) {
+                setActiveCardId(item.id); // İlk klik: sadəcə hover aç
+            } else {
+                router.push(`/product/${item.id}`); // İkinci klik: keçid et
+            }
+        } else {
+            router.push(`/product/${item.id}`); // Desktop: birbaşa keçid
         }
     };
 
@@ -48,8 +63,7 @@ function ProductCardComponent({
 
     return (
         <div
-            // onClick={isTouch ? handleToggleDetails : undefined}
-            onTouchStart={isTouch ? handleToggleDetails : undefined}
+            onClick={handleClick}
             className={`${styles.cards} relative group rounded shadow text-center`}
         >
             <div className={`${styles.cards_image} relative mx-auto`}>
@@ -104,8 +118,19 @@ function ProductCardComponent({
                             : 'opacity-0'
                         }`}
                 >
-                    <button>al</button>
-                    <button>səbətə at</button>
+                    <button onClick={(e) => {
+                        e.stopPropagation();
+                        // al funksiyası
+                        // alert('Satın alma funksiyası');
+                    }}
+                    >al</button>
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            // səbət funksiyası
+                            // alert('Səbətə əlavə edildi');
+                        }}
+                    >səbətə at</button>
                 </div>
             </div>
 
