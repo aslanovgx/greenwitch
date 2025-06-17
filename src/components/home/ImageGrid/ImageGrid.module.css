@@ -128,7 +128,7 @@
     }
 }
 
-@media (max-width: 376px) {
+@media (max-width: 640px) {
     .ImageGrid {
         padding: 40px 0 60px 0;
     }

@@ -75,7 +75,7 @@
     }
 }
 
-@media (max-width: 376px) {
+@media (max-width: 640px) {
     .row_1 {
         padding: 14px 29px 22px 29px;
     }

@@ -112,6 +112,7 @@
 
     .contactSection .contactBox {
         padding: 40px 29px 74px 42px;
+        flex-direction: column;
     }
 
     .contactSection .contactBox .leftSide {
@@ -140,7 +141,7 @@
     }
 }
 
-@media (max-width: 376px) {
+@media (max-width: 641px) {
     .contactSection {
         padding: 0;
     }

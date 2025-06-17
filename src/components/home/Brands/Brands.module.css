@@ -22,7 +22,7 @@
         padding-bottom: 20px;
     }
 }
-@media screen and (max-width: 376px) {
+@media screen and (max-width: 640px) {
     .brands {
         padding-top: 60px;
         padding-bottom: 20px;

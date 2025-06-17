@@ -97,6 +97,8 @@
     }
 }
 
-@media (max-width: 376px) {
-    .specialOffer { display: none;}
+@media (max-width: 640px) {
+    .specialOffer {
+        display: none;
+    }
 }

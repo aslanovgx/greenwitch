@@ -248,7 +248,7 @@
     }
 }
 
-@media (max-width: 376px) {
+@media (max-width: 640px) {
     .cards_container {
         gap: 8px;
         padding-bottom: 30px;

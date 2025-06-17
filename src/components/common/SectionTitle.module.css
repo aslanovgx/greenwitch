@@ -22,7 +22,7 @@
     }
 }
 
-@media (max-width: 376px) {
+@media (max-width: 640px) {
     .sectionTitle {
         margin-bottom: 28px;
         font-size: 18px;
