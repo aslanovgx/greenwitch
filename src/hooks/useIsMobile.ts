@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-export default function useIsMobile(maxWidth: number = 376) {
+export default function useIsMobile(maxWidth: number = 641) {
     const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {

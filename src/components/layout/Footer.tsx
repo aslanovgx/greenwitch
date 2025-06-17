@@ -11,7 +11,7 @@ import useIsMobile from '@/hooks/useIsMobile';
 export default function Footer() {
 
     const [openSection, setOpenSection] = useState<number | null>(null);
-    const isMobile = useIsMobile(376);
+    const isMobile = useIsMobile(641);
 
     const toggleSection = (index: number) => {
         if (!isMobile) return; // Desktopda klikləmə heç nə etmir
