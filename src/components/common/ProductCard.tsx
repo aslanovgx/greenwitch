@@ -39,10 +39,10 @@ function ProductCardComponent({
             if (activeCardId !== item.id) {
                 setActiveCardId(item.id); // İlk klik: sadəcə hover aç
             } else {
-                router.push(`/product/${item.id}`); // İkinci klik: keçid et
+                router.push(`/products/${item.id}`); // İkinci klik: keçid et
             }
         } else {
-            router.push(`/product/${item.id}`); // Desktop: birbaşa keçid
+            router.push(`/products/${item.id}`); // Desktop: birbaşa keçid
         }
     };
 

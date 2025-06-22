@@ -1,5 +1,5 @@
 .footer {
-    padding: 45px 0 36px 0;
+    padding: 45px 0 18px 0;
 
     img,
     video {
@@ -64,6 +64,8 @@
 
 
 .footerGradientLine {
+    margin-bottom: 53px;
+    max-width: 1147.856px;
     height: 1.122px;
     background: linear-gradient(90deg, #FFF 0%, #000 29.38%, #000 51.41%, #000 71.33%, #FFF 100%);
 }
@@ -151,7 +153,7 @@
     }
 
     .footerGradientLine {
-        max-width: 300px;
+        max-width: 612px;
         margin-bottom: 28px;
     }
 }

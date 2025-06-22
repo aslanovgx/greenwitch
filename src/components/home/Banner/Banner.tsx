@@ -97,17 +97,6 @@ export default function Banner() {
 
     return (
         <>
-            <div className={styles.row_3}>
-                <ul className="flex justify-center items-center">
-                    <li>Kişi</li>
-                    <li>Qadın</li>
-                    <li>Uşaq</li>
-                    <li>Aksesuar</li>
-                    <li>Saatlar</li>
-                    <li>Mağazalar</li>
-                </ul>
-            </div>
-
             <div className={`${styles.row_4} max-w-[1262px] mx-auto flex justify-center items-center`}>
                 <div className="flex justify-center items-center w-full">
                     {curr.images.map((img, idx) => (

@@ -9,6 +9,7 @@ import mehsullar from '@/components/Mock/Home/mehsullar.json';
 import { Product } from '@/types/Product';
 import ProductCard from '@/components/common/ProductCard';
 import MoreButton from '@/components/ui/MoreButton';
+import Link from 'next/link';
 
 export default function Products() {
     // export default function Products({ products }: { products: Product[] }) {
@@ -94,7 +95,9 @@ export default function Products() {
                 ))}
             </div>
 
-            <MoreButton>Daha çox</MoreButton>
+            <Link href="/products">
+                <MoreButton>Daha çox</MoreButton>
+            </Link>
         </>
     );
 }

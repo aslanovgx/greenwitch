@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState, useRef, useMemo } from "react";
+import Link from 'next/link';
 import Image from "next/image";
 import "@/components/layout/Navbar.css";
 // import { useFavorites } from "@/context/FavoritesContext";
@@ -113,14 +114,16 @@ export default function Navbar() {
         </div>
 
         {/* Logo */}
-        <Image
-          src={"/assets/icons/logo.png"}
-          alt="logo-png"
-          width={168}
-          height={46}
-          className="logo object-contain"
-          priority
-        />
+        <Link href="/" className="logo_box">
+          <Image
+            src={"/assets/icons/logo.png"}
+            alt="logo-png"
+            width={168}
+            height={46}
+            className="logo object-contain"
+            priority
+          />
+        </Link>
 
         {/* Favorite Icon */}
         <div className="row-2-icons flex items-center justify-center">
@@ -149,6 +152,16 @@ export default function Navbar() {
             className="object-contain"
           />
         </div>
+      </div>
+      <div className="row_3">
+        <ul className="flex justify-center items-center">
+          <li>Kişi</li>
+          <li>Qadın</li>
+          <li>Uşaq</li>
+          <li>Aksesuar</li>
+          <li>Saatlar</li>
+          <li>Mağazalar</li>
+        </ul>
       </div>
 
       {/* Wishlist Drawer */}
