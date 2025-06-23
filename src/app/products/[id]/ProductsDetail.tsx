@@ -81,15 +81,9 @@ export default function ProductsDetail({ product }: Props) {
                     </span>
                     <div className={styles.colorList}>
                         {product.colors.map((clr, idx) => (
-                            <div
+                            <div 
                                 key={idx}
-                                // style={{ background: clr.hex }}
-                                style={{
-                                    background: clr.hex,
-                                    display: 'flex',
-                                    gap: '10px',
-                                    alignSelf: 'start'
-                                }}
+                                style={{ background: clr.hex }}
                                 className={styles.colorDot}
                             />
                         ))}
