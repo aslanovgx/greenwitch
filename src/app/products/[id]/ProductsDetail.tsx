@@ -1,11 +1,11 @@
 "use client";
 import { useState } from 'react';
-import Zoom from 'react-medium-image-zoom';
+// import Zoom from 'react-medium-image-zoom';
 import styles from './ProductsDetail.module.css';
 import 'react-medium-image-zoom/dist/styles.css';
 import { Product } from '@/types/Product';
 import Image from "next/image";
-
+import ImageMagnifier from '@/components/ImageMagnifier';
 type Props = {
     product: Product;
 };
@@ -56,17 +56,16 @@ export default function ProductsDetail({ product }: Props) {
 
                 {/* Zoomed main image */}
                 {activeImage && activeImage.trim() !== '' && (
-                    <Zoom>
-                        <Image
+                    <div style={{ maxWidth: 380 }}>
+                        <ImageMagnifier
                             src={activeImage}
-                            alt={product.title}
                             width={380}
                             height={400}
-                            className={styles.mainImage}
-                            priority
+                            zoom={2} // İstəyə görə 2x, 2.5x, 3x və s. artıra bilərsən
                         />
-                    </Zoom>
+                    </div>
                 )}
+
 
             </div>
 
@@ -75,9 +74,26 @@ export default function ProductsDetail({ product }: Props) {
                 <p className={styles.desc}>{product.desc}</p>
                 <p className={styles.price}>{product.price}</p>
 
+
                 <div className={styles.colorRow}>
-                    {/* <span>Rəng: {product.color}</span> */}
-                    <div className={styles.colorDot} />
+                    <span>
+                        Rəng: {product.colors.map(clr => clr.name).join(', ')}
+                    </span>
+                    <div className={styles.colorList}>
+                        {product.colors.map((clr, idx) => (
+                            <div
+                                key={idx}
+                                // style={{ background: clr.hex }}
+                                style={{
+                                    background: clr.hex,
+                                    display: 'flex',
+                                    gap: '10px',
+                                    alignSelf: 'start'
+                                }}
+                                className={styles.colorDot}
+                            />
+                        ))}
+                    </div>
                 </div>
 
                 <div className={styles.buyRow}>

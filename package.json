@@ -15,6 +15,7 @@
     "next": "15.3.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-inner-image-zoom": "^4.0.1",
     "react-medium-image-zoom": "^5.2.14",
     "react-toastify": "^11.0.5",
     "swiper": "^11.2.8"

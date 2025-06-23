@@ -8,6 +8,12 @@
     "price": "379AZN",
     "isNew": false,
     "coupon": 20,
+    "colors": [
+      {
+        "name": "Qızılı",
+        "hex": "linear-gradient(180deg, #F3D8B0 0%, #FFF4CE 36.72%, #F3D8B0 58.85%, #FFF4CE 104.63%)"
+      }
+    ],
     "thumbnails": [
       "/assets/home/cards/michael.png",
       "/assets/home/cards_position/michael.png",
@@ -23,6 +29,12 @@
     "price": "200AZN",
     "isNew": true,
     "coupon": 10,
+    "colors": [
+      {
+        "name": "Çəhrayı",
+        "hex": "linear-gradient(180deg, #FADADD 0%, #FFE4EC 40%, #FADADD 70%, #FFE4EC 100%)"
+      }
+    ],
     "thumbnails": [
       "/assets/home/cards/michael.png",
       "/assets/home/cards_position/michael.png",
@@ -38,6 +50,16 @@
     "price": "400AZN",
     "isNew": false,
     "coupon": 0,
+    "colors": [
+      {
+        "name": "Ağ",
+        "hex": "linear-gradient(180deg, #FFFFFF 0%, #F5F5F5 35%, #FFFFFF 60%, #F5F5F5 100%)"
+      },
+      {
+        "name": "Qara",
+        "hex": "linear-gradient(180deg, #2B2B2B 0%, #444444 40%, #2B2B2B 70%, #444444 100%)"
+      }
+    ],
     "thumbnails": [
       "/assets/home/cards/michael.png",
       "/assets/home/cards_position/michael.png",
@@ -53,6 +75,16 @@
     "price": "450AZN",
     "isNew": true,
     "coupon": 0,
+    "colors": [
+      {
+        "name": "Qızılı",
+        "hex": "linear-gradient(180deg, #F3D8B0 0%, #FFF4CE 36.72%, #F3D8B0 58.85%, #FFF4CE 104.63%)"
+      },
+      {
+        "name": "Qara",
+        "hex": "linear-gradient(180deg, #2B2B2B 0%, #444444 40%, #2B2B2B 70%, #444444 100%)"
+      }
+    ],
     "thumbnails": [
       "/assets/home/cards/michael.png",
       "/assets/home/cards_position/michael.png",
@@ -68,6 +100,16 @@
     "price": "365AZN",
     "isNew": false,
     "coupon": 20,
+    "colors": [
+      {
+        "name": "Boz",
+        "hex": "linear-gradient(180deg, #C5C5C5 0%, #E0E0E0 36%, #C5C5C5 58%, #E0E0E0 100%)"
+      },
+      {
+        "name": "Qara",
+        "hex": "linear-gradient(180deg, #2B2B2B 0%, #444444 40%, #2B2B2B 70%, #444444 100%)"
+      }
+    ],
     "thumbnails": [
       "/assets/home/cards/michael.png",
       "/assets/home/cards_position/michael.png",
@@ -83,6 +125,12 @@
     "price": "379AZN",
     "isNew": false,
     "coupon": 20,
+    "colors": [
+      {
+        "name": "Qızılı",
+        "hex": "linear-gradient(180deg, #F3D8B0 0%, #FFF4CE 36.72%, #F3D8B0 58.85%, #FFF4CE 104.63%)"
+      }
+    ],
     "thumbnails": [
       "/assets/home/cards/michael.png",
       "/assets/home/cards_position/michael.png",
@@ -98,6 +146,12 @@
     "price": "200AZN",
     "isNew": true,
     "coupon": 10,
+    "colors": [
+      {
+        "name": "Qızılı",
+        "hex": "linear-gradient(180deg, #F3D8B0 0%, #FFF4CE 36.72%, #F3D8B0 58.85%, #FFF4CE 104.63%)"
+      }
+    ],
     "thumbnails": [
       "/assets/home/cards/michael.png",
       "/assets/home/cards_position/michael.png",
@@ -113,6 +167,12 @@
     "price": "400AZN",
     "isNew": false,
     "coupon": 0,
+    "colors": [
+      {
+        "name": "Qızılı",
+        "hex": "linear-gradient(180deg, #F3D8B0 0%, #FFF4CE 36.72%, #F3D8B0 58.85%, #FFF4CE 104.63%)"
+      }
+    ],
     "thumbnails": [
       "/assets/home/cards/michael.png",
       "/assets/home/cards_position/michael.png",
@@ -128,6 +188,12 @@
     "price": "450AZN",
     "isNew": true,
     "coupon": 0,
+    "colors": [
+      {
+        "name": "Qızılı",
+        "hex": "linear-gradient(180deg, #F3D8B0 0%, #FFF4CE 36.72%, #F3D8B0 58.85%, #FFF4CE 104.63%)"
+      }
+    ],
     "thumbnails": [
       "/assets/home/cards/michael.png",
       "/assets/home/cards_position/michael.png",
@@ -143,6 +209,12 @@
     "price": "365AZN",
     "isNew": false,
     "coupon": 20,
+    "colors": [
+      {
+        "name": "Qızılı",
+        "hex": "linear-gradient(180deg, #F3D8B0 0%, #FFF4CE 36.72%, #F3D8B0 58.85%, #FFF4CE 104.63%)"
+      }
+    ],
     "thumbnails": [
       "/assets/home/cards/michael.png",
       "/assets/home/cards_position/michael.png",
@@ -158,6 +230,12 @@
     "price": "379AZN",
     "isNew": false,
     "coupon": 20,
+    "colors": [
+      {
+        "name": "Qızılı",
+        "hex": "linear-gradient(180deg, #F3D8B0 0%, #FFF4CE 36.72%, #F3D8B0 58.85%, #FFF4CE 104.63%)"
+      }
+    ],
     "thumbnails": [
       "/assets/home/cards/michael.png",
       "/assets/home/cards_position/michael.png",
@@ -173,6 +251,12 @@
     "price": "200AZN",
     "isNew": true,
     "coupon": 10,
+    "colors": [
+      {
+        "name": "Qızılı",
+        "hex": "linear-gradient(180deg, #F3D8B0 0%, #FFF4CE 36.72%, #F3D8B0 58.85%, #FFF4CE 104.63%)"
+      }
+    ],
     "thumbnails": [
       "/assets/home/cards/michael.png",
       "/assets/home/cards_position/michael.png",
@@ -188,6 +272,12 @@
     "price": "400AZN",
     "isNew": false,
     "coupon": 0,
+    "colors": [
+      {
+        "name": "Qızılı",
+        "hex": "linear-gradient(180deg, #F3D8B0 0%, #FFF4CE 36.72%, #F3D8B0 58.85%, #FFF4CE 104.63%)"
+      }
+    ],
     "thumbnails": [
       "/assets/home/cards/michael.png",
       "/assets/home/cards_position/michael.png",
@@ -203,6 +293,12 @@
     "price": "450AZN",
     "isNew": true,
     "coupon": 0,
+    "colors": [
+      {
+        "name": "Qızılı",
+        "hex": "linear-gradient(180deg, #F3D8B0 0%, #FFF4CE 36.72%, #F3D8B0 58.85%, #FFF4CE 104.63%)"
+      }
+    ],
     "thumbnails": [
       "/assets/home/cards/michael.png",
       "/assets/home/cards_position/michael.png",
@@ -218,6 +314,12 @@
     "price": "365AZN",
     "isNew": false,
     "coupon": 20,
+    "colors": [
+      {
+        "name": "Qızılı",
+        "hex": "linear-gradient(180deg, #F3D8B0 0%, #FFF4CE 36.72%, #F3D8B0 58.85%, #FFF4CE 104.63%)"
+      }
+    ],
     "thumbnails": [
       "/assets/home/cards/michael.png",
       "/assets/home/cards_position/michael.png",

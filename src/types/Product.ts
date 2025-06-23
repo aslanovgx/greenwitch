@@ -9,6 +9,6 @@ export interface Product {
     // coupon?: number;
     coupon: number;
     isNew?: boolean;
-    color?: string;
+    colors: { name: string; hex: string }[]; // <== Əsas budur
     thumbnails?: string[]; // ✅ Burada "required" olaraq saxla
 }
