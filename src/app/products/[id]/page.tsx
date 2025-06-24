@@ -4,9 +4,24 @@ import mehsullar from '@/components/Mock/Home/mehsullar.json';
 import SimilarProducts from './SimilarProducts';
 import Contact from '@/components/home/Contact/Contact';
 
-export default async function Page({ params }: { params: { id: string } }) {
-  const product = mehsullar.find(item => item.id.toString() === params.id);
+type Props = {
+  params: Promise<{
+    id: string;
+  }>;
+};
 
+// SEO üçün lazımlı metadata (async və await ilə)
+export async function generateMetadata({ params }: Props) {
+  const { id } = await params;
+  const product = mehsullar.find(p => p.id.toString() === id);
+  return {
+    title: product?.title || 'Product Page',
+  };
+}
+
+export default async function Page({ params }: Props) {
+  const { id } = await params;
+  const product = mehsullar.find(p => p.id.toString() === id);
   if (!product) return notFound();
 
   return (

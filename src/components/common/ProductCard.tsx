@@ -144,6 +144,7 @@ function ProductCardComponent({
                         image: item.image,
                         originalPrice: item.originalPrice,
                         coupon: item.coupon,
+                        colors: item.colors,
                     });
                 }}
                 className="absolute top-3 left-3 z-10 cursor-pointer"
