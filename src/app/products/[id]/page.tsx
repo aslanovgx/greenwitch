@@ -3,26 +3,21 @@ import ProductsDetail from './ProductsDetail';
 import mehsullar from '@/components/Mock/Home/mehsullar.json';
 import SimilarProducts from './SimilarProducts';
 import Contact from '@/components/home/Contact/Contact';
+type Props = {
+    params: { id: string };
+};
 
-// ✅ Adlı funksiya eksport edirik (default yox!)
-export async function ProductDetailPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const productId = params.id;
-  const product = mehsullar.find((item) => item.id.toString() === productId);
+export default function ProductDetailPage({ params }: Props) {
+    // const productId = params.id;
+    const product = mehsullar.find(item => item.id.toString() === params.id);
 
-  if (!product) return notFound();
+    if (!product) return notFound();
 
-  return (
-    <>
-      <ProductsDetail product={product} />
-      <SimilarProducts />
-      <Contact />
-    </>
-  );
+    return (
+        <>
+            <ProductsDetail product={product} />
+            <SimilarProducts />
+            <Contact />
+        </>
+    );
 }
-
-// ✅ Əlavə olaraq default export edirik — artıq yoxlama problem yaratmır
-export default ProductDetailPage;
