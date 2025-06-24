@@ -26,7 +26,7 @@ export default function SpecialOffer() {
                                 <p className="text-black font-medium">{card.title}</p>
                                 <span className="relative flex items-center gap-2 overflow-hidden">
                                     <span className={`${styles.etrafliSpan} text-white cursor-pointer opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-2 group-hover:translate-x-0`}>
-                                        Ətraflı`
+                                        Ətraflı
                                     </span>
                                     <span className={`${styles.generalEyeSpan} relative bg-[#EBEBEB] rounded-full flex items-center justify-center transition-transform duration-500 group-hover:rotate-180`}>
                                         <Eye />
