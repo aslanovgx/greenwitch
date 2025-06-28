@@ -6,6 +6,7 @@ import "@/components/layout/Navbar.css";
 // import { useFavorites } from "@/context/FavoritesContext";
 // import { Heart } from "lucide-react";
 import WishlistDrawer from "@/context/WishlistDrawer";
+import BaglistDrawer from "@/context/BaglistDrawer";
 
 import mehsullar from '@/components/Mock/Home/mehsullar.json';
 import { useSearch } from "@/context/SearchContext";
@@ -15,6 +16,7 @@ import SearchModal from "@/components/common/SearchModal";
 import TextSwitcher from "@/components/ui/TextSwitcher";
 import SearchInput from "@/components/ui/SearchInput";
 import FavoritesButton from "@/components/ui/FavoritesButton";
+import BagButton from "../ui/BagButton";
 
 export default function Navbar() {
   const [fixed, setFixed] = useState(false);
@@ -27,6 +29,7 @@ export default function Navbar() {
   const texts = ["100% Sertifikatlı Orijinal", "6 Ay Faizsiz Kredit", "2 İllik Zəmanət"];
   // const [currentTextIndex, setCurrentTextIndex] = useState(0);
 
+  const [baglistOpen, setBaglistOpen] = useState(false);
 
 
   const { searchTerm } = useSearch();
@@ -134,13 +137,7 @@ export default function Navbar() {
             height={20}
             className="object-contain searchMobile"
           />
-          <Image
-            src={"/assets/icons/shopping.svg"}
-            alt="shopping-icon"
-            width={30}
-            height={30}
-            className="object-contain"
-          />
+          <BagButton onClick={() => setBaglistOpen(true)} />
           <div className="relative flex justify-center items-center">
             <FavoritesButton onClick={() => setWishlistOpen(true)} />
           </div>
@@ -166,6 +163,7 @@ export default function Navbar() {
 
       {/* Wishlist Drawer */}
       <WishlistDrawer isOpen={wishlistOpen} onClose={() => setWishlistOpen(false)} />
+      <BaglistDrawer isOpen={baglistOpen} onClose={() => setBaglistOpen(false)} />
       <SearchModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

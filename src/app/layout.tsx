@@ -7,6 +7,7 @@ import { FavoriteProvider } from "@/context/FavoritesContext";
 import { SearchProvider } from "@/context/SearchContext";
 import { ToastContainer } from "react-toastify"; // ✅ toastify əlavə olunur
 import "react-toastify/dist/ReactToastify.css";   // ✅ toastify CSS-i
+import { BagProvider } from "@/context/BagContext";
 
 export const metadata: Metadata = {
   title: "greenwitch",
@@ -25,20 +26,22 @@ export default function RootLayout({
       >
         <SearchProvider>
           <FavoriteProvider>
-            <Navbar />
-            <main>{children}</main>
-            <Footer />
+            <BagProvider>
+              <Navbar />
+              <main>{children}</main>
+              <Footer />
 
-            {/* ✅ ToastContainer sağ yuxarı üçün */}
-            <ToastContainer
-              position="top-right"
-              autoClose={2000}
-              hideProgressBar={false}
-              closeOnClick
-              pauseOnHover
-              draggable
-              theme="light" // istəsən 'dark' da yaza bilərsən
-            />
+              {/* ✅ ToastContainer sağ yuxarı üçün */}
+              <ToastContainer
+                position="top-right"
+                autoClose={2000}
+                hideProgressBar={false}
+                closeOnClick
+                pauseOnHover
+                draggable
+                theme="light" // istəsən 'dark' da yaza bilərsən
+              />
+            </BagProvider>
           </FavoriteProvider>
         </SearchProvider>
       </body>

@@ -1,11 +1,13 @@
 .footer {
     padding: 45px 0 18px 0;
 
-    .wrapper :global(img),
-    .wrapper :global(video) {
-        max-width: unset;
-    }
 }
+
+.footer img,
+.footer video {
+    max-width: unset;
+}
+
 
 .footer .footerBox {
     padding-bottom: 37px;

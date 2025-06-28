@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import styles from '@/components/common/ProductCard.module.css';
 import { Product } from '@/types/Product';
 import useIsTouchDevice from '@/hooks/useIsTouchDevice';
-
+import { useBag } from "@/context/BagContext";
 type Props = {
     item: Product;
     isMostSales?: boolean;
@@ -27,6 +27,7 @@ function ProductCardComponent({
     const isTouch = useIsTouchDevice();
     const router = useRouter();
     const isActive = isTouch && activeCardId === item.id;
+    const { addToBag } = useBag();  // Burada
 
     // const handleCardTouch = () => {
     //     if (!isActive && setActiveCardId) {
@@ -127,10 +128,12 @@ function ProductCardComponent({
                     <button
                         onClick={(e) => {
                             e.stopPropagation();
-                            // səbət funksiyası
-                            // alert('Səbətə əlavə edildi');
+                            addToBag(item);  // Burada səbətə əlavə et
+                            // İstəsən toast və ya alert də göstərə bilərsən
                         }}
-                    >səbətə at</button>
+                    >
+                        səbətə at
+                    </button>
                 </div>
             </div>
 
