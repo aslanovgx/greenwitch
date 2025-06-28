@@ -57,5 +57,7 @@
 
     .icon_desc p {
         font-size: 10px;
+        text-align: center;
+        gap: 10px;
     }
 }

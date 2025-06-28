@@ -3,7 +3,7 @@
 import styles from './SpecialOffer.module.css';
 import SectionTitle from '@/components/common/SectionTitle';
 import Image from "next/image";
-import Eye from './../../../../public/assets/icons/eye-special.svg'
+// import Eye from './../../../../public/assets/icons/eye-special.svg'
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
@@ -37,7 +37,13 @@ export default function SpecialOffer() {
                                         Ətraflı
                                     </span>
                                     <span className={`${styles.generalEyeSpan} relative bg-[#EBEBEB] rounded-full flex items-center justify-center transition-transform duration-500 group-hover:rotate-180`}>
-                                        <Eye />
+                                        <Image
+                                            src={"/assets/icons/eye-special.svg"}
+                                            alt="account-icon"
+                                            width={30}
+                                            height={30}
+                                            className="object-contain"
+                                        />
                                         <span className="absolute opacity-0 group-hover:opacity-100 transition-all duration-300 bg-black rounded-full"></span>
                                     </span>
                                 </span>
@@ -46,17 +52,17 @@ export default function SpecialOffer() {
                     ))}
                 </div>
                 {/* Mobil (max-w-640px) üçün Swiper */}
-                <div className={`w-full`}>
+                <div className={`${styles.mobileSpecialOffer} w-full`}>
                     <Swiper
                         slidesPerView={1.2}
                         centeredSlides={true}
                         spaceBetween={16}
-                        pagination={{ clickable: true }}
+                        pagination={{ el: '.custom-pagination', clickable: true }} // external pagination əlavə
                         modules={[Pagination]}
-                        className="w-full h-[300px]"
+                        className={`${styles.specialOfferSwiper} w-full h-[300px]`}
                     >
                         {cards.map(card => (
-                            <SwiperSlide key={card.id}>
+                            <SwiperSlide key={card.id} className='!overflow-visible'>
                                 <div className={`${styles.specialOfferCard} group relative overflow-hidden h-[300px]`}>
                                     <Image
                                         src={`/assets/home/specialOffer/image${card.id}.jpg`}
@@ -71,7 +77,13 @@ export default function SpecialOffer() {
                                                 Ətraflı
                                             </span>
                                             <span className={`${styles.generalEyeSpan} relative bg-[#EBEBEB] rounded-full flex items-center justify-center transition-transform duration-500 group-hover:rotate-180`}>
-                                                <Eye />
+                                                <Image
+                                                    src={"/assets/icons/eye-special.svg"}
+                                                    alt="account-icon"
+                                                    width={30}
+                                                    height={30}
+                                                    className="object-contain"
+                                                />
                                                 <span className="absolute opacity-0 group-hover:opacity-100 transition-all duration-300 bg-black rounded-full"></span>
                                             </span>
                                         </span>
@@ -80,6 +92,8 @@ export default function SpecialOffer() {
                             </SwiperSlide>
                         ))}
                     </Swiper>
+                    {/* Swiper-in altına external pagination div */}
+                    <div className="custom-pagination mt-5 flex justify-center"></div>
                 </div>
             </div>
         </>

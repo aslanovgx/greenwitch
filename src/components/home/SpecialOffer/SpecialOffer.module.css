@@ -8,6 +8,10 @@
     object-position: bottom;
 }
 
+.specialOffer .mobileSpecialOffer {
+    display: none;
+}
+
 .desc {
     background: rgba(255, 255, 255, 0.20);
     backdrop-filter: blur(2.8499999046325684px);
@@ -100,5 +104,57 @@
 @media (max-width: 640px) {
     .specialOffer .cards_container {
         display: none;
+    }
+
+    .specialOffer .mobileSpecialOffer {
+        display: block;
+    }
+
+    .desc {
+        padding: 14px 12px;
+    }
+
+    .desc p {
+        font-size: 16px;
+    }
+
+    .desc .generalEyeSpan {
+        width: 21px;
+        height: 21px;
+    }
+
+    .desc .generalEyeSpan span {
+        width: 4px;
+        height: 4px;
+        top: 7px;
+    }
+
+
+    /* ---------------- */
+
+    .custom-pagination {
+        margin-top: 20px;
+        /* Swiper ilə arasında məsafə */
+    }
+
+    .custom-pagination .swiper-pagination-bullet {
+        width: 12px;
+        height: 12px;
+        background: #000;
+        opacity: 0.4;
+        margin: 0 4px;
+    }
+
+    .custom-pagination .swiper-pagination-bullet-active {
+        opacity: 1;
+        background: #000;
+    }
+
+    .specialOfferSwiper {
+        cursor: grab;
+    }
+
+    .specialOfferSwiper:active {
+        cursor: grabbing;
     }
 }
