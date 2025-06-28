@@ -1,7 +1,15 @@
+"use client";
+
 import styles from './SpecialOffer.module.css';
 import SectionTitle from '@/components/common/SectionTitle';
 import Image from "next/image";
 import Eye from './../../../../public/assets/icons/eye-special.svg'
+
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
+
 export default function SpecialOffer() {
     const cards = [
         { id: 1, title: "KORPORATİV" },
@@ -36,6 +44,42 @@ export default function SpecialOffer() {
                             </div>
                         </div>
                     ))}
+                </div>
+                {/* Mobil (max-w-640px) üçün Swiper */}
+                <div className={`w-full`}>
+                    <Swiper
+                        slidesPerView={1.2}
+                        centeredSlides={true}
+                        spaceBetween={16}
+                        pagination={{ clickable: true }}
+                        modules={[Pagination]}
+                        className="w-full h-[300px]"
+                    >
+                        {cards.map(card => (
+                            <SwiperSlide key={card.id}>
+                                <div className={`${styles.specialOfferCard} group relative overflow-hidden h-[300px]`}>
+                                    <Image
+                                        src={`/assets/home/specialOffer/image${card.id}.jpg`}
+                                        alt={`Image ${card.id}`}
+                                        fill
+                                        className="object-cover transition-transform duration-500 group-hover:scale-110"
+                                    />
+                                    <div className={`${styles.desc} flex items-center justify-between w-full absolute bottom-0 left-0 px-4 bg-white/80 backdrop-blur-sm`}>
+                                        <p className="text-black font-medium">{card.title}</p>
+                                        <span className="relative flex items-center gap-2 overflow-hidden">
+                                            <span className={`${styles.etrafliSpan} text-white cursor-pointer opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-2 group-hover:translate-x-0`}>
+                                                Ətraflı
+                                            </span>
+                                            <span className={`${styles.generalEyeSpan} relative bg-[#EBEBEB] rounded-full flex items-center justify-center transition-transform duration-500 group-hover:rotate-180`}>
+                                                <Eye />
+                                                <span className="absolute opacity-0 group-hover:opacity-100 transition-all duration-300 bg-black rounded-full"></span>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
                 </div>
             </div>
         </>

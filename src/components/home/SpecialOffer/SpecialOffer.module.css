@@ -98,7 +98,7 @@
 }
 
 @media (max-width: 640px) {
-    .specialOffer {
+    .specialOffer .cards_container {
         display: none;
     }
 }

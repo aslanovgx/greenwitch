@@ -150,12 +150,12 @@ function ProductCardComponent({
                         colors: item.colors,
                     });
                 }}
-                className="absolute top-3 left-3 z-10 cursor-pointer"
+                className={`absolute top-3 left-3 z-10 cursor-pointer`}
             >
                 {favorites.some((fav) => fav.id === item.id) ? (
-                    <Heart fill="black" />
+                    <Heart fill="black" className={styles.heartIcon} />
                 ) : (
-                    <Heart />
+                    <Heart className={styles.heartIcon} />
                 )}
             </div>
 

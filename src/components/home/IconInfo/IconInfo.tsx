@@ -1,25 +1,24 @@
 import styles from './IconInfo.module.css';
-// import Image from "next/image";
-import Replay from './../../../../public/assets/home/iconInfo/replay.svg'
-import Fluent from './../../../../public/assets/home/iconInfo/fluent.svg'
-import Truck from './../../../../public/assets/home/iconInfo/truck.svg'
-import Card from './../../../../public/assets/home/iconInfo/card.svg'
+import Image from "next/image";
 export default function IconInfo() {
     const icons = [
-        { id: 1, image: <Replay />, desc: "14 gün ərzində geri qaytarma", },
-        { id: 2, image: <Fluent />, desc: "2 İllik Zəmanət", },
-        { id: 3, image: <Truck />, desc: "Sürətli Çatdırılma", },
-        { id: 4, image: <Card />, desc: "6 Ay %siz Kredit", }
-
+        { id: 1, image: "/assets/home/iconInfo/replay.svg", desc: "14 gün ərzində geri qaytarma" },
+        { id: 2, image: "/assets/home/iconInfo/fluent.svg", desc: "2 İllik Zəmanət" },
+        { id: 3, image: "/assets/home/iconInfo/truck.svg", desc: "Sürətli Çatdırılma" },
+        { id: 4, image: "/assets/home/iconInfo/card.svg", desc: "6 Ay %siz Kredit" },
     ];
     return (
         <>
             <div className={`${styles.iconInfo} flex items-center`}>
                 {icons.map((icon) => (
                     <div key={icon.id} className={`${styles.icon_desc} flex flex-col items-center justify-center `}>
-                        <span>
-                            {icon.image}
-                        </span>
+                        <Image
+                            src={icon.image}
+                            alt={`icon-${icon.id}`}
+                            width={60}
+                            height={60}
+                            className="object-contain"
+                        />
                         <p>{icon.desc}</p>
                     </div>
                 ))}

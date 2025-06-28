@@ -16,6 +16,12 @@
     height: 259px;
 }
 
+.heartIcon {
+    width: 30px;
+    height: 30px;
+    font-weight: 400;
+}
+
 .cards .cards_desc h3 {
     color: #100F0F;
     font-family: Montserrat;

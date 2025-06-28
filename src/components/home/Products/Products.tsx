@@ -84,7 +84,7 @@ export default function Products() {
             {/* <HeartIcon className="text-red-500" fill="red" /> */}
 
             <div className={`${cardStyles.cards_container} flex justify-center items-center`}>
-                {filteredProducts.map((item: Product) => (
+                {filteredProducts.slice(0, 5).map((item: Product) => (
                     <ProductCard
                         key={item.id}
                         item={item}

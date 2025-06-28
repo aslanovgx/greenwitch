@@ -9,7 +9,7 @@ export default function Products() {
 
     return (
         <>
-            <div className={`${styles.oliviaGroup} flex justify-between items-center`}>
+            <div className={`${styles.oliviaGroup} flex items-center`}>
                 <div className={`${styles.oliviaLeft} relative`}>
                     <Image
                         src={'/assets/home/olivia/olivia-background.png'}
