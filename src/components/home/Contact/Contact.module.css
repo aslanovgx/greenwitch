@@ -186,3 +186,16 @@
         font-size: 10.575px;
     }
 }
+
+@media (max-width: 342px) {
+
+    /* ///////////////////////////// Right Side ///////////////////////// */
+    .contactSection .contactBox .rightSide .sendEmail input {
+        width: 200.113px;
+        padding-left: 9px;
+    }
+
+    .contactSection .contactBox .rightSide .sendEmail button {
+        padding: 11px 30.906px;
+    }
+}

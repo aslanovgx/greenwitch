@@ -140,6 +140,7 @@
     .ImageGrid .leftImage .img {
         max-width: 320px;
         height: 356.224px;
+        margin: 0 auto;
 
     }
 

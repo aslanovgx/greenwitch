@@ -145,10 +145,10 @@
         margin: 0 4px;
     }
 
-    .custom-pagination .swiper-pagination-bullet-active {
+    /* .custom-pagination .swiper-pagination-bullet-active {
         opacity: 1;
         background: #000;
-    }
+    } */
 
     .custom-pagination .swiper-pagination-bullet-active {
         background: #2B2B28 !important;
