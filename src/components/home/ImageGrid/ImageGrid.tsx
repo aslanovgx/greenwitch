@@ -2,7 +2,7 @@
 
 import styles from './ImageGrid.module.css';
 import Image from "next/image";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 const imageSets = [
@@ -21,24 +21,17 @@ const imageSets = [
 export default function ImageGrid() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [prevIndex, setPrevIndex] = useState(0);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    // Safari SSR timing üçün delay
-    const delayTimeout = setTimeout(() => {
-      intervalRef.current = setInterval(() => {
-        setActiveIndex((prev) => {
-          const next = (prev + 1) % imageSets.length;
-          setPrevIndex(prev);
-          return next;
-        });
-      }, 3000);
-    }, 50); // 50ms delay
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => {
+        const next = (prev + 1) % imageSets.length;
+        setPrevIndex(prev);
+        return next;
+      });
+    }, 3000);
 
-    return () => {
-      clearTimeout(delayTimeout);
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
+    return () => clearInterval(interval);
   }, []);
 
   const transition = { duration: 0.5, ease: "easeInOut" };
@@ -52,20 +45,19 @@ export default function ImageGrid() {
     prevIdx: number
   ) => (
     <div className="relative w-full h-full">
-      {prevSrc !== currSrc && (
-        <motion.div
-          key={`prev-${prevSrc}-${prevTitle}-${prevIdx}`}
-          initial={{ opacity: 1 }}
-          animate={{ opacity: 0 }}
-          transition={transition}
-          className="absolute inset-0 z-0"
-        >
-          <Image src={prevSrc} alt={prevTitle} fill priority className="object-cover" />
-          <div className={styles.img_desc}>
-            <span>{prevTitle}</span>
-          </div>
-        </motion.div>
-      )}
+      {/* Həmişə göstər, şərt yox */}
+      <motion.div
+        key={`prev-${prevSrc}-${prevTitle}-${prevIdx}`}
+        initial={{ opacity: 1 }}
+        animate={{ opacity: 0 }}
+        transition={transition}
+        className="absolute inset-0 z-0"
+      >
+        <Image src={prevSrc} alt={prevTitle} fill priority className="object-cover" />
+        <div className={styles.img_desc}>
+          <span>{prevTitle}</span>
+        </div>
+      </motion.div>
 
       <motion.div
         key={`curr-${currSrc}-${currTitle}-${activeIdx}`}
