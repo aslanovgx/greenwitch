@@ -102,8 +102,8 @@ export default function Navbar() {
           <Image
             src={"/assets/icons/burger.svg"}
             alt="burger-icon"
-            width={19}
-            height={19}
+            width={25}
+            height={25}
             className="object-contain"
           />
         </div>
@@ -170,8 +170,8 @@ export default function Navbar() {
             <Image
               src={"/assets/icons/remove.svg"}
               alt="close-icon"
-              width={19}
-              height={19}
+              width={25}
+              height={25}
               className="object-contain"
             />
           </button>

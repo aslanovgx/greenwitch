@@ -133,8 +133,8 @@
   }
 
   .row-2-icons img {
-    width: 22px;
-    height: 22px;
+    width: 30px;
+    height: 30px;
   }
 
   .row_3 {
@@ -189,10 +189,10 @@
     height: 26.005px;
   }
 
-  .row-2-icons img {
+  /* .row-2-icons img {
     width: 22px;
     height: 22px;
-  }
+  } */
 
   .row_3 {
     padding: 30px 0 40px 0;
@@ -245,8 +245,8 @@
   }
 
   .row-2-icons img {
-    width: 20px;
-    height: 20px;
+    width: 25px;
+    height: 25px;
   }
 
   c .row-2-icons .searchMobile {

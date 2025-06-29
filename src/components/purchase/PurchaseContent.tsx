@@ -4,6 +4,7 @@ import { useState } from "react";
 import styles from "./PurchaseContent.module.css"
 import { useBag } from "@/context/BagContext";
 import Image from "next/image";
+import toast from "react-hot-toast";
 
 export default function PurchaseContent() {
     const { bagItems, removeFromBag, updateQuantity, clearBag } = useBag();
@@ -17,7 +18,8 @@ export default function PurchaseContent() {
 
     const handleOrderSubmit = async () => {
         if (bagItems.length === 0) {
-            alert("Səbət boşdur.");
+            // alert("Səbət boşdur.");
+            toast.error("Səbət boşdur.");
             return;
         }
 
@@ -27,11 +29,13 @@ export default function PurchaseContent() {
             await new Promise((resolve) => setTimeout(resolve, 1000)); // 1 saniyəlik loading effekti
 
             clearBag(); // səbəti təmizlə
-            alert("Sifarişiniz uğurla qeydə alındı!"); // uğur bildirişi
+            // alert("Sifarişiniz uğurla qeydə alındı!"); // uğur bildirişi
+            toast.success("Sifarişiniz uğurla qeydə alındı!");
             router.push("/thanks"); // təşəkkür səhifəsinə yönləndir
         } catch (error) {
             console.error(error);
-            alert("Xəta baş verdi.");
+            // alert("Xəta baş verdi.");
+            toast.error("Sifariş qeydə alınarkən xəta baş verdi.");
         } finally {
             setLoading(false);
         }
