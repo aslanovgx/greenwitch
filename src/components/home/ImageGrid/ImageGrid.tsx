@@ -20,13 +20,7 @@ const imageSets = [
 
 export default function ImageGrid() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [prevIndex, setPrevIndex] = useState(0);
-
-  // SSR + hydration sinxronluğu üçün reload zamanı indexləri sıfırla
-  useEffect(() => {
-    setActiveIndex(0);
-    setPrevIndex(0);
-  }, []);
+  const [prevIndex, setPrevIndex] = useState(-1); // ✅ ilkdə fərqli başlasın
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -51,7 +45,7 @@ export default function ImageGrid() {
     prevIdx: number
   ) => (
     <div className="relative w-full h-full">
-      {prevSrc !== currSrc && (
+      {prevIdx !== -1 && prevSrc !== currSrc && (
         <motion.div
           key={`prev-${prevSrc}-${prevTitle}-${prevIdx}`}
           initial={{ opacity: 1 }}
@@ -82,7 +76,7 @@ export default function ImageGrid() {
   );
 
   const curr = imageSets[activeIndex];
-  const prev = imageSets[prevIndex];
+  const prev = prevIndex === -1 ? imageSets[activeIndex] : imageSets[prevIndex]; // ✅ ilk açılışda eyni göstər
 
   return (
     <div className={`${styles.ImageGrid} flex flex-wrap justify-self-center`}>
