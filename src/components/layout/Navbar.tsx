@@ -18,6 +18,8 @@ import SearchInput from "@/components/ui/SearchInput";
 import FavoritesButton from "@/components/ui/FavoritesButton";
 import BagButton from "../ui/BagButton";
 
+import { toast } from "react-toastify";
+
 export default function Navbar() {
   const [fixed, setFixed] = useState(false);
   const row1Ref = useRef<HTMLDivElement>(null);
@@ -46,6 +48,9 @@ export default function Navbar() {
 
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
 
+  const handleProfileClick = () => {
+    toast.info("Bu funksiya tezliklə aktiv olacaq.");
+  };
 
   useEffect(() => {
     function handleScroll() {
@@ -70,6 +75,16 @@ export default function Navbar() {
       setIsModalOpen(false);
     }
   }, [debouncedSearchTerm]);
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuItems = [
+    { label: "Kişi", href: "/kisi" },
+    { label: "Qadın", href: "/qadin" },
+    { label: "Uşaq", href: "/usaq" },
+    { label: "Aksesuar", href: "/aksesuar" },
+    { label: "Saatlar", href: "/saatlar" },
+    { label: "Mağazalar", href: "/magazalar" },
+  ];
 
   return (
     <nav className="w-full bg-white">
@@ -106,7 +121,7 @@ export default function Navbar() {
         <SearchInput />
 
         {/* Mobile Burger Icon */}
-        <div className='burgerIcon'>
+        <div className='burgerIcon' onClick={() => setIsMenuOpen(true)}>
           <Image
             src={"/assets/icons/burger.svg"}
             alt="burger-icon"
@@ -147,6 +162,7 @@ export default function Navbar() {
             width={30}
             height={30}
             className="object-contain"
+            onClick={handleProfileClick}
           />
         </div>
       </div>
@@ -169,6 +185,43 @@ export default function Navbar() {
         onClose={() => setIsModalOpen(false)}
         results={filteredResults}
       />
+
+
+      {isMenuOpen && (
+        <div className="mobileNavbar fixed inset-0 bg-white z-50">
+          <button onClick={() => setIsMenuOpen(false)} className="">
+            <Image
+              src={"/assets/icons/remove.svg"}
+              alt="close-icon"
+              width={19}
+              height={19}
+              className="object-contain"
+            />
+          </button>
+
+          <ul className="flex">
+            {menuItems.map((item, idx) => (
+              <li
+                key={idx}
+                className="flex justify-between items-center cursor-pointer"
+              >
+                <Link href={item.href} onClick={() => setIsMenuOpen(false)}>
+                  {item.label}
+                </Link>
+                <span>
+                  <Image
+                    src={"/assets/icons/right-arrow.svg"}
+                    alt="arrow-icon"
+                    width={19}
+                    height={19}
+                    className="object-contain"
+                  />
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </nav>
   );
 }

@@ -26,7 +26,7 @@ export default function BaglistDrawer({
         <div className="fixed top-0 right-0 h-full w-[350px] bg-white shadow-xl z-50 p-4 overflow-y-auto">
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-bold">Səbət ({bagItems.length})</h2>
-                <button onClick={onClose}>
+                <button onClick={onClose} className="cursor-pointer">
                     <X />
                 </button>
             </div>

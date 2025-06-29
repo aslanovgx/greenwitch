@@ -10,9 +10,25 @@ import "react-toastify/dist/ReactToastify.css";   // ✅ toastify CSS-i
 import { BagProvider } from "@/context/BagContext";
 
 export const metadata: Metadata = {
-  title: "greenwitch",
-  description: "",
+  title: "Greenwitch | Sustainable Lifestyle",
+  description: "Discover eco-friendly products with Greenwitch.",
+  openGraph: {
+    title: "Greenwitch",
+    description: "Discover eco-friendly products with Greenwitch.",
+    type: "website",
+    locale: "en_US",
+    url: "https://greenwitch.com",
+    images: [
+      {
+        url: "https://greenwitch.com/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Greenwitch",
+      },
+    ],
+  },
 };
+
 
 export default function RootLayout({
   children,

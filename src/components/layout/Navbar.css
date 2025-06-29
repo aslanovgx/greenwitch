@@ -207,16 +207,16 @@
 @media (max-width: 640px) {
   .row-1 {
     gap: 6px;
-    height: 13.2px;
+    height: 21px;
   }
 
   .row-1 img {
-    width: 5.592px;
-    height: 6.641px;
+    width: 12px;
+    height: 12px;
   }
 
   .row-1 p {
-    font-size: 5.592px;
+    font-size: 9.592px;
   }
 
   .row-2 {
@@ -244,13 +244,50 @@
   .row-2-icons img {
     width: 20px;
     height: 20px;
-  } c
+  }
 
-  .row-2-icons .searchMobile {
+  c .row-2-icons .searchMobile {
     display: block;
   }
 
   .row_3 {
     display: none;
+  }
+
+  /* ----- */
+
+  /* .mobileNavbar button img {} */
+
+  .mobileNavbar {
+    overflow: hidden;
+  }
+
+  .mobileNavbar button {
+    padding: 8px 0 10px 8px;
+  }
+
+  .mobileNavbar button img {
+    width: 23px;
+    height: 23px;
+  }
+
+  .mobileNavbar ul {
+    gap: 15px;
+    flex-direction: column;
+    padding: 18px;
+  }
+
+  .mobileNavbar ul li a {
+    color: #000;
+    font-family: Montserrat;
+    font-size: 13.491px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+  }
+
+  .mobileNavbar ul li span img {
+    width: 20px;
+    height: 20px;
   }
 }
