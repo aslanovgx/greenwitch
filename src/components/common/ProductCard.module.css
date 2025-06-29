@@ -19,7 +19,7 @@
 .heartIcon {
     width: 30px;
     height: 30px;
-    font-weight: 400;
+    /* font-weight: 400; */
 }
 
 .cards .cards_desc h3 {
@@ -259,5 +259,10 @@
     .cards_container {
         gap: 8px;
         padding-bottom: 30px;
+    }
+
+    .heartIcon {
+        width: 21px;
+        height: 21px;
     }
 }

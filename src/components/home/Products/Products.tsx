@@ -95,7 +95,7 @@ export default function Products() {
                 ))}
             </div>
 
-            <Link href="/products">
+            <Link href="/products" scroll={true}>
                 <MoreButton>Daha çox</MoreButton>
             </Link>
         </>

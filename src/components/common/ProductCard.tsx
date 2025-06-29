@@ -154,6 +154,7 @@ function ProductCardComponent({
             >
                 {favorites.some((fav) => fav.id === item.id) ? (
                     <Heart fill="black" className={styles.heartIcon} />
+
                 ) : (
                     <Heart className={styles.heartIcon} />
                 )}

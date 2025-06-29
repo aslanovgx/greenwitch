@@ -16,6 +16,7 @@ export async function generateMetadata({ params }: Props) {
   const product = mehsullar.find(p => p.id.toString() === id);
   return {
     title: product?.title || 'Product Page',
+    description: product?.desc || 'Product details and information.',
   };
 }
 
