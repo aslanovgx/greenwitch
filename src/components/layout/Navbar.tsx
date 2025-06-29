@@ -86,6 +86,26 @@ export default function Navbar() {
     { label: "Mağazalar", href: "/magazalar" },
   ];
 
+  useEffect(() => {
+    if (isMenuOpen) {
+      const scrollY = window.scrollY;
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
+    } else {
+      const scrollY = document.body.style.top;
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      window.scrollTo(0, parseInt(scrollY || '0') * -1);
+    }
+    return () => {
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+    };
+  }, [isMenuOpen]);
+
   return (
     <nav className="w-full bg-white">
       <div
@@ -188,7 +208,7 @@ export default function Navbar() {
 
 
       {isMenuOpen && (
-        <div className="mobileNavbar fixed inset-0 bg-white z-50">
+        <div className="mobileNavbar inset-0 bg-white z-50">
           <button onClick={() => setIsMenuOpen(false)} className="">
             <Image
               src={"/assets/icons/remove.svg"}
@@ -208,15 +228,17 @@ export default function Navbar() {
                 <Link href={item.href} onClick={() => setIsMenuOpen(false)}>
                   {item.label}
                 </Link>
-                <span>
-                  <Image
-                    src={"/assets/icons/right-arrow.svg"}
-                    alt="arrow-icon"
-                    width={19}
-                    height={19}
-                    className="object-contain"
-                  />
-                </span>
+                <Link href={item.href} onClick={() => setIsMenuOpen(false)}>
+                  <span>
+                    <Image
+                      src={"/assets/icons/right-arrow.svg"}
+                      alt="arrow-icon"
+                      width={19}
+                      height={19}
+                      className="object-contain"
+                    />
+                  </span>
+                </Link>
               </li>
             ))}
           </ul>
