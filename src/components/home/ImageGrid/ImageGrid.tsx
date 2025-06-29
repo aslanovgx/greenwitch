@@ -20,7 +20,7 @@ const imageSets = [
 
 export default function ImageGrid() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [prevIndex, setPrevIndex] = useState(0);
+  const [prevIndex, setPrevIndex] = useState(imageSets.length - 1);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
 
@@ -31,6 +31,7 @@ export default function ImageGrid() {
 
     return () => clearTimeout(timeout);
   }, []);
+
   useEffect(() => {
     let animationFrame: number;
     let lastTime = performance.now();
