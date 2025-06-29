@@ -4,6 +4,7 @@ import { useBag } from "@/context/BagContext";
 import Image from "next/image";
 import { X, Trash2, Minus, Plus } from "lucide-react";
 // import { BagItem } from "@/context/BagContext";
+import { useRouter } from "next/navigation";
 
 export default function BaglistDrawer({
     isOpen,
@@ -20,7 +21,9 @@ export default function BaglistDrawer({
     }, 0);
 
 
+    const router = useRouter();
     if (!isOpen) return null;
+
 
     return (
         <div className="fixed top-0 right-0 h-full w-[350px] bg-white shadow-xl z-50 p-4 overflow-y-auto">
@@ -92,11 +95,13 @@ export default function BaglistDrawer({
 
                         <button
                             onClick={() => {
-                                clearBag();
+                                onClose(); // Drawer-i bağla
+                                router.push('/purchase'); // purchase səhifəsinə yönləndir
+                                // clearBag();
                             }}
                             className="w-full cursor-pointer bg-green-600 text-white py-2 rounded mt-3 hover:bg-green-700"
                         >
-                            Sifarişi tamamla
+                            Alış səhifəsinə keç
                         </button>
 
                         <button

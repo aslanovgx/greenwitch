@@ -119,12 +119,16 @@ function ProductCardComponent({
                             : 'opacity-0'
                         }`}
                 >
-                    <button onClick={(e) => {
-                        e.stopPropagation();
-                        // al funksiyası
-                        // alert('Satın alma funksiyası');
-                    }}
-                    >al</button>
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            addToBag(item);
+                            router.push(`/purchase`); // 👈 al səhifəsinə keçid
+                            // router.push(`/al/${item.id}`); // 👈 al səhifəsinə keçid
+                        }}
+                    >
+                        al
+                    </button>
                     <button
                         onClick={(e) => {
                             e.stopPropagation();
