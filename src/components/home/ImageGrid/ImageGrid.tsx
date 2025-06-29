@@ -2,7 +2,7 @@
 
 import styles from './ImageGrid.module.css';
 import Image from "next/image";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 const imageSets = [
@@ -20,14 +20,13 @@ const imageSets = [
 
 export default function ImageGrid() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [prevIndex, setPrevIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const prevIndexRef = useRef(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const nextIndex = (prevIndexRef.current + 1) % imageSets.length;
-      prevIndexRef.current = activeIndex; // safely store previous index
-      setActiveIndex(nextIndex);
+      setPrevIndex(activeIndex);
+      setActiveIndex((prev) => (prev + 1) % imageSets.length);
       setIsTransitioning(true);
       setTimeout(() => setIsTransitioning(false), 500);
     }, 3000);
@@ -46,7 +45,7 @@ export default function ImageGrid() {
     <div className="relative w-full h-full">
       {prevSrc !== currSrc && (
         <motion.div
-          key={`prev-${prevSrc}`}
+          key={`prev-${prevSrc}-${prevTitle}`}
           initial={{ opacity: 1 }}
           animate={{ opacity: isTransitioning ? 1 : 0 }}
           transition={transition}
@@ -60,7 +59,7 @@ export default function ImageGrid() {
       )}
 
       <motion.div
-        key={`curr-${currSrc}`}
+        key={`curr-${currSrc}-${currTitle}`}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={transition}
@@ -75,18 +74,18 @@ export default function ImageGrid() {
   );
 
   const curr = imageSets[activeIndex];
-  const prev = imageSets[prevIndexRef.current];
+  const prev = imageSets[prevIndex];
 
   return (
     <div className={`${styles.ImageGrid} flex flex-wrap justify-self-center`}>
-      {/* LEFT */}
+      {/* SOL TƏRƏF */}
       <div className={`${styles.leftImage} relative`}>
         <div className={`${styles.img} relative`}>
           {fadeImage(curr.left.src, prev.left.src, curr.left.title, prev.left.title)}
         </div>
       </div>
 
-      {/* RIGHT */}
+      {/* SAĞ TƏRƏF */}
       <div className={`${styles.rightImage} flex flex-col`}>
         <div className={`${styles.img} relative`}>
           {fadeImage(
