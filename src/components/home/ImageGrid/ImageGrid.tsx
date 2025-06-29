@@ -22,32 +22,20 @@ export default function ImageGrid() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [prevIndex, setPrevIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
-    setHasMounted(true);
+    const interval = setInterval(() => {
+      setPrevIndex((prev) => prev);
+      setActiveIndex((prev) => {
+        setPrevIndex(prev);
+        return (prev + 1) % imageSets.length;
+      });
+      setIsTransitioning(true);
+      setTimeout(() => setIsTransitioning(false), 500);
+    }, 3000);
+
+    return () => clearInterval(interval);
   }, []);
-
-  useEffect(() => {
-    if (!hasMounted) return;
-
-    let animationFrame: number;
-    let lastTime = performance.now();
-
-    const loop = (now: number) => {
-      if (now - lastTime > 3000) {
-        setPrevIndex(activeIndex);
-        setActiveIndex((prev) => (prev + 1) % imageSets.length);
-        setIsTransitioning(true);
-        setTimeout(() => setIsTransitioning(false), 500);
-        lastTime = now;
-      }
-      animationFrame = requestAnimationFrame(loop);
-    };
-
-    animationFrame = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(animationFrame);
-  }, [activeIndex, hasMounted]);
 
   const transition = { duration: 0.5, ease: "easeInOut" };
 
@@ -58,8 +46,7 @@ export default function ImageGrid() {
     prevTitle: string
   ) => (
     <div className="relative w-full h-full">
-      {/* Previous image */}
-      {hasMounted && prevSrc !== currSrc && (
+      {prevSrc !== currSrc && (
         <motion.div
           key={`prev-${prevSrc}`}
           initial={{ opacity: 1 }}
@@ -74,10 +61,9 @@ export default function ImageGrid() {
         </motion.div>
       )}
 
-      {/* Current image */}
       <motion.div
         key={`curr-${currSrc}`}
-        initial={{ opacity: hasMounted ? 0 : 1 }}
+        initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={transition}
         className="absolute inset-0 z-10"
@@ -95,14 +81,12 @@ export default function ImageGrid() {
 
   return (
     <div className={`${styles.ImageGrid} flex flex-wrap justify-self-center`}>
-      {/* LEFT */}
       <div className={`${styles.leftImage} relative`}>
         <div className={`${styles.img} relative`}>
           {fadeImage(curr.left.src, prev.left.src, curr.left.title, prev.left.title)}
         </div>
       </div>
 
-      {/* RIGHT */}
       <div className={`${styles.rightImage} flex flex-col`}>
         <div className={`${styles.img} relative`}>
           {fadeImage(
