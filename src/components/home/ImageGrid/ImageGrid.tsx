@@ -25,14 +25,17 @@ export default function ImageGrid() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setPrevIndex(activeIndex);
-      setActiveIndex((prev) => (prev + 1) % imageSets.length);
+      setActiveIndex((prev) => {
+        setPrevIndex(prev); // burada prev birbaşa əvvəlki activeIndex olur
+        return (prev + 1) % imageSets.length;
+      });
       setIsTransitioning(true);
       setTimeout(() => setIsTransitioning(false), 500);
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [activeIndex]);
+  }, []);
+
 
   const transition = { duration: 0.5, ease: "easeInOut" };
 
