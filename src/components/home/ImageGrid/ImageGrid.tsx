@@ -31,17 +31,25 @@ export default function ImageGrid() {
 
     return () => clearTimeout(timeout);
   }, []);
-
   useEffect(() => {
-    const interval = setInterval(() => {
-      setPrevIndex(activeIndex);
-      setActiveIndex((prev) => (prev + 1) % imageSets.length);
-      setIsTransitioning(true);
-      setTimeout(() => setIsTransitioning(false), 400);
-    }, 3000);
+    let animationFrame: number;
+    let lastTime = performance.now();
 
-    return () => clearInterval(interval);
+    const loop = (now: number) => {
+      if (now - lastTime > 3000) {
+        setPrevIndex(activeIndex);
+        setActiveIndex((prev) => (prev + 1) % imageSets.length);
+        setIsTransitioning(true);
+        setTimeout(() => setIsTransitioning(false), 400);
+        lastTime = now;
+      }
+      animationFrame = requestAnimationFrame(loop);
+    };
+
+    animationFrame = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(animationFrame);
   }, [activeIndex]);
+
 
   const transition = { duration: 0.4, ease: "easeInOut" };
 
