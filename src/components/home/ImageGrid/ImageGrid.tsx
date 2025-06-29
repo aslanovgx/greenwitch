@@ -26,7 +26,7 @@ export default function ImageGrid() {
     const interval = setInterval(() => {
       setActiveIndex((prev) => {
         const next = (prev + 1) % imageSets.length;
-        setPrevIndex(prev);
+        setPrevIndex(prev); // əvvəlki index-i dəqiq saxla
         return next;
       });
     }, 3000);
@@ -34,7 +34,8 @@ export default function ImageGrid() {
     return () => clearInterval(interval);
   }, []);
 
-  const transition = { duration: 0.5, ease: "easeInOut" };
+  // const transition = { duration: 0.5, ease: "easeInOut" };
+  const transition = { duration: 0.6, ease: [0.645, 0.045, 0.355, 1] }; // easeInOutCubic
 
   const fadeImage = (
     currSrc: string,
@@ -45,19 +46,20 @@ export default function ImageGrid() {
     prevIdx: number
   ) => (
     <div className="relative w-full h-full">
-      {/* Həmişə göstər, şərt yox */}
-      <motion.div
-        key={`prev-${prevSrc}-${prevTitle}-${prevIdx}`}
-        initial={{ opacity: 1 }}
-        animate={{ opacity: 0 }}
-        transition={transition}
-        className="absolute inset-0 z-0"
-      >
-        <Image src={prevSrc} alt={prevTitle} fill priority className="object-cover" />
-        <div className={styles.img_desc}>
-          <span>{prevTitle}</span>
-        </div>
-      </motion.div>
+      {prevSrc !== currSrc && (
+        <motion.div
+          key={`prev-${prevSrc}-${prevTitle}-${prevIdx}`}
+          initial={{ opacity: 1 }}
+          animate={{ opacity: 0 }}
+          transition={transition}
+          className="absolute inset-0 z-0"
+        >
+          <Image src={prevSrc} alt={prevTitle} fill priority className="object-cover" />
+          <div className={styles.img_desc}>
+            <span>{prevTitle}</span>
+          </div>
+        </motion.div>
+      )}
 
       <motion.div
         key={`curr-${currSrc}-${currTitle}-${activeIdx}`}
@@ -66,7 +68,13 @@ export default function ImageGrid() {
         transition={transition}
         className="absolute inset-0 z-10"
       >
-        <Image src={currSrc} alt={currTitle} fill priority className="object-cover" />
+        <Image
+          src={currSrc}
+          alt={currTitle}
+          fill
+          priority
+          className="object-cover"
+        />
         <div className={styles.img_desc}>
           <span>{currTitle}</span>
         </div>

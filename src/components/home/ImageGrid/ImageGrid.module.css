@@ -9,13 +9,17 @@
     height: 706px;
 }
 
-.ImageGrid .img_desc {
-    will-change: opacity;
+/* ImageGrid.module.css */
+.img_desc {
+    /* will-change: opacity, transform; */
+    /* -webkit-transform: translateZ(0); */
 }
 
-.ImageGrid .img {
-    will-change: opacity;
+.relative {
+    /* will-change: opacity, transform; */
+    /* -webkit-transform: translateZ(0); */
 }
+
 
 .ImageGrid .img_desc span {
     color: #FFF;
