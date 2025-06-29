@@ -2,7 +2,7 @@
 
 import styles from './ImageGrid.module.css';
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 
 const imageSets = [
@@ -20,22 +20,20 @@ const imageSets = [
 
 export default function ImageGrid() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [prevIndex, setPrevIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const prevIndexRef = useRef(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setPrevIndex((prev) => prev);
-      setActiveIndex((prev) => {
-        setPrevIndex(prev);
-        return (prev + 1) % imageSets.length;
-      });
+      const nextIndex = (prevIndexRef.current + 1) % imageSets.length;
+      prevIndexRef.current = activeIndex; // safely store previous index
+      setActiveIndex(nextIndex);
       setIsTransitioning(true);
       setTimeout(() => setIsTransitioning(false), 500);
     }, 3000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [activeIndex]);
 
   const transition = { duration: 0.5, ease: "easeInOut" };
 
@@ -77,16 +75,18 @@ export default function ImageGrid() {
   );
 
   const curr = imageSets[activeIndex];
-  const prev = imageSets[prevIndex];
+  const prev = imageSets[prevIndexRef.current];
 
   return (
     <div className={`${styles.ImageGrid} flex flex-wrap justify-self-center`}>
+      {/* LEFT */}
       <div className={`${styles.leftImage} relative`}>
         <div className={`${styles.img} relative`}>
           {fadeImage(curr.left.src, prev.left.src, curr.left.title, prev.left.title)}
         </div>
       </div>
 
+      {/* RIGHT */}
       <div className={`${styles.rightImage} flex flex-col`}>
         <div className={`${styles.img} relative`}>
           {fadeImage(
