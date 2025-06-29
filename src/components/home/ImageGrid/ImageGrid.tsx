@@ -20,19 +20,17 @@ const imageSets = [
 
 export default function ImageGrid() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [prevIndex, setPrevIndex] = useState(imageSets.length - 1);
+  const [prevIndex, setPrevIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [hasStarted, setHasStarted] = useState(false);
+  const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setHasStarted(true); // SSR sonrası client başladı
-    }, 0);
-
-    return () => clearTimeout(timeout);
+    setHasMounted(true);
   }, []);
 
   useEffect(() => {
+    if (!hasMounted) return;
+
     let animationFrame: number;
     let lastTime = performance.now();
 
@@ -41,7 +39,7 @@ export default function ImageGrid() {
         setPrevIndex(activeIndex);
         setActiveIndex((prev) => (prev + 1) % imageSets.length);
         setIsTransitioning(true);
-        setTimeout(() => setIsTransitioning(false), 400);
+        setTimeout(() => setIsTransitioning(false), 500);
         lastTime = now;
       }
       animationFrame = requestAnimationFrame(loop);
@@ -49,10 +47,9 @@ export default function ImageGrid() {
 
     animationFrame = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(animationFrame);
-  }, [activeIndex]);
+  }, [activeIndex, hasMounted]);
 
-
-  const transition = { duration: 0.4, ease: "easeInOut" };
+  const transition = { duration: 0.5, ease: "easeInOut" };
 
   const fadeImage = (
     currSrc: string,
@@ -61,8 +58,8 @@ export default function ImageGrid() {
     prevTitle: string
   ) => (
     <div className="relative w-full h-full">
-      {/* Only render previous image if it's different */}
-      {hasStarted && prevSrc !== currSrc && (
+      {/* Previous image */}
+      {hasMounted && prevSrc !== currSrc && (
         <motion.div
           key={`prev-${prevSrc}`}
           initial={{ opacity: 1 }}
@@ -70,7 +67,7 @@ export default function ImageGrid() {
           transition={transition}
           className="absolute inset-0 z-0"
         >
-          <Image src={prevSrc} alt="" fill className="object-cover" />
+          <Image src={prevSrc} alt={prevTitle} fill priority className="object-cover" />
           <div className={styles.img_desc}>
             <span>{prevTitle}</span>
           </div>
@@ -80,12 +77,12 @@ export default function ImageGrid() {
       {/* Current image */}
       <motion.div
         key={`curr-${currSrc}`}
-        initial={{ opacity: hasStarted ? 0 : 1 }}
+        initial={{ opacity: hasMounted ? 0 : 1 }}
         animate={{ opacity: 1 }}
         transition={transition}
         className="absolute inset-0 z-10"
       >
-        <Image src={currSrc} alt={currTitle} fill className="object-cover" />
+        <Image src={currSrc} alt={currTitle} fill priority className="object-cover" />
         <div className={styles.img_desc}>
           <span>{currTitle}</span>
         </div>
