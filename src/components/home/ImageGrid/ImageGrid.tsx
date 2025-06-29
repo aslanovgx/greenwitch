@@ -21,21 +21,18 @@ const imageSets = [
 export default function ImageGrid() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [prevIndex, setPrevIndex] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveIndex((prev) => {
-        setPrevIndex(prev); // burada prev birbaşa əvvəlki activeIndex olur
-        return (prev + 1) % imageSets.length;
+        const next = (prev + 1) % imageSets.length;
+        setPrevIndex(prev); // əvvəlki index-i dəqiq saxla
+        return next;
       });
-      setIsTransitioning(true);
-      setTimeout(() => setIsTransitioning(false), 500);
     }, 3000);
 
     return () => clearInterval(interval);
   }, []);
-
 
   const transition = { duration: 0.5, ease: "easeInOut" };
 
@@ -43,14 +40,16 @@ export default function ImageGrid() {
     currSrc: string,
     prevSrc: string,
     currTitle: string,
-    prevTitle: string
+    prevTitle: string,
+    activeIdx: number,
+    prevIdx: number
   ) => (
     <div className="relative w-full h-full">
       {prevSrc !== currSrc && (
         <motion.div
-          key={`prev-${prevSrc}-${prevTitle}`}
+          key={`prev-${prevSrc}-${prevTitle}-${prevIdx}`}
           initial={{ opacity: 1 }}
-          animate={{ opacity: isTransitioning ? 1 : 0 }}
+          animate={{ opacity: 0 }}
           transition={transition}
           className="absolute inset-0 z-0"
         >
@@ -62,7 +61,7 @@ export default function ImageGrid() {
       )}
 
       <motion.div
-        key={`curr-${currSrc}-${currTitle}`}
+        key={`curr-${currSrc}-${currTitle}-${activeIdx}`}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={transition}
@@ -81,21 +80,30 @@ export default function ImageGrid() {
 
   return (
     <div className={`${styles.ImageGrid} flex flex-wrap justify-self-center`}>
-      {/* SOL TƏRƏF */}
+      {/* SOL */}
       <div className={`${styles.leftImage} relative`}>
         <div className={`${styles.img} relative`}>
-          {fadeImage(curr.left.src, prev.left.src, curr.left.title, prev.left.title)}
+          {fadeImage(
+            curr.left.src,
+            prev.left.src,
+            curr.left.title,
+            prev.left.title,
+            activeIndex,
+            prevIndex
+          )}
         </div>
       </div>
 
-      {/* SAĞ TƏRƏF */}
+      {/* SAĞ */}
       <div className={`${styles.rightImage} flex flex-col`}>
         <div className={`${styles.img} relative`}>
           {fadeImage(
             curr.rightTop.src,
             prev.rightTop.src,
             curr.rightTop.title,
-            prev.rightTop.title
+            prev.rightTop.title,
+            activeIndex,
+            prevIndex
           )}
         </div>
         <div className={`${styles.img} relative`}>
@@ -103,7 +111,9 @@ export default function ImageGrid() {
             curr.rightBottom.src,
             prev.rightBottom.src,
             curr.rightBottom.title,
-            prev.rightBottom.title
+            prev.rightBottom.title,
+            activeIndex,
+            prevIndex
           )}
         </div>
       </div>
