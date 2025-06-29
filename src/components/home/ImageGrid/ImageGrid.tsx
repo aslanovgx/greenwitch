@@ -2,7 +2,7 @@
 
 import styles from './ImageGrid.module.css';
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 
 const imageSets = [
@@ -20,18 +20,25 @@ const imageSets = [
 
 export default function ImageGrid() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [prevIndex, setPrevIndex] = useState(-1); // ✅ ilkdə fərqli başlasın
+  const [prevIndex, setPrevIndex] = useState(0);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveIndex((prev) => {
-        const next = (prev + 1) % imageSets.length;
-        setPrevIndex(prev);
-        return next;
-      });
-    }, 3000);
+    // Safari SSR timing üçün delay
+    const delayTimeout = setTimeout(() => {
+      intervalRef.current = setInterval(() => {
+        setActiveIndex((prev) => {
+          const next = (prev + 1) % imageSets.length;
+          setPrevIndex(prev);
+          return next;
+        });
+      }, 3000);
+    }, 50); // 50ms delay
 
-    return () => clearInterval(interval);
+    return () => {
+      clearTimeout(delayTimeout);
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
   }, []);
 
   const transition = { duration: 0.5, ease: "easeInOut" };
@@ -45,7 +52,7 @@ export default function ImageGrid() {
     prevIdx: number
   ) => (
     <div className="relative w-full h-full">
-      {prevIdx !== -1 && prevSrc !== currSrc && (
+      {prevSrc !== currSrc && (
         <motion.div
           key={`prev-${prevSrc}-${prevTitle}-${prevIdx}`}
           initial={{ opacity: 1 }}
@@ -76,7 +83,7 @@ export default function ImageGrid() {
   );
 
   const curr = imageSets[activeIndex];
-  const prev = prevIndex === -1 ? imageSets[activeIndex] : imageSets[prevIndex]; // ✅ ilk açılışda eyni göstər
+  const prev = imageSets[prevIndex];
 
   return (
     <div className={`${styles.ImageGrid} flex flex-wrap justify-self-center`}>
