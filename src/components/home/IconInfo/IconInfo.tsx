@@ -11,7 +11,7 @@ export default function IconInfo() {
         <>
             <div className={`${styles.iconInfo} flex items-center`}>
                 {icons.map((icon) => (
-                    <div key={icon.id} className={`${styles.icon_desc} flex flex-col items-center justify-center `}>
+                    <div key={icon.id} className={`${styles.icon_desc} flex flex-col items-center justify-center`}>
                         <Image
                             src={icon.image}
                             alt={`icon-${icon.id}`}

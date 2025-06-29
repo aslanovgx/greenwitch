@@ -34,3 +34,7 @@ body {
 .react-window::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+.custom-pagination .swiper-pagination-bullet-active {
+  background: #2B2B28 !important;
+}

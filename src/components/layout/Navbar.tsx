@@ -3,40 +3,28 @@ import React, { useEffect, useState, useRef, useMemo } from "react";
 import Link from 'next/link';
 import Image from "next/image";
 import "@/components/layout/Navbar.css";
-// import { useFavorites } from "@/context/FavoritesContext";
-// import { Heart } from "lucide-react";
 import WishlistDrawer from "@/context/WishlistDrawer";
 import BaglistDrawer from "@/context/BaglistDrawer";
-
 import mehsullar from '@/components/Mock/Home/mehsullar.json';
 import { useSearch } from "@/context/SearchContext";
 import useDebounce from "@/hooks/useDebounce";
 import SearchModal from "@/components/common/SearchModal";
-
 import TextSwitcher from "@/components/ui/TextSwitcher";
 import SearchInput from "@/components/ui/SearchInput";
 import FavoritesButton from "@/components/ui/FavoritesButton";
 import BagButton from "../ui/BagButton";
-
-import { toast } from "react-toastify";
+import { handleProfileClick, handleScroll, lockBodyScroll, unlockBodyScroll } from "@/utils/navbarUtils";
+import menuItems from "@/components/layout/menuItems";
+import textSwitcherTexts from "@/components/layout/textSwitcherTexts";
 
 export default function Navbar() {
   const [fixed, setFixed] = useState(false);
   const row1Ref = useRef<HTMLDivElement>(null);
   const row2Ref = useRef<HTMLDivElement>(null);
-  // const { favorites } = useFavorites();
   const [wishlistOpen, setWishlistOpen] = useState(false);
-
-  // Yazı state-i burada yaradılır:
-  const texts = ["100% Sertifikatlı Orijinal", "6 Ay Faizsiz Kredit", "2 İllik Zəmanət"];
-  // const [currentTextIndex, setCurrentTextIndex] = useState(0);
-
   const [baglistOpen, setBaglistOpen] = useState(false);
-
-
   const { searchTerm } = useSearch();
   const debouncedSearchTerm = useDebounce(searchTerm, 1500);
-
   const filteredResults = useMemo(() => {
     console.log("🔍 filter çalışdı"); // << BURADAN yoxlayacaqsan
     return mehsullar.filter((item) =>
@@ -48,25 +36,13 @@ export default function Navbar() {
 
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
 
-  const handleProfileClick = () => {
-    toast.info("Bu funksiya tezliklə aktiv olacaq.");
-  };
 
   useEffect(() => {
-    function handleScroll() {
-      if (!row1Ref.current) return;
-
-      const row1Bottom = row1Ref.current.getBoundingClientRect().bottom;
-      setFixed(row1Bottom <= 0);
-    }
-
-    // ✅ İlk render zamanı bir dəfə çağır (səhifə reload olsa belə)
-    handleScroll();
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => handleScroll(row1Ref, setFixed);
+    onScroll(); // İlk renderdə çağır
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
 
   useEffect(() => {
     if (debouncedSearchTerm.trim() !== "") {
@@ -77,33 +53,14 @@ export default function Navbar() {
   }, [debouncedSearchTerm]);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const menuItems = [
-    { label: "Kişi", href: "/kisi" },
-    { label: "Qadın", href: "/qadin" },
-    { label: "Uşaq", href: "/usaq" },
-    { label: "Aksesuar", href: "/aksesuar" },
-    { label: "Saatlar", href: "/saatlar" },
-    { label: "Mağazalar", href: "/magazalar" },
-  ];
 
   useEffect(() => {
     if (isMenuOpen) {
-      const scrollY = window.scrollY;
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${scrollY}px`;
-      document.body.style.width = '100%';
+      lockBodyScroll();
     } else {
-      const scrollY = document.body.style.top;
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-      window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      unlockBodyScroll();
     }
-    return () => {
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-    };
+    return () => unlockBodyScroll();
   }, [isMenuOpen]);
 
   return (
@@ -121,7 +78,7 @@ export default function Navbar() {
             className="object-contain"
           />
         )}
-        <TextSwitcher texts={texts} onIndexChange={setCurrentTextIndex} />
+        <TextSwitcher texts={textSwitcherTexts} onIndexChange={setCurrentTextIndex} />
 
       </div>
 

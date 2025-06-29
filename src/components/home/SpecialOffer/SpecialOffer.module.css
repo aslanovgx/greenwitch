@@ -150,6 +150,10 @@
         background: #000;
     }
 
+    .custom-pagination .swiper-pagination-bullet-active {
+        background: #2B2B28 !important;
+    }
+
     .specialOfferSwiper {
         cursor: grab;
     }

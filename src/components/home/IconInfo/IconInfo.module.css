@@ -58,14 +58,31 @@
 }
 
 @media (max-width: 641px) {
+    .iconInfo {
+        display: ruby;
+    }
+
+    .iconInfo .icon_desc {
+        width: 50%;
+        gap: 10px;
+    }
+
+    .iconInfo .icon_desc:nth-child(1) {
+        padding-bottom: 20px;
+    }
+    .iconInfo .icon_desc:nth-child(2) {
+        padding-bottom: 20px;
+    }
+
     .icon_desc img {
         width: 26px;
         height: 26px;
     }
 
     .icon_desc p {
-        font-size: 8px;
+        font-size: 11px;
         text-align: center;
         gap: 10px;
+        max-width: 100px; 
     }
 }
