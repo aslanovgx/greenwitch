@@ -18,7 +18,8 @@
       "/assets/home/cards/michael.png",
       "/assets/home/cards_position/michael.png",
       "/assets/home/cards_position/olivia-pink.png",
-      "/assets/home/cards_position/olivia-black.png"
+      "/assets/home/cards_position/olivia-black.png",
+      "/assets/home/cards/hilfiger.png"
     ]
   },
   {
@@ -39,7 +40,9 @@
     "thumbnails": [
       "/assets/home/cards/michael.png",
       "/assets/home/cards_position/michael.png",
-      "/assets/home/cards/michael.png"
+      "/assets/home/cards_position/olivia-pink.png",
+      "/assets/home/cards_position/olivia-black.png"
+
     ]
   },
   {
@@ -64,7 +67,8 @@
     "thumbnails": [
       "/assets/home/cards/michael.png",
       "/assets/home/cards_position/michael.png",
-      "/assets/home/cards/michael.png"
+      "/assets/home/cards_position/olivia-black.png",
+      "/assets/home/cards_position/olivia-pink.png"
     ]
   },
   {
@@ -89,7 +93,8 @@
     "thumbnails": [
       "/assets/home/cards/michael.png",
       "/assets/home/cards_position/michael.png",
-      "/assets/home/cards/michael.png"
+      "/assets/home/cards_position/olivia-black.png",
+      "/assets/home/cards_position/olivia-pink.png"
     ]
   },
   {
@@ -114,7 +119,9 @@
     "thumbnails": [
       "/assets/home/cards/michael.png",
       "/assets/home/cards_position/michael.png",
-      "/assets/home/cards/michael.png"
+      "/assets/home/cards_position/olivia-pink.png",
+      "/assets/home/cards_position/olivia-black.png"
+      
     ]
   },
   {

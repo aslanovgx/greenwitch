@@ -54,7 +54,18 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 6px auto;
+  /* margin: 6px auto; */
+  position: absolute;
+}
+
+.custom-swiper-prev {
+  top: -51px;
+  left: 17px;
+}
+
+.custom-swiper-next {
+  bottom: -51px;
+  left: 17px;
 }
 
 /* .custom-swiper-prev:hover,

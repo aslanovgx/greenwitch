@@ -32,18 +32,35 @@ export default function ProductsDetail({ product }: Props) {
 
     // ✅ Responsive image size idarəsi
     const [imageSize, setImageSize] = useState({ width: 380, height: 400 });
+    const [thumbsConfig, setThumbsConfig] = useState({
+        slidesPerView: 3,
+        height: 400,
+        width: 95
+    });
 
     useEffect(() => {
         const handleResize = () => {
             const width = window.innerWidth;
             if (width < 640) {
                 setImageSize({ width: 240, height: 260 });
-            } else if (width < 768) {
+            } else if (width < 769) {
                 setImageSize({ width: 300, height: 320 });
-            } else if (width < 1024) {
-                setImageSize({ width: 340, height: 360 });
+            } else if (width < 1025) {
+                setImageSize({ width: 270, height: 388 });
             } else {
                 setImageSize({ width: 380, height: 547 });
+            }
+
+
+            // ✅ Thumbnails ölçüləri
+            if (width < 640) {
+                setThumbsConfig({ slidesPerView: 2, height: 280, width: 75 });
+            } else if (width < 769) {
+                setThumbsConfig({ slidesPerView: 3, height: 350, width: 80 });
+            } else if (width < 1025) {
+                setThumbsConfig({ slidesPerView: 3, height: 390, width: 67 });
+            } else {
+                setThumbsConfig({ slidesPerView: 4, height: 538, width: 95 });
             }
         };
 
@@ -69,24 +86,26 @@ export default function ProductsDetail({ product }: Props) {
         <div className={styles.products_detail}>
             <div className={styles.leftSide}>
                 {/* Thumbnail list Swiper ilə yuxarıdan aşağı */}
-                <div className="product-detail-swiper-wrapper w-full">
+                <div className="product-detail-swiper-wrapper w-full relative">
                     <button className="custom-swiper-prev">
                         <HiChevronUp size={60} color="black" />
                     </button>
-
                     <Swiper
                         direction="vertical"
-                        slidesPerView={3}          // ✅ həmişə 3 thumbnail göstər
-                        slidesPerGroup={1}         // ✅ 1 dənə sürüşdür
-                        spaceBetween={10}          // ✅ 10px boşluq
+                        slidesPerView={thumbsConfig.slidesPerView}
+                        slidesPerGroup={1}
+                        spaceBetween={10}
                         navigation={{
                             prevEl: ".custom-swiper-prev",
                             nextEl: ".custom-swiper-next",
                         }}
-                        allowTouchMove={false}     // ✅ maus ilə sürüşdürməyi blokla (istəyirsənsə)
+                        allowTouchMove={false}
                         modules={[Pagination, Navigation]}
                         className={`product-detail-swiper ${styles.thumbnails}`}
-                        style={{ height: '400px', maxWidth: '95px' }}
+                        style={{
+                            height: `${thumbsConfig.height}px`,
+                            maxWidth: `${thumbsConfig.width}px`,
+                        }}
                     >
 
                         {product.thumbnails?.map((thumb, i) => (
