@@ -21,7 +21,7 @@ export default function FilterCards() {
     return (
         <>
             <div className={`${styles.filterCards}`}>
-                <div className={`${cardStyles.cards_container} flex justify-center items-center`}>
+                <div className={`${cardStyles.cards_container} ${styles.cards_box} flex justify-center items-center`}>
                     {visibleProducts.map((item: Product) => (
                         <ProductCard
                             key={item.id}

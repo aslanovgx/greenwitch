@@ -48,7 +48,7 @@ export default function FilterSection() {
                                     <li>FREDERIQUE CONSTANT</li>
                                     <li>TOMMY HİLFİGER</li>
                                     <li>OLIVIA BURTON</li>
-                                    <li>MICHAEL KORS</li>
+                                    <li>MİCHAEL KORS</li>
                                     <li>SWISS MILITARY</li>
                                     <li>ANNE KLEIN</li>
                                     <li>CASIO</li>

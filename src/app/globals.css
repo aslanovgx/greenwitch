@@ -38,3 +38,32 @@ body {
 .custom-pagination .swiper-pagination-bullet-active {
   background: #2B2B28 !important;
 }
+
+/* ---- */
+
+.custom-swiper-prev,
+.custom-swiper-next {
+  /* background: black; */
+  color: black;
+  border: none;
+  /* padding: 8px 12px; */
+  cursor: pointer;
+  /* font-size: 30px; */
+  /* border-radius: 6px; */
+  /* transition: background 0.2s; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 6px auto;
+}
+
+/* .custom-swiper-prev:hover,
+.custom-swiper-next:hover {
+  background: #333;
+} */
+
+.custom-swiper-prev:disabled,
+.custom-swiper-next:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

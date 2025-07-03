@@ -19,7 +19,7 @@
     flex-direction: column;
     gap: 12px;
     /* max-height: 400px; */
-    overflow-y: auto;
+    /* overflow-y: auto; */
     scrollbar-width: thin;
     /* Firefox */
 }
@@ -39,15 +39,15 @@
     border-color: black;
 } */
 
-.products_detail .leftSide .mainImage {
+/* .products_detail .leftSide .mainImage {
     position: relative;
-    /* çünki next/image fill istifadə edir */
+    çünki next/image fill istifadə edir
     width: 380px;
     height: 400px;
     border-radius: 6px;
     overflow: hidden;
     object-fit: none;
-}
+} */
 
 /* ----------------------------------------------------- */
 
@@ -109,12 +109,13 @@
 }
 
 .products_detail .rightSide .colorRow .colorList {
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   align-self: flex-start;
-   gap: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: flex-start;
+    gap: 5px;
 }
+
 .products_detail .rightSide .colorRow .colorDot {
     width: 54px;
     height: 54px;
@@ -177,4 +178,33 @@
     display: inline-block;
     border-bottom: 1px solid #000;
     cursor: pointer;
+}
+
+
+/* ---------------------------------- */
+
+@media (max-width: 1281px) {
+    .products_detail {
+        gap: 32px;
+        padding: 32px;
+    }
+
+    /* ----------------------------------------------------- */
+
+    .products_detail .rightSide {
+        gap: 22px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .products_detail {
+        gap: 32px;
+        padding: 32px;
+    }
+
+    /* ----------------------------------------------------- */
+
+    .products_detail .rightSide {
+        gap: 22px;
+    }
 }
