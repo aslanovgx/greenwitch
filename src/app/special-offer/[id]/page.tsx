@@ -140,5 +140,5 @@ export default function SpecialOfferDetail({ params }: PageProps) {
                 Digər
             </SpecialOffer>
         </>
-});
+);
 }
