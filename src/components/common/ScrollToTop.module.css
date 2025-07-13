@@ -1,0 +1,20 @@
+.scrollToTop {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: black;
+    color: white;
+    /* padding: 8px; */
+    border-radius: 9999px;
+    cursor: pointer;
+    z-index: 999;
+    transition: all 0.3s ease;
+    font-size: 30px;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+}
+
+.scrollToTop:hover {
+    background: #333;
+}

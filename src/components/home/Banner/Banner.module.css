@@ -24,6 +24,23 @@
   height: 302px;
 }
 
+@media (max-width: 1280px) {
+  .row_4 .banner_1 {
+    width: 290px;
+    height: 290px;
+  }
+
+  .row_4 .banner_2 {
+    width: 600px;
+    height: 290px;
+  }
+
+  .row_4 .banner_3 {
+    width: 290px;
+    height: 290px;
+  }
+}
+
 @media (max-width: 1025px) {
   .row_4 {
     padding-bottom: 56px;

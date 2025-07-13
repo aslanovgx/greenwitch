@@ -9,6 +9,7 @@ import { ToastContainer } from "react-toastify"; // ✅ toastify əlavə olunur
 import "react-toastify/dist/ReactToastify.css";   // ✅ toastify CSS-i
 import { BagProvider } from "@/context/BagContext";
 import { Toaster } from "react-hot-toast";
+import ScrollToTop from "@/components/common/ScrollToTop";
 
 export const metadata: Metadata = {
   title: "Greenwitch | Sustainable Lifestyle",
@@ -46,6 +47,7 @@ export default function RootLayout({
             <BagProvider>
               <Navbar />
               <main>{children}</main>
+              <ScrollToTop /> 
               <Footer />
 
               {/* ✅ ToastContainer sağ yuxarı üçün */}

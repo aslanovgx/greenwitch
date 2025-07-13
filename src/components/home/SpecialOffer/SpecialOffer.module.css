@@ -4,6 +4,15 @@
     height: 367px;
 }
 
+.twoCards {
+    gap: 50px;
+}
+
+.twoCards>div {
+    width: 460px !important;
+    /* və ya 45%, 48% sına */
+}
+
 .specialOffer .cards_container:nth-child(2) img {
     object-position: bottom;
 }

@@ -1,0 +1,62 @@
+.specialOfferDetail {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.specialOfferDetail .pageTitle {
+    color: #000;
+    text-align: center;
+    font-family: Montserrat;
+    font-size: 29.316px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    padding-bottom: 37px;
+}
+
+.specialOfferDetail .imageContainer {
+    display: flex;
+    justify-content: center;
+    gap: 27px;
+    margin-bottom: 76px;
+}
+
+.specialOfferDetail .imageContainer img {
+    width: 223.255px;
+    height: 223.255px;
+    aspect-ratio: 223.25/223.25;
+    border-radius: 14.481px;
+}
+
+.specialOfferDetail .content .textContent {
+    padding-bottom: 120px;
+    width: 100%;
+}
+.specialOfferDetail .content .textLimited {
+    max-width: 646px;
+}
+
+.specialOfferDetail .content .textContent h2 {
+    color: #000;
+    font-family: Montserrat;
+    font-size: 27.316px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    padding-bottom: 37px;
+}
+
+.specialOfferDetail .content .textContent p {
+    color: #000;
+    font-family: Montserrat;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.specialOfferDetail .content .imageContainer2 {
+    width: 409px;
+    height: 310px;
+    border-radius: 14.481px;
+    overflow: hidden;}

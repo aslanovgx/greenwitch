@@ -49,17 +49,34 @@
     font-weight: 600;
 }
 
-.oliviaWatches :nth-child(1) {
+.oliviaWatches .oliviaBurton {
     top: -43px;
     left: 50px;
 }
 
-.oliviaWatches :nth-child(2) {
+.oliviaWatches .hilfigerGold{
     top: 8px;
     right: 60px;
 }
 
-.oliviaWatches :nth-child(3) {
+.oliviaWatches .michael {
+    bottom: 45%;
+    left: 37%;
+}
+
+/* ------ */
+
+.oliviaWatches .oliviaGreen {
+    top: -51px;
+    left: 70px;
+}
+
+.oliviaWatches .tommyHilfiger{
+    top: 10px;
+    right: 60px;
+}
+
+.oliviaWatches .fossil {
     bottom: 45%;
     left: 37%;
 }
@@ -84,20 +101,38 @@
     height: 24px;
 }
 
-.oliviaWatchesDesc :nth-child(1) {
+.oliviaWatchesDesc .descOliviaBurton {
     top: -77px;
     left: 17px;
 }
 
-.oliviaWatchesDesc :nth-child(2) {
+.oliviaWatchesDesc .descHilfigerGold {
     top: -13px;
-    right: 13px;
+    right: 8px;
 }
 
-.oliviaWatchesDesc :nth-child(3) {
+.oliviaWatchesDesc .descMichael {
     bottom: 41%;
     left: 18%;
 }
+
+/* ------ */
+
+.oliviaWatchesDesc .descOliviaGreen {
+    top: -77px;
+    left: 17px;
+}
+
+.oliviaWatchesDesc .descTommyHilfiger {
+    top: -13px;
+    right: -18px;
+}
+
+.oliviaWatchesDesc .descFossil {
+    bottom: 41%;
+    left: 34%;
+}
+
 
 .oliviaWatchesDesc p {
     color: #000;
