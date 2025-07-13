@@ -3,12 +3,9 @@ import { notFound } from "next/navigation";
 import styles from "./page.module.css";
 import SpecialOffer from "@/components/home/SpecialOffer/SpecialOffer";
 
-type PageProps = {
-  params: {
-    id: string;
-  };
-};
-
+// ----------------------
+// TYPES
+// ----------------------
 
 type Section = {
     heading: string;
@@ -22,6 +19,10 @@ type Offer = {
     sections: Section[];
 };
 
+// ----------------------
+// DYNAMIC DATA
+// ----------------------
+
 const specialOffers: Record<string, Offer> = {
     "1": {
         title: "Korporativ Satış",
@@ -34,11 +35,11 @@ const specialOffers: Record<string, Offer> = {
         sections: [
             {
                 heading: "Korporativ müştərilər üçün eksklüziv təkliflər",
-                text: "Mağazalarımızda korporativ müştərilər üçün xüsusi endirimlər, fərdi yanaşma və şəhərdaxili çatdırılma imkanı təklif olunur. Hər bir şirkətin ehtiyacına uyğun olaraq, seçimlərdə məsləhət dəstəyi və əlavə üstünlüklər təqdim edirik. Müştərilərinizə və əməkdaşlarınıza dəyər qatmaq üçün etibarlı və zövqlü saat seçimlərimizlə xidmətinizdəyik.",
+                text: "Mağazalarımızda korporativ müştərilər üçün xüsusi endirimlər, fərdi yanaşma və şəhərdaxili çatdırılma imkanı təklif olunur...",
             },
             {
                 heading: "Böyük sifarişlərə sərfəli şərtlər",
-                text: "Böyük sifarişlər üçün sərfəli şərtlərlə alış-veriş edə bilərsiniz. Topdan alımlarda əlavə güzəştlər, qısa müddətdə çatdırılma və satış sonrası dəstək imkanları sizi gözləyir. Satınalma prosesini daha asan və sürətli etmək üçün xüsusi komandamızla daim yanınızdayıq.",
+                text: "Böyük sifarişlər üçün sərfəli şərtlərlə alış-veriş edə bilərsiniz...",
                 image: "/assets/special-offer/image11.jpg",
             },
         ],
@@ -54,12 +55,11 @@ const specialOffers: Record<string, Offer> = {
         sections: [
             {
                 heading: "Faizsiz Taksit və Kredit İmkanları",
-                text: "Birkart, Tamkart və Ferrum Kapital ilə 3-6 ay müddətində faizsiz kredit imkanı mövcuddur. Birkart və Tamkart istifadəçiləri üçün faizsiz taksitlə alış-veriş etmək daha rahat və sərfəlidir. Hər ay eyni məbləği ödəməklə alış-verişinizi büdcənizə uyğun şəkildə bölüşdürə bilərsiniz. Bu imkanlardan həm onlayn, həm də satış nöqtələrimizdə faydalana bilərsiniz.",
-                image: "",
+                text: "Birkart, Tamkart və Ferrum Kapital ilə 3-6 ay müddətində faizsiz kredit imkanı mövcuddur.",
             },
             {
                 heading: "Sadə Sənədləşmə və İlkin Ödənişsiz Proses",
-                text: "Ferrum Kapital vasitəsilə yalnız şəxsiyyət vəsiqəsi təqdim etməklə kredit əldə edə bilərsiniz — əlavə sənəd və ya qarışıq prosedurlar olmadan.İlkin ödəniş tələb olunmur, bu da məhsulunuzu daha çevik və sürətli şəkildə əldə etməyə imkan yaradır. Rəsmi sənədləşmə qısa zamanda, minimum vaxt itkisi ilə həyata keçirilir. Alış-veriş prosesi boyu müştəri rahatlığı və sadəlik əsas prioritetimizdir.", 
+                text: "Ferrum Kapital vasitəsilə yalnız şəxsiyyət vəsiqəsi təqdim etməklə kredit əldə edə bilərsiniz.",
                 image: "/assets/special-offer/image2e.jpg",
             }
         ],
@@ -75,19 +75,26 @@ const specialOffers: Record<string, Offer> = {
         sections: [
             {
                 heading: "Rəsmi Zəmanət İmkanı",
-                text: "Mağazalarımızdan aldığınız bütün məhsullar üçün rəsmi və orijinal zəmanət təqdim olunur. İstehsalçı tərəfindən tanınan bu zəmanət məhsulun keyfiyyətini qoruyur və sizə əlavə güvən verir. Zəmanət müddətində yaranacaq texniki nasazlıqlar müvafiq qaydada qeydə alınaraq servis prosesinə yönləndirilir.",
-                image: "",
+                text: "Mağazalarımızdan aldığınız bütün məhsullar üçün rəsmi və orijinal zəmanət təqdim olunur.",
             },
             {
                 heading: "Peşəkar Servis və Satış Sonrası Dəstək",
-                text: "Texniki xidmət yalnız rəsmi servis mərkəzlərimizdə, peşəkar heyət tərəfindən həyata keçirilir. Təmir zamanı orijinal ehtiyat hissələrindən istifadə olunur və bütün proses standartlara uyğun şəkildə aparılır. Satış sonrası təqdim edilən bu xidmətlər məhsulunuzu uzun müddət istifadə etməyə və təhlükəsiz saxlamağa imkan verir.",
+                text: "Texniki xidmət yalnız rəsmi servis mərkəzlərimizdə, peşəkar heyət tərəfindən həyata keçirilir.",
                 image: "/assets/special-offer/image3e.jpg",
             }
         ],
     },
 };
 
-export default function SpecialOfferDetail({ params }: PageProps) {
+// ----------------------
+// PAGE COMPONENT
+// ----------------------
+
+export default async function SpecialOfferDetail({
+    params,
+}: {
+    params: { id: string };
+}) {
     const offer = specialOffers[params.id];
     if (!offer) return notFound();
 
@@ -97,7 +104,7 @@ export default function SpecialOfferDetail({ params }: PageProps) {
                 <h1 className={`font-bold ${styles.pageTitle}`}>{offer.title}</h1>
 
                 <div className={styles.imageContainer}>
-                    {offer.images.map((src: string, i: number) => (
+                    {offer.images.map((src, i) => (
                         <div
                             key={i}
                             className={`${styles.imageItem} relative w-full h-[200px] md:h-[180px] rounded overflow-hidden`}
@@ -112,12 +119,9 @@ export default function SpecialOfferDetail({ params }: PageProps) {
                     ))}
                 </div>
 
-                <div className={`${styles.content}`}>
-                    {offer.sections.map((section: Section, i: number) => (
-                        <div
-                            key={i}
-                            className="flex flex-col md:flex-row gap-6 items-start"
-                        >
+                <div className={styles.content}>
+                    {offer.sections.map((section, i) => (
+                        <div key={i} className="flex flex-col md:flex-row gap-6 items-start">
                             <div
                                 className={`${styles.textContent} ${section.image ? styles.textLimited : ''}`}
                             >
@@ -139,9 +143,10 @@ export default function SpecialOfferDetail({ params }: PageProps) {
                     ))}
                 </div>
             </div>
+
             <SpecialOffer hiddenId={parseInt(params.id)}>
                 Digər
             </SpecialOffer>
         </>
-);
+    );
 }
