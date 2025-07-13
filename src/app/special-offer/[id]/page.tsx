@@ -4,8 +4,11 @@ import styles from "./page.module.css";
 import SpecialOffer from "@/components/home/SpecialOffer/SpecialOffer";
 
 type PageProps = {
-    params: { id: string };
+  params: {
+    id: string;
+  };
 };
+
 
 type Section = {
     heading: string;
