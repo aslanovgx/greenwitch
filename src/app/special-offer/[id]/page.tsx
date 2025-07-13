@@ -3,6 +3,10 @@ import { notFound } from "next/navigation";
 import styles from "./page.module.css";
 import SpecialOffer from "@/components/home/SpecialOffer/SpecialOffer";
 
+type PageProps = {
+    params: { id: string };
+};
+
 type Section = {
     heading: string;
     text: string;
@@ -52,7 +56,7 @@ const specialOffers: Record<string, Offer> = {
             },
             {
                 heading: "Sadə Sənədləşmə və İlkin Ödənişsiz Proses",
-                text: "Ferrum Kapital vasitəsilə yalnız şəxsiyyət vəsiqəsi təqdim etməklə kredit əldə edə bilərsiniz — əlavə sənəd və ya qarışıq prosedurlar olmadan.İlkin ödəniş tələb olunmur, bu da məhsulunuzu daha çevik və sürətli şəkildə əldə etməyə imkan yaradır. Rəsmi sənədləşmə qısa zamanda, minimum vaxt itkisi ilə həyata keçirilir. Alış-veriş prosesi boyu müştəri rahatlığı və sadəlik əsas prioritetimizdir.",
+                text: "Ferrum Kapital vasitəsilə yalnız şəxsiyyət vəsiqəsi təqdim etməklə kredit əldə edə bilərsiniz — əlavə sənəd və ya qarışıq prosedurlar olmadan.İlkin ödəniş tələb olunmur, bu da məhsulunuzu daha çevik və sürətli şəkildə əldə etməyə imkan yaradır. Rəsmi sənədləşmə qısa zamanda, minimum vaxt itkisi ilə həyata keçirilir. Alış-veriş prosesi boyu müştəri rahatlığı və sadəlik əsas prioritetimizdir.", 
                 image: "/assets/special-offer/image2e.jpg",
             }
         ],
@@ -80,7 +84,7 @@ const specialOffers: Record<string, Offer> = {
     },
 };
 
-export default function SpecialOfferDetail({ params }: { params: { id: string } }) {
+export default function SpecialOfferDetail({ params }: PageProps) {
     const offer = specialOffers[params.id];
     if (!offer) return notFound();
 
@@ -136,5 +140,5 @@ export default function SpecialOfferDetail({ params }: { params: { id: string } 
                 Digər
             </SpecialOffer>
         </>
-    );
-} 
+});
+}
