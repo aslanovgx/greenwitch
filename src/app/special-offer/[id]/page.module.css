@@ -260,6 +260,7 @@
 @media (max-width: 641px) {
     .specialOfferDetail {
         max-width: auto;
+        padding-top: 38px;
     }
 
     .specialOfferDetail .pageTitle {
