@@ -299,15 +299,16 @@
 
     .specialOfferDetail .content .textLimited {
         max-width: 459px;
+        margin: 0 auto;
     }
 
     .specialOfferDetail .content .textContent h2 {
-        font-size: 12px;
+        font-size: 14px;
         padding-bottom: 18px;
     }
 
     .specialOfferDetail .content .textContent p {
-        font-size: 12px;
+        font-size: 14px;
     }
 
     .specialOfferDetail .content .imageContainer2 {
