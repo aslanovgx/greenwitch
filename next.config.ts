@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   images: {
     domains: ['fakestoreapi.com'],
+    unoptimized: false, // <== BUNU ƏLAVƏ ETDİK
   },
   webpack(config) {
     config.module.rules.push({
