@@ -82,16 +82,16 @@ const specialOffers: Record<string, Offer> = {
 };
 
 type Props = {
-  params: Promise<{
-    id: string;
-  }>;
+    params: Promise<{
+        id: string;
+    }>;
 };
 
 export default async function Page({ params }: Props) {
-  const { id } = await params;
-  const offer = specialOffers[id];
+    const { id } = await params;
+    const offer = specialOffers[id];
 
-  if (!offer) return notFound();
+    if (!offer) return notFound();
 
 
     return (
@@ -134,7 +134,8 @@ export default async function Page({ params }: Props) {
                                         src={section.image}
                                         alt={`section-image-${i}`}
                                         fill
-                                        className="object-cover"
+                                       className={`object-cover`}
+                                       style={offer.title === "Kredit" ? { objectPosition: 'bottom' } : {}}
                                     />
                                 </div>
                             )}

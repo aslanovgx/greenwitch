@@ -12,26 +12,39 @@
     font-weight: 700;
     line-height: normal;
     padding-bottom: 37px;
+    text-align: center;
 }
 
 .specialOfferDetail .imageContainer {
     display: flex;
-    justify-content: center;
-    gap: 27px;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 76px;
 }
 
 .specialOfferDetail .imageContainer img {
+    border-radius: 14.481px;
+}
+
+.specialOfferDetail .imageContainer .imageItem:nth-child(1),
+.specialOfferDetail .imageContainer .imageItem:nth-child(3) {
     width: 223.255px;
     height: 223.255px;
     aspect-ratio: 223.25/223.25;
-    border-radius: 14.481px;
+}
+
+.specialOfferDetail .imageContainer .imageItem:nth-child(2),
+.specialOfferDetail .imageContainer .imageItem:nth-child(4) {
+    width: 288.102px;
+    height: 192.091px;
+    aspect-ratio: 288.10/192.09;
 }
 
 .specialOfferDetail .content .textContent {
     padding-bottom: 120px;
     width: 100%;
 }
+
 .specialOfferDetail .content .textLimited {
     max-width: 646px;
 }
@@ -44,6 +57,7 @@
     font-weight: 700;
     line-height: normal;
     padding-bottom: 37px;
+    text-align: center;
 }
 
 .specialOfferDetail .content .textContent p {
@@ -58,5 +72,245 @@
 .specialOfferDetail .content .imageContainer2 {
     width: 409px;
     height: 310px;
-    border-radius: 14.481px;
-    overflow: hidden;}
+    flex-shrink: 0;
+    aspect-ratio: 409/310;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+
+
+
+/* ----------------------------- */
+
+@media (max-width: 1280px) {
+    .specialOfferDetail {
+        max-width: 981.298px;
+    }
+
+    .specialOfferDetail .pageTitle {
+        font-size: 25px;
+        padding-bottom: 32px;
+    }
+
+    .specialOfferDetail .imageContainer {
+        margin-bottom: 65px;
+    }
+
+    .specialOfferDetail .imageContainer img {
+        border-radius: 12.872px;
+    }
+
+    .specialOfferDetail .imageContainer .imageItem:nth-child(1),
+    .specialOfferDetail .imageContainer .imageItem:nth-child(3) {
+        width: 198.436px;
+        height: 198.436px;
+        aspect-ratio: 198.44/198.44;
+    }
+
+    .specialOfferDetail .imageContainer .imageItem:nth-child(2),
+    .specialOfferDetail .imageContainer .imageItem:nth-child(4) {
+        width: 256.074px;
+        height: 170.737px;
+        aspect-ratio: 256.07/170.74;
+    }
+
+    .specialOfferDetail .content .textContent {
+        padding-bottom: 105px;
+    }
+
+    .specialOfferDetail .content .textLimited {
+        max-width: 574px;
+    }
+
+    .specialOfferDetail .content .textContent h2 {
+        font-size: 25px;
+        padding-bottom: 32px;
+    }
+
+    .specialOfferDetail .content .textContent p {
+        font-size: 20px;
+    }
+
+    .specialOfferDetail .content .imageContainer2 {
+        width: 363.532px;
+        height: 275.537px;
+        border-radius: 10.666px;
+        flex-shrink: 0;
+        aspect-ratio: 363.53/275.54;
+    }
+}
+
+@media (max-width: 1025px) {
+    .specialOfferDetail {
+        max-width: 785.038px;
+    }
+
+    .specialOfferDetail .pageTitle {
+        font-size: 20px;
+        padding-bottom: 26px;
+    }
+
+    .specialOfferDetail .imageContainer {
+        margin-bottom: 52px;
+    }
+
+    .specialOfferDetail .imageContainer img {
+        border-radius: 10.297px;
+    }
+
+    .specialOfferDetail .imageContainer .imageItem:nth-child(1),
+    .specialOfferDetail .imageContainer .imageItem:nth-child(3) {
+        width: 158.749px;
+        height: 158.749px;
+        aspect-ratio: 158.75/158.75;
+    }
+
+    .specialOfferDetail .imageContainer .imageItem:nth-child(2),
+    .specialOfferDetail .imageContainer .imageItem:nth-child(4) {
+        width: 204.859px;
+        height: 136.589px;
+        aspect-ratio: 204.86/136.59;
+    }
+
+    .specialOfferDetail .content .textContent {
+        padding-bottom: 83px;
+    }
+
+    .specialOfferDetail .content .textLimited {
+        max-width: 459px;
+    }
+
+    .specialOfferDetail .content .textContent h2 {
+        font-size: 20px;
+        padding-bottom: 26px;
+    }
+
+    .specialOfferDetail .content .textContent p {
+        font-size: 17px;
+    }
+
+    .specialOfferDetail .content .imageContainer2 {
+        width: 290.825px;
+        height: 220.43px;
+        flex-shrink: 0;
+        aspect-ratio: 290.83/220.43;
+        border-radius: 8.533px;
+    }
+}
+
+@media (max-width: 768px) {
+    .specialOfferDetail {
+        max-width: 785.038px;
+    }
+
+    .specialOfferDetail .pageTitle {
+        font-size: 20px;
+        padding-bottom: 26px;
+    }
+
+    .specialOfferDetail .imageContainer {
+        margin-bottom: 52px;
+    }
+
+    .specialOfferDetail .imageContainer img {
+        border-radius: 10.297px;
+    }
+
+    .specialOfferDetail .imageContainer .imageItem:nth-child(1),
+    .specialOfferDetail .imageContainer .imageItem:nth-child(3) {
+        width: 158.749px;
+        height: 158.749px;
+        aspect-ratio: 158.75/158.75;
+    }
+
+    .specialOfferDetail .imageContainer .imageItem:nth-child(2),
+    .specialOfferDetail .imageContainer .imageItem:nth-child(4) {
+        width: 204.859px;
+        height: 136.589px;
+        aspect-ratio: 204.86/136.59;
+    }
+
+    .specialOfferDetail .content .textContent {
+        padding-bottom: 83px;
+    }
+
+    .specialOfferDetail .content .textLimited {
+        max-width: 459px;
+    }
+
+    .specialOfferDetail .content .textContent h2 {
+        font-size: 20px;
+        padding-bottom: 26px;
+    }
+
+    .specialOfferDetail .content .textContent p {
+        font-size: 17px;
+    }
+
+    .specialOfferDetail .content .imageContainer2 {
+        width: 290.825px;
+        height: 220.43px;
+        flex-shrink: 0;
+        aspect-ratio: 290.83/220.43;
+        border-radius: 8.533px;
+    }
+}
+
+@media (max-width: 641px) {
+    .specialOfferDetail {
+        max-width: auto;
+    }
+
+    .specialOfferDetail .pageTitle {
+        font-size: 16px;
+        padding-bottom: 18px;
+    }
+
+    .specialOfferDetail .imageContainer {
+        margin-bottom: 20px;
+        justify-content: center;
+    }
+
+    .specialOfferDetail .imageContainer img {
+        border-radius: 8px;
+    }
+
+    .specialOfferDetail .imageContainer .imageItem {
+        display: none;
+    }
+
+    .specialOfferDetail .imageContainer .imageItem:first-child {
+        display: block !important;
+        width: 262px;
+        height: 143px;
+        flex-shrink: 0;
+        aspect-ratio: 262/143;
+    }
+
+    .specialOfferDetail .content {
+        padding: 0 20px;
+    }
+
+    .specialOfferDetail .content .textContent {
+        padding-bottom: 46px;
+        text-align: center;
+    }
+
+    .specialOfferDetail .content .textLimited {
+        max-width: 459px;
+    }
+
+    .specialOfferDetail .content .textContent h2 {
+        font-size: 12px;
+        padding-bottom: 18px;
+    }
+
+    .specialOfferDetail .content .textContent p {
+        font-size: 12px;
+    }
+
+    .specialOfferDetail .content .imageContainer2 {
+       display: none;
+    }
+}

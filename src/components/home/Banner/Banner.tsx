@@ -1,8 +1,8 @@
 "use client";
 
 import styles from "./Banner.module.css";
-import { useState, useEffect } from "react";
 import FadeImage from "@/components/FadeImage"; // path düzgün olmalıdır
+import useAutoSlide from "@/hooks/useAutoSlide";
 
 const bannerSets = [
   {
@@ -29,23 +29,7 @@ const bannerSets = [
 ];
 
 export default function Banner() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [prevIndex, setPrevIndex] = useState(0);
-  const [hasStarted, setHasStarted] = useState(false);
-
-  useEffect(() => {
-    const timeout = setTimeout(() => setHasStarted(true), 0);
-    return () => clearTimeout(timeout);
-  }, []);
-
-  useEffect(() => {
-    if (!hasStarted) return;
-    const interval = setInterval(() => {
-      setPrevIndex(activeIndex);
-      setActiveIndex((prev) => (prev + 1) % bannerSets.length);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [activeIndex, hasStarted]);
+  const { activeIndex, prevIndex } = useAutoSlide(bannerSets.length);
 
   const curr = bannerSets[activeIndex];
   const prev = bannerSets[prevIndex];

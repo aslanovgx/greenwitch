@@ -1,8 +1,8 @@
 "use client";
 
 import styles from './ImageGrid.module.css';
-import { useState, useEffect } from "react";
 import FadeImage from "@/components/FadeImage"; // path düzgün olmalıdır
+import useAutoSlide from "@/hooks/useAutoSlide";
 
 type ImageData = {
   src: string;
@@ -29,25 +29,7 @@ const imageSets: ImageSet[] = [
 ];
 
 export default function ImageGrid() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [prevIndex, setPrevIndex] = useState(0);
-  const [hasStarted, setHasStarted] = useState(false);
-
-  useEffect(() => {
-    const timeout = setTimeout(() => setHasStarted(true), 0);
-    return () => clearTimeout(timeout);
-  }, []);
-
-  useEffect(() => {
-    if (!hasStarted) return;
-
-    const interval = setInterval(() => {
-      setPrevIndex(activeIndex);
-      setActiveIndex((prev) => (prev + 1) % imageSets.length);
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, [activeIndex, hasStarted]);
+  const { activeIndex, prevIndex } = useAutoSlide(imageSets.length);
 
   const curr = imageSets[activeIndex];
   const prev = imageSets[prevIndex];

@@ -41,6 +41,7 @@ export default function SpecialOffer({ hiddenId, children }: Props) {
                                 alt={`Image ${card.id}`}
                                 fill
                                 className="object-cover transition-transform duration-500 group-hover:scale-110"
+                                style={card.id === 2 ? { objectPosition: 'bottom' } : {}}
                             />
                             <div className={`${styles.desc} flex items-center justify-between w-full absolute bottom-0 left-0 px-4 bg-white/80 backdrop-blur-sm`}>
                                 <p className="text-black font-medium">{card.title}</p>

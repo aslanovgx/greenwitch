@@ -4,6 +4,10 @@
     height: 367px;
 }
 
+/* .specialOffer .cards_container .specialOfferCard img {
+   object-position: initial;
+} */
+
 .twoCards {
     gap: 50px;
 }
@@ -13,9 +17,9 @@
     /* və ya 45%, 48% sına */
 }
 
-.specialOffer .cards_container:nth-child(2) img {
+/* .specialOffer .cards_container .specialOfferCard:nth-child(2) img {
     object-position: bottom;
-}
+} */
 
 .specialOffer .mobileSpecialOffer {
     display: none;
