@@ -11,8 +11,23 @@
     font-style: normal;
     font-weight: 700;
     line-height: normal;
-    padding-bottom: 37px;
     text-align: center;
+    position: relative;
+    display: block;
+    max-width: 256.872px;
+    margin: 0 auto;
+    padding-bottom: 10px;
+    margin-bottom: 37px;
+}
+
+.specialOfferDetail .pageTitle::after {
+    content: '';
+    position: absolute;
+    width: 256.872px;
+    height: 0.889px;
+    left: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, #FFF 2.4%, #000 49.04%, #FFF 100%);
 }
 
 .specialOfferDetail .imageContainer {
@@ -57,7 +72,6 @@
     font-weight: 700;
     line-height: normal;
     padding-bottom: 37px;
-    text-align: center;
 }
 
 .specialOfferDetail .content .textContent p {
@@ -90,7 +104,14 @@
 
     .specialOfferDetail .pageTitle {
         font-size: 25px;
-        padding-bottom: 32px;
+        margin-bottom: 32px;
+        padding-bottom: 9px;
+        max-width: 208px;
+    }
+
+    .specialOfferDetail .pageTitle::after {
+        max-width: 208px;
+        height: 0.711px;
     }
 
     .specialOfferDetail .imageContainer {
@@ -148,7 +169,8 @@
 
     .specialOfferDetail .pageTitle {
         font-size: 20px;
-        padding-bottom: 26px;
+        margin-bottom: 26px;
+        padding-bottom: 7px;
     }
 
     .specialOfferDetail .imageContainer {
@@ -201,12 +223,18 @@
 
 @media (max-width: 768px) {
     .specialOfferDetail {
-        max-width: 785.038px;
+        width: 588.867px;
     }
 
     .specialOfferDetail .pageTitle {
-        font-size: 20px;
-        padding-bottom: 26px;
+        font-size: 19px;
+        margin-bottom: 20px;
+        padding-bottom: 7px;
+        max-width: 160px;
+    }
+
+    .specialOfferDetail .pageTitle::after {
+        max-width: 160px;
     }
 
     .specialOfferDetail .imageContainer {
@@ -214,21 +242,21 @@
     }
 
     .specialOfferDetail .imageContainer img {
-        border-radius: 10.297px;
+        border-radius: 7.724px;
     }
 
     .specialOfferDetail .imageContainer .imageItem:nth-child(1),
     .specialOfferDetail .imageContainer .imageItem:nth-child(3) {
-        width: 158.749px;
-        height: 158.749px;
-        aspect-ratio: 158.75/158.75;
+        width: 119.079px;
+        height: 119.079px;
+        aspect-ratio: 119.08/119.08;
     }
 
     .specialOfferDetail .imageContainer .imageItem:nth-child(2),
     .specialOfferDetail .imageContainer .imageItem:nth-child(4) {
-        width: 204.859px;
-        height: 136.589px;
-        aspect-ratio: 204.86/136.59;
+        width: 153.667px;
+        height: 102.457px;
+        aspect-ratio: 153.67/102.46;
     }
 
     .specialOfferDetail .content .textContent {
@@ -240,8 +268,8 @@
     }
 
     .specialOfferDetail .content .textContent h2 {
-        font-size: 20px;
-        padding-bottom: 26px;
+        font-size: 18px;
+        padding-bottom: 20px;
     }
 
     .specialOfferDetail .content .textContent p {
@@ -249,11 +277,11 @@
     }
 
     .specialOfferDetail .content .imageContainer2 {
-        width: 290.825px;
-        height: 220.43px;
+        width: 218.151px;
+        height: 165.347px;
         flex-shrink: 0;
-        aspect-ratio: 290.83/220.43;
-        border-radius: 8.533px;
+        aspect-ratio: 218.15/165.35;
+        border-radius: 6.401px;
     }
 }
 
@@ -265,7 +293,13 @@
 
     .specialOfferDetail .pageTitle {
         font-size: 18px;
-        padding-bottom: 15px;
+        margin-bottom: 15px;
+        max-width: 150px;
+padding-bottom: 5px;
+    }
+
+    .specialOfferDetail .pageTitle::after {
+        max-width: 150px;
     }
 
     .specialOfferDetail .imageContainer {
@@ -306,6 +340,7 @@
     .specialOfferDetail .content .textContent h2 {
         font-size: 14px;
         padding-bottom: 15px;
+        text-align: center;
     }
 
     .specialOfferDetail .content .textContent p {
@@ -313,6 +348,6 @@
     }
 
     .specialOfferDetail .content .imageContainer2 {
-       display: none;
+        display: none;
     }
 }
