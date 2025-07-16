@@ -40,7 +40,7 @@ export default function MapView() {
                     width="100%"
                     height="630px"
                     className="rounded border"
-                    loading="eager"
+                    loading="lazy"
                     allowFullScreen
                     src={`https://maps.google.com/maps?q=${activeStore.location.lat},${activeStore.location.lng}&z=15&output=embed`}
                 ></iframe>
