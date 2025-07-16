@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import styles from './Footer.module.css';
 import Facebook from './../../../public/assets/footer/facebook.svg'
@@ -12,6 +12,11 @@ export default function Footer() {
 
     const [openSection, setOpenSection] = useState<number | null>(null);
     const isMobile = useIsMobile(641);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     const toggleSection = (index: number) => {
         if (!isMobile) return; // Desktopda klikləmə heç nə etmir
@@ -21,6 +26,7 @@ export default function Footer() {
     const shouldShow = (sectionIndex: number) => {
         return !isMobile || openSection === sectionIndex;
     };
+    if (!mounted) return null;
     return (
         <footer className={styles.footer}>
             <div className={`${styles.footerBox} columns flex flex-wrap items-center`}>

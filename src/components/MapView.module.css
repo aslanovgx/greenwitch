@@ -1,0 +1,116 @@
+.mapContainer {
+    position: relative;
+}
+
+.active {
+    border-color: #40b659 !important;
+    background-color: #f6fff9;
+}
+
+.sideBar {
+    position: absolute;
+    top: 2rem;
+    left: 8px;
+    top: 8px;
+    z-index: 5;
+    background-color: #fff;
+    border: 1px solid #d8d8d8;
+    border-radius: 12px;
+    width: 430px;
+    height: 570px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 26px 16px 16px 16px;
+}
+
+.sideBar h1 {
+    font-size: 26px;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    color: black;
+}
+
+.sideBar .areaList {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    font-size: 14px;
+    border: 1px solid #d8d8d8;
+    padding: 4px;
+    border-radius: 8px;
+}
+
+.sideBar .areaList li {
+    cursor: pointer;
+    padding: 4px 20px;
+    position: relative;
+}
+
+.sideBar .areaList li:nth-child(2)::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    width: 1px;
+    height: 18px;
+    background-color: #d8d8d8;
+}
+
+.sideBar .areaList li:nth-child(2)::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0;
+    width: 1px;
+    height: 18px;
+    background-color: #d8d8d8;
+}
+
+.sideBar .storePlaces {
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sideBar .storePlaces li {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: 1px solid #d8d8d8;
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.sideBar .storePlaces li:hover {
+    border-color: #40b659 !important;
+}
+
+
+.sideBar .storePlaces li span {
+    font-size: 14px;
+    color: #000;
+    font-weight: normal;
+}
+
+.sideBar .storePlaces li span:first-child {
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.sideBar .storePlaces li span:last-child {
+    color: #40b659 !important;
+    font-weight: 500;
+}
+
+.map {
+    width: 100%;
+    height: 630px;
+}

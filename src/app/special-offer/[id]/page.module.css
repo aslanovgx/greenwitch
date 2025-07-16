@@ -287,7 +287,7 @@
 
 @media (max-width: 641px) {
     .specialOfferDetail {
-        max-width: auto;
+        max-width: 100%;
         padding-top: 38px;
     }
 
@@ -295,7 +295,7 @@
         font-size: 18px;
         margin-bottom: 15px;
         max-width: 150px;
-padding-bottom: 5px;
+        padding-bottom: 5px;
     }
 
     .specialOfferDetail .pageTitle::after {
@@ -305,6 +305,7 @@ padding-bottom: 5px;
     .specialOfferDetail .imageContainer {
         margin-bottom: 46px;
         justify-content: center;
+        padding: 0 30px;
     }
 
     .specialOfferDetail .imageContainer img {
@@ -314,11 +315,14 @@ padding-bottom: 5px;
     .specialOfferDetail .imageContainer .imageItem {
         display: none;
     }
+    /* .specialOfferDetail .imageContainer .imageItem img{
+       object-fit: cover;
+    } */
 
     .specialOfferDetail .imageContainer .imageItem:first-child {
         display: block !important;
-        width: 262px;
-        height: 143px;
+        width: 100%;
+        height: 163px;
         flex-shrink: 0;
         aspect-ratio: 262/143;
     }
@@ -333,7 +337,7 @@ padding-bottom: 5px;
     }
 
     .specialOfferDetail .content .textLimited {
-        max-width: 459px;
+        /* max-width: 200px; */
         margin: 0 auto;
     }
 
