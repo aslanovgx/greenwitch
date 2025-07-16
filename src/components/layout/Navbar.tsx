@@ -13,7 +13,7 @@ import TextSwitcher from "@/components/ui/TextSwitcher";
 import SearchInput from "@/components/ui/SearchInput";
 import FavoritesButton from "@/components/ui/FavoritesButton";
 import BagButton from "../ui/BagButton";
-import { handleProfileClick, handleScroll, lockBodyScroll, unlockBodyScroll } from "@/utils/navbarUtils";
+import { handleScroll, lockBodyScroll, unlockBodyScroll } from "@/utils/navbarUtils";
 import menuItems from "@/components/layout/menuItems";
 import textSwitcherTexts from "@/components/layout/textSwitcherTexts";
 
@@ -122,13 +122,15 @@ export default function Navbar() {
 
         {/* Favorite Icon */}
         <div className="row-2-icons flex items-center justify-center">
-          <Image
-            src={"/assets/icons/watch-2.svg"}
-            alt="watch2-icon"
-            width={30}
-            height={30}
-            className="object-contain"
-          />
+          <Link href="/products">
+            <Image
+              src={"/assets/icons/watch-2.svg"}
+              alt="watch2-icon"
+              width={30}
+              height={30}
+              className="object-contain"
+            />
+          </Link>
           <Image
             src={"/assets/icons/searchMobile.svg"}
             alt="search-icon"

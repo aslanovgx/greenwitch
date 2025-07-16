@@ -1,9 +1,9 @@
 // utils/navbarUtils.ts
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 
-export const handleProfileClick = () => {
-    toast.info("Bu funksiya tezliklə aktiv olacaq.");
-};
+// export const handleProfileClick = () => {
+//     toast.info("Bu funksiya tezliklə aktiv olacaq.");
+// };
 
 export const handleScroll = (
     row1Ref: React.RefObject<HTMLDivElement | null>,
