@@ -17,7 +17,7 @@
     border: 1px solid #d8d8d8;
     border-radius: 12px;
     width: 430px;
-    height: 570px;
+    height: 614px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -113,4 +113,10 @@
 .map {
     width: 100%;
     height: 630px;
+}
+
+.map iframe {
+  /* border-radius: 8px; */
+  overflow: hidden;
+  border: 0;
 }

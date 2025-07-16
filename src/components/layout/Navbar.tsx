@@ -123,6 +123,13 @@ export default function Navbar() {
         {/* Favorite Icon */}
         <div className="row-2-icons flex items-center justify-center">
           <Image
+            src={"/assets/icons/watch-2.svg"}
+            alt="watch2-icon"
+            width={30}
+            height={30}
+            className="object-contain"
+          />
+          <Image
             src={"/assets/icons/searchMobile.svg"}
             alt="search-icon"
             width={20}
@@ -133,14 +140,23 @@ export default function Navbar() {
           <div className="relative flex justify-center items-center">
             <FavoritesButton onClick={() => setWishlistOpen(true)} />
           </div>
-          <Image
+          {/* <Image
             src={"/assets/icons/account.svg"}
             alt="account-icon"
             width={30}
             height={30}
             className="object-contain"
             onClick={handleProfileClick}
-          />
+          /> */}
+          <Link href="/location">
+            <Image
+              src="/assets/icons/location.svg"
+              alt="location-icon"
+              width={30}
+              height={30}
+              className="object-contain cursor-pointer"
+            />
+          </Link>
         </div>
       </div>
       <div className="row_3">
@@ -150,7 +166,9 @@ export default function Navbar() {
           <li>Uşaq</li>
           <li>Aksesuar</li>
           <li>Saatlar</li>
-          <li>Mağazalar</li>
+          <Link href="/location">
+            <li>Mağazalar</li>
+          </Link>
         </ul>
       </div>
 
