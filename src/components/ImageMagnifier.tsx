@@ -34,8 +34,8 @@ export default function ImageMagnifier({ src, zoom = 2, width, height }: Props) 
       ref={wrapperRef}
       style={{
         position: 'relative',
-        width,
-        height,
+        width: `${width}px`,
+        height: `${height}px`,
         overflow: 'hidden',
         border: '1px solid #ddd',
       }}
@@ -43,7 +43,7 @@ export default function ImageMagnifier({ src, zoom = 2, width, height }: Props) 
       onMouseLeave={() => setShowLens(false)}
       onMouseMove={handleMouseMove}
     >
-      {/* Main image */}
+      {/* Main image with fill */}
       <Image
         src={src}
         alt="zoom-img"
@@ -67,7 +67,7 @@ export default function ImageMagnifier({ src, zoom = 2, width, height }: Props) 
             backgroundSize: `${width * zoom}px ${height * zoom}px`,
             backgroundPosition: `-${lensPosition.x * zoom - lensSize.width / 2}px -${lensPosition.y * zoom - lensSize.height / 2}px`,
             border: '1px solid black',
-            borderRadius: '0px', // Dəyirmi istəmirsənsə 0, dairə istəyirsənsə '50%'
+            borderRadius: '0px',
             boxShadow: '0 0 5px rgba(0,0,0,0.3)',
             zIndex: 10,
           }}

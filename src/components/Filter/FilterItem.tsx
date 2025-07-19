@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import ArrowIcon from "@/components/icons/ArrowIcon";
 import styles from "./../products/FilterSection/FilterSection.module.css";
 import { IoClose } from "react-icons/io5";

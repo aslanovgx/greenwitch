@@ -29,16 +29,16 @@ function ProductCardComponent({
     const isActive = isTouch && activeCardId === item.id;
     const { addToBag } = useBag();  // Burada
 
-    console.log(
-        "%cProductCard Debug",
-        "color: #1e90ff; font-weight: bold;",
-        {
-            isTouch,
-            activeCardId,
-            "item.id": item.id,
-            isActive
-        }
-    );
+    // console.log(
+    //     "%cProductCard Debug",
+    //     "color: #1e90ff; font-weight: bold;",
+    //     {
+    //         isTouch,
+    //         activeCardId,
+    //         "item.id": item.id,
+    //         isActive
+    //     }
+    // );
 
 
 

@@ -34,20 +34,6 @@
     transition: transform 0.2s ease;
 }
 
-/* .thumbnail:hover {
-    transform: scale(1.05);
-    border-color: black;
-} */
-
-/* .products_detail .leftSide .mainImage {
-    position: relative;
-    çünki next/image fill istifadə edir
-    width: 380px;
-    height: 400px;
-    border-radius: 6px;
-    overflow: hidden;
-    object-fit: none;
-} */
 
 /* ----------------------------------------------------- */
 
@@ -198,13 +184,112 @@
 
 @media (max-width: 1024px) {
     .products_detail {
-        gap: 32px;
+        display: flex;
+        flex-wrap: wrap;
+        /* Responsiveness üçün */
+        gap: 60px;
         padding: 32px;
+        align-items: flex-start;
     }
+
+    .products_detail .leftSide {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        align-items: flex-start;
+    }
+
+    .products_detail .leftSide .thumbnails {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        /* max-height: 400px; */
+        /* overflow-y: auto; */
+        scrollbar-width: thin;
+        /* Firefox */
+    }
+
+    .products_detail .leftSide .thumbnails .thumbnailImage {
+        width: 95px;
+        height: 127px;
+        object-fit: contain;
+        border: 1px solid #ccc;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: transform 0.2s ease;
+    }
+
 
     /* ----------------------------------------------------- */
 
     .products_detail .rightSide {
-        gap: 22px;
+        gap: 17px;
+    }
+
+    .products_detail .rightSide .title {
+        font-size: 17px;
+        line-height: 23.86px;
+    }
+
+    .products_detail .rightSide .desc {
+        font-size: 17px;
+        line-height: 23.86px;
+    }
+
+    .products_detail .rightSide .price {
+        font-size: 14px;
+    }
+
+    .products_detail .rightSide .colorRow {
+        gap: 17px;
+    }
+
+    .products_detail .rightSide .colorRow span {
+        font-size: 14px;
+    }
+
+    .products_detail .rightSide .colorRow .colorList {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        align-self: flex-start;
+        gap: 5px;
+    }
+
+    .products_detail .rightSide .colorRow .colorDot {
+        width: 38px;
+        height: 38px;
+    }
+
+    .products_detail .rightSide .buyRow {
+        display: flex;
+        gap: 12px;
+        margin-top: 12px;
+    }
+
+    .products_detail .rightSide .buyRow input {
+        padding: 4px 8px;
+        border-radius: 3px;
+        width: 49px;
+        /* height: 56px; */
+        font-size: 16px;
+    }
+
+    .products_detail .rightSide .buyRow .buyButton {
+        font-size: 17px;
+        line-height: 23.86px;
+        width: 232px;
+        padding: 12px 0px;
+    }
+
+    .products_detail .rightSide .note {
+        font-size: 14px;
+        margin-top: 10px;
+    }
+
+    .products_detail .rightSide .note p {
+        display: inline-block;
+        border-bottom: 1px solid #000;
+        cursor: pointer;
     }
 }

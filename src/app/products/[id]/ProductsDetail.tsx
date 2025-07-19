@@ -41,10 +41,11 @@ export default function ProductsDetail({ product }: Props) {
     useEffect(() => {
         const handleResize = () => {
             const width = window.innerWidth;
+            // console.log("Window width:", width); 
             if (width < 640) {
-                setImageSize({ width: 240, height: 260 });
+                setImageSize({ width: 200, height: 260 });
             } else if (width < 769) {
-                setImageSize({ width: 300, height: 320 });
+                setImageSize({ width: 200, height: 320 });
             } else if (width < 1025) {
                 setImageSize({ width: 270, height: 388 });
             } else {

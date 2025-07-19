@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from 'react';
 import styles from './FilterSection.module.css';
-import ArrowIcon from "@/components/icons/ArrowIcon";
 import FilterItem from "@/components/Filter/FilterItem";
 
 export default function FilterSection() {
