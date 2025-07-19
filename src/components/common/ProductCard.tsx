@@ -43,7 +43,7 @@ function ProductCardComponent({
 
 
     // console.log("ProductCard", item.id, "isActive", isActive);
-    console.log("isTouch", isTouch, "activeCardId", activeCardId, "item.id", item.id, "isActive", isActive);
+    // console.log("isTouch", isTouch, "activeCardId", activeCardId, "item.id", item.id, "isActive", isActive);
 
     // const handleCardTouch = () => {
     //     if (!isActive && setActiveCardId) {

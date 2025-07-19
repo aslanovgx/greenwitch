@@ -60,6 +60,15 @@
     width: 100%;
 }
 
+.specialOfferDetail .content .textContent .textList {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+
+.specialOfferDetail .content .textContent .textList li {
+    margin-bottom: 8px;
+}
+
 .specialOfferDetail .content .textLimited {
     max-width: 646px;
 }
@@ -92,6 +101,9 @@
     overflow: hidden;
 }
 
+.specialLi {
+    margin-bottom: 8px !important;
+}
 
 
 
@@ -315,6 +327,7 @@
     .specialOfferDetail .imageContainer .imageItem {
         display: none;
     }
+
     /* .specialOfferDetail .imageContainer .imageItem img{
        object-fit: cover;
     } */
@@ -353,5 +366,9 @@
 
     .specialOfferDetail .content .imageContainer2 {
         display: none;
+    }
+
+    .specialOfferDetail .content .textContent .textList li {
+        list-style: none;
     }
 }
