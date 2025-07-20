@@ -1,8 +1,6 @@
 "use client";
-import { useState, useEffect } from 'react';
-// import Zoom from 'react-medium-image-zoom';
+import { useState, useEffect, useRef } from 'react';
 import styles from './ProductsDetail.module.css';
-import 'react-medium-image-zoom/dist/styles.css';
 import { Product } from '@/types/Product';
 import Image from "next/image";
 import ImageMagnifier from '@/components/ImageMagnifier';
@@ -12,10 +10,9 @@ import { Pagination, Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-
 import { FiChevronUp, FiChevronDown } from 'react-icons/fi';
 import { useBag } from "@/context/BagContext";
-import { useRef } from 'react';
+import type { Swiper as SwiperClass } from 'swiper';
 
 type Props = {
     product: Product;
@@ -23,101 +20,84 @@ type Props = {
 
 export default function ProductsDetail({ product }: Props) {
     const [activeImage, setActiveImage] = useState<string | null>(
-        product.image && product.image.trim() !== '' ? product.image.trim() : null
+        product.image?.trim() || null
     );
-
 
     const [qty, setQty] = useState(1);
     const router = useRouter();
-    const { addToBag } = useBag();
+    const { addToBag } = useBag(); // Hazırda qty qəbul etmirsə, sadəcə product ötürüləcək
 
     const prevRef = useRef<HTMLButtonElement | null>(null);
     const nextRef = useRef<HTMLButtonElement | null>(null);
-    const swiperRef = useRef<any>(null);
+    const swiperRef = useRef<SwiperClass | null>(null);
 
     const [showMobileSlider, setShowMobileSlider] = useState(false);
+    const [hasMounted, setHasMounted] = useState(false); // ✅ SSR qorunması üçün
 
-    // ✅ Responsive image size idarəsi
     const [imageSize, setImageSize] = useState({ width: 380, height: 400 });
-    const [thumbsConfig, setThumbsConfig] = useState({
-        slidesPerView: 3,
-        height: 400,
-        width: 95
-    });
+    const [thumbsConfig, setThumbsConfig] = useState({ slidesPerView: 3, height: 400, width: 95 });
+
+    const getImageSizeByWidth = (width: number) => {
+        if (width < 640) return { width: 360, height: 420 };
+        if (width < 769) return { width: 200, height: 300 };
+        if (width < 1025) return { width: 270, height: 388 };
+        return { width: 380, height: 547 };
+    };
+
+    const getThumbsConfigByWidth = (width: number) => {
+        if (width < 640) return { slidesPerView: 4, height: 280, width: 75 };
+        if (width < 769) return { slidesPerView: 4, height: 300, width: 80 };
+        if (width < 1025) return { slidesPerView: 4, height: 390, width: 67 };
+        return { slidesPerView: 4, height: 538, width: 95 };
+    };
 
     useEffect(() => {
+        setHasMounted(true);
         const handleResize = () => {
             const width = window.innerWidth;
-
-            // Mobile slider toggle
-            if (width < 640) {
-                setShowMobileSlider(true);
-            } else {
-                setShowMobileSlider(false);
-            }
-            // Main image ölçüləri
-            if (width < 640) {
-                setImageSize({ width: 360, height: 420 });
-            } else if (width < 769) {
-                setImageSize({ width: 200, height: 300 });
-            } else if (width < 1025) {
-                setImageSize({ width: 270, height: 388 });
-            } else {
-                setImageSize({ width: 380, height: 547 });
-            }
-
-            // Thumbnail swiper konfiqurasiyası
-            if (width < 640) {
-                setThumbsConfig({ slidesPerView: 4, height: 280, width: 75 });
-            } else if (width < 769) {
-                setThumbsConfig({ slidesPerView: 4, height: 300, width: 80 });
-            } else if (width < 1025) {
-                setThumbsConfig({ slidesPerView: 4, height: 390, width: 67 });
-            } else {
-                setThumbsConfig({ slidesPerView: 4, height: 538, width: 95 });
-            }
+            setShowMobileSlider(width < 640);
+            setImageSize(getImageSizeByWidth(width));
+            setThumbsConfig(getThumbsConfigByWidth(width));
         };
 
-        // İlk yüklənmədə çağır
         handleResize();
-
-        // Resize zamanı dinamik dəyişsin
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-
-    const handleQtyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        const number = Number(value);
-        if (value === '') {
-            setQty(1);
-        } else if (number >= 1) {
-            setQty(number);
-        }
-    };
     useEffect(() => {
-        if (!swiperRef.current || showMobileSlider) return;
+        if (
+            !swiperRef.current ||
+            showMobileSlider ||
+            !prevRef.current ||
+            !nextRef.current
+        ) return;
 
         if (
-            swiperRef.current.params &&
-            swiperRef.current.params.navigation &&
+            swiperRef.current.params?.navigation &&
             typeof swiperRef.current.params.navigation !== "boolean"
         ) {
             swiperRef.current.params.navigation.prevEl = prevRef.current;
             swiperRef.current.params.navigation.nextEl = nextRef.current;
 
-            swiperRef.current.navigation.init();
-            swiperRef.current.navigation.update();
+            if (!swiperRef.current.destroyed) {
+                swiperRef.current.navigation.init();
+                swiperRef.current.navigation.update();
+            }
         }
     }, [thumbsConfig, showMobileSlider]);
 
-
+    const handleQtyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const number = Number(e.target.value);
+        if (!isNaN(number) && number >= 1) {
+            setQty(number);
+        }
+    };
 
     return (
         <div className={styles.products_detail}>
             <div className={styles.leftSide}>
-                {showMobileSlider ? (
+                {!hasMounted ? null : showMobileSlider ? (
                     <Swiper
                         slidesPerView={1}
                         pagination={{ clickable: true }}
@@ -128,22 +108,24 @@ export default function ProductsDetail({ product }: Props) {
                             if (newImage) setActiveImage(newImage);
                         }}
                     >
-                        {product.thumbnails?.map((thumb, i) => (
-                            <SwiperSlide key={i}>
-                                <Image
-                                    src={thumb}
-                                    alt={`mobile-thumb-${i}`}
-                                    width={imageSize.width}
-                                    height={imageSize.height}
-                                    className={styles.mainImageMobile}
-                                    style={{ objectFit: "cover", borderRadius: "8px" }}
-                                />
-                            </SwiperSlide>
-                        ))}
+                        {product.thumbnails?.map((thumb) =>
+                            thumb?.trim() ? (
+                                <SwiperSlide key={thumb}>
+                                    <Image
+                                        src={thumb}
+                                        alt="mobile-thumb"
+                                        width={imageSize.width}
+                                        height={imageSize.height}
+                                        priority
+                                        className={styles.mainImageMobile}
+                                        style={{ objectFit: "cover", borderRadius: "8px" }}
+                                    />
+                                </SwiperSlide>
+                            ) : null
+                        )}
                     </Swiper>
                 ) : (
                     <>
-                        {/* Desktop görünüş: thumbnails və zoom */}
                         <div className="product-detail-swiper-wrapper w-full relative">
                             <button ref={prevRef} className={styles.swiperPrev}>
                                 <FiChevronUp color="black" />
@@ -162,22 +144,21 @@ export default function ProductsDetail({ product }: Props) {
                                     maxWidth: `${thumbsConfig.width}px`,
                                 }}
                             >
-                                {product.thumbnails?.map((thumb, i) =>
+                                {product.thumbnails?.map((thumb) =>
                                     thumb?.trim() ? (
-                                        <SwiperSlide key={i}>
+                                        <SwiperSlide key={thumb}>
                                             <Image
                                                 src={thumb}
-                                                alt={`thumb-${i}`}
+                                                alt="thumb"
                                                 width={95}
                                                 height={127}
                                                 className={styles.thumbnailImage}
                                                 onClick={() => setActiveImage(thumb)}
                                                 style={{
                                                     cursor: "pointer",
-                                                    border:
-                                                        activeImage === thumb
-                                                            ? "2px solid black"
-                                                            : "1px solid #ccc",
+                                                    border: activeImage === thumb
+                                                        ? "2px solid black"
+                                                        : "1px solid #ccc",
                                                     borderRadius: "6px",
                                                 }}
                                             />
@@ -204,9 +185,8 @@ export default function ProductsDetail({ product }: Props) {
                 )}
             </div>
 
-            {/* Sağ hissə: mobil və desktop hər ikisi üçün */}
             <div className={styles.rightSide}>
-                <h2 className={styles.title}>{product.title}</h2>
+                <h1 className={styles.title}>{product.title}</h1>
                 <p className={styles.desc}>{product.desc}</p>
                 <p className={styles.price}>{product.price}</p>
 
@@ -237,7 +217,7 @@ export default function ProductsDetail({ product }: Props) {
                         className={styles.buyButton}
                         onClick={(e) => {
                             e.stopPropagation();
-                            addToBag(product);
+                            addToBag(product); // 👉 Əgər qty dəstək verilirsə: addToBag(product, qty)
                             router.push(`/purchase`);
                         }}
                     >
