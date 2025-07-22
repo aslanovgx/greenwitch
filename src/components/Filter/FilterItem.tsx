@@ -42,7 +42,7 @@ export default function FilterItem({
                     >
                         <IoClose
                             size={20}
-                            color="red"
+                            color="black"
                             className={styles.removeIcon}
                         />
                         {/* <Image

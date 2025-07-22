@@ -74,17 +74,17 @@
 }
 
 .row_3 {
-  padding: 50px 0 60px 0;
+  padding: 50px 0 70px 0;
 }
 
 .row_3 ul {
-  gap: 40px;
+  gap: 42px;
 }
 
 .row_3 ul li {
   color: #000;
   font-family: Montserrat;
-  font-size: 16px;
+  font-size: 17px;
   font-style: normal;
   line-height: normal;
   cursor: pointer;

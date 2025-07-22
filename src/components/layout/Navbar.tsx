@@ -78,6 +78,24 @@ export default function Navbar() {
             className="object-contain"
           />
         )}
+        {currentTextIndex === 1 && (
+          <Image
+            src={"/assets/icons/credit-card.svg"}
+            alt="credit-card"
+            width={21}
+            height={21}
+            className="object-contain"
+          />
+        )}
+        {currentTextIndex === 2 && (
+          <Image
+            src={"/assets/icons/done.svg"}
+            alt="done-icon"
+            width={21}
+            height={21}
+            className="object-contain"
+          />
+        )}
         <TextSwitcher texts={textSwitcherTexts} onIndexChange={setCurrentTextIndex} />
 
       </div>
@@ -124,7 +142,7 @@ export default function Navbar() {
         <div className="row-2-icons flex items-center justify-center">
           <Link href="/products">
             <Image
-              src={"/assets/icons/watch-2.svg"}
+              src={"/assets/icons/watch2.svg"}
               alt="watch2-icon"
               width={30}
               height={30}
@@ -167,9 +185,14 @@ export default function Navbar() {
           <li>Qadın</li>
           <li>Uşaq</li>
           <li>Aksesuar</li>
-          <li>Saatlar</li>
+           <Link href="/products">
+            <li>Saatlar</li>
+          </Link>
           <Link href="/location">
             <li>Mağazalar</li>
+          </Link>
+          <Link href="/about">
+            <li>Haqqımızda</li>
           </Link>
         </ul>
       </div>

@@ -139,12 +139,17 @@ export default function PurchaseContent() {
                     </div>
                 </div>
                 <div className={styles.buttonDiv}>
-                    <button
+                    {/* <button
                         onClick={handleOrderSubmit}
                         disabled={loading}
                         className="">
-                        {/* Sifarişi Qeydə Alın */}
                         {loading ? "Göndərilir..." : "Alış-verişi tamamla"}
+                    </button> */}
+                    <button
+                        onClick={() => router.push("/checkout")}
+                        className="..."
+                    >
+                        Alış-verişi tamamla
                     </button>
                 </div>
             </div>

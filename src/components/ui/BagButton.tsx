@@ -10,7 +10,7 @@ export default function BagButton({ onClick }: { onClick: () => void }) {
     return (
         <button onClick={onClick} className="relative">
             <Image
-                src={"/assets/icons/shopping.svg"}
+                src={"/assets/icons/bag3.svg"}
                 alt="shopping-icon"
                 width={30}
                 height={30}

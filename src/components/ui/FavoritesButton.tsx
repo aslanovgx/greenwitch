@@ -9,7 +9,7 @@ export default function FavoritesButton({ onClick }: { onClick: () => void }) {
     return (
         <button onClick={onClick} className="relative">
             <Image
-                src={"/assets/icons/heart.svg"}
+                src={"/assets/icons/heart3.svg"}
                 alt="heart-icon"
                 width={30}
                 height={30}

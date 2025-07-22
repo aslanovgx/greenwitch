@@ -2,22 +2,17 @@
     position: relative;
 }
 
-.active {
-    border-color: #40b659 !important;
-    background-color: #f6fff9;
-}
-
 .sideBar {
     position: absolute;
     top: 2rem;
-    left: 8px;
-    top: 8px;
+    left: 6px;
+    top: 6px;
     z-index: 5;
     background-color: #fff;
     border: 1px solid #d8d8d8;
     border-radius: 12px;
     width: 430px;
-    height: 614px;
+    height: 618px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -29,6 +24,7 @@
     margin-bottom: 1rem;
     font-weight: 700;
     color: black;
+    text-align: center;
 }
 
 .sideBar .areaList {
@@ -71,10 +67,27 @@
 }
 
 .sideBar .storePlaces {
-    overflow-y: scroll;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    padding-right: 6px;
+}
+
+/* Scrollbar track (arxa fon) */
+.storePlaces::-webkit-scrollbar {
+    width: 6px;
+}
+
+/* Scrollbar barı (sürüşmə hissəsi) */
+.storePlaces::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+}
+
+/* Scrollbar track (arka hissənin dizaynı, istəyə bağlı) */
+.storePlaces::-webkit-scrollbar-track {
+    background: transparent;
 }
 
 .sideBar .storePlaces li {
@@ -86,12 +99,21 @@
     padding: 10px;
     border-radius: 8px;
     cursor: pointer;
+    position: relative;
+}
+
+.sideBar .storePlaces li img {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 20px;
 }
 
 .sideBar .storePlaces li:hover {
-    border-color: #40b659 !important;
+    border-color: #40b659;
 }
-
 
 .sideBar .storePlaces li span {
     font-size: 14px;
@@ -106,7 +128,7 @@
 }
 
 .sideBar .storePlaces li span:last-child {
-    color: #40b659 !important;
+    color: #40b659;
     font-weight: 500;
 }
 
@@ -116,7 +138,35 @@
 }
 
 .map iframe {
-  /* border-radius: 8px; */
-  overflow: hidden;
-  border: 0;
+    /* border-radius: 8px; */
+    overflow: hidden;
+    border: 0;
+}
+
+.active {
+    font-weight: bold;
+    color: #000;
+    border-color: #40b659 !important;
+}
+
+.noStoreMessage {
+    text-align: center;
+    padding: 16px;
+    color: gray;
+    font-style: italic;
+    overflow-y: hidden;
+    border: 1px solid #d8d8d8;
+}
+
+.hideOverflow {
+    overflow: hidden !important;
+}
+
+.hideOverflow li {
+    border: none !important;
+    cursor: initial !important;
+}
+
+.hideOverflow li:hover {
+    border: none !important;
 }

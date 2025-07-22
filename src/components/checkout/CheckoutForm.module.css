@@ -1,0 +1,130 @@
+.checkoutTitle h1 {
+    color: #000;
+    text-align: center;
+    font-size: 29.316px;
+    font-weight: 700;
+    line-height: normal;
+    position: relative;
+    display: block;
+    max-width: 256.872px;
+    margin: 0 auto;
+    padding-bottom: 10px;
+    margin-bottom: 27px;
+}
+
+.checkoutTitle h1::after {
+    content: '';
+    position: absolute;
+    width: 256.872px;
+    height: 0.889px;
+    left: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, #FFF 2.4%, #000 49.04%, #FFF 100%);
+}
+
+.checkoutForm {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    /* background-color: #f9f9f9; */
+    /* border-radius: 8px; */
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.checkoutForm .formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: left;
+}
+
+.checkoutForm .formGroup label {
+    font-size: 15px;
+    font-weight: 600;
+    color: #000;
+    margin-bottom: 2px;
+}
+
+.checkoutForm input,
+.checkoutForm textarea,
+.checkoutForm select {
+    padding: 15px;
+    /* border: 1px solid #ccc; */
+    border: 1px solid #000;
+    border-radius:12px;
+    font-size: 18px;
+}
+
+.checkoutForm textarea {
+    overflow: hidden;
+    /* resize: none; */
+}
+
+.checkoutForm select {
+    font-family: inherit;
+    background-color: white;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: 1px solid #000;
+    border-radius: 12px;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.checkoutForm select:invalid {
+    color: #999;
+}
+
+.checkoutForm select option[disabled] {
+    color: #999;
+}
+
+.checkoutForm select:focus {
+    color: #000;
+}
+
+.checkoutForm select:valid {
+    color: #000;
+}
+
+.checkoutForm button {
+    padding: 15px 10px;
+    background-color: #000;
+    color: white;
+    border: 1px solid #000;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: 0.3s ease-in-out;
+}
+
+.checkoutForm button:hover {
+    background-color: white;
+    color: #000;
+    border: 1px solid #000;
+}
+
+/* -------------- */
+
+.errorField {
+    border: 1px solid red !important;
+    color: red !important;
+}
+
+.errorField {
+    border: 1px solid red !important;
+}
+
+.successField {
+    border: 1px solid green !important;
+}
+
+.errorMessage {
+    font-size: 13px;
+    color: red;
+    margin-top: 0px;
+}

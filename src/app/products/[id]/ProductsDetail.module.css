@@ -209,6 +209,27 @@
   border-radius: 8px;
 }
 
+  .swiperPrev svg,
+    .swiperNext svg {
+        width: 60px;
+        height: 60px;
+    }
+
+    .swiperPrev {
+        top: -61px;
+        left: 18px;
+    }
+
+    .swiperNext {
+        bottom: -61px;
+        left: 17px;
+    }
+
+    .swiperPrev:disabled,
+    .swiperNext:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
 
 
 /* ---------------------------------- */

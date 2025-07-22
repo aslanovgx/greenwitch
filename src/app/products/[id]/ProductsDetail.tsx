@@ -25,14 +25,14 @@ export default function ProductsDetail({ product }: Props) {
 
     const [qty, setQty] = useState(1);
     const router = useRouter();
-    const { addToBag } = useBag(); // Hazırda qty qəbul etmirsə, sadəcə product ötürüləcək
+    const { addToBag } = useBag();
 
     const prevRef = useRef<HTMLButtonElement | null>(null);
     const nextRef = useRef<HTMLButtonElement | null>(null);
     const swiperRef = useRef<SwiperClass | null>(null);
 
     const [showMobileSlider, setShowMobileSlider] = useState(false);
-    const [hasMounted, setHasMounted] = useState(false); // ✅ SSR qorunması üçün
+    const [hasMounted, setHasMounted] = useState(false);
 
     const [imageSize, setImageSize] = useState({ width: 380, height: 400 });
     const [thumbsConfig, setThumbsConfig] = useState({ slidesPerView: 3, height: 400, width: 95 });
@@ -52,7 +52,6 @@ export default function ProductsDetail({ product }: Props) {
     };
 
     useEffect(() => {
-        setHasMounted(true);
         const handleResize = () => {
             const width = window.innerWidth;
             setShowMobileSlider(width < 640);
@@ -60,6 +59,7 @@ export default function ProductsDetail({ product }: Props) {
             setThumbsConfig(getThumbsConfigByWidth(width));
         };
 
+        setHasMounted(true);
         handleResize();
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
@@ -94,10 +94,12 @@ export default function ProductsDetail({ product }: Props) {
         }
     };
 
+    if (!hasMounted) return <div style={{ minHeight: "400px" }} />;
+
     return (
         <div className={styles.products_detail}>
             <div className={styles.leftSide}>
-                {!hasMounted ? null : showMobileSlider ? (
+                {showMobileSlider ? (
                     <Swiper
                         slidesPerView={1}
                         pagination={{ clickable: true }}
@@ -217,7 +219,7 @@ export default function ProductsDetail({ product }: Props) {
                         className={styles.buyButton}
                         onClick={(e) => {
                             e.stopPropagation();
-                            addToBag(product); // 👉 Əgər qty dəstək verilirsə: addToBag(product, qty)
+                            addToBag(product);
                             router.push(`/purchase`);
                         }}
                     >
