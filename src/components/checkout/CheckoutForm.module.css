@@ -54,7 +54,7 @@
     padding: 15px;
     /* border: 1px solid #ccc; */
     border: 1px solid #000;
-    border-radius:12px;
+    border-radius: 12px;
     font-size: 18px;
 }
 
@@ -106,6 +106,37 @@
     background-color: white;
     color: #000;
     border: 1px solid #000;
+}
+
+/* -------------- */
+
+
+.phoneInputWrapper {
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    background-color: white;
+}
+
+.prefixSelect {
+    border: none;
+    font-size: 16px;
+    color: #111;
+    background: transparent;
+    outline: none;
+    margin-right: 8px;
+    /* padding-: 4px; */
+    border-right: 1px solid #ccc;
+    appearance: none;
+    padding: 15px !important;
+}
+
+.phoneNumberInput {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    padding-left: 10px;
 }
 
 /* -------------- */

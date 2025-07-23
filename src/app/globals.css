@@ -38,3 +38,9 @@ body {
 .custom-pagination .swiper-pagination-bullet-active {
   background: #2B2B28 !important;
 }
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+}

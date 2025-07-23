@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useBag } from "@/context/BagContext";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import styles from "./CheckoutForm.module.css"
 import { useRef } from "react";
 import { AZERBAIJAN_CITIES } from "@/data/cities";
+import PhoneInput from "../form/PhoneInput";
 
 export default function CheckoutForm() {
 
@@ -54,14 +55,62 @@ export default function CheckoutForm() {
     const [errorMessages, setErrorMessages] = useState<ErrorMessageData>({});
     const router = useRouter();
     const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const [phone, setPhone] = useState({ prefix: "050", number: "" });
+
+    useEffect(() => {
+        setForm((prev) => ({
+            ...prev,
+            phoneNumber: phone.prefix + phone.number
+        }));
+    }, [phone]);
+
+    useEffect(() => {
+        const digitsOnly = (phone.prefix + phone.number).replace(/\D/g, "");
+
+        if (digitsOnly.length === 10) {
+            setErrors((prev) => ({ ...prev, phoneNumber: false }));
+            setErrorMessages((prev) => ({ ...prev, phoneNumber: "" }));
+        }
+    }, [phone]);
+
 
     const handleChange = (
         e: React.ChangeEvent<
             HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
         >
     ) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+        setForm({ ...form, [name]: value });
+
+        // Real-time error validation
+        if (name === "fullName") {
+            if (value.trim()) {
+                setErrors((prev) => ({ ...prev, fullName: false }));
+                setErrorMessages((prev) => ({ ...prev, fullName: "" }));
+            }
+        }
+
+        if (name === "mail") {
+            if (!value.trim() || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim())) {
+                setErrorMessages((prev) => ({ ...prev, mail: "" }));
+            }
+        }
+
+        if (name === "city") {
+            if (value.trim()) {
+                setErrors((prev) => ({ ...prev, city: false }));
+                setErrorMessages((prev) => ({ ...prev, city: "" }));
+            }
+        }
+
+        if (name === "selectedStore") {
+            if (value.trim()) {
+                setErrors((prev) => ({ ...prev, selectedStore: false }));
+                setErrorMessages((prev) => ({ ...prev, selectedStore: "" }));
+            }
+        }
     };
+
 
     const handleSubmit = async () => {
         const newErrors: ErrorData = {
@@ -74,12 +123,22 @@ export default function CheckoutForm() {
         const newErrorMessages: ErrorMessageData = {};
 
         if (!form.fullName.trim()) newErrorMessages.fullName = "Ad Soyad daxil edin.";
-        if (!form.phoneNumber.trim()) newErrorMessages.phoneNumber = "Telefon nömrəsi daxil edin.";
-        else if (!/^\d+$/.test(form.phoneNumber.trim()))
+
+        const digitsOnly = form.phoneNumber.replace(/\D/g, ""); // boşluqları və qeyri-rəqəmləri sil
+
+        if (!digitsOnly) {
+            newErrorMessages.phoneNumber = "Telefon nömrəsi daxil edin.";
+        } else if (digitsOnly.length !== 10) {
+            newErrorMessages.phoneNumber = "Telefon nömrəsi 10 rəqəmdən ibarət olmalıdır.";
+        } else if (!/^\d+$/.test(digitsOnly)) {
             newErrorMessages.phoneNumber = "Telefon nömrəsi yalnız rəqəmlərdən ibarət olmalıdır.";
+        }
+
         if (form.mail.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.mail.trim()))
             newErrorMessages.mail = "Email düzgün formatda deyil.";
+
         if (!form.city.trim()) newErrorMessages.city = "Şəhər seçin.";
+
         if (!form.selectedStore.trim()) newErrorMessages.selectedStore = "Mağaza seçin.";
 
         setErrors(newErrors);
@@ -110,15 +169,23 @@ export default function CheckoutForm() {
         }
 
         if (name === "phoneNumber") {
-            if (!value.trim()) {
-                message = "Telefon nömrəsi daxil edin.";
-                setErrors((prev) => ({ ...prev, phoneNumber: true }));
-            } else if (!/^\d+$/.test(value.trim())) {
-                message = "Telefon nömrəsi yalnız rəqəmlərdən ibarət olmalıdır.";
-                setErrors((prev) => ({ ...prev, phoneNumber: true }));
-            } else {
-                setErrors((prev) => ({ ...prev, phoneNumber: false }));
-            }
+            setTimeout(() => {
+                const digitsOnly = (phone.prefix + phone.number).replace(/\D/g, "");
+                let message = "";
+
+                if (!digitsOnly) {
+                    message = "Telefon nömrəsi daxil edin.";
+                    setErrors((prev) => ({ ...prev, phoneNumber: true }));
+                } else if (digitsOnly.length !== 10) {
+                    message = "Telefon nömrəsi 10 rəqəmdən ibarət olmalıdır.";
+                    setErrors((prev) => ({ ...prev, phoneNumber: true }));
+                } else {
+                    setErrors((prev) => ({ ...prev, phoneNumber: false }));
+                    message = "";
+                }
+
+                setErrorMessages((prev) => ({ ...prev, phoneNumber: message }));
+            }, 0); // ✅ Asinxron yeniləməni gözləmək üçün
         }
 
         if (name === "mail") {
@@ -185,34 +252,16 @@ export default function CheckoutForm() {
                     )}
                 </div>
 
-                <div className={styles.formGroup}>
-                    <label htmlFor="phoneNumber">Telefon</label>
-                    <input
-                        id="phoneNumber"
-                        type="tel"
-                        name="phoneNumber"
-                        placeholder="0501234567"
-                        inputMode="numeric"
-                        pattern="[0-9]*"
-                        onKeyDown={(e) => {
-                            if (!/[0-9]/.test(e.key) && e.key !== "Backspace" && e.key !== "ArrowLeft" && e.key !== "ArrowRight") {
-                                e.preventDefault();
-                            }
-                        }}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        className={
-                            errors.phoneNumber
-                                ? styles.errorField
-                                : form.phoneNumber && !errorMessages.phoneNumber
-                                    ? styles.successField
-                                    : ""
-                        }
-                    />
-                    {errorMessages.phoneNumber && (
-                        <div className={styles.errorMessage}>{errorMessages.phoneNumber}</div>
-                    )}
-                </div>
+                <PhoneInput
+                    phone={phone}
+                    setPhone={setPhone}
+                    error={errorMessages.phoneNumber}
+                    onBlur={(e) => handleBlur(e)}
+                    isValid={
+                        !errorMessages.phoneNumber &&
+                        (phone.prefix + phone.number).replace(/\D/g, "").length === 10
+                    }
+                />
 
                 <div className={styles.formGroup}>
                     <label htmlFor="mail">Email</label>
@@ -224,12 +273,13 @@ export default function CheckoutForm() {
                         onChange={handleChange}
                         onBlur={handleBlur}
                         className={
-                            form.mail && errorMessages.mail
+                            errorMessages.mail
                                 ? styles.errorField
                                 : form.mail && !errorMessages.mail
                                     ? styles.successField
                                     : ""
                         }
+
                     />
                     {errorMessages.mail && (
                         <div className={styles.errorMessage}>{errorMessages.mail}</div>
@@ -299,7 +349,7 @@ export default function CheckoutForm() {
                     <textarea
                         id="additionalInfo"
                         name="additionalInfo"
-                        placeholder="Əlavə qeyd və s."
+                        placeholder="Əlavə qeyd və ms."
                         onChange={(e) => {
                             handleChange(e);
                             handleTextareaResize(); // hündürlüyü dəyiş
