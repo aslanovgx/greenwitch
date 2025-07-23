@@ -1,45 +1,43 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import styles from "./PurchaseContent.module.css"
 import { useBag } from "@/context/BagContext";
 import Image from "next/image";
-import toast from "react-hot-toast";
 
 export default function PurchaseContent() {
-    const { bagItems, removeFromBag, updateQuantity, clearBag } = useBag();
+    const { bagItems, removeFromBag, updateQuantity } = useBag();
     const router = useRouter();
-    const [loading, setLoading] = useState(false);
+    // const [loading, setLoading] = useState(false);
 
     const totalPrice = bagItems.reduce((total, item) => {
         const price = Number(item.price);
         return total + (isNaN(price) ? 0 : price * item.quantity);
     }, 0);
 
-    const handleOrderSubmit = async () => {
-        if (bagItems.length === 0) {
-            // alert("Səbət boşdur.");
-            toast.error("Səbət boşdur.");
-            return;
-        }
+    // const handleOrderSubmit = async () => {
+    //     if (bagItems.length === 0) {
+    //         // alert("Səbət boşdur.");
+    //         toast.error("Səbət boşdur.");
+    //         return;
+    //     }
 
-        setLoading(true);
-        try {
-            // API olmadığı üçün sadəcə uğurlu kimi qəbul edirik
-            await new Promise((resolve) => setTimeout(resolve, 1000)); // 1 saniyəlik loading effekti
+    //     setLoading(true);
+    //     try {
+    //         // API olmadığı üçün sadəcə uğurlu kimi qəbul edirik
+    //         await new Promise((resolve) => setTimeout(resolve, 1000)); // 1 saniyəlik loading effekti
 
-            clearBag(); // səbəti təmizlə
-            // alert("Sifarişiniz uğurla qeydə alındı!"); // uğur bildirişi
-            toast.success("Sifarişiniz uğurla qeydə alındı!");
-            router.push("/thanks"); // təşəkkür səhifəsinə yönləndir
-        } catch (error) {
-            console.error(error);
-            // alert("Xəta baş verdi.");
-            toast.error("Sifariş qeydə alınarkən xəta baş verdi.");
-        } finally {
-            setLoading(false);
-        }
-    };
+    //         clearBag(); // səbəti təmizlə
+    //         // alert("Sifarişiniz uğurla qeydə alındı!"); // uğur bildirişi
+    //         toast.success("Sifarişiniz uğurla qeydə alındı!");
+    //         router.push("/thanks"); // təşəkkür səhifəsinə yönləndir
+    //     } catch (error) {
+    //         console.error(error);
+    //         // alert("Xəta baş verdi.");
+    //         toast.error("Sifariş qeydə alınarkən xəta baş verdi.");
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
 
     // const handleOrderSubmit = async () => {
     //     if (bagItems.length === 0) {

@@ -299,7 +299,7 @@ export default function CheckoutForm() {
                     <textarea
                         id="additionalInfo"
                         name="additionalInfo"
-                        placeholder="Qapı şifrə, əlavə qeyd və s."
+                        placeholder="Əlavə qeyd və s."
                         onChange={(e) => {
                             handleChange(e);
                             handleTextareaResize(); // hündürlüyü dəyiş
