@@ -1,0 +1,42 @@
+﻿@model CreateBrandDto
+
+@{
+    ViewData["Title"] = "CreateBrand";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="content">
+    <div class="container-fluid mt-2">
+        <h4 class="page-title">Brend Əməliyyatları</h4>
+        <div class="row">
+            <div class="col-md-12">
+                <form method="post">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Yeni Brend Girişi</div>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="form-group mb-3">
+                                <label for="category">Kateqoriya Seçin</label>
+                                @Html.DropDownListFor(x => x.CategoryId,
+                                (List<SelectListItem>)ViewBag.CategoryValues,
+                                                                new { @class = "form-control", @id = "category" })
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="brandname">Brend Adı</label>
+                                <input type="text" class="form-control" asp-for="Name" id="brandname" required />
+                            </div>
+                        </div>
+
+                        <div class="card-footer text-end">
+                            <button type="submit" class="btn btn-success">Təsdiq Et</button>
+                            <a href="/Brands/CreateBrand/" class="btn btn-secondary">İmtina Et</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

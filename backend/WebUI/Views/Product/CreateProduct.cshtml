@@ -1,0 +1,226 @@
+﻿@model CreateProductDto
+
+@{
+    ViewData["Title"] = "Yeni Məhsul Əlavə Et";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <h4 class="page-title">Məhsul əməliyyatları</h4>
+        <div class="row">
+            <div class="col-md-12">
+                <form method="post" enctype="multipart/form-data">
+                    @Html.AntiForgeryToken()
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Yeni Məhsul Girişi</div>
+                        </div>
+                        <div class="card-body">
+
+                            <!-- Məhsul adı -->
+                            <div class="form-group">
+                                <label for="productname">Məhsul Adı</label>
+                                <input type="text" class="form-control" asp-for="Name" id="productname" required>
+                            </div>
+
+                            <!-- Məhsul qiyməti -->
+                            <div class="form-group">
+                                <label for="price">Məhsul Qiyməti</label>
+                                <input type="number" step="0.01" class="form-control" asp-for="Price" id="price" required>
+                            </div>
+
+                            <!-- Endirim qiyməti -->
+                            <div class="form-group">
+                                <label for="OldPrice">Endirim Qiyməti</label>
+                                <input type="number" step="0.01" class="form-control" asp-for="DiscountPrice" id="OldPrice" required>
+                            </div>
+
+                            <!-- Stok sayı -->
+                            <div class="form-group">
+                                <label for="stock">Stok Sayı</label>
+                                <input type="number" class="form-control" asp-for="Stock" id="stock" required>
+                            </div>
+
+                            <!-- Kateqoriya seçimi -->
+                            <div class="form-group">
+                                <label for="category">Kateqoriya Seçin</label>
+                                @Html.DropDownListFor(x => x.CategoryId,
+                                (List<SelectListItem>)ViewBag.CategoryValues,
+                                                                new { @class = "form-control", id = "CategoryId" })
+                            </div>
+
+                            <!-- Brend seçimi -->
+                            <div class="form-group">
+                                <label for="brand">Brend Seçin</label>
+                                @Html.DropDownListFor(x => x.BrandId,
+                                                                (List<SelectListItem>)ViewBag.BrandValues,
+                                                                new { @class = "form-control", id = "BrandId" })
+                            </div>
+
+                            <!-- Cins seçimi -->
+                            <div class="form-group">
+                                <label for="gender">Cins Seçin</label>
+                                @Html.DropDownListFor(x => x.GenderId,
+                                                                (List<SelectListItem>)ViewBag.GenderValues,
+                                                                new { @class = "form-control", id = "GenderId" })
+                            </div>
+
+                            <!-- Rəng seçimi -->
+                            <div class="form-group">
+                                <label for="ColorIds">Rəng Seçin</label>
+                                @Html.ListBoxFor(x => x.ColorIds,
+                                                                (List<SelectListItem>)ViewBag.ColorValues,
+                                                                new { @class = "form-control", multiple = "multiple", id = "ColorIds" })
+                            </div>
+
+                            <!-- Forma seçimi -->
+                            <div class="form-group" id="shapeGroup">
+                                <label for="shape">Forma Seçin</label>
+                                @Html.DropDownListFor(x => x.ShapeId,
+                                                                new SelectList(ViewBag.ShapeValues, "Value", "Text"),
+                                                                "-- Seçin --",
+                                                                new { @class = "form-control", id = "ShapeId" })
+                            </div>
+
+                            <!-- Şəkil Yükləmə Hissəsi (Dinamik, preview + sil düyməsi ilə) -->
+                            <div class="form-group">
+                                <label>Şəkillər</label>
+                                <div id="fileInputs">
+                                    <div class="input-group mb-2">
+                                        <input type="file" name="Files" class="form-control" accept="image/*" onchange="handleFileInputChange(this)" required />
+                                        <button type="button" class="btn btn-danger" onclick="removeInput(this)" style="display:none;">Sil</button>
+                                    </div>
+                                </div>
+                                <small class="form-text text-muted">Ən çox 5 şəkil əlavə edə bilərsiniz.</small>
+                            </div>
+
+                            <!-- Məhsul açıqlaması -->
+                            <div class="form-group">
+                                <label for="description">Açıqlama</label>
+                                <textarea class="form-control" asp-for="Description" id="description" rows="4" required></textarea>
+                            </div>
+
+                            <!-- Ən çox satılanlar switch -->
+                            <div class="form-group">
+                                <label class="form-label">Ən çox satılanlar</label>
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" asp-for="BestSeller" id="status">
+                                    <label class="custom-control-label" for="status">Aktiv</label>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="card-action">
+                            <button class="btn btn-success">Təsdiq Et</button>
+                            <a href="@Url.Action("Index", "Product")" class="btn btn-secondary">İmtina Et</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        // Brendlərin və Shape sahəsinin idarəsi (sənin əvvəlki kodun)
+        $(document).ready(function () {
+            var initialCategoryText = $('#CategoryId option:selected').text();
+            loadBrandsByCategory(initialCategoryText);
+            toggleShapeByCategory();
+
+            $('#CategoryId').on('change', function () {
+                var categoryText = $('#CategoryId option:selected').text();
+                loadBrandsByCategory(categoryText);
+                toggleShapeByCategory();
+            });
+
+            function loadBrandsByCategory(categoryName) {
+                $.ajax({
+                    url: '/Product/GetBrandsByCategoryName',
+                    type: 'GET',
+                    data: { categoryName: categoryName },
+                    success: function (brands) {
+                        var $brandDropdown = $('#BrandId');
+                        $brandDropdown.empty();
+
+                        $.each(brands, function (i, brand) {
+                            $brandDropdown.append($('<option></option>').val(brand.value).text(brand.text));
+                        });
+                    }
+                });
+            }
+
+            function toggleShapeByCategory() {
+                var categoryText = $('#CategoryId option:selected').text().toLowerCase();
+
+                if (categoryText.includes("aksesuar")) {
+                    $('#shapeGroup').hide();
+                    $('#ShapeId').val('');
+                } else {
+                    $('#shapeGroup').show();
+                }
+            }
+        });
+
+        // Şəkil yükləmə üçün dinamik input, preview və silmə düyməsi
+        function handleFileInputChange(input) {
+            const currentGroup = $(input).closest('.input-group');
+            currentGroup.find('button').show();
+
+            const file = input.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    let previewImg = currentGroup.find('.preview-img');
+
+                    if (previewImg.length > 0) {
+                        previewImg.attr('src', e.target.result);
+                    } else {
+                        const img = `<img src="${e.target.result}" class="preview-img" style="height:60px; width:auto; margin-left:10px; border-radius:4px;" />`;
+                        currentGroup.append(img);
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+
+            const totalInputs = $('#fileInputs .input-group').length;
+
+            if (totalInputs < 5) {
+                if (file) {
+                    if ($('#fileInputs .input-group:last input[type="file"]').val() !== "") {
+                        const newInput = `
+                            <div class="input-group mb-2">
+                                <input type="file" name="Files" class="form-control" accept="image/*" onchange="handleFileInputChange(this)" />
+                                <button type="button" class="btn btn-danger" onclick="removeInput(this)" style="display:none;">Sil</button>
+                            </div>`;
+                        $('#fileInputs').append(newInput);
+                    }
+                }
+            } else if (totalInputs > 5) {
+                alert("Ən çox 5 şəkil əlavə edə bilərsiniz.");
+                $('#fileInputs .input-group').last().remove();
+            }
+        }
+
+        function removeInput(button) {
+            $(button).closest('.input-group').remove();
+
+            const totalInputs = $('#fileInputs .input-group').length;
+
+            if (totalInputs === 0) {
+                const newInput = `
+                    <div class="input-group mb-2">
+                        <input type="file" name="Files" class="form-control" accept="image/*" onchange="handleFileInputChange(this)" required />
+                        <button type="button" class="btn btn-danger" onclick="removeInput(this)" style="display:none;">Sil</button>
+                    </div>`;
+                $('#fileInputs').append(newInput);
+            }
+        }
+    </script>
+}

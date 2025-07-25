@@ -1,0 +1,177 @@
+﻿@using WebUI.Models
+@using Domain.Enums
+@model OrderListViewModel
+
+@{
+    ViewData["Title"] = "Sifarişlər";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<style>
+    .table {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+        .table thead {
+            background-color: #3d5556;
+            color: white;
+        }
+
+            .table thead th {
+                color: white;
+            }
+
+    .card {
+        border-radius: 1rem !important;
+    }
+
+        /* Sifarişlər arasında arakəsmə */
+        .card + .card {
+            border-top: 1px solid #ddd;
+            margin-top: 1rem;
+            padding-top: 1rem;
+        }
+
+    .btn {
+        border-radius: 0.5rem;
+    }
+
+    .pagination .page-link {
+        border-radius: 0.5rem !important;
+    }
+</style>
+
+<h2 class="mb-4">Sifarişlər</h2>
+
+@foreach (var order in Model.Orders)
+{
+    int count = 0;
+    <div class="card mb-4 p-3 border shadow-sm rounded-4">
+        <h4 class="mb-2">@order.FullName : <span class="text-muted">@order.PhoneNumber</span></h4>
+
+        @if (!string.IsNullOrWhiteSpace(order.Mail))
+        {
+            <p><strong>E-poçt:</strong> @order.Mail</p>
+        }
+
+        <p>
+            <strong>Şəhər:</strong> @order.City |
+            <strong>Mağaza:</strong> @(order.Store ?? "--") |
+            <strong>Tarix:</strong> @order.CreatedDate.ToString("dd.MM.yyyy HH:mm")
+        </p>
+        <p>
+            <strong>Ümumi qiymət:</strong> @order.TotalPrice ₼ |
+            <strong>Endirimli qiymət:</strong> @order.TotalDiscountPrice ₼
+        </p>
+
+        @if (!string.IsNullOrWhiteSpace(order.AdditionalInfo))
+        {
+            <p><strong>Əlavə qeydlər:</strong> @order.AdditionalInfo</p>
+        }
+
+        <p class="mb-2">
+            <strong>Status:</strong>
+            @if (order.Status == OrderStatus.Pending)
+            {
+                <span class="badge bg-warning text-dark">Gözləmədə</span>
+            }
+            else if (order.Status == OrderStatus.Approved)
+            {
+                <span class="badge bg-success">Təsdiqlənmiş</span>
+            }
+            else if (order.Status == OrderStatus.Canceled)
+            {
+                <span class="badge bg-danger">İmtina olunmuş</span>
+            }
+        </p>
+
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Məhsul</th>
+                    <th>Rəng</th>
+                    <th>Say</th>
+                    <th>Qiymət</th>
+                    <th>Endirimli</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in order.OrderItems)
+                {
+                    count++;
+                    <tr>
+                        <td>@count</td>
+                        <td>@item.Name</td>
+                        <td>@item.Color</td>
+                        <td>@item.Count</td>
+                        <td>@item.Price ₼</td>
+                        <td>@item.DiscountPrice ₼</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="mt-3">
+            @if (order.Status == OrderStatus.Pending)
+            {
+                <form method="post" asp-action="ApproveOrder" asp-route-id="@order.Id" class="d-inline">
+                    <button type="submit" class="btn btn-light border px-3 me-2">Təsdiqlə</button>
+                </form>
+
+                <form method="post" asp-action="CancelOrder" asp-route-id="@order.Id" class="d-inline">
+                    <button type="submit" class="btn btn-outline-secondary px-3">İmtina et</button>
+                </form>
+            }
+        </div>
+    </div>
+}
+
+<!-- Pagination -->
+<nav aria-label="Səhifələmə">
+    <ul class="pagination justify-content-center">
+        @if (Model.CurrentPage > 1)
+        {
+            <li class="page-item">
+                <a class="page-link border-0" href="?page=@(Model.CurrentPage - 1)" aria-label="Əvvəlki">
+                    <span aria-hidden="true">&lt;</span>
+                </a>
+            </li>
+        }
+
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                <a class="page-link border-0" href="?page=@i">@i</a>
+            </li>
+        }
+
+        @if (Model.CurrentPage < Model.TotalPages)
+        {
+            <li class="page-item">
+                <a class="page-link border-0" href="?page=@(Model.CurrentPage + 1)" aria-label="Növbəti">
+                    <span aria-hidden="true">&gt;</span>
+                </a>
+            </li>
+        }
+    </ul>
+</nav>
+
+@section Scripts {
+    <script>
+        async function markAllOrdersAsSeen() {
+            try {
+                const response = await fetch("https://localhost:7228/api/Order");
+                const result = await response.json();
+                const orders = result.orders || [];
+                const orderIds = orders.map(o => o.id);
+                localStorage.setItem("seenOrderIds", JSON.stringify(orderIds));
+            } catch (error) {
+                console.error("Bildirişləri sıfırlamaq mümkün olmadı:", error);
+            }
+        }
+
+        markAllOrdersAsSeen();
+    </script>
+}

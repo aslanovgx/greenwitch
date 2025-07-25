@@ -1,0 +1,70 @@
+﻿@model List<ResultBrandDto>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    int count = 0;
+    bool hideCategoryColumn = !string.IsNullOrEmpty(Context.Request.Query["categoryName"]);
+}
+
+<form method="get" asp-controller="Brands" asp-action="Index" class="mb-3">
+    <div class="form-row align-items-center">
+        <div class="col-auto">
+            <select name="categoryName" class="form-control" onchange="this.form.submit()">
+                <option value="">Bütün Kateqoriyalar</option>
+                @foreach (var item in ViewBag.CategoryValues as List<SelectListItem>)
+                {
+                    <option value="@item.Value" selected="@item.Selected">@item.Text</option>
+                }
+            </select>
+        </div>
+    </div>
+</form>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Brendlərin Listi</div>
+            </div>
+            <div class="card-body">
+                <div class="card-sub">
+                    Brend ilə bağlı əməliyyatları aşağıdan görə bilərsiniz.
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover text-nowrap">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Brend Adı</th>
+                                @if (!hideCategoryColumn)
+                                {
+                                    <th scope="col">Kateqoriya Adı</th>
+                                }
+                                <th scope="col">Yenilə</th>
+                                <th scope="col">Sil</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                count++;
+                                <tr>
+                                    <td>@count</td>
+                                    <td>@item.Name</td>
+                                    @if (!hideCategoryColumn)
+                                    {
+                                        <td>@item.CategoryName</td>
+                                    }
+                                    <td><a href="/Brands/UpdateBrand/@item.Id" class="btn btn-outline-success">Yenilə</a></td>
+                                    <td><a href="/Brands/DeleteBrand/@item.Id" class="btn btn-outline-danger">Sil</a></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <a href="/Brands/CreateBrand/" class="btn btn-outline-primary">Yeni Brend Əlavə Et</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,101 @@
+﻿<script src="~/Ready-Bootstrap-Dashboard-master/assets/js/core/jquery.3.2.1.min.js"></script>
+<script src="~/Ready-Bootstrap-Dashboard-master/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+<script src="~/Ready-Bootstrap-Dashboard-master/assets/js/core/popper.min.js"></script>
+<script src="~/Ready-Bootstrap-Dashboard-master/assets/js/core/bootstrap.min.js"></script>
+<script src="~/Ready-Bootstrap-Dashboard-master/assets/js/plugin/chartist/chartist.min.js"></script>
+<script src="~/Ready-Bootstrap-Dashboard-master/assets/js/plugin/chartist/plugin/chartist-plugin-tooltip.min.js"></script>
+<script src="~/Ready-Bootstrap-Dashboard-master/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+<script src="~/Ready-Bootstrap-Dashboard-master/assets/js/plugin/bootstrap-toggle/bootstrap-toggle.min.js"></script>
+<script src="~/Ready-Bootstrap-Dashboard-master/assets/js/plugin/jquery-mapael/jquery.mapael.min.js"></script>
+<script src="~/Ready-Bootstrap-Dashboard-master/assets/js/plugin/jquery-mapael/maps/world_countries.min.js"></script>
+<script src="~/Ready-Bootstrap-Dashboard-master/assets/js/plugin/chart-circle/circles.min.js"></script>
+<script src="~/Ready-Bootstrap-Dashboard-master/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+<script src="~/Ready-Bootstrap-Dashboard-master/assets/js/ready.min.js"></script>
+
+<style>
+    #notif-list-container li {
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 8px;
+        margin-bottom: 8px;
+    }
+
+        #notif-list-container li:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+</style>
+
+<script>
+    async function fetchOrders() {
+        try {
+            const response = await fetch("https://localhost:7228/api/Order");
+            const result = await response.json();
+            const orders = result.orders || [];
+
+            const seenOrders = JSON.parse(localStorage.getItem("seenOrderIds")) || [];
+            const unseenOrders = orders.filter(order => !seenOrders.includes(order.id));
+
+            const notifCount = document.getElementById("notif-count");
+            if (notifCount) notifCount.textContent = unseenOrders.length;
+
+            const notifList = document.getElementById("notif-list-container");
+            if (!notifList) return;
+
+            notifList.innerHTML = "";
+
+            if (unseenOrders.length === 0) {
+                notifList.innerHTML = `<li><a class="dropdown-item px-2" href="#"><span class="text-muted">Yeni sifariş yoxdur</span></a></li>`;
+            } else {
+                unseenOrders.slice(0, 3).forEach(order => {
+                    const message = `${order.fullName} adlı müştəridən yeni sifariş daxil olub (${order.totalDiscountPrice} ₼)`;
+
+                    const item = `
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center px-2" href="/Order/Index" style="padding-left: 10px !important;">
+                                <span style="font-size: 16px; margin-right: 6px;">🔔</span>
+                                <span class="notification-item-text" title="${message}" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    ${message}
+                                </span>
+                            </a>
+                        </li>`;
+                    notifList.innerHTML += item;
+                });
+            }
+        } catch (error) {
+            console.error("Bildirişləri yükləmək mümkün olmadı:", error);
+        }
+    }
+
+    fetchOrders();
+    setInterval(fetchOrders, 5000);
+</script>
+
+<script>
+    $('#displayNotif').on('click', function () {
+        var placementFrom = $('#notify_placement_from option:selected').val();
+        var placementAlign = $('#notify_placement_align option:selected').val();
+        var state = $('#notify_state option:selected').val();
+        var style = $('#notify_style option:selected').val();
+        var content = {};
+
+        content.message = 'Turning standard Bootstrap alerts into "notify" like notifications';
+        content.title = 'Bootstrap notify';
+        if (style == "withicon") {
+            content.icon = 'la la-bell';
+        } else {
+            content.icon = 'none';
+        }
+        content.url = 'index.html';
+        content.target = '_blank';
+
+        $.notify(content, {
+            type: state,
+            placement: {
+                from: placementFrom,
+                align: placementAlign
+            },
+            time: 1000,
+        });
+    });
+</script>

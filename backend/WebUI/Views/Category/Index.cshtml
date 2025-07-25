@@ -1,0 +1,46 @@
+﻿@model List<ResultCategoryDto>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    int count = 0;
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Kateqoriya Listi</div>
+            </div>
+            <div class="card-body">
+                <div class="card-sub">
+                    Kateqoriya ilə bağlı əməliyyatları aşağıdan görə bilərsiniz.
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover text-nowrap">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Kateqoriya Adı</th>
+                                <th scope="col">Yenilə</th>
+                                <th scope="col">Sil</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                count++;
+                                <tr>
+                                    <td>@count</td>
+                                    <td>@item.Name</td>
+                                    <td><a href="/Category/UpdateCategory/@item.Id" class="btn btn-outline-success">Yenilə</a></td>
+                                    <td><a href="/Category/DeleteCategory/@item.Id" class="btn btn-outline-danger">Sil</a></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <a href="/Category/CreateCategory/" class="btn btn-outline-primary">Yeni Kateqoriya Əlavə Et</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

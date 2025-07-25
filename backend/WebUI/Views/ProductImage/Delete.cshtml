@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+@foreach (var image in Model.Images) 
+{
+    <div>
+        <img src="@image.ImagePath" style="max-width:100px;" />
+        <form asp-action="Delete" method="post" style="display:inline;">
+            <input type="hidden" name="id" value="@image.Id" />
+            <button type="submit" class="btn btn-danger btn-sm">Sil</button>
+        </form>
+    </div>
+}
+
+

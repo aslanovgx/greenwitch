@@ -1,0 +1,154 @@
+﻿@model UpdateProductDto
+@{
+    ViewData["Title"] = "Məhsulu Redaktə Et";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <h4 class="page-title">Məhsul Redaktəsi</h4>
+        <div class="row">
+            <div class="col-md-12">
+                <form method="post">
+                    @Html.AntiForgeryToken()
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Məhsul Redaktəsi</div>
+                        </div>
+                        <div class="card-body">
+                            <input type="hidden" asp-for="Id" />
+
+                            <div class="form-group">
+                                <label for="productname">Məhsul Adı</label>
+                                <input type="text" class="form-control" asp-for="Name" id="productname" required />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="price">Məhsul Qiyməti</label>
+                                <input type="number" step="0.01" class="form-control" asp-for="Price" id="price" required />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="OldPrice">Endirim Qiyməti</label>
+                                <input type="number" step="0.01" class="form-control" asp-for="DiscountPrice" id="OldPrice" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="stock">Stok Sayı</label>
+                                <input type="number" class="form-control" asp-for="Stock" id="stock" required />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="category">Kateqoriya Seçin</label>
+                                @Html.DropDownListFor(x => x.CategoryId,
+                                         (List<SelectListItem>)ViewBag.CategoryValues,
+                                         new { @class = "form-control", id = "CategoryId" })
+                            </div>
+
+                            <div class="form-group">
+                                <label for="brand">Brend Seçin</label>
+                                @Html.DropDownListFor(x => x.BrandId,
+                                         (List<SelectListItem>)ViewBag.BrandValues,
+                                         new { @class = "form-control", id = "BrandId" })
+                            </div>
+
+                            <div class="form-group">
+                                <label for="gender">Cins Seçin</label>
+                                @Html.DropDownListFor(x => x.GenderId,
+                                         (List<SelectListItem>)ViewBag.GenderValues,
+                                         new { @class = "form-control", id = "GenderId" })
+                            </div>
+
+                            <div class="form-group">
+                                <label for="color">Rəng Seçin</label>
+                                @Html.ListBoxFor(x => x.ColorIds,
+                                         (List<SelectListItem>)ViewBag.ColorValues,
+                                         new { @class = "form-control", id = "color", multiple = "multiple" })
+                            </div>
+
+                            <div class="form-group" id="shapeGroup">
+                                <label for="shape">Forma Seçin</label>
+                                @Html.DropDownListFor(x => x.ShapeId,
+                                         (List<SelectListItem>)ViewBag.ShapeValues,
+                                         new { @class = "form-control", id = "ShapeId" })
+                            </div>
+
+                            <div class="form-group">
+                                <label for="description">Açıqlama</label>
+                                <textarea class="form-control" asp-for="Description" id="description" rows="4"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Ən çox satılan</label>
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" asp-for="BestSeller" id="status" />
+                                    <label class="custom-control-label" for="status">Aktiv</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-action">
+                            <button class="btn btn-success">Təsdiq Et</button>
+                            <a href="@Url.Action("Index", "Product")" class="btn btn-secondary">İmtina Et</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            // İlk açılışda seçilmiş kateqoriyaya uyğun brendləri yüklə
+            var initialCategoryText = $('#CategoryId option:selected').text();
+            loadBrandsByCategory(initialCategoryText);
+
+            // İlk açılışda Shape sahəsini idarə et
+            toggleShapeByCategory();
+
+            // Kategoriya dəyişdikdə brendləri yenilə və Shape sahəsini idarə et
+            $('#CategoryId').on('change', function () {
+                var categoryText = $('#CategoryId option:selected').text();
+                loadBrandsByCategory(categoryText);
+                toggleShapeByCategory();
+            });
+
+            function loadBrandsByCategory(categoryName) {
+                $.ajax({
+                    url: '/Product/GetBrandsByCategoryName',
+                    type: 'GET',
+                    data: { categoryName: categoryName },
+                    success: function (brands) {
+                        var $brandDropdown = $('#BrandId');
+                        $brandDropdown.empty();
+
+                        $.each(brands, function (i, brand) {
+                            $brandDropdown.append($('<option></option>').val(brand.value).text(brand.text));
+                        });
+
+                        // Əgər modeldə artıq seçilmiş BrandId varsa, onu seç
+                        var selectedBrandId = '@Model.BrandId';
+                        if (selectedBrandId) {
+                            $brandDropdown.val(selectedBrandId);
+                        }
+                    }
+                });
+            }
+
+            function toggleShapeByCategory() {
+                var categoryText = $('#CategoryId option:selected').text().toLowerCase();
+
+                if (categoryText.includes("aksesuar")) {
+                    $('#shapeGroup').hide();
+                    $('#ShapeId').val('');
+                } else {
+                    $('#shapeGroup').show();
+                }
+            }
+        });
+    </script>
+}

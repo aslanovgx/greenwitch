@@ -1,0 +1,62 @@
+﻿<div class="main-header">
+    <div class="logo-header d-flex align-items-center">
+        <a href="https://greenwich-git-main-aslanovgxs-projects.vercel.app/" target="_blank" class="logo" style="text-decoration: none;">
+            <img src="/images/logo.jpg" alt="SaatAz Logo" style="height: 35px;" />
+        </a>
+        <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="#sidebar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <button class="topbar-toggler more"><i class="la la-ellipsis-v"></i></button>
+    </div>
+
+    <nav class="navbar navbar-header navbar-expand-lg">
+        <div class="container-fluid">
+            <div class="navbar-left navbar-form nav-search mr-md-3 d-none d-md-block">
+                <span class="text-muted font-weight-bold">Admin Panelə xoş gəldiniz</span>
+            </div>
+
+            <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
+                <li class="nav-item dropdown hidden-caret">
+                    <a class="nav-link dropdown-toggle" href="#" id="notificationsDropdown" role="button" data-toggle="dropdown">
+                        <i class="la la-bell"></i>
+                        <span class="notification" id="notif-count">0</span>
+                    </a>
+                    <div class="dropdown-menu notif-box" aria-labelledby="notificationsDropdown">
+                        <div class="dropdown-title" id="notif-title">Bildirişlər</div>
+                        <ul id="notif-list-container" class="list-unstyled mb-0 px-3"></ul>
+                        <div class="dropdown-footer px-3 py-2">
+                            <a class="see-all d-block text-center" href="/Order/Index"><strong>Hamısını gör</strong> <i class="la la-angle-right"></i></a>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#">
+                        <img src="/images/Greenwich_logo.jpg" alt="user-img" width="36" class="img-circle" />
+                        <span>GreenWich_Admin</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-user">
+                        <div class="user-box d-flex align-items-center px-3 py-2">
+                            <div class="u-img" style="width: 48px; height: 48px; overflow: hidden; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: #f5f5f5;">
+                                <img src="/images/Greenwich_logo.jpg" alt="user" style="height: 100%; width: auto;" />
+                            </div>
+                            <div class="u-text ml-2">
+                                <h4 class="mb-0">Admin</h4>
+                                <p class="text-muted mb-1">admin@saat.az</p>
+                                <a href="#" class="btn btn-rounded btn-danger btn-sm">Profili Gör</a>
+                            </div>
+                        </div>
+
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#"><i class="ti-user"></i> Məhsullar</a>
+                        <a class="dropdown-item" href="#"><i class="ti-email"></i> Sifarişlər</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" asp-controller="Auth" asp-action="Logout">
+                            <i class="fa fa-power-off"></i> Çıxış Et
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>

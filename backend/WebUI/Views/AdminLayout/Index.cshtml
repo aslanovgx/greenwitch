@@ -1,0 +1,39 @@
+﻿﻿@{
+Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    @await Component.InvokeAsync("_LayoutHeaderComponentPartial")
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css" />
+
+    <style>
+        /* Bildiriş mətni uzun olduqda kəsilsin */
+        .notification-item-text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 220px; /* lazım olduqda dəyiş */
+            display: inline-block;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        @await Component.InvokeAsync("_LayoutNavbarComponentPartial")
+        @await Component.InvokeAsync("_LayoutSidebarComponentPartial")
+
+        <div class="main-panel">
+            <div class="content-wrapper p-4 mt-5">
+                @RenderBody()
+            </div>
+            @await Component.InvokeAsync("_LayoutFooterComponentPartial")
+        </div>
+    </div>
+
+    @await Component.InvokeAsync("_LayoutScriptComponentPartial")
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

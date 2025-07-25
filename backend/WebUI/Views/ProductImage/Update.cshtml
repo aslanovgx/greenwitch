@@ -1,0 +1,202 @@
+﻿@model UpdateProductImageDto
+@{
+    ViewData["Title"] = "Update";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<h2>Şəkil Yenilə</h2>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<form asp-action="Update" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label>Kateqoriya seçin</label>
+        <select id="CategoryId" class="form-control" required>
+            <option value="">-- Kateqoriya seçin --</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Brend seçin</label>
+        <select id="BrandId" class="form-control" required disabled>
+            <option value="">-- Brend seçin --</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Məhsul seçin</label>
+        <select asp-for="ProductId" class="form-control" required disabled>
+            <option value="">-- Məhsul seçin --</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Şəkillər</label>
+        <div id="fileInputs">
+            <div class="input-group mb-2">
+                <input type="file" name="Files" class="form-control" accept="image/*" onchange="handleFileInputChange(this)" />
+                <button type="button" class="btn btn-danger" onclick="removeInput(this)" style="display:none;">Sil</button>
+            </div>
+        </div>
+        <small class="form-text text-muted">Ən çox 5 şəkil əlavə edə bilərsiniz.</small>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Yenilə</button>
+</form>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Kateqoriyaları yüklə
+            $.ajax({
+                url: '/ProductImage/GetCategories',
+                type: 'GET',
+                success: function (data) {
+                    var categorySelect = $('#CategoryId');
+                    $.each(data, function (i, item) {
+                        categorySelect.append('<option value="' + item.name + '">' + item.name + '</option>');
+                    });
+                }
+            });
+
+            // Kateqoriya seçiləndə brendləri yüklə
+            $('#CategoryId').on('change', function () {
+                var categoryName = $(this).val();
+
+                var brandSelect = $('#BrandId');
+                brandSelect.empty().append('<option value="">-- Brend seçin --</option>');
+
+                var productSelect = $('select[name="ProductId"]');
+                productSelect.empty().append('<option value="">-- Məhsul seçin --</option>').prop('disabled', true);
+
+                if (categoryName) {
+                    brandSelect.prop('disabled', false);
+                    $.ajax({
+                        url: 'https://localhost:7228/api/Brand/GetBrandsByCategoryName',
+                        type: 'GET',
+                        data: { CategoryName: categoryName },
+                        success: function (response) {
+                            console.log("Brands response:", response);
+                            var brands = response.brands || response;
+
+                            $.each(brands, function (i, item) {
+                                brandSelect.append('<option value="' + item.name + '">' + item.name + '</option>');
+                            });
+                        },
+                        error: function () {
+                            console.error("Brendlər yüklənmədi");
+                        }
+                    });
+                } else {
+                    brandSelect.prop('disabled', true);
+                    productSelect.prop('disabled', true);
+                }
+            });
+
+            // Brend seçiləndə məhsulları yüklə
+            $('#BrandId').on('change', function () {
+                var brandName = $(this).val();
+
+                var productSelect = $('select[name="ProductId"]');
+                productSelect.empty().append('<option value="">-- Məhsul seçin --</option>');
+
+                if (brandName) {
+                    productSelect.prop('disabled', false);
+                    $.ajax({
+                        url: '/ProductImage/GetProductsByBrand',
+                        type: 'GET',
+                        data: { brandName: brandName },
+                        success: function (data) {
+                            $.each(data, function (i, item) {
+                                productSelect.append('<option value="' + item.id + '">' + item.name + '</option>');
+                            });
+                        }
+                    });
+                } else {
+                    productSelect.prop('disabled', true);
+                }
+            });
+        });
+
+        function handleFileInputChange(input) {
+            const currentGroup = $(input).closest('.input-group');
+            currentGroup.find('button').show();
+
+            const file = input.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    let previewImg = currentGroup.find('.preview-img');
+
+                    if (previewImg.length > 0) {
+                        previewImg.attr('src', e.target.result);
+                    } else {
+                        const img = `<img src="${e.target.result}" class="preview-img" style="height:60px; width:auto; margin-left:10px; border-radius:4px;" />`;
+                        currentGroup.append(img);
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+
+            const totalInputs = $('#fileInputs .input-group').length;
+
+            if (totalInputs < 5) {
+                // 5-dən az input varsa, yeni input əlavə et
+                if (file) {
+                    const newInput = `
+                        <div class="input-group mb-2">
+                            <input type="file" name="Files" class="form-control" accept="image/*" onchange="handleFileInputChange(this)" />
+                            <button type="button" class="btn btn-danger" onclick="removeInput(this)">Sil</button>
+                        </div>`;
+                    $('#fileInputs').append(newInput);
+                }
+            } else if (totalInputs === 5) {
+                // 5-ci input var, heç nə etmə (alert göstərmə və input silmə)
+                // Bu 5-ci şəkilə icazə verilir
+            } else {
+                // 6-cı və daha çox input varsa alert göstər və əlavə olunan inputu sil
+                alert("Ən çox 5 şəkil əlavə edə bilərsiniz.");
+                $('#fileInputs .input-group').last().remove();
+            }
+        }
+
+        function removeInput(button) {
+            $(button).closest('.input-group').remove();
+
+            const totalInputs = $('#fileInputs .input-group').length;
+
+            if (totalInputs < 5 && totalInputs > 0) {
+                // Əgər input sayı 1 ilə 4 arasındadırsa, yoxla yeni input əlavə olunubmu
+                // Əgər son input boşdursa əlavə et
+                const lastInput = $('#fileInputs .input-group').last().find('input[type=file]');
+                if (lastInput.length === 0 || lastInput.val()) {
+                    const newInput = `
+                        <div class="input-group mb-2">
+                            <input type="file" name="Files" class="form-control" accept="image/*" onchange="handleFileInputChange(this)" />
+                            <button type="button" class="btn btn-danger" onclick="removeInput(this)" style="display:none;">Sil</button>
+                        </div>`;
+                    $('#fileInputs').append(newInput);
+                }
+            }
+
+            if (totalInputs === 0) {
+                // Əgər heç bir input qalmayıbsa, minimum bir input əlavə et
+                const newInput = `
+                    <div class="input-group mb-2">
+                        <input type="file" name="Files" class="form-control" accept="image/*" onchange="handleFileInputChange(this)" />
+                        <button type="button" class="btn btn-danger" onclick="removeInput(this)" style="display:none;">Sil</button>
+                    </div>`;
+                $('#fileInputs').append(newInput);
+            }
+        }
+    </script>
+}

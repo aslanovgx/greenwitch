@@ -1,0 +1,228 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="container mt-4">
+
+    <!-- Dashboard statistik kartlar -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card card-stats card-warning">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="icon-big text-center">
+                                <i class="la la-cubes"></i>
+                            </div>
+                        </div>
+                        <div class="col-7 d-flex align-items-center">
+                            <div class="numbers">
+                                <p class="card-category">Məhsullar</p>
+                                <h4 class="card-title">@ViewBag.ProductCount</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card card-stats card-success">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="icon-big text-center">
+                                <i class="la la-clock-o"></i>
+                            </div>
+                        </div>
+                        <div class="col-7 d-flex align-items-center">
+                            <div class="numbers">
+                                <p class="card-category" style="font-size:12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin:0;">
+                                    Gözləyən Sifarişlər
+                                </p>
+                                <h4 class="card-title">@ViewBag.PendingOrdersCount</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-3">
+            <div class="card card-stats card-danger">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="icon-big text-center">
+                                <i class="la la-shopping-bag"></i>
+                            </div>
+                        </div>
+                        <div class="col-7 d-flex align-items-center">
+                            <div class="numbers">
+                                <p class="card-category">Satışlar</p>
+                                <h4 class="card-title">@ViewBag.SalesCount</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card card-stats card-primary">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="icon-big text-center">
+                                <i class="la la-dollar"></i>
+                            </div>
+                        </div>
+                        <div class="col-7 d-flex align-items-center">
+                            <div class="numbers">
+                                <p class="card-category">Dövriyyə</p>
+                                <h4 class="card-title">@ViewBag.TotalRevenue ₼</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Mağaza üzrə satışlar və cədvəl -->
+
+    <div class="row mb-5">
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm p-3 h-100">
+                <h5>Ən çox satılan məhsullar</h5>
+                <table class="table table-hover mt-3">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Brend</th>
+                            <th>Məhsul</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>Rolex</td><td>Submariner</td></tr>
+                        <tr><td>2</td><td>Omega</td><td>Speedmaster</td></tr>
+                        <tr><td>3</td><td>Tag Heuer</td><td>Monaco</td></tr>
+                        <tr><td>4</td><td>Seiko</td><td>Prospex</td></tr>
+                        <tr><td>5</td><td>Casio</td><td>G-Shock</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm p-3 h-100">
+                <h5 class="text-center">Mağaza üzrə Satış Məbləği</h5>
+                <canvas id="storeChart" height="220"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Aylıq Satışlar Qrafiki -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm p-3 mb-4">
+                <h5>Aylıq Satış Statistikası</h5>
+                <canvas id="monthlyChart" height="100"></canvas>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // Store Chart
+        const storeLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(((Dictionary<string, decimal>)ViewBag.StoreSales).Keys));
+        const storeValues = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(((Dictionary<string, decimal>)ViewBag.StoreSales).Values));
+
+        new Chart(document.getElementById('storeChart'), {
+            type: 'bar',
+            data: {
+                labels: storeLabels,
+                datasets: [{
+                    label: 'Satış Məbəği (₼)',
+                    data: storeValues,
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 2,
+                    borderRadius: 6,
+                    barThickness: 40
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                return context.parsed.y.toLocaleString('az-Latn-AZ') + " ₼";
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: '#333',
+                            font: { size: 13, weight: 'bold' }
+                        },
+                        grid: { display: false }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: '#555',
+                            callback: function (value) {
+                                return value.toLocaleString('az-Latn-AZ') + " ₼";
+                            }
+                        },
+                        grid: { color: '#eee', borderDash: [4, 4] }
+                    }
+                }
+            }
+        });
+
+        // Monthly Sales Chart
+        new Chart(document.getElementById("monthlyChart"), {
+            type: 'line',
+            data: {
+                labels: ['Yan', 'Fev', 'Mar', 'Apr', 'May', 'İyun', 'İyul'],
+                datasets: [{
+                    label: 'Aylıq Satış',
+                    data: [500, 700, 600, 850, 900, 1000, 950],
+                    fill: false,
+                    borderColor: '#007bff',
+                    backgroundColor: '#007bff',
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: { color: '#444' }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: '#555' },
+                        grid: { color: 'rgba(0,0,0,0.03)' }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: { color: '#555' },
+                        grid: { color: 'rgba(0,0,0,0.03)' }
+                    }
+                }
+            }
+        });
+    </script>
+}

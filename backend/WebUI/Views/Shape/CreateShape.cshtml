@@ -1,0 +1,35 @@
+﻿@model CreateShapeDto
+@{
+    ViewData["Title"] = "CreateShape";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <h4 class="page-title">Forma əməliyyatları</h4>
+        <div class="row">
+            <div class="col-md-12">
+                <form method="post">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Yeni Forma Girişi</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="shapename">Forma Adı</label>
+                                <input type="text" class="form-control" asp-for="Name" id="shapename" required>
+                            </div>
+                        </div>
+                        <div class="card-action">
+                            <button class="btn btn-success">Təsdiq Et</button>
+                            <a href="/Shape/CreateShape/" class="btn btn-secondary">İmtina Et</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
