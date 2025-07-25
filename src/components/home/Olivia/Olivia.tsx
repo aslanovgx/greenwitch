@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import styles from './Olivia.module.css';
 import EyeIcon from '/public/assets/home/olivia/eye-icon.svg';
+import Link from 'next/link';
 
 const watches = [
   {
@@ -104,7 +105,9 @@ export default function Products() {
       <div className={`${styles.oliviaRight} flex relative`}>
         <div className={styles.desc}>
           <p>100% orijinal saatlar üçün <b>hədiyyə kartı</b> ilə ətrafınızı sevindirin.</p>
+          <Link href="/gift-card">
           <button className='cursor-pointer'>SİFARİŞ ET</button>
+          </Link>
         </div>
 
         <div className={`${styles.handImage} relative`}>
