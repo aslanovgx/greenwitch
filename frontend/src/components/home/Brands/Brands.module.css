@@ -1,0 +1,30 @@
+.brands {
+    padding-bottom: 40px;
+}
+
+.image_div {
+    position: relative;
+}
+
+.borderRight {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: 1px;
+    height: 60%;
+    transform: translateY(-50%);
+    background: linear-gradient(90deg, #FFF 0%, #000 22.32%, #000 50.26%, #000 70.08%, #FFF 100%);
+}
+
+@media screen and (max-width: 1025px) {
+    .brands {
+        padding-bottom: 20px;
+    }
+}
+@media screen and (max-width: 640px) {
+    .brands {
+        padding-top: 60px;
+        padding-bottom: 20px;
+    }
+}

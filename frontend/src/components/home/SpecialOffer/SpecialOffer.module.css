@@ -1,0 +1,177 @@
+.specialOffer .cards_container .specialOfferCard {
+    width: 100%;
+    max-width: 100%;
+    height: 367px;
+}
+
+/* .specialOffer .cards_container .specialOfferCard img {
+   object-position: initial;
+} */
+
+.twoCards {
+    gap: 50px;
+}
+
+.twoCards>div {
+    width: 460px !important;
+    /* və ya 45%, 48% sına */
+}
+
+/* .specialOffer .cards_container .specialOfferCard:nth-child(2) img {
+    object-position: bottom;
+} */
+
+.specialOffer .mobileSpecialOffer {
+    display: none;
+}
+
+.desc {
+    background: rgba(255, 255, 255, 0.20);
+    backdrop-filter: blur(2.8499999046325684px);
+    padding: 24px 28px;
+    height: 96px;
+}
+
+.desc p {
+    color: #FFF;
+    text-align: center;
+    font-family: Montserrat;
+    font-size: 32.981px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.desc .etrafliSpan {
+    font-size: 20px;
+}
+
+.desc .generalEyeSpan {
+    width: 42px;
+    height: 42px;
+}
+
+.desc .generalEyeSpan span {
+    width: 6px;
+    height: 6px;
+    top: 12px;
+}
+
+@media (max-width: 1025px) {
+    .specialOffer .cards_container .specialOfferCard {
+        height: 260.978px;
+    }
+
+    .desc {
+        padding: 17px 19px;
+    }
+
+    .desc p {
+        font-size: 23.453px;
+    }
+
+    .desc .etrafliSpan {
+        font-size: 17px;
+    }
+
+    .desc .generalEyeSpan {
+        width: 30px;
+        height: 30px;
+    }
+
+    .desc .generalEyeSpan span {
+        top: 10px;
+    }
+}
+
+@media (max-width: 769px) {
+    .specialOffer .cards_container .specialOfferCard {
+        height: 254.441px;
+    }
+
+    .desc {
+        padding: 16px 13px;
+        height: 53px;
+    }
+
+    .desc p {
+        font-size: 18.363px;
+    }
+
+    .desc .etrafliSpan {
+        font-size: 14px;
+    }
+
+    .desc .generalEyeSpan {
+        width: 25px;
+        height: 25px;
+    }
+
+    .desc .generalEyeSpan span {
+        top: 7px;
+        width: 4px;
+        height: 4px;
+    }
+}
+
+@media (max-width: 640px) {
+    .specialOffer .cards_container {
+        display: none;
+    }
+
+    .specialOffer .mobileSpecialOffer {
+        display: block;
+    }
+
+    .desc {
+        padding: 14px 12px;
+    }
+
+    .desc p {
+        font-size: 16px;
+    }
+
+    .desc .generalEyeSpan {
+        width: 21px;
+        height: 21px;
+    }
+
+    .desc .generalEyeSpan span {
+        width: 4px;
+        height: 4px;
+        top: 7px;
+    }
+
+
+    /* ---------------- */
+
+    .custom-pagination {
+        margin-top: 20px;
+        /* Swiper ilə arasında məsafə */
+    }
+
+    .custom-pagination .swiper-pagination-bullet {
+        width: 12px;
+        height: 12px;
+        background: #000;
+        opacity: 0.4;
+        margin: 0 4px;
+    }
+
+    /* .custom-pagination .swiper-pagination-bullet-active {
+        opacity: 1;
+        background: #000;
+    } */
+
+    .custom-pagination .swiper-pagination-bullet-active {
+        background: #2B2B28 !important;
+    }
+
+    .specialOfferSwiper {
+        cursor: grab;
+    }
+
+    .specialOfferSwiper:active {
+        cursor: grabbing;
+    }
+}

@@ -1,0 +1,30 @@
+.sectionTitle {
+    margin-bottom: 44px;
+    color: #000;
+    font-family: Montserrat;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+@media (max-width: 1025px) {
+    .sectionTitle {
+        margin-bottom: 31px;
+        font-size: 22.756px;
+    }
+}
+
+@media (max-width: 769px) {
+    .sectionTitle {
+        margin-bottom: 30px;
+        font-size: 22.756px;
+    }
+}
+
+@media (max-width: 640px) {
+    .sectionTitle {
+        margin-bottom: 28px;
+        font-size: 18px;
+    }
+}

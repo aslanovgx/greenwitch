@@ -1,0 +1,276 @@
+.cards_container {
+    padding-bottom: 60px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.cards {
+    padding: 26px 16px 19px 16px;
+    width: 243px;
+    height: 420px;
+    cursor: pointer;
+}
+
+.cards_image {
+    width: 100%;
+    height: 259px;
+}
+
+.heartIcon {
+    width: 30px;
+    height: 30px;
+    /* font-weight: 400; */
+}
+
+.cards .cards_desc h3 {
+    color: #100F0F;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-transform: uppercase;
+    padding: 3px 0 8px 0;
+    margin: 0;
+    /* font-weight: 500; */
+}
+
+.cards:hover .cards_desc h3 {
+    padding: 0 0 5px 0;
+    /* margin: 0 0 10px 0; */
+}
+
+.cards .cards_desc p {
+    color: #1E1D1D;
+    text-align: center;
+    font-family: Montserrat;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.cards .cards_desc .card_buttons {
+    width: 100%;
+    padding: 0 5px;
+    bottom: 15px;
+    justify-content: space-between;
+
+}
+
+.cards .cards_desc .card_buttons button {
+    color: #FFF;
+    text-align: center;
+    /* font-family: Lato; */
+    font-size: 15.965px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: uppercase;
+    display: flex;
+    width: 77.832px;
+    height: 28.937px;
+    justify-content: center;
+    align-items: center;
+    /* gap: 9.978px; */
+    flex-shrink: 0;
+    cursor: pointer;
+    border-radius: 7.983px;
+    background: #1E1D1D;
+}
+
+.cards .cards_desc .card_buttons :nth-child(2) {
+    width: 141.693px;
+}
+
+.new_card {
+    display: inline-flex;
+    width: 51px;
+    height: 51px;
+    /* padding: 16.066px 8.967px 16.934px 8.033px; */
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 245px;
+    background: linear-gradient(222deg, #DADADA 11.07%, #DADADA 34.55%, #FFF 46%, #DADADA 62%);
+}
+
+.new_card span {
+    color: #000;
+    text-align: center;
+    font-size: 13.224px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.discountBadge {
+    background: linear-gradient(212deg, #FFB986 9.76%, #FFB986 33.85%, #FFF 45.6%, #FFB986 62.02%);
+    /* background: linear-gradient(212deg, #F26600 9.76%, #F26600 33.85%, #FFF 45.6%, #F26600 62.02%); */
+}
+
+.discountBadge span {
+    font-size: 9px;
+}
+
+.bestSpan {
+    background: linear-gradient(222deg, #EFEBAA 11.07%, #EFEBAA 34.55%, #FFF 46%, #EFEBAA 62%) !important;
+}
+
+@media (max-width: 1280px) {
+    .cards_container {
+        gap: 13px;
+    }
+
+    /* .cards {
+        padding: 26px 16px 19px 16px;
+    } */
+}
+
+@media (max-width: 1025px) {
+    .cards_container {
+        gap: 7px;
+        padding-bottom: 35px;
+    }
+
+    .cards {
+        padding: 8px 8px 11px 8px;
+        width: 172px;
+        height: 276px;
+    }
+
+    .cards_image {
+        height: 183px;
+    }
+
+    .cards .cards_desc h3 {
+        font-size: 11.359px;
+        padding: 3px 0 8px 0;
+    }
+
+    .cards:hover .cards_desc h3 {
+        padding: 0 0 5px 0;
+    }
+
+    .cards .cards_desc p {
+        font-size: 8.519px;
+    }
+
+    .cards .cards_desc .card_buttons {
+        width: 100%;
+        padding: 0 5px;
+        bottom: 6px;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .cards .cards_desc .card_buttons button {
+        font-size: 8.965px;
+        width: 37.832px;
+        height: 22px;
+        border-radius: 5.983px;
+        background: #1E1D1D;
+    }
+
+    .cards .cards_desc .card_buttons :nth-child(2) {
+        width: 81.693px;
+    }
+
+    .new_card {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: linear-gradient(222deg, #DADADA 11.07%, #DADADA 34.55%, #FFF 46%, #DADADA 62%);
+    }
+
+    .new_card span {
+        font-size: 10.224px;
+    }
+
+    .discountBadge {
+        background: linear-gradient(212deg, #FFB986 9.76%, #FFB986 33.85%, #FFF 45.6%, #FFB986 62.02%);
+    }
+
+    .discountBadge span {
+        font-size: 6.5px;
+    }
+
+    .bestSpan {
+        background: linear-gradient(222deg, #EFEBAA 11.07%, #EFEBAA 34.55%, #FFF 46%, #EFEBAA 62%) !important;
+    }
+
+}
+
+@media (max-width: 769px) {
+    .cards_container {
+        gap: 7px;
+        padding-bottom: 33px;
+    }
+
+    .cards {
+        padding: 8px 8px 11px 8px;
+        width: 150px;
+        height: 262.5px;
+    }
+
+    .cards_image {
+        height: 170.508px;
+    }
+
+    .cards .cards_desc h3 {
+        font-size: 10.533px;
+        padding: 3px 0 8px 0;
+    }
+
+    .cards:hover .cards_desc h3 {
+        padding: 0 0 5px 0;
+    }
+
+    .cards .cards_desc p {
+        font-size: 8.519px;
+    }
+
+    .cards .cards_desc .card_buttons {
+        width: 100%;
+        padding: 0 5px;
+        bottom: 6px;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .cards .cards_desc .card_buttons button {
+        font-size: 7.965px;
+        width: 30.832px;
+        height: 22px;
+        border-radius: 2.983px;
+    }
+
+    .cards .cards_desc .card_buttons :nth-child(2) {
+        width: 65.693px;
+    }
+
+    .new_card {
+        width: 32px;
+        height: 32px;
+    }
+
+    .new_card span {
+        font-size: 8.706px;
+    }
+
+    .discountBadge span {
+        font-size: 6px;
+    }
+}
+
+@media (max-width: 640px) {
+    .cards_container {
+        gap: 8px;
+        padding-bottom: 30px;
+    }
+
+    .heartIcon {
+        width: 21px;
+        height: 21px;
+    }
+}

@@ -1,0 +1,90 @@
+.iconInfo {
+    padding: 60px 154px;
+    /* justify-content: space-between; */
+    justify-content: center;
+    /* gap: 20px; */
+}
+
+.icon_desc {
+    gap: 28px;
+    flex: 1;
+    align-self: flex-start;
+}
+
+/* .icon_desc p {
+    white-space: nowrap;
+} */
+
+.icon_desc img {
+    width: 60px;
+    height: 60px;
+}
+
+@media (max-width: 1025px) {
+    .iconInfo {
+        padding: 0;
+        justify-content: space-evenly;
+    }
+
+    .icon_desc {
+        gap: 28px;
+    }
+
+    .icon_desc img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .icon_desc p {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 769px) {
+    .icon_desc {
+        font-size: 10.467px;
+    }
+}
+
+@media (max-width: 769px) {
+    .icon_desc img {
+        width: 34px;
+        height: 34px;
+    }
+
+    .icon_desc p {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 641px) {
+    .iconInfo {
+        display: block;
+    }
+
+    .iconInfo .icon_desc {
+        width: 49%;
+        gap: 10px;
+        display: inline-flex;
+    }
+
+    .iconInfo .icon_desc:nth-child(1) {
+        padding-bottom: 20px;
+    }
+
+    .iconInfo .icon_desc:nth-child(2) {
+        padding-bottom: 20px;
+    }
+
+    .icon_desc img {
+        width: 26px;
+        height: 26px;
+    }
+
+    .icon_desc p {
+        font-size: 11px;
+        text-align: center;
+        gap: 10px;
+        max-width: 100px;
+    }
+}

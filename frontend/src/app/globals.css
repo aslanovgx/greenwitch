@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+:root {
+  --font-montserrat: 'Montserrat', sans-serif;
+  --font-lato: 'Lato', sans-serif;
+  --font-roboto: 'Roboto', sans-serif;
+}
+
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-montserrat);
+  background-color: #fff;
+  color: #333;
+  box-sizing: border-box;
+  /* max-width: 1440px;
+  margin: 0 auto; */
+}
+
+.font-lato {
+  font-family: var(--font-lato);
+}
+
+.react-window::-webkit-scrollbar {
+  height: 6px;
+}
+
+.react-window::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.react-window::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.custom-pagination .swiper-pagination-bullet-active {
+  background: #2B2B28 !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+}

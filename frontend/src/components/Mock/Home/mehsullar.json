@@ -1,0 +1,337 @@
+[
+  {
+    "id": 1,
+    "image": "/assets/home/cards/michael.png",
+    "hoverImage": "/assets/home/cards_position/michael.png",
+    "title": "michael kors",
+    "desc": "Slim Runway Gold-Tone Curb-Link Watch",
+    "price": "379AZN",
+    "isNew": false,
+    "coupon": 20,
+    "colors": [
+      {
+        "name": "Qızılı",
+        "hex": "linear-gradient(180deg, #F3D8B0 0%, #FFF4CE 36.72%, #F3D8B0 58.85%, #FFF4CE 104.63%)"
+      }
+    ],
+    "thumbnails": [
+      "/assets/home/cards/michael.png",
+      "/assets/home/cards_position/michael.png",
+      "/assets/home/cards_position/olivia-pink.png",
+      "/assets/home/cards_position/olivia-black.png",
+      "/assets/home/cards/hilfiger.png"
+    ]
+  },
+  {
+    "id": 2,
+    "image": "/assets/home/cards/olivia-pink.png",
+    "hoverImage": "/assets/home/cards_position/olivia-pink.png",
+    "title": "olivia burton",
+    "desc": "Wonderland 30mm White & Rose Gold Mesh",
+    "price": "200AZN",
+    "isNew": true,
+    "coupon": 10,
+    "colors": [
+      {
+        "name": "Çəhrayı",
+        "hex": "linear-gradient(180deg, #FADADD 0%, #FFE4EC 40%, #FADADD 70%, #FFE4EC 100%)"
+      }
+    ],
+    "thumbnails": [
+      "/assets/home/cards/michael.png",
+      "/assets/home/cards_position/michael.png",
+      "/assets/home/cards_position/olivia-pink.png",
+      "/assets/home/cards_position/olivia-black.png"
+
+    ]
+  },
+  {
+    "id": 3,
+    "image": "/assets/home/cards/hilfiger.png",
+    "hoverImage": "/assets/home/cards_position/hilfiger.png",
+    "title": "hilfiger",
+    "desc": "32MM Monochrome Mesh Bracelet Watch",
+    "price": "400AZN",
+    "isNew": false,
+    "coupon": 0,
+    "colors": [
+      {
+        "name": "Ağ",
+        "hex": "linear-gradient(180deg, #FFFFFF 0%, #F5F5F5 35%, #FFFFFF 60%, #F5F5F5 100%)"
+      },
+      {
+        "name": "Qara",
+        "hex": "linear-gradient(180deg, #2B2B2B 0%, #444444 40%, #2B2B2B 70%, #444444 100%)"
+      }
+    ],
+    "thumbnails": [
+      "/assets/home/cards/michael.png",
+      "/assets/home/cards_position/michael.png",
+      "/assets/home/cards_position/olivia-black.png",
+      "/assets/home/cards_position/olivia-pink.png"
+    ]
+  },
+  {
+    "id": 4,
+    "image": "/assets/home/cards/olivia-black.png",
+    "hoverImage": "/assets/home/cards_position/olivia-black.png",
+    "title": "olivia burton",
+    "desc": "32mm Dimension T-Bar Gold&Black Leather Strap",
+    "price": "450AZN",
+    "isNew": true,
+    "coupon": 0,
+    "colors": [
+      {
+        "name": "Qızılı",
+        "hex": "linear-gradient(180deg, #F3D8B0 0%, #FFF4CE 36.72%, #F3D8B0 58.85%, #FFF4CE 104.63%)"
+      },
+      {
+        "name": "Qara",
+        "hex": "linear-gradient(180deg, #2B2B2B 0%, #444444 40%, #2B2B2B 70%, #444444 100%)"
+      }
+    ],
+    "thumbnails": [
+      "/assets/home/cards/michael.png",
+      "/assets/home/cards_position/michael.png",
+      "/assets/home/cards_position/olivia-black.png",
+      "/assets/home/cards_position/olivia-pink.png"
+    ]
+  },
+  {
+    "id": 5,
+    "image": "/assets/home/cards/swiss.png",
+    "hoverImage": "/assets/home/cards_position/swiss.png",
+    "title": "swiss military",
+    "desc": "MAJESTE PIONER",
+    "price": "365AZN",
+    "isNew": false,
+    "coupon": 20,
+    "colors": [
+      {
+        "name": "Boz",
+        "hex": "linear-gradient(180deg, #C5C5C5 0%, #E0E0E0 36%, #C5C5C5 58%, #E0E0E0 100%)"
+      },
+      {
+        "name": "Qara",
+        "hex": "linear-gradient(180deg, #2B2B2B 0%, #444444 40%, #2B2B2B 70%, #444444 100%)"
+      }
+    ],
+    "thumbnails": [
+      "/assets/home/cards/michael.png",
+      "/assets/home/cards_position/michael.png",
+      "/assets/home/cards_position/olivia-pink.png",
+      "/assets/home/cards_position/olivia-black.png"
+      
+    ]
+  },
+  {
+    "id": 6,
+    "image": "/assets/home/cards/michael.png",
+    "hoverImage": "/assets/home/cards_position/michael.png",
+    "title": "michael kors",
+    "desc": "Slim Runway Gold-Tone Curb-Link Watch",
+    "price": "379AZN",
+    "isNew": false,
+    "coupon": 20,
+    "colors": [
+      {
+        "name": "Qızılı",
+        "hex": "linear-gradient(180deg, #F3D8B0 0%, #FFF4CE 36.72%, #F3D8B0 58.85%, #FFF4CE 104.63%)"
+      }
+    ],
+    "thumbnails": [
+      "/assets/home/cards/michael.png",
+      "/assets/home/cards_position/michael.png",
+      "/assets/home/cards/michael.png"
+    ]
+  },
+  {
+    "id": 7,
+    "image": "/assets/home/cards/olivia-pink.png",
+    "hoverImage": "/assets/home/cards_position/olivia-pink.png",
+    "title": "olivia burton",
+    "desc": "Wonderland 30mm White & Rose Gold Mesh",
+    "price": "200AZN",
+    "isNew": true,
+    "coupon": 10,
+    "colors": [
+      {
+        "name": "Qızılı",
+        "hex": "linear-gradient(180deg, #F3D8B0 0%, #FFF4CE 36.72%, #F3D8B0 58.85%, #FFF4CE 104.63%)"
+      }
+    ],
+    "thumbnails": [
+      "/assets/home/cards/michael.png",
+      "/assets/home/cards_position/michael.png",
+      "/assets/home/cards/michael.png"
+    ]
+  },
+  {
+    "id": 8,
+    "image": "/assets/home/cards/hilfiger.png",
+    "hoverImage": "/assets/home/cards_position/hilfiger.png",
+    "title": "hilfiger",
+    "desc": "32MM Monochrome Mesh Bracelet Watch",
+    "price": "400AZN",
+    "isNew": false,
+    "coupon": 0,
+    "colors": [
+      {
+        "name": "Qızılı",
+        "hex": "linear-gradient(180deg, #F3D8B0 0%, #FFF4CE 36.72%, #F3D8B0 58.85%, #FFF4CE 104.63%)"
+      }
+    ],
+    "thumbnails": [
+      "/assets/home/cards/michael.png",
+      "/assets/home/cards_position/michael.png",
+      "/assets/home/cards/michael.png"
+    ]
+  },
+  {
+    "id": 9,
+    "image": "/assets/home/cards/olivia-black.png",
+    "hoverImage": "/assets/home/cards_position/olivia-black.png",
+    "title": "olivia burton",
+    "desc": "32mm Dimension T-Bar Gold&Black Leather Strap",
+    "price": "450AZN",
+    "isNew": true,
+    "coupon": 0,
+    "colors": [
+      {
+        "name": "Qızılı",
+        "hex": "linear-gradient(180deg, #F3D8B0 0%, #FFF4CE 36.72%, #F3D8B0 58.85%, #FFF4CE 104.63%)"
+      }
+    ],
+    "thumbnails": [
+      "/assets/home/cards/michael.png",
+      "/assets/home/cards_position/michael.png",
+      "/assets/home/cards/michael.png"
+    ]
+  },
+  {
+    "id": 10,
+    "image": "/assets/home/cards/swiss.png",
+    "hoverImage": "/assets/home/cards_position/swiss.png",
+    "title": "swiss military",
+    "desc": "MAJESTE PIONER",
+    "price": "365AZN",
+    "isNew": false,
+    "coupon": 20,
+    "colors": [
+      {
+        "name": "Qızılı",
+        "hex": "linear-gradient(180deg, #F3D8B0 0%, #FFF4CE 36.72%, #F3D8B0 58.85%, #FFF4CE 104.63%)"
+      }
+    ],
+    "thumbnails": [
+      "/assets/home/cards/michael.png",
+      "/assets/home/cards_position/michael.png",
+      "/assets/home/cards/michael.png"
+    ]
+  },
+  {
+    "id": 11,
+    "image": "/assets/home/cards/michael.png",
+    "hoverImage": "/assets/home/cards_position/michael.png",
+    "title": "michael kors",
+    "desc": "Slim Runway Gold-Tone Curb-Link Watch",
+    "price": "379AZN",
+    "isNew": false,
+    "coupon": 20,
+    "colors": [
+      {
+        "name": "Qızılı",
+        "hex": "linear-gradient(180deg, #F3D8B0 0%, #FFF4CE 36.72%, #F3D8B0 58.85%, #FFF4CE 104.63%)"
+      }
+    ],
+    "thumbnails": [
+      "/assets/home/cards/michael.png",
+      "/assets/home/cards_position/michael.png",
+      "/assets/home/cards/michael.png"
+    ]
+  },
+  {
+    "id": 12,
+    "image": "/assets/home/cards/olivia-pink.png",
+    "hoverImage": "/assets/home/cards_position/olivia-pink.png",
+    "title": "olivia burton",
+    "desc": "Wonderland 30mm White & Rose Gold Mesh",
+    "price": "200AZN",
+    "isNew": true,
+    "coupon": 10,
+    "colors": [
+      {
+        "name": "Qızılı",
+        "hex": "linear-gradient(180deg, #F3D8B0 0%, #FFF4CE 36.72%, #F3D8B0 58.85%, #FFF4CE 104.63%)"
+      }
+    ],
+    "thumbnails": [
+      "/assets/home/cards/michael.png",
+      "/assets/home/cards_position/michael.png",
+      "/assets/home/cards/michael.png"
+    ]
+  },
+  {
+    "id": 13,
+    "image": "/assets/home/cards/hilfiger.png",
+    "hoverImage": "/assets/home/cards_position/hilfiger.png",
+    "title": "hilfiger",
+    "desc": "32MM Monochrome Mesh Bracelet Watch",
+    "price": "400AZN",
+    "isNew": false,
+    "coupon": 0,
+    "colors": [
+      {
+        "name": "Qızılı",
+        "hex": "linear-gradient(180deg, #F3D8B0 0%, #FFF4CE 36.72%, #F3D8B0 58.85%, #FFF4CE 104.63%)"
+      }
+    ],
+    "thumbnails": [
+      "/assets/home/cards/michael.png",
+      "/assets/home/cards_position/michael.png",
+      "/assets/home/cards/michael.png"
+    ]
+  },
+  {
+    "id": 14,
+    "image": "/assets/home/cards/olivia-black.png",
+    "hoverImage": "/assets/home/cards_position/olivia-black.png",
+    "title": "olivia burton",
+    "desc": "32mm Dimension T-Bar Gold&Black Leather Strap",
+    "price": "450AZN",
+    "isNew": true,
+    "coupon": 0,
+    "colors": [
+      {
+        "name": "Qızılı",
+        "hex": "linear-gradient(180deg, #F3D8B0 0%, #FFF4CE 36.72%, #F3D8B0 58.85%, #FFF4CE 104.63%)"
+      }
+    ],
+    "thumbnails": [
+      "/assets/home/cards/michael.png",
+      "/assets/home/cards_position/michael.png",
+      "/assets/home/cards/michael.png"
+    ]
+  },
+  {
+    "id": 15,
+    "image": "/assets/home/cards/swiss.png",
+    "hoverImage": "/assets/home/cards_position/swiss.png",
+    "title": "swiss military",
+    "desc": "MAJESTE PIONER",
+    "price": "365AZN",
+    "isNew": false,
+    "coupon": 20,
+    "colors": [
+      {
+        "name": "Qızılı",
+        "hex": "linear-gradient(180deg, #F3D8B0 0%, #FFF4CE 36.72%, #F3D8B0 58.85%, #FFF4CE 104.63%)"
+      }
+    ],
+    "thumbnails": [
+      "/assets/home/cards/michael.png",
+      "/assets/home/cards_position/michael.png",
+      "/assets/home/cards/michael.png"
+    ]
+  }
+]

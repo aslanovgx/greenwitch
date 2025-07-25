@@ -1,0 +1,313 @@
+.row-1 {
+  background: #2b2b28;
+  height: 51px;
+  gap: 22.82px;
+}
+
+.row-1 img {
+  width: 21px;
+  height: 21px;
+}
+
+.row-1 p {
+  color: #fdfdfd;
+  font-family: Montserrat;
+  font-size: 21.474px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 33.553px;
+  margin: 0;
+}
+
+/* ----------------------- row-2 --------------------- */
+/* ----------------------- row-2 --------------------- */
+
+.row-2 {
+  z-index: 12 !important;
+  padding: 20px 40px;
+}
+
+.row-2 .row-2-search {
+  padding: 8px 12px;
+  border-radius: 24px;
+  background: #EFEEEE;
+}
+
+.row-2 .burgerIcon {
+  display: none;
+}
+
+.row-2 .logo_box {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: pointer;
+}
+
+.row-2 .logo_box .logo {
+  object-fit: contain;
+}
+
+.row-2-icons {
+  gap: 12px;
+}
+
+.row-2-icons img {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.row-2-icons .searchMobile {
+  display: none;
+}
+
+.fixed-row {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 2;
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  /* transition: all 0.3s ease-in-out; */
+}
+
+.row_3 {
+  padding: 50px 0 70px 0;
+}
+
+.row_3 ul {
+  gap: 42px;
+}
+
+.row_3 ul li {
+  color: #000;
+  font-family: Montserrat;
+  font-size: 17px;
+  font-style: normal;
+  line-height: normal;
+  cursor: pointer;
+}
+
+.mobileNavbar {
+  display: none;
+}
+
+@media (max-width: 1280px) {
+  .row_3 ul li {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 1025px) {
+  .row-1 {
+    gap: 16px;
+    height: 36px;
+  }
+
+  .row-1 img {
+    width: 15px;
+    height: 15px;
+  }
+
+  .row-1 p {
+    font-size: 15px;
+  }
+
+  .row-2 {
+    padding: 10px 28px 20px 28px;
+  }
+
+  .row-2 .row-2-search {
+    padding: 6px 10px;
+    border-radius: 17.067px;
+  }
+
+  .row-2 .row-2-search img {
+    width: 22px;
+    height: 22px;
+  }
+
+  .row-2 .row-2-search input {
+    font-size: 13px;
+  }
+
+  .row-2 .logo {
+    width: 119px;
+    height: 32px;
+  }
+
+  .row-2-icons img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .row_3 {
+    padding: 30px 0 50px 0;
+  }
+
+  .row_3 ul {
+    gap: 28px;
+  }
+
+  .row_3 ul li {
+    font-size: 16px;
+  }
+
+}
+
+@media (max-width: 769px) {
+  .row-1 {
+    gap: 12.17px;
+    height: 32px;
+  }
+
+  .row-1 img {
+    width: 15.27px;
+    height: 15.27px;
+  }
+
+  .row-1 p {
+    font-size: 14px;
+  }
+
+  .row-2 {
+    padding: 18px 28px 28px 28px;
+  }
+
+  .row-2 .row-2-search {
+    padding: 4px 8px;
+    border-radius: 17.067px;
+  }
+
+  .row-2 .row-2-search img {
+    width: 17px;
+    height: 17px;
+  }
+
+  .row-2 .row-2-search input {
+    font-size: 12px;
+  }
+
+  .row-2 .logo {
+    width: 94.871px;
+    height: 26.005px;
+  }
+
+  .row_3 {
+    padding: 10px 0 50px 0;
+  }
+
+  .row_3 ul {
+    gap: 28px;
+  }
+
+  .row_3 ul li {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 640px) {
+  .row-1 {
+    gap: 6px;
+    height: 29px;
+  }
+
+  .row-1 img {
+    width: 12px;
+    height: 12px;
+  }
+
+  .row-1 p {
+    font-size: 13px;
+  }
+
+  .row-2 {
+    padding: 14px 16px;
+  }
+
+  .row-2 .row-2-search {
+    display: none;
+  }
+
+  .row-2 .burgerIcon {
+    display: block;
+    cursor: pointer;
+  }
+
+  .row-2 .logo {
+    width: 78px;
+    height: 21.381px;
+  }
+
+  .row-2-icons {
+    gap: 0;
+    /* justify-content: space-between; */
+  }
+
+
+  .row-2-icons img {
+    width: 25px;
+    height: 25px;
+  }
+
+  .row-2-icons .location-icon {
+    display: none;
+  }
+
+  .row-2-icons .favorite-icon {
+    padding-left: 5px;
+  }
+
+  .row-2-icons .bag-icon {
+    padding-left: 5px;
+  }
+
+  c .row-2-icons .searchMobile {
+    display: block;
+  }
+
+  .row_3 {
+    display: none;
+  }
+
+  /* ----- */
+
+  /* .mobileNavbar button img {} */
+
+  .mobileNavbar {
+    overflow: hidden;
+    position: fixed;
+    display: block;
+  }
+
+  .mobileNavbar button {
+    padding: 8px 0 10px 8px;
+  }
+
+  .mobileNavbar button img {
+    width: 23px;
+    height: 23px;
+  }
+
+  .mobileNavbar ul {
+    gap: 15px;
+    flex-direction: column;
+    padding: 18px;
+  }
+
+  .mobileNavbar ul li a {
+    color: #000;
+    font-family: Montserrat;
+    font-size: 13.491px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+  }
+
+  .mobileNavbar ul li span img {
+    width: 20px;
+    height: 20px;
+  }
+}

@@ -1,0 +1,512 @@
+.mapContainer {
+    position: relative;
+}
+
+.sideBar {
+    position: absolute;
+    top: 2rem;
+    left: 6px;
+    top: 6px;
+    z-index: 5;
+    background-color: #fff;
+    border: 1px solid #d8d8d8;
+    border-radius: 12px;
+    max-width: 430px;
+    height: 618px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 26px 16px 16px 16px;
+}
+
+.sideBar h1 {
+    font-size: 26px;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    color: black;
+    text-align: center;
+}
+
+.sideBar .areaList {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    font-size: 14px;
+    border: 1px solid #d8d8d8;
+    padding: 4px;
+    border-radius: 8px;
+}
+
+.sideBar .areaList li {
+    cursor: pointer;
+    padding: 4px 20px;
+    position: relative;
+}
+
+.sideBar .areaList li:nth-child(2)::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    width: 1px;
+    height: 18px;
+    background-color: #d8d8d8;
+}
+
+.sideBar .areaList li:nth-child(2)::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0;
+    width: 1px;
+    height: 18px;
+    background-color: #d8d8d8;
+}
+
+.sideBar .storePlaces {
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-right: 6px;
+}
+
+/* Scrollbar track (arxa fon) */
+.storePlaces::-webkit-scrollbar {
+    width: 6px;
+}
+
+/* Scrollbar barı (sürüşmə hissəsi) */
+.storePlaces::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+}
+
+/* Scrollbar track (arka hissənin dizaynı, istəyə bağlı) */
+.storePlaces::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sideBar .storePlaces li {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: 1px solid #d8d8d8;
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    position: relative;
+}
+
+.sideBar .storePlaces li img {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 20px;
+}
+
+.sideBar .storePlaces li:hover {
+    border-color: #40b659;
+}
+
+.sideBar .storePlaces li span {
+    font-size: 14px;
+    color: #000;
+    font-weight: normal;
+}
+
+.sideBar .storePlaces li span:first-child {
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.sideBar .storePlaces li span:last-child {
+    color: #40b659;
+    font-weight: 500;
+}
+
+.map iframe {
+    overflow: hidden;
+    border: 0;
+    width: 100%;
+    height: 630px;
+}
+
+.active {
+    font-weight: bold;
+    color: #000;
+    border-color: #40b659 !important;
+}
+
+.noStoreMessage {
+    text-align: center;
+    padding: 16px;
+    color: gray;
+    font-style: italic;
+    overflow-y: hidden;
+    border: 1px solid #d8d8d8;
+}
+
+.hideOverflow {
+    overflow: hidden !important;
+}
+
+.hideOverflow li {
+    border: none !important;
+    cursor: initial !important;
+}
+
+.hideOverflow li:hover {
+    border: none !important;
+}
+
+@media (max-width: 1025px) {
+    .mapContainer {
+        position: relative;
+    }
+
+    .sideBar {
+        position: absolute;
+        top: 2rem;
+        left: 6px;
+        top: 6px;
+        z-index: 5;
+        background-color: #fff;
+        border: 1px solid #d8d8d8;
+        border-radius: 12px;
+        max-width: 430px;
+        height: 518px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        padding: 20px 12px;
+    }
+
+    .sideBar h1 {
+        font-size: 20px;
+        margin-bottom: 1rem;
+    }
+
+    .sideBar .areaList {
+        margin-bottom: 2rem;
+        font-size: 14px;
+        border: 1px solid #d8d8d8;
+        padding: 4px;
+        border-radius: 8px;
+    }
+
+    .sideBar .areaList li {
+        cursor: pointer;
+        padding: 4px 20px;
+        position: relative;
+    }
+
+    .sideBar .areaList li:nth-child(2)::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        left: 0;
+        width: 1px;
+        height: 18px;
+        background-color: #d8d8d8;
+    }
+
+    .sideBar .areaList li:nth-child(2)::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 0;
+        width: 1px;
+        height: 18px;
+        background-color: #d8d8d8;
+    }
+
+    .sideBar .storePlaces {
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding-right: 6px;
+    }
+
+    /* Scrollbar track (arxa fon) */
+    .storePlaces::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    /* Scrollbar barı (sürüşmə hissəsi) */
+    .storePlaces::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.3);
+        border-radius: 4px;
+    }
+
+    /* Scrollbar track (arka hissənin dizaynı, istəyə bağlı) */
+    .storePlaces::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .sideBar .storePlaces li {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        border: 1px solid #d8d8d8;
+        /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+        padding: 10px;
+        border-radius: 8px;
+        cursor: pointer;
+        position: relative;
+    }
+
+    .sideBar .storePlaces li img {
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 20px;
+    }
+
+    .sideBar .storePlaces li:hover {
+        border-color: #40b659;
+    }
+
+    .sideBar .storePlaces li span {
+        font-size: 14px;
+        color: #000;
+        font-weight: normal;
+    }
+
+    .sideBar .storePlaces li span:first-child {
+        font-size: 16px;
+        font-weight: 600;
+        text-transform: capitalize;
+    }
+
+    .sideBar .storePlaces li span:last-child {
+        color: #40b659;
+        font-weight: 500;
+    }
+
+    .map iframe {
+        overflow: hidden;
+        border: 0;
+        width: 100%;
+        height: 530px !important;
+    }
+
+    .active {
+        font-weight: bold;
+        color: #000;
+        border-color: #40b659 !important;
+    }
+
+    .noStoreMessage {
+        text-align: center;
+        padding: 16px;
+        color: gray;
+        font-style: italic;
+        overflow-y: hidden;
+        border: 1px solid #d8d8d8;
+    }
+
+    .hideOverflow {
+        overflow: hidden !important;
+    }
+
+    .hideOverflow li {
+        border: none !important;
+        cursor: initial !important;
+    }
+
+    .hideOverflow li:hover {
+        border: none !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .sideBar {
+        position: relative;
+        margin: 0 auto;
+    }
+
+    .map iframe {
+        display: none;
+    }
+}
+
+@media (max-width: 640px) {
+    .sideBar {
+        position: static;
+        margin: 30px auto;
+    }
+}
+
+
+@media (max-width: 417px) {
+    .sideBar .storePlaces {
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding-right: 6px;
+    }
+
+    .mapContainer {
+        position: relative;
+        margin: 0 5px;
+    }
+
+    .sideBar {
+        position: static;
+        margin: 20px auto;
+    }
+
+    .sideBar h1 {
+        font-size: 20px;
+        margin-bottom: 1rem;
+    }
+
+    .sideBar .areaList {
+        font-size: 12px;
+        justify-content: center;
+        max-width: 400px;
+        margin: 0 auto 20px auto;
+    }
+
+    .sideBar .areaList li {
+        text-align: center;
+        padding: 4px 8px;
+    }
+
+    .sideBar .areaList li:nth-child(2)::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        left: 0;
+        width: 1px;
+        height: 18px;
+        background-color: #d8d8d8;
+    }
+
+    .sideBar .areaList li:nth-child(2)::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 0;
+        width: 1px;
+        height: 18px;
+        background-color: #d8d8d8;
+    }
+
+    .sideBar .storePlaces {
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding-right: 6px;
+    }
+
+    /* Scrollbar track (arxa fon) */
+    .storePlaces::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    /* Scrollbar barı (sürüşmə hissəsi) */
+    .storePlaces::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.3);
+        border-radius: 4px;
+    }
+
+    /* Scrollbar track (arka hissənin dizaynı, istəyə bağlı) */
+    .storePlaces::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .sideBar .storePlaces li {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        border: 1px solid #d8d8d8;
+        /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+        padding: 10px;
+        border-radius: 8px;
+        cursor: pointer;
+        position: relative;
+    }
+
+    .sideBar .storePlaces li img {
+        width: 25px;
+        height: 25px;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 20px;
+    }
+
+    .sideBar .storePlaces li:hover {
+        border-color: #40b659;
+    }
+
+    .sideBar .storePlaces li span {
+        font-size: 13px;
+        color: #000;
+        font-weight: normal;
+    }
+
+    .sideBar .storePlaces li span:first-child {
+        font-size: 16px;
+        font-weight: 600;
+        text-transform: capitalize;
+    }
+
+    .sideBar .storePlaces li span:last-child {
+        color: #40b659;
+        font-weight: 500;
+    }
+
+    .map iframe {
+        overflow: hidden;
+        border: 0;
+        width: 100%;
+        height: 530px !important;
+    }
+
+    .active {
+        font-weight: bold;
+        color: #000;
+        border-color: #40b659 !important;
+    }
+
+    .noStoreMessage {
+        text-align: center;
+        padding: 16px;
+        color: gray;
+        font-style: italic;
+        overflow-y: hidden;
+        border: 1px solid #d8d8d8;
+    }
+
+    .hideOverflow {
+        overflow: hidden !important;
+    }
+
+    .hideOverflow li {
+        border: none !important;
+        cursor: initial !important;
+    }
+
+    .hideOverflow li:hover {
+        border: none !important;
+    }
+}

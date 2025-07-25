@@ -1,0 +1,247 @@
+.footer {
+    padding: 45px 0 18px 0;
+
+}
+
+.footer img,
+.footer video {
+    max-width: unset;
+}
+
+
+.footer .footerBox {
+    padding-bottom: 37px;
+    justify-content: space-evenly;
+}
+
+.footer .footerBox ul {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: start;
+    align-items: start;
+    /* word-break: break-all; */
+    gap: 8px;
+    max-width: 240px;
+}
+
+.footer .footerBox ul li {
+    color: #1E1D1D;
+    font-family: Roboto;
+    font-size: 17.953px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    display: flex;
+    /* justify-content: start; */
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+
+.footer .footerBox .footerLists li {
+    display: flex;
+}
+
+.footer .footerBox .footerLists li .plusIcon {
+    display: none;
+}
+
+.footer .footerBox ul li:nth-child(1) {
+    color: #1E1D1D;
+    font-family: Roboto;
+    font-size: 22.441px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    padding-bottom: 10px;
+}
+
+.footer .footerBox ul li span svg {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+}
+
+
+.footerGradientLine {
+    margin-bottom: 53px;
+    max-width: 1147.856px;
+    height: 1.122px;
+    background: linear-gradient(90deg, #FFF 0%, #000 29.38%, #000 51.41%, #000 71.33%, #FFF 100%);
+}
+
+
+.greenwich2025 span:last-child {
+    color: #1E1D1D;
+    font-family: Roboto;
+    font-weight: 400;
+}
+
+
+@media (max-width: 1025px) {
+    .footer {
+        padding: 45px 0 18px 0;
+    }
+
+    .footer .footerBox {
+        padding-bottom: 26px;
+    }
+
+    .footer .footerBox ul {
+        max-width: 169px;
+    }
+
+    .footer .footerBox ul li {
+        font-size: 15px;
+        gap: 6px;
+    }
+
+    .footer .footerBox ul svg {
+        font-size: 16px;
+    }
+
+    .footer .footerBox ul li:nth-child(1) {
+        font-size: 15.766px;
+    }
+
+    .greenwich2025 span:last-child {
+        font-size: 14px;
+    }
+
+    .greenwich2025 span:last-child {
+        font-size: 10px;
+    }
+
+    .footerGradientLine {
+        max-width: 816px;
+        margin-bottom: 38px;
+    }
+}
+
+@media (max-width: 769px) {
+    .footer {
+        padding: 45px 0 13px 0;
+    }
+
+    .footer .footerBox {
+        padding-bottom: 20px;
+    }
+
+    .footer .footerBox ul {
+        max-width: 165px;
+    }
+
+    .footer .footerBox ul li {
+        font-size: 11.575px;
+        gap: 6px;
+    }
+
+    .footer .footerBox ul svg {
+        font-size: 16px;
+    }
+
+    .footer .footerBox ul li:nth-child(1) {
+        font-size: 12.969px;
+    }
+
+    .greenwich2025 span:last-child {
+        font-size: 14px;
+    }
+
+    .greenwich2025 span:last-child {
+        font-size: 10px;
+    }
+
+    .footerGradientLine {
+        max-width: 612px;
+        margin-bottom: 28px;
+    }
+}
+
+@media (max-width: 640px) {
+    .footer {
+        padding: 45px 0 13px 0;
+    }
+
+    .footer .footerBox {
+        padding-bottom: 20px;
+        gap: 18px;
+    }
+
+    .footer .footerBox ul {
+        max-width: 100%;
+    }
+
+    .footer .footerBox ul li {
+        font-size: 14px;
+        gap: 6px;
+    }
+
+    .footer .footerBox .footerLists {
+        /* flex-direction: row; */
+        justify-content: space-between;
+        padding: 0 31px;
+    }
+
+    .footerLists li:not(:first-child) {
+        display: none;
+    }
+
+    .visible {
+        display: flex !important;
+    }
+
+    .hidden {
+        display: none !important;
+    }
+
+    .footerLists li:not(:first-child) {
+        display: none;
+    }
+
+    .footer .footerBox .footerLists li .plusIcon {
+        display: block;
+    }
+
+    .footer .footerBox .footerLists li:first-child {
+        padding: 0;
+        font-size: 18px;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .footer .footerBox .footerLists {
+        width: 100%;
+    }
+
+    .footer .footerBox .socialContainer li:first-child {
+        font-size: 21.957px;
+        padding-top: 23px;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .footer .footerBox ul svg {
+        font-size: 16px;
+    }
+
+    .footer .footerBox ul li:nth-child(1) {
+        font-size: 12.969px;
+    }
+
+    .greenwich2025 span:last-child {
+        font-size: 14px;
+    }
+
+    .greenwich2025 span:last-child {
+        font-size: 12px;
+    }
+
+    .footerGradientLine {
+        width: 204px;
+        margin-bottom: 28px;
+    }
+}

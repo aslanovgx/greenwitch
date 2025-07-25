@@ -1,0 +1,99 @@
+/* ----------------------- row-1 --------------------- */
+/* ----------------------- row-1 --------------------- */
+
+.row_1 {
+    padding: 24px 0 29px 0;
+}
+
+.row_1 ul {
+    gap: 30px;
+}
+
+.row_1 ul li {
+    color: #000;
+    font-family: Montserrat;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    cursor: pointer;
+}
+
+
+/* ----------------------- row-2 --------------------- */
+/* ----------------------- row-2 --------------------- */
+
+.row_2 {
+    padding-bottom: 48px;
+}
+
+.row_2 p {
+    color: #000;
+    font-size: 19.446px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+@media (max-width: 1025px) {
+    .row_1 {
+        padding: 17px 0 20px 0;
+    }
+
+    .row_1 ul {
+        gap: 21px;
+    }
+
+    .row_1 ul li {
+        font-size: 22.718px;
+    }
+
+    .row_2 {
+        padding-bottom: 30px;
+    }
+
+    .row_2 p {
+        font-size: 13.806px;
+    }
+}
+
+@media (max-width: 769px) {
+    .row_1 ul {
+        gap: 21px;
+    }
+
+    .row_1 ul li {
+        font-size: 19px;
+    }
+
+    .row_2 {
+        padding-bottom: 29px;
+    }
+
+    .row_2 p {
+        font-size: 12.802px;
+    }
+}
+
+@media (max-width: 640px) {
+    .row_1 {
+        padding: 14px 13px 22px 13px;
+    }
+
+    .row_1 ul {
+        gap: 10px;
+    }
+
+    .row_1 ul li {
+        font-size: 16px;
+        text-align: center;
+    }
+
+    .row_2 {
+        padding-bottom: 0;
+    }
+
+    .row_2 p {
+        display: none;
+    }
+}

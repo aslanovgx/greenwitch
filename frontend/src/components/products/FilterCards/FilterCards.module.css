@@ -1,0 +1,8 @@
+.filterCards {
+    padding: 60px 0;
+}
+
+.filterCards .cards_box {
+    max-width: 1440px !important;
+    margin: 0 auto !important;
+}

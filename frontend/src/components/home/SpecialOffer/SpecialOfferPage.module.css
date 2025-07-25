@@ -1,0 +1,375 @@
+.specialOfferDetail {
+    max-width: 1100px;
+    margin: 0 auto 50px auto;
+}
+
+.specialOfferDetail .pageTitle {
+    color: #000;
+    text-align: center;
+    font-family: Montserrat;
+    font-size: 29.316px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-align: center;
+    position: relative;
+    display: block;
+    max-width: 256.872px;
+    margin: 0 auto;
+    padding-bottom: 10px;
+    margin-bottom: 37px;
+}
+
+.specialOfferDetail .pageTitle::after {
+    content: '';
+    position: absolute;
+    width: 256.872px;
+    height: 0.889px;
+    left: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, #FFF 2.4%, #000 49.04%, #FFF 100%);
+}
+
+.specialOfferDetail .imageContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 76px;
+}
+
+.specialOfferDetail .imageContainer img {
+    border-radius: 14.481px;
+}
+
+.specialOfferDetail .imageContainer .imageItem:nth-child(1),
+.specialOfferDetail .imageContainer .imageItem:nth-child(3) {
+    width: 223.255px;
+    height: 223.255px;
+    aspect-ratio: 223.25/223.25;
+}
+
+.specialOfferDetail .imageContainer .imageItem:nth-child(2),
+.specialOfferDetail .imageContainer .imageItem:nth-child(4) {
+    width: 288.102px;
+    height: 192.091px;
+    aspect-ratio: 288.10/192.09;
+}
+
+.specialOfferDetail .content .textContent {
+    padding-bottom: 120px;
+    width: 100%;
+}
+
+.specialOfferDetail .content .textContent .textList {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+
+.specialOfferDetail .content .textContent .textList li {
+    margin-bottom: 8px;
+}
+
+.specialOfferDetail .content .textLimited {
+    max-width: 646px;
+}
+
+.specialOfferDetail .content .textContent h2 {
+    color: #000;
+    font-family: Montserrat;
+    font-size: 27.316px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    padding-bottom: 37px;
+}
+
+.specialOfferDetail .content .textContent p {
+    color: #000;
+    font-family: Montserrat;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.specialOfferDetail .content .imageContainer2 {
+    width: 409px;
+    height: 310px;
+    flex-shrink: 0;
+    aspect-ratio: 409/310;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.specialLi {
+    margin-bottom: 8px !important;
+}
+
+
+
+/* ----------------------------- */
+
+@media (max-width: 1280px) {
+    .specialOfferDetail {
+        max-width: 981.298px;
+        margin: 0 auto;
+    }
+
+    .specialOfferDetail .pageTitle {
+        font-size: 25px;
+        margin-bottom: 32px;
+        padding-bottom: 9px;
+        max-width: 208px;
+    }
+
+    .specialOfferDetail .pageTitle::after {
+        max-width: 208px;
+        height: 0.711px;
+    }
+
+    .specialOfferDetail .imageContainer {
+        margin-bottom: 65px;
+    }
+
+    .specialOfferDetail .imageContainer img {
+        border-radius: 12.872px;
+    }
+
+    .specialOfferDetail .imageContainer .imageItem:nth-child(1),
+    .specialOfferDetail .imageContainer .imageItem:nth-child(3) {
+        width: 198.436px;
+        height: 198.436px;
+        aspect-ratio: 198.44/198.44;
+    }
+
+    .specialOfferDetail .imageContainer .imageItem:nth-child(2),
+    .specialOfferDetail .imageContainer .imageItem:nth-child(4) {
+        width: 256.074px;
+        height: 170.737px;
+        aspect-ratio: 256.07/170.74;
+    }
+
+    .specialOfferDetail .content .textContent {
+        padding-bottom: 105px;
+    }
+
+    .specialOfferDetail .content .textLimited {
+        max-width: 574px;
+    }
+
+    .specialOfferDetail .content .textContent h2 {
+        font-size: 25px;
+        padding-bottom: 32px;
+    }
+
+    .specialOfferDetail .content .textContent p {
+        font-size: 20px;
+    }
+
+    .specialOfferDetail .content .imageContainer2 {
+        width: 363.532px;
+        height: 275.537px;
+        border-radius: 10.666px;
+        flex-shrink: 0;
+        aspect-ratio: 363.53/275.54;
+    }
+}
+
+@media (max-width: 1025px) {
+    .specialOfferDetail {
+        max-width: 785.038px;
+    }
+
+    .specialOfferDetail .pageTitle {
+        font-size: 20px;
+        margin-bottom: 26px;
+        padding-bottom: 7px;
+    }
+
+    .specialOfferDetail .imageContainer {
+        margin-bottom: 52px;
+    }
+
+    .specialOfferDetail .imageContainer img {
+        border-radius: 10.297px;
+    }
+
+    .specialOfferDetail .imageContainer .imageItem:nth-child(1),
+    .specialOfferDetail .imageContainer .imageItem:nth-child(3) {
+        width: 158.749px;
+        height: 158.749px;
+        aspect-ratio: 158.75/158.75;
+    }
+
+    .specialOfferDetail .imageContainer .imageItem:nth-child(2),
+    .specialOfferDetail .imageContainer .imageItem:nth-child(4) {
+        width: 204.859px;
+        height: 136.589px;
+        aspect-ratio: 204.86/136.59;
+    }
+
+    .specialOfferDetail .content .textContent {
+        padding-bottom: 83px;
+    }
+
+    .specialOfferDetail .content .textLimited {
+        max-width: 459px;
+    }
+
+    .specialOfferDetail .content .textContent h2 {
+        font-size: 20px;
+        padding-bottom: 26px;
+    }
+
+    .specialOfferDetail .content .textContent p {
+        font-size: 17px;
+    }
+
+    .specialOfferDetail .content .imageContainer2 {
+        width: 290.825px;
+        height: 220.43px;
+        flex-shrink: 0;
+        aspect-ratio: 290.83/220.43;
+        border-radius: 8.533px;
+    }
+}
+
+@media (max-width: 768px) {
+    .specialOfferDetail {
+        width: 588.867px;
+    }
+
+    .specialOfferDetail .pageTitle {
+        font-size: 19px;
+        margin-bottom: 20px;
+        padding-bottom: 7px;
+        max-width: 160px;
+    }
+
+    .specialOfferDetail .pageTitle::after {
+        max-width: 160px;
+    }
+
+    .specialOfferDetail .imageContainer {
+        margin-bottom: 52px;
+    }
+
+    .specialOfferDetail .imageContainer img {
+        border-radius: 7.724px;
+    }
+
+    .specialOfferDetail .imageContainer .imageItem:nth-child(1),
+    .specialOfferDetail .imageContainer .imageItem:nth-child(3) {
+        width: 119.079px;
+        height: 119.079px;
+        aspect-ratio: 119.08/119.08;
+    }
+
+    .specialOfferDetail .imageContainer .imageItem:nth-child(2),
+    .specialOfferDetail .imageContainer .imageItem:nth-child(4) {
+        width: 153.667px;
+        height: 102.457px;
+        aspect-ratio: 153.67/102.46;
+    }
+
+    .specialOfferDetail .content .textContent {
+        padding-bottom: 83px;
+    }
+
+    .specialOfferDetail .content .textLimited {
+        max-width: 459px;
+    }
+
+    .specialOfferDetail .content .textContent h2 {
+        font-size: 18px;
+        padding-bottom: 20px;
+    }
+
+    .specialOfferDetail .content .textContent p {
+        font-size: 17px;
+    }
+
+    .specialOfferDetail .content .imageContainer2 {
+        width: 218.151px;
+        height: 165.347px;
+        flex-shrink: 0;
+        aspect-ratio: 218.15/165.35;
+        border-radius: 6.401px;
+    }
+}
+
+@media (max-width: 641px) {
+    .specialOfferDetail {
+        max-width: 100%;
+        padding-top: 38px;
+    }
+
+    .specialOfferDetail .pageTitle {
+        font-size: 18px;
+        margin-bottom: 15px;
+        max-width: 150px;
+        padding-bottom: 5px;
+    }
+
+    .specialOfferDetail .pageTitle::after {
+        max-width: 150px;
+    }
+
+    .specialOfferDetail .imageContainer {
+        margin-bottom: 46px;
+        justify-content: center;
+        padding: 0 30px;
+    }
+
+    .specialOfferDetail .imageContainer img {
+        border-radius: 8px;
+    }
+
+    .specialOfferDetail .imageContainer .imageItem {
+        display: none;
+    }
+
+    /* .specialOfferDetail .imageContainer .imageItem img{
+       object-fit: cover;
+    } */
+
+    .specialOfferDetail .imageContainer .imageItem:first-child {
+        display: block !important;
+        width: 100%;
+        height: 163px;
+        flex-shrink: 0;
+        aspect-ratio: 262/143;
+    }
+
+    .specialOfferDetail .content {
+        padding: 0 20px;
+    }
+
+    .specialOfferDetail .content .textContent {
+        padding-bottom: 46px;
+        text-align: center;
+    }
+
+    .specialOfferDetail .content .textLimited {
+        /* max-width: 200px; */
+        margin: 0 auto;
+    }
+
+    .specialOfferDetail .content .textContent h2 {
+        font-size: 14px;
+        padding-bottom: 15px;
+        text-align: center;
+    }
+
+    .specialOfferDetail .content .textContent p {
+        font-size: 14px;
+    }
+
+    .specialOfferDetail .content .imageContainer2 {
+        display: none;
+    }
+
+    .specialOfferDetail .content .textContent .textList li {
+        list-style: none;
+    }
+}
