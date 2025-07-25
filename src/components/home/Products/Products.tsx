@@ -81,8 +81,6 @@ export default function Products() {
                 <p>İlk siz kəşf edin – ən son saat trendləri bu bölmədə</p>
             </div>
 
-            {/* <HeartIcon className="text-red-500" fill="red" /> */}
-
             <div className={`${cardStyles.cards_container} flex justify-center items-center`}>
                 {filteredProducts.slice(0, 5).map((item: Product) => (
                     <ProductCard

@@ -57,7 +57,7 @@ export default function MapView() {
                             </li>
                         ))
                     ) : (
-                        <li className={styles.noStoreMessage}>Hələ mağazamız yoxdur.</li>
+                        <li className={styles.noStoreMessage}>Hazırda mağazamız mövcud deyil.</li>
                     )}
                 </ul>
             </ul>
@@ -65,8 +65,6 @@ export default function MapView() {
             {/* Google Map */}
             <div className={`${styles.map}`}>
                 <iframe
-                    width="100%"
-                    height="630px"
                     className="rounded border"
                     loading="lazy"
                     allowFullScreen

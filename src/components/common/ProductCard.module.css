@@ -117,7 +117,15 @@
     background: linear-gradient(222deg, #EFEBAA 11.07%, #EFEBAA 34.55%, #FFF 46%, #EFEBAA 62%) !important;
 }
 
+@media (max-width: 1280px) {
+    .cards_container {
+        gap: 13px;
+    }
 
+    /* .cards {
+        padding: 26px 16px 19px 16px;
+    } */
+}
 
 @media (max-width: 1025px) {
     .cards_container {

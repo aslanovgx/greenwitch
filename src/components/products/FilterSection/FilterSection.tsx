@@ -78,7 +78,7 @@ export default function FilterSection() {
                 />
                 <FilterItem
                     title="Forma"
-                    options={["Kvadrat", "Yumru"]}
+                    options={["Kvadrat", "Oval"]}
                     selected={selectedFilters.forma}
                     onSelect={(val) => setSelectedFilters(prev => ({ ...prev, forma: val }))}
                     onClear={() => setSelectedFilters(prev => ({ ...prev, forma: undefined }))}

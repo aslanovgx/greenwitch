@@ -170,7 +170,7 @@ function ProductCardComponent({
                         colors: item.colors,
                     });
                 }}
-                className={`absolute top-3 left-3 z-10 cursor-pointer`}
+                className={`absolute top-3 right-3 z-10 cursor-pointer`}
             >
                 {favorites.some((fav) => fav.id === item.id) ? (
                     <Heart fill="black" className={styles.heartIcon} />
@@ -186,7 +186,7 @@ function ProductCardComponent({
             ${styles.new_card}
             ${badge === 'BEST' ? styles.bestSpan : ''}
             ${badge === 'ENDİRİM' ? styles.discountBadge : ''}
-            absolute top-3 right-3 z-10 cursor-pointer
+            absolute top-3 left-3 z-10 cursor-pointer
           `}
                 >
                     <span>{badge}</span>

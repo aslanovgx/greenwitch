@@ -8,7 +8,7 @@ export default function BagButton({ onClick }: { onClick: () => void }) {
     const { bagItems } = useBag();
 
     return (
-        <button onClick={onClick} className="relative">
+        <button onClick={onClick} className="relative bag-icon">
             <Image
                 src={"/assets/icons/bag3.svg"}
                 alt="shopping-icon"

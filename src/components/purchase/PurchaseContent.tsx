@@ -79,45 +79,47 @@ export default function PurchaseContent() {
             {/* Səbət Məhsulları */}
             <div className={`${styles.leftSide}`}>
                 <h2 className="">Alış-veriş çantanız</h2>
-                {bagItems.length === 0 ? (
-                    <h3 className={styles.emptyBag}>Səbət boşdur.</h3>
-                ) : (
-                    bagItems.map((item) => (
-                        <div key={item.id} className={`${styles.itemBag}`}>
-                            <Image src={item.image} alt={item.title} width={250} height={334} className="rounded" />
-                            <div className={`${styles.itemBox}`}>
-                                <div className={`${styles.itemDesc}`}>
-                                    <h1 className="font-medium uppercase text-sm">{item.title}</h1>
-                                    <p>Rəng: <span>gümüş</span></p>
-                                    {/* <p>Ölçü: Bir Ölçü</p> */}
-                                    <p className="">Qiyməti: <span>{item.price}₼</span></p>
-                                    <p className="">Miqdar: <span>{item.quantity}</span></p>
-                                </div>
-                                <div className={`${styles.itemButtons}`}>
-                                    <button
-                                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                        className=" bg-gray-200 rounded text-sm"
-                                    >
-                                        +
-                                    </button>
-                                    <button
-                                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                        className=" bg-gray-200 rounded text-sm"
-                                        disabled={item.quantity <= 1}
-                                    >
-                                        -
-                                    </button>
-                                    <button
-                                        onClick={() => removeFromBag(item.id)}
-                                        className="px-2 py-1 bg-red-500 text-white rounded text-sm"
-                                    >
-                                        Sil
-                                    </button>
+                <div className={styles.itemsContainer}>
+                    {bagItems.length === 0 ? (
+                        <h3 className={styles.emptyBag}>Səbət boşdur.</h3>
+                    ) : (
+                        bagItems.map((item) => (
+                            <div key={item.id} className={`${styles.itemBag}`}>
+                                <Image src={item.image} alt={item.title} width={250} height={334} className="rounded" />
+                                <div className={`${styles.itemBox}`}>
+                                    <div className={`${styles.itemDesc}`}>
+                                        <h1 className="font-medium uppercase text-sm">{item.title}</h1>
+                                        <p>Rəng: <span>gümüş</span></p>
+                                        {/* <p>Ölçü: Bir Ölçü</p> */}
+                                        <p className="">Qiyməti: <span>{item.price}₼</span></p>
+                                        <p className="">Miqdar: <span>{item.quantity}</span></p>
+                                    </div>
+                                    <div className={`${styles.itemButtons}`}>
+                                        <button
+                                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                            className=" bg-gray-200 rounded text-sm"
+                                        >
+                                            +
+                                        </button>
+                                        <button
+                                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                            className=" bg-gray-200 rounded text-sm"
+                                            disabled={item.quantity <= 1}
+                                        >
+                                            -
+                                        </button>
+                                        <button
+                                            onClick={() => removeFromBag(item.id)}
+                                            className="px-2 py-1 bg-red-500 text-white rounded text-sm"
+                                        >
+                                            Sil
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))
-                )}
+                        ))
+                    )}
+                </div>
             </div>
 
             {/* Ümumi Baxış və Checkout */}

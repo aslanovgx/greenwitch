@@ -14,7 +14,7 @@ import SearchInput from "@/components/ui/SearchInput";
 import FavoritesButton from "@/components/ui/FavoritesButton";
 import BagButton from "../ui/BagButton";
 import { handleScroll, lockBodyScroll, unlockBodyScroll } from "@/utils/navbarUtils";
-import menuItems from "@/components/layout/menuItems";
+import menuItems from "@/data/menuItems";
 import textSwitcherTexts from "@/components/layout/textSwitcherTexts";
 
 export default function Navbar() {
@@ -157,24 +157,16 @@ export default function Navbar() {
             className="object-contain searchMobile"
           />
           <BagButton onClick={() => setBaglistOpen(true)} />
-          <div className="relative flex justify-center items-center">
+          <div className="relative flex justify-center items-center favorite-icon">
             <FavoritesButton onClick={() => setWishlistOpen(true)} />
           </div>
-          {/* <Image
-            src={"/assets/icons/account.svg"}
-            alt="account-icon"
-            width={30}
-            height={30}
-            className="object-contain"
-            onClick={handleProfileClick}
-          /> */}
           <Link href="/location">
             <Image
               src="/assets/icons/location.svg"
               alt="location-icon"
               width={30}
               height={30}
-              className="object-contain cursor-pointer"
+              className="object-contain cursor-pointer location-icon"
             />
           </Link>
         </div>
