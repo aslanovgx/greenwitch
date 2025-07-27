@@ -179,7 +179,8 @@ export default function ProductsDetail({ product }: Props) {
                                     src={activeImage}
                                     width={imageSize.width}
                                     height={imageSize.height}
-                                    zoom={2}
+                                    zoom={1.5}
+                                    isRound={true}
                                 />
                             </div>
                         )}
@@ -219,7 +220,7 @@ export default function ProductsDetail({ product }: Props) {
                         className={styles.buyButton}
                         onClick={(e) => {
                             e.stopPropagation();
-                            addToBag(product);
+                            addToBag({ ...product, quantity: qty });
                             router.push(`/purchase`);
                         }}
                     >

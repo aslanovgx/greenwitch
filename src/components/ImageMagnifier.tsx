@@ -4,12 +4,19 @@ import { useRef, useState } from 'react';
 
 type Props = {
   src: string;
-  zoom: number;
+  zoom?: number;
   width: number;
   height: number;
+  isRound?: boolean; // 🔹 Yeni prop: linza yumru olsunmu?
 };
 
-export default function ImageMagnifier({ src, zoom = 2, width, height }: Props) {
+export default function ImageMagnifier({
+  src,
+  zoom = 2,
+  width,
+  height,
+  isRound = false,
+}: Props) {
   const [showLens, setShowLens] = useState(false);
   const [lensPosition, setLensPosition] = useState({ x: 0, y: 0 });
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -24,10 +31,8 @@ export default function ImageMagnifier({ src, zoom = 2, width, height }: Props) 
     setLensPosition({ x, y });
   };
 
-  const lensSize = {
-    width: width / zoom,
-    height: height / zoom,
-  };
+  // 🔸 Kvadrat lens üçün ölçü – dairə üçün də eyni lazımdır
+  const lensSize = Math.min(width, height) / zoom;
 
   return (
     <div
@@ -43,7 +48,7 @@ export default function ImageMagnifier({ src, zoom = 2, width, height }: Props) 
       onMouseLeave={() => setShowLens(false)}
       onMouseMove={handleMouseMove}
     >
-      {/* Main image with fill */}
+      {/* Main image */}
       <Image
         src={src}
         alt="zoom-img"
@@ -58,17 +63,17 @@ export default function ImageMagnifier({ src, zoom = 2, width, height }: Props) 
           style={{
             position: 'absolute',
             pointerEvents: 'none',
-            width: `${lensSize.width}px`,
-            height: `${lensSize.height}px`,
-            top: `${lensPosition.y - lensSize.height / 2}px`,
-            left: `${lensPosition.x - lensSize.width / 2}px`,
+            width: `${lensSize}px`,
+            height: `${lensSize}px`,
+            top: `${lensPosition.y - lensSize / 2}px`,
+            left: `${lensPosition.x - lensSize / 2}px`,
             backgroundImage: `url(${src})`,
             backgroundRepeat: 'no-repeat',
             backgroundSize: `${width * zoom}px ${height * zoom}px`,
-            backgroundPosition: `-${lensPosition.x * zoom - lensSize.width / 2}px -${lensPosition.y * zoom - lensSize.height / 2}px`,
+            backgroundPosition: `-${lensPosition.x * zoom - lensSize / 2}px -${lensPosition.y * zoom - lensSize / 2}px`,
             border: '1px solid black',
-            borderRadius: '0px',
-            boxShadow: '0 0 5px rgba(0,0,0,0.3)',
+            borderRadius: isRound ? '50%' : '6px',
+            boxShadow: '0 0 6px rgba(0,0,0,0.3)',
             zIndex: 10,
           }}
         />

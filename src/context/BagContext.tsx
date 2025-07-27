@@ -1,3 +1,4 @@
+
 "use client";
 
 import { createContext, useContext, useState, useEffect } from "react";
@@ -7,7 +8,7 @@ export type BagItem = Product & { quantity: number };
 
 type BagContextType = {
     bagItems: BagItem[];
-    addToBag: (item: Product) => void;
+    addToBag: (item: Product & { quantity?: number }) => void;
     removeFromBag: (id: number) => void;
     updateQuantity: (id: number, quantity: number) => void;
     clearBag: () => void;
@@ -27,20 +28,22 @@ export const BagProvider = ({ children }: { children: React.ReactNode }) => {
         localStorage.setItem("bagItems", JSON.stringify(bagItems));
     }, [bagItems]);
 
-    const addToBag = (item: Product) => {
-        const cleanPrice = Number(String(item.price).replace(/\D/g, '')); // "379AZN" → 379
+    const addToBag = (item: Product & { quantity?: number }) => {
+        const cleanPrice = Number(String(item.price).replace(/\D/g, ''));
+        const qty = item.quantity ?? 1;
 
         setBagItems((prev) => {
             const existing = prev.find((i) => i.id === item.id);
             if (existing) {
                 return prev.map((i) =>
-                    i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+                    i.id === item.id
+                        ? { ...i, quantity: i.quantity + qty }
+                        : i
                 );
             }
-            return [...prev, { ...item, price: cleanPrice, quantity: 1 }];
+            return [...prev, { ...item, price: cleanPrice, quantity: qty }];
         });
     };
-
 
     const removeFromBag = (id: number) => {
         setBagItems((prev) => prev.filter((i) => i.id !== id));
