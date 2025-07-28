@@ -12,7 +12,7 @@ public class Program
         builder.Services.AddPersistenceServices(builder.Configuration);
         builder.Services.AddApplicationServices();
 
-        // CORS siyas?ti (Next.js v? AdminPanel ���n icaz?)
+        // CORS siyas?ti (Next.js v? AdminPanel üçün icaz?)
         builder.Services.AddCors(options =>
         {
             options.AddPolicy("AllowAllClients", policy =>
@@ -42,7 +42,7 @@ public class Program
 
         app.UseStaticFiles();
 
-        // app.UseHttpsRedirection();
+        //app.UseHttpsRedirection();
 
         // CORS t?tbiqi
         app.UseCors("AllowAllClients");
