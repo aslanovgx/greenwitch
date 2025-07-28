@@ -29,28 +29,6 @@ function ProductCardComponent({
     const isActive = isTouch && activeCardId === item.id;
     const { addToBag } = useBag();  // Burada
 
-    // console.log(
-    //     "%cProductCard Debug",
-    //     "color: #1e90ff; font-weight: bold;",
-    //     {
-    //         isTouch,
-    //         activeCardId,
-    //         "item.id": item.id,
-    //         isActive
-    //     }
-    // );
-
-
-
-    // console.log("ProductCard", item.id, "isActive", isActive);
-    // console.log("isTouch", isTouch, "activeCardId", activeCardId, "item.id", item.id, "isActive", isActive);
-
-    // const handleCardTouch = () => {
-    //     if (!isActive && setActiveCardId) {
-    //         setActiveCardId(item.id);
-    //     }
-    // };
-
     const handleClick = () => {
         if (isTouch && setActiveCardId) {
             if (activeCardId !== item.id) {
@@ -64,19 +42,26 @@ function ProductCardComponent({
     };
 
 
+    // const badge = isMostSales
+    //     ? 'BEST'
+    //     : activeCategory === 'new' && item.isNew
+    //         ? 'NEW'
+    //         : activeCategory === 'discount' && item.discountPrice > 0
+    //             ? 'ENDİRİM'
+    //             : activeCategory === 'all'
+    //                 ? item.isNew
+    //                     ? 'NEW'
+    //                     : item.discountPrice > 0
+    //                         ? 'ENDİRİM'
+    //                         : null
+    //                 : null;
+
     const badge = isMostSales
         ? 'BEST'
-        : activeCategory === 'new' && item.isNew
-            ? 'NEW'
-            : activeCategory === 'discount' && item.coupon > 0
-                ? 'ENDİRİM'
-                : activeCategory === 'all'
-                    ? item.isNew
-                        ? 'NEW'
-                        : item.coupon > 0
-                            ? 'ENDİRİM'
-                            : null
-                    : null;
+        : activeCategory === 'discount' && item.discountPrice
+            ? 'ENDİRİM'
+            : null;
+
 
     return (
         <div
@@ -85,8 +70,8 @@ function ProductCardComponent({
         >
             <div className={`${styles.cards_image} relative mx-auto`}>
                 <Image
-                    src={item.image}
-                    alt={item.title}
+                    src={item.images[0]}
+                    alt={item.name}
                     fill
                     loading="lazy"
                     className={`w-full h-full scale-105 transition-opacity duration-600 ${!isTouch
@@ -97,10 +82,10 @@ function ProductCardComponent({
                         }`}
                     style={{ objectFit: 'cover' }}
                 />
-                {item.hoverImage && (
+                {item.images[1] && (
                     <Image
-                        src={item.hoverImage}
-                        alt={item.title}
+                        src={item.images[1]}
+                        alt={item.name}
                         fill
                         loading="lazy"
                         className={`${styles.hoverImage} scale-95 w-full h-full absolute top-0 left-0 transition-opacity duration-700 ${!isTouch
@@ -115,8 +100,8 @@ function ProductCardComponent({
             </div>
 
             <div className={`${styles.cards_desc}`}>
-                <h3 className="transition-all duration-700">{item.title}</h3>
-                <p>{item.desc}</p>
+                <h3 className="transition-all duration-700">{item.brandName}</h3>
+                <p>{item.description}</p>
                 <p
                     className={`${!isTouch
                         ? 'opacity-0 group-hover:opacity-100'
@@ -162,12 +147,12 @@ function ProductCardComponent({
                     e.stopPropagation();
                     toggleFavorite({
                         id: item.id,
-                        title: item.title,
-                        price: Number(String(item.price).replace(/\D/g, '')),
-                        image: item.image,
-                        originalPrice: item.originalPrice,
-                        coupon: item.coupon,
-                        colors: item.colors,
+                        name: item.name,
+                        brandName: item.brandName,
+                        price: item.discountPrice > 0 ? item.discountPrice : item.price,
+                        discountPrice: item.discountPrice,
+                        images: item.images,
+                        colorNames: item.colorNames,
                     });
                 }}
                 className={`absolute top-3 right-3 z-10 cursor-pointer`}

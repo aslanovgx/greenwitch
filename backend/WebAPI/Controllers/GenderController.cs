@@ -24,7 +24,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetAllGenders([FromQuery] GetAllGenderQueryRequest request)
         {
             var response = await _mediator.Send(request);
-            return Ok(response);
+            return Ok(response.Genders);
         }
 
         [HttpGet("{Id}")]

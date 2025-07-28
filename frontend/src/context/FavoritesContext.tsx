@@ -1,10 +1,10 @@
 "use client";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { Product } from "@/types/Product";
+import { FavoriteItem } from "@/types/FavoriteItem"; // ← yeni tip
 
 interface FavoriteContextType {
-  favorites: Product[];
-  toggleFavorite: (product: Product) => void;
+  favorites: FavoriteItem[];
+  toggleFavorite: (product: FavoriteItem) => void;
   removeFromFavorites: (id: number) => void;
   isFavorite: (id: number) => boolean;
 }
@@ -19,9 +19,8 @@ const FavoriteContext = createContext<FavoriteContextType>({
 export const useFavorites = () => useContext(FavoriteContext);
 
 export const FavoriteProvider = ({ children }: { children: React.ReactNode }) => {
-  const [favorites, setFavorites] = useState<Product[]>([]);
+  const [favorites, setFavorites] = useState<FavoriteItem[]>([]);
 
-  // 🔁 localStorage-dan oxu (yalnız clientdə)
   useEffect(() => {
     const stored = localStorage.getItem("favorites");
     if (stored) {
@@ -29,12 +28,11 @@ export const FavoriteProvider = ({ children }: { children: React.ReactNode }) =>
     }
   }, []);
 
-  // 💾 favorites dəyişdikcə localStorage-a yaz
   useEffect(() => {
     localStorage.setItem("favorites", JSON.stringify(favorites));
   }, [favorites]);
 
-  const toggleFavorite = (product: Product) => {
+  const toggleFavorite = (product: FavoriteItem) => {
     setFavorites((prev) => {
       const exists = prev.some((p) => p.id === product.id);
       if (exists) {

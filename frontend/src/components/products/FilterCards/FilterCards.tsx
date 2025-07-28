@@ -8,11 +8,11 @@ import { Product } from "@/types/Product";
 import MoreButton from "@/components/ui/MoreButton";
 
 type Filters = {
-  cins?: string;
-  brendler?: string;
-  reng?: string;
-  forma?: string;
-  sirala?: string;
+  genderId?: number;
+  brandId?: number;
+  colorId?: number;
+  shapeId?: number;
+  sort?: string;
 };
 
 type Props = {
@@ -27,13 +27,13 @@ export default function FilterCards({ filters }: Props) {
   useEffect(() => {
     const query = new URLSearchParams();
 
-    if (filters.cins) query.append("gender", filters.cins);
-    if (filters.brendler) query.append("brand", filters.brendler);
-    if (filters.reng) query.append("color", filters.reng);
-    if (filters.forma) query.append("shape", filters.forma);
-    if (filters.sirala) query.append("sort", filters.sirala); // Backend bunu başa düşməlidir
+    if (filters.genderId) query.append("genderId", filters.genderId.toString());
+    if (filters.brandId) query.append("brandId", filters.brandId.toString());
+    if (filters.colorId) query.append("colorId", filters.colorId.toString());
+    if (filters.shapeId) query.append("shapeId", filters.shapeId.toString());
+    if (filters.sort) query.append("sort", filters.sort);
 
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/Product/GetAllProductsWith?${query.toString()}`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/Product/GetProductsByFilter?${query.toString()}`)
       .then((res) => res.json())
       .then((data) => {
         const productList = data.products.map((p: any) => ({
@@ -44,7 +44,9 @@ export default function FilterCards({ filters }: Props) {
           desc: p.description,
           originalPrice: p.price,
           price: p.discountPrice || p.price,
-          coupon: p.discountPrice ? 100 - Math.floor((p.discountPrice / p.price) * 100) : 0,
+          coupon: p.discountPrice
+            ? 100 - Math.floor((p.discountPrice / p.price) * 100)
+            : 0,
         }));
 
         setProducts(productList);
