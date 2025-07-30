@@ -1,11 +1,11 @@
 import { fetcher } from "../helpers/fetcher";
-import { Product } from "@/types/Product";
+import { Option } from "@/types/Option";
 
-type ShapeResponse = {
-  shapes: Product[];
+type ShapeListResponse = {
+  shapes: Option[];
 };
 
-export async function getAllShapes(): Promise<Product[]> {
-  const data = await fetcher<ShapeResponse>("/api/Shape");
+export async function getAllShapes(): Promise<Option[]> {
+  const data = await fetcher<ShapeListResponse>("/api/Shape");
   return data.shapes;
 }

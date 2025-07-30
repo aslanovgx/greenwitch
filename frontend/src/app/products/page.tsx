@@ -21,9 +21,11 @@ export default function ProductsPage() {
       <section>
         <FilterSection setFilters={setFilters} />
       </section>
+
       <section>
         <FilterCards filters={filters} />
       </section>
+
       <section>
         <Contact />
       </section>

@@ -1,11 +1,11 @@
 import { fetcher } from "../helpers/fetcher";
-import { Product } from "@/types/Product";
+import { Option } from "@/types/Option";
 
-type ColorResponse = {
-  colors: Product[];
+type ColorListResponse = {
+  colors: Option[];
 };
 
-export async function getAllColors(): Promise<Product[]> {
-  const data = await fetcher<ColorResponse>("/api/Color");
+export async function getAllColors(): Promise<Option[]> {
+  const data = await fetcher<ColorListResponse>("/api/Color");
   return data.colors;
 }

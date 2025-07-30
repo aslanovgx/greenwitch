@@ -1,11 +1,11 @@
 import { fetcher } from "../helpers/fetcher";
-import { Product } from "@/types/Product";
+import { Option } from "@/types/Option";
 
-type BrandResponse = {
-  brands: Product[];
+type BrandListResponse = {
+  brands: Option[];
 };
 
-export async function getAllBrands(): Promise<Product[]> {
-  const data = await fetcher<BrandResponse>("/api/Brand");
+export async function getAllBrands(): Promise<Option[]> {
+  const data = await fetcher<BrandListResponse>("/api/Brand");
   return data.brands;
 }

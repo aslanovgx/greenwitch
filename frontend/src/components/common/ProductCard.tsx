@@ -16,6 +16,22 @@ type Props = {
     setActiveCardId?: (id: number | null) => void;
 };
 
+// 🔑 şəkil URL helper funksiyası
+// utils/getImageUrl.ts
+export const getImageUrl = (path?: string) => {
+    if (!path) return "/fallback.jpg"; // fallback şəkil
+    if (path.startsWith("http")) return path; // əgər tam URL-dirsə
+    if (path.startsWith("/")) {
+        // məsələn "/images/products/..."
+        return `${process.env.NEXT_PUBLIC_API_URL}${path}`;
+    }
+    // default: "images/products/..."
+    return `${process.env.NEXT_PUBLIC_API_URL}/${path}`;
+};
+
+
+
+
 function ProductCardComponent({
     item,
     isMostSales = false,
@@ -41,21 +57,6 @@ function ProductCardComponent({
         }
     };
 
-
-    // const badge = isMostSales
-    //     ? 'BEST'
-    //     : activeCategory === 'new' && item.isNew
-    //         ? 'NEW'
-    //         : activeCategory === 'discount' && item.discountPrice > 0
-    //             ? 'ENDİRİM'
-    //             : activeCategory === 'all'
-    //                 ? item.isNew
-    //                     ? 'NEW'
-    //                     : item.discountPrice > 0
-    //                         ? 'ENDİRİM'
-    //                         : null
-    //                 : null;
-
     const badge = isMostSales
         ? 'BEST'
         : activeCategory === 'discount' && item.discountPrice
@@ -70,7 +71,7 @@ function ProductCardComponent({
         >
             <div className={`${styles.cards_image} relative mx-auto`}>
                 <Image
-                    src={item.images[0]}
+                    src={getImageUrl(item.images?.[0])}
                     alt={item.name}
                     fill
                     loading="lazy"
@@ -82,9 +83,9 @@ function ProductCardComponent({
                         }`}
                     style={{ objectFit: 'cover' }}
                 />
-                {item.images[1] && (
+                {item.images?.[1] && (
                     <Image
-                        src={item.images[1]}
+                        src={getImageUrl(item.images[1])}
                         alt={item.name}
                         fill
                         loading="lazy"
@@ -149,11 +150,14 @@ function ProductCardComponent({
                         id: item.id,
                         name: item.name,
                         brandName: item.brandName,
-                        price: item.discountPrice > 0 ? item.discountPrice : item.price,
-                        discountPrice: item.discountPrice,
+                        price: item.discountPrice && item.discountPrice > 0
+                            ? item.discountPrice
+                            : item.price,
+                        discountPrice: item.discountPrice ?? 0, // null olsa 0 qoy
                         images: item.images,
                         colorNames: item.colorNames,
                     });
+
                 }}
                 className={`absolute top-3 right-3 z-10 cursor-pointer`}
             >

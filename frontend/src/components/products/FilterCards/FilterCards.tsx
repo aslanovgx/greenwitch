@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Product } from "@/types/Product";
+
+import ProductCard from "@/components/common/ProductCard";
+import MoreButton from "@/components/ui/MoreButton";
+
 import styles from "./FilterCards.module.css";
 import cardStyles from "@/components/common/ProductCard.module.css";
-import ProductCard from "@/components/common/ProductCard";
-import { Product } from "@/types/Product";
-import MoreButton from "@/components/ui/MoreButton";
 
 type Filters = {
   genderId?: number;
@@ -21,47 +23,48 @@ type Props = {
 
 export default function FilterCards({ filters }: Props) {
   const [products, setProducts] = useState<Product[]>([]);
-  const [visibleCount, setVisibleCount] = useState<number>(5);
+  const [error, setError] = useState<string | null>(null);
+
   const [activeCardId, setActiveCardId] = useState<number | null>(null);
+  const [visibleCount, setVisibleCount] = useState<number>(5);
 
   useEffect(() => {
-    const query = new URLSearchParams();
-
-    if (filters.genderId) query.append("genderId", filters.genderId.toString());
-    if (filters.brandId) query.append("brandId", filters.brandId.toString());
-    if (filters.colorId) query.append("colorId", filters.colorId.toString());
-    if (filters.shapeId) query.append("shapeId", filters.shapeId.toString());
-    if (filters.sort) query.append("sort", filters.sort);
-
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/Product/GetProductsByFilter?${query.toString()}`)
-      .then((res) => res.json())
-      .then((data) => {
-        const productList = data.products.map((p: any) => ({
-          ...p,
-          image: `${process.env.NEXT_PUBLIC_API_URL}/${p.images?.[0] ?? "fallback.jpg"}`,
-          hoverImage: p.images?.[1] ? `${process.env.NEXT_PUBLIC_API_URL}/${p.images[1]}` : undefined,
-          title: p.name,
-          desc: p.description,
-          originalPrice: p.price,
-          price: p.discountPrice || p.price,
-          coupon: p.discountPrice
-            ? 100 - Math.floor((p.discountPrice / p.price) * 100)
-            : 0,
-        }));
-
-        setProducts(productList);
-      });
-  }, [filters]);
+    async function fetchData() {
+      try {
+        // Burada filters əsasında backend API çağırışı optimallaşdırıla bilər
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/Product`);
+        if (!res.ok) {
+          throw new Error(`API error: ${res.status}`);
+        }
+        const data = await res.json();
+        setProducts(data.products || []);
+        setError(null);
+      } catch (err: any) {
+        setError(err.message || "Unknown error");
+      }
+    }
+    fetchData();
+  }, [filters]); // filters dəyişdikcə yenidən çağırır
 
   const visibleProducts = products.slice(0, visibleCount);
 
   const handleLoadMore = () => {
-    setVisibleCount((prev) => prev + 5);
+    setVisibleCount((prev) => Math.min(prev + 5, products.length));
   };
+
+  if (error) {
+    return <div style={{ color: "red" }}>Error: {error}</div>;
+  }
+
+  if (products.length === 0) {
+    return <p>Loading products...</p>;
+  }
 
   return (
     <div className={styles.filterCards}>
-      <div className={`${cardStyles.cards_container} ${styles.cards_box} flex justify-center items-center`}>
+      <div
+        className={`${cardStyles.cards_container} ${styles.cards_box} flex justify-center items-center`}
+      >
         {visibleProducts.map((item: Product) => (
           <ProductCard
             key={item.id}

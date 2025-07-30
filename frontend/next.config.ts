@@ -2,9 +2,19 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ['localhost'],
-    unoptimized: false, // <== BUNU ƏLAVƏ ETDİK
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**.ngrok-free.app",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+      },
+    ],
+    unoptimized: false,
   },
+
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
