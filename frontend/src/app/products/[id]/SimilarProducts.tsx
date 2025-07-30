@@ -11,7 +11,7 @@ export default function SimilarProducts() {
   const [activeCardId, setActiveCardId] = useState<number | null>(null);
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/Product/GetAllProductsWith`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/Product`)
       .then((res) => res.json())
       .then((data) => {
         console.log("Fetched data:", data);
