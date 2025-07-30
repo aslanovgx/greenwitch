@@ -20,10 +20,10 @@ namespace WebUI.Controllers
         public async Task<IActionResult> Index(string categoryName)
         {
             var client = _httpClientFactory.CreateClient();
-            string url = "https://localhost:7228/api/Brand/GetBrandsByCategory";
+            string url = "http://localhost:7228/api/Brand/GetBrandsByCategory";
 
             if (!string.IsNullOrEmpty(categoryName))
-                url = $"https://localhost:7228/api/Brand/GetBrandsByCategoryName?CategoryName={categoryName}";
+                url = $"http://localhost:7228/api/Brand/GetBrandsByCategoryName?CategoryName={categoryName}";
 
             var responseMessage = await client.GetAsync(url);
             if (responseMessage.IsSuccessStatusCode)
@@ -32,7 +32,7 @@ namespace WebUI.Controllers
                 var result = JsonConvert.DeserializeObject<BrandResponseDto>(jsonData);
 
                 // kateqoriyalar dropdown üçün
-                var categoryResponse = await client.GetAsync("https://localhost:7228/api/Category");
+                var categoryResponse = await client.GetAsync("http://localhost:7228/api/Category");
                 if (categoryResponse.IsSuccessStatusCode)
                 {
                     var categoryJson = await categoryResponse.Content.ReadAsStringAsync();

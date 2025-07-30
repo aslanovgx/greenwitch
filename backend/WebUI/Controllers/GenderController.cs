@@ -17,7 +17,7 @@ namespace WebUI.Controllers
         public async Task<IActionResult> Index()
         {
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7228/api/Gender");
+            var responseMessage = await client.GetAsync("http://localhost:7228/api/Gender");
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
