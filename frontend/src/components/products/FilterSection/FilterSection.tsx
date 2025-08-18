@@ -3,23 +3,18 @@
 import { useState, useEffect, useRef } from "react";
 import styles from "./FilterSection.module.css";
 import FilterItem from "@/components/Filter/FilterItem";
+
 import { Option } from "@/types/Option";
-
-import { getAllGenders } from "@/lib/api/genders";
-import { getAllBrands } from "@/lib/api/brands";
-import { getAllColors } from "@/lib/api/colors";
-import { getAllShapes } from "@/lib/api/shapes";
-
-type Filters = {
-  genderId?: number;
-  brandId?: number;
-  colorId?: number;
-  shapeId?: number;
-  sort?: string;
-};
+import { getAllGenders } from "@/lib/api/options";
 
 type Props = {
-  setFilters: (filters: Filters) => void;
+  setFilters: React.Dispatch<React.SetStateAction<{
+    genderId?: number;
+    brandId?: number;
+    colorId?: number;
+    shapeId?: number;
+    sort?: string;
+  }>>;
 };
 
 export default function FilterSection({ setFilters }: Props) {
@@ -27,66 +22,35 @@ export default function FilterSection({ setFilters }: Props) {
   const filterRef = useRef<HTMLDivElement>(null);
 
   const [genders, setGenders] = useState<Option[]>([]);
-  const [brands, setBrands] = useState<Option[]>([]);
-  const [colors, setColors] = useState<Option[]>([]);
-  const [shapes, setShapes] = useState<Option[]>([]);
-
-  const sortOptions: Option[] = [
-    { id: 1, name: "Yeni Gələnlər" },
-    { id: 2, name: "Endirimli Məhsullar" },
-    { id: 3, name: "Qiymət (Aşağıdan Yuxarıya)" },
-    { id: 4, name: "Qiymət (Yuxarıdan Aşağıya)" },
-  ];
-
-  const [selectedFilters, setSelectedFilters] = useState<{
-    cins?: string;
-    brendler?: string;
-    reng?: string;
-    forma?: string;
-    sirala?: string;
-  }>({});
-
-  const toggleFilter = (filterName: string) => {
-    setOpenFilter((prev) => (prev === filterName ? null : filterName));
-  };
+  const [selectedGender, setSelectedGender] = useState<number | undefined>();
 
   useEffect(() => {
-    async function fetchOptions() {
+    async function fetchFilters() {
       try {
-        const [gendersData, brandsData, colorsData, shapesData] = await Promise.all([
-          getAllGenders(),
-          getAllBrands(),
-          getAllColors(),
-          getAllShapes(),
-        ]);
-
+        const gendersData = await getAllGenders();
+        console.log("✅ Genders in FilterSection:", gendersData);
         setGenders(gendersData);
-        setBrands(brandsData);
-        setColors(colorsData);
-        setShapes(shapesData);
-      } catch (error) {
-        console.error("Filter optionlarını yükləmə zamanı xəta:", error);
+      } catch (err) {
+        console.error("❌ Filter data loading error:", err);
       }
     }
-    fetchOptions();
+
+    fetchFilters();
   }, []);
 
-  // Convert selected filter strings to numeric IDs and send up
   useEffect(() => {
     setFilters({
-      genderId: genders.find((g) => g.name === selectedFilters.cins)?.id,
-      brandId: brands.find((b) => b.name === selectedFilters.brendler)?.id,
-      colorId: colors.find((c) => c.name === selectedFilters.reng)?.id,
-      shapeId: shapes.find((s) => s.name === selectedFilters.forma)?.id,
-      sort: selectedFilters.sirala,
+      genderId: selectedGender,
     });
-  }, [selectedFilters, genders, brands, colors, shapes, setFilters]);
+  }, [selectedGender, setFilters]);
+
+
 
   return (
     <div ref={filterRef} className={styles.flterSection}>
       <ul className={styles.leftSide}>
         <li>Filtr:</li>
-        <FilterItem
+        {/* <FilterItem
           title="Rəng"
           options={colors}
           selectedId={colors.find((c) => c.name === selectedFilters.reng)?.id}
@@ -94,26 +58,30 @@ export default function FilterSection({ setFilters }: Props) {
           onClear={() => setSelectedFilters((prev) => ({ ...prev, reng: undefined }))}
           isOpen={openFilter === "reng"}
           toggle={() => toggleFilter("reng")}
-        />
-        <FilterItem
+        /> */}
+        {/* <FilterItem
           title="Brendlər"
           options={brands}
-          selectedId={brands.find((b) => b.name === selectedFilters.brendler)?.id}
-          onSelect={(option) => setSelectedFilters((prev) => ({ ...prev, brendler: option.name }))}
-          onClear={() => setSelectedFilters((prev) => ({ ...prev, brendler: undefined }))}
-          isOpen={openFilter === "brendler"}
-          toggle={() => toggleFilter("brendler")}
-        />
+          selectedId={selectedBrand}
+          onSelect={(opt) => setSelectedBrand(opt.id)}
+          onClear={() => setSelectedBrand(undefined)}
+          isOpen={openFilter === "brand"}
+          toggle={() =>
+            setOpenFilter(openFilter === "brand" ? null : "brand")
+          }
+        /> */}
         <FilterItem
           title="Cins"
           options={genders}
-          selectedId={genders.find((g) => g.name === selectedFilters.cins)?.id}
-          onSelect={(option) => setSelectedFilters((prev) => ({ ...prev, cins: option.name }))}
-          onClear={() => setSelectedFilters((prev) => ({ ...prev, cins: undefined }))}
-          isOpen={openFilter === "cins"}
-          toggle={() => toggleFilter("cins")}
+          selectedId={selectedGender}
+          onSelect={(opt) => setSelectedGender(opt.id)}
+          onClear={() => setSelectedGender(undefined)}
+          isOpen={openFilter === "gender"}
+          toggle={() =>
+            setOpenFilter(openFilter === "gender" ? null : "gender")
+          }
         />
-        <FilterItem
+        {/* <FilterItem
           title="Forma"
           options={shapes}
           selectedId={shapes.find((s) => s.name === selectedFilters.forma)?.id}
@@ -121,11 +89,11 @@ export default function FilterSection({ setFilters }: Props) {
           onClear={() => setSelectedFilters((prev) => ({ ...prev, forma: undefined }))}
           isOpen={openFilter === "forma"}
           toggle={() => toggleFilter("forma")}
-        />
+        /> */}
       </ul>
 
       <ul className={styles.rightSide}>
-        <FilterItem
+        {/* <FilterItem
           title="Sırala"
           options={sortOptions}
           selectedId={sortOptions.find((opt) => opt.name === selectedFilters.sirala)?.id}
@@ -133,7 +101,7 @@ export default function FilterSection({ setFilters }: Props) {
           onClear={() => setSelectedFilters((prev) => ({ ...prev, sirala: undefined }))}
           isOpen={openFilter === "sirala"}
           toggle={() => toggleFilter("sirala")}
-        />
+        /> */}
       </ul>
     </div>
   );

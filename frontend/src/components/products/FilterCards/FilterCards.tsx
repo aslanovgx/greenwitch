@@ -2,10 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { Product } from "@/types/Product";
-
 import ProductCard from "@/components/common/ProductCard";
 import MoreButton from "@/components/ui/MoreButton";
-
+import { fetcher } from "@/lib/helpers/fetcher";
 import styles from "./FilterCards.module.css";
 import cardStyles from "@/components/common/ProductCard.module.css";
 
@@ -31,20 +30,37 @@ export default function FilterCards({ filters }: Props) {
   useEffect(() => {
     async function fetchData() {
       try {
-        // Burada filters əsasında backend API çağırışı optimallaşdırıla bilər
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/Product`);
-        if (!res.ok) {
-          throw new Error(`API error: ${res.status}`);
-        }
-        const data = await res.json();
-        setProducts(data.products || []);
+        // ✅ Query string düzəltmək
+        const queryParams = new URLSearchParams();
+
+        if (filters.genderId) queryParams.append("genderId", filters.genderId.toString());
+        if (filters.brandId) queryParams.append("brandId", filters.brandId.toString());
+        // if (filters.colorId) queryParams.append("colorId", filters.colorId.toString()); // ✅ düzəldi
+        if (filters.shapeId) queryParams.append("shapeId", filters.shapeId.toString());
+        if (filters.sort) queryParams.append("sort", filters.sort);
+
+        const query = queryParams.toString();
+
+        const data = await fetcher<{ products: Product[] }>(
+          `/Product/GetProductsByFilter${query ? "?" + query : ""}`
+        );
+
+        // ✅ Yalnız bir dəfə yoxlama
+        const hasFilters = filters.genderId || filters.brandId || filters.colorId || filters.shapeId;
+
+        setProducts(
+          hasFilters ? data.products || [] : data.products?.slice(0, 5) || []
+        );
+
+
+
         setError(null);
       } catch (err: any) {
         setError(err.message || "Unknown error");
       }
     }
     fetchData();
-  }, [filters]); // filters dəyişdikcə yenidən çağırır
+  }, [filters]);
 
   const visibleProducts = products.slice(0, visibleCount);
 
@@ -57,7 +73,7 @@ export default function FilterCards({ filters }: Props) {
   }
 
   if (products.length === 0) {
-    return <p>Loading products...</p>;
+    return <p>No products found</p>;
   }
 
   return (

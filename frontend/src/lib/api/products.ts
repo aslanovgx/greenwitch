@@ -6,7 +6,7 @@ type ProductListResponse = {
 
 // 🔹 Bütün məhsullar
 export async function getAllProducts(): Promise<Product[]> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/Product`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/Product/GetAllProductsWith`, {
     cache: "no-store",
   });
 

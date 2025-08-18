@@ -5,20 +5,16 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "**.ngrok-free.app",
-      },
-      {
-        protocol: "http",
-        hostname: "localhost",
+        hostname: "*.ngrok-free.app", // yalnız ngrok linkləri
       },
     ],
-    unoptimized: false,
   },
 
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
-      use: ['@svgr/webpack'],
+      issuer: /\.[jt]sx?$/,
+      use: ["@svgr/webpack"],
     });
     return config;
   },

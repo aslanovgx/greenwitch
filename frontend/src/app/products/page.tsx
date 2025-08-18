@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import Contact from "@/components/home/Contact/Contact";
 import FilterCards from "@/components/products/FilterCards/FilterCards";
 import FilterSection from "@/components/products/FilterSection/FilterSection";
 
+// İD-lə işləyən tip
 type Filters = {
   genderId?: number;
   brandId?: number;
@@ -17,18 +17,9 @@ export default function ProductsPage() {
   const [filters, setFilters] = useState<Filters>({});
 
   return (
-    <>
-      <section>
-        <FilterSection setFilters={setFilters} />
-      </section>
-
-      <section>
-        <FilterCards filters={filters} />
-      </section>
-
-      <section>
-        <Contact />
-      </section>
-    </>
+    <div>
+      <FilterSection setFilters={setFilters} />
+      <FilterCards filters={filters} />
+    </div>
   );
 }

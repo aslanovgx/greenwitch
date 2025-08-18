@@ -82,6 +82,7 @@ function ProductCardComponent({
                             : 'opacity-100'
                         }`}
                     style={{ objectFit: 'cover' }}
+                    unoptimized
                 />
                 {item.images?.[1] && (
                     <Image
@@ -96,6 +97,7 @@ function ProductCardComponent({
                                 : 'opacity-0'
                             }`}
                         style={{ objectFit: 'cover' }}
+                        unoptimized
                     />
                 )}
             </div>

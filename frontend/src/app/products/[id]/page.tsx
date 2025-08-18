@@ -1,28 +1,28 @@
 import { notFound } from 'next/navigation';
 import ProductsDetail from './ProductsDetail';
-import mehsullar from '@/components/Mock/Home/mehsullar.json';
 import SimilarProducts from './SimilarProducts';
 import Contact from '@/components/home/Contact/Contact';
+import { Product } from '@/types/Product';
 
 type Props = {
-  params: Promise<{
-    id: string;
-  }>;
+  params: { id: string };
 };
 
-// SEO üçün lazımlı metadata (async və await ilə)
-export async function generateMetadata({ params }: Props) {
-  const { id } = await params;
-  const product = mehsullar.find(p => p.id.toString() === id);
-  return {
-    title: product?.title || 'Product Page',
-    description: product?.desc || 'Product details and information.',
-  };
-}
-
 export default async function Page({ params }: Props) {
-  const { id } = await params;
-  const product = mehsullar.find(p => p.id.toString() === id);
+  const { id } = params;
+
+  // ✅ API çağırışı
+  const res = await fetch(`${process.env.API_URL}/api/Product/${id}`, {
+    cache: "no-store",
+  });
+
+
+  if (!res.ok) {
+    return notFound();
+  }
+
+  const product: Product = await res.json();
+
   if (!product) return notFound();
 
   return (
