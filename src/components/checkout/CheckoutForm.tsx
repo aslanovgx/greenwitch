@@ -139,7 +139,7 @@ export default function CheckoutForm() {
 
         if (!form.city.trim()) newErrorMessages.city = "Şəhər seçin.";
 
-        if (!form.selectedStore.trim()) newErrorMessages.selectedStore = "Mağaza seçin.";
+        // if (!form.selectedStore.trim()) newErrorMessages.selectedStore = "Mağaza seçin.";
 
         setErrors(newErrors);
         setErrorMessages(newErrorMessages);
@@ -203,14 +203,14 @@ export default function CheckoutForm() {
             }
         }
 
-        if (name === "selectedStore") {
-            if (!value.trim()) {
-                message = "Mağaza seçin.";
-                setErrors((prev) => ({ ...prev, selectedStore: true }));
-            } else {
-                setErrors((prev) => ({ ...prev, selectedStore: false }));
-            }
-        }
+        // if (name === "selectedStore") {
+        //     if (!value.trim()) {
+        //         message = "Mağaza seçin.";
+        //         setErrors((prev) => ({ ...prev, selectedStore: true }));
+        //     } else {
+        //         setErrors((prev) => ({ ...prev, selectedStore: false }));
+        //     }
+        // }
 
         setErrorMessages((prev) => ({ ...prev, [name]: message }));
     };
@@ -315,7 +315,7 @@ export default function CheckoutForm() {
                     )}
                 </div>
 
-                <div className={styles.formGroup}>
+                {/* <div className={styles.formGroup}>
                     <label htmlFor="selectedStore">Mağaza seçin</label>
                     <select
                         id="selectedStore"
@@ -342,7 +342,7 @@ export default function CheckoutForm() {
                     {errorMessages.selectedStore && (
                         <div className={styles.errorMessage}>{errorMessages.selectedStore}</div>
                     )}
-                </div>
+                </div> */}
 
                 <div className={styles.formGroup}>
                     <label htmlFor="additionalInfo">Əlavə məlumat</label>

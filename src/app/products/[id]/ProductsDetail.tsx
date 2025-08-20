@@ -193,7 +193,7 @@ export default function ProductsDetail({ product }: Props) {
                 <p className={styles.desc}>{product.desc}</p>
                 <p className={styles.price}>{product.price}</p>
 
-                <div className={styles.colorRow}>
+                {/* <div className={styles.colorRow}>
                     <span>
                         Rəng: {product.colors.map((clr) => clr.name).join(", ")}
                     </span>
@@ -206,7 +206,7 @@ export default function ProductsDetail({ product }: Props) {
                             />
                         ))}
                     </div>
-                </div>
+                </div> */}
 
                 <div className={styles.buyRow}>
                     <input

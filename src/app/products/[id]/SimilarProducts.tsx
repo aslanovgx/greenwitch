@@ -18,7 +18,6 @@ export default function SimilarProducts() {
     // }, []);
     const [activeCardId, setActiveCardId] = useState<number | null>(null);
 
-
     return (
         <>
             <div className={`${styles.brands}`}>

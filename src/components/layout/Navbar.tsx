@@ -97,7 +97,7 @@ export default function Navbar() {
           />
         )}
         <TextSwitcher texts={textSwitcherTexts} onIndexChange={setCurrentTextIndex} />
-
+        <p className="fixedNumber">+994 55 123 45 67</p>
       </div>
 
       {/* Placeholder div — row-2 fixed olduqda burada yer saxlayır */}
@@ -177,7 +177,7 @@ export default function Navbar() {
           <li>Qadın</li>
           <li>Uşaq</li>
           <li>Aksesuar</li>
-           <Link href="/products">
+          <Link href="/products">
             <li>Saatlar</li>
           </Link>
           <Link href="/location">
