@@ -3,6 +3,7 @@
 import { useFavorites } from "@/context/FavoritesContext";
 import Image from "next/image";
 import { X } from "lucide-react";
+import type { Product } from "@/types/Product";
 
 export default function WishlistDrawer({
   isOpen,
@@ -14,10 +15,9 @@ export default function WishlistDrawer({
   const { favorites, removeFromFavorites } = useFavorites();
   if (!isOpen) return null;
 
-  const hasDiscount = (p: any) =>
-    typeof p.discountPrice === "number" &&
-    typeof p.price === "number" &&
-    p.discountPrice < p.price;
+  const hasDiscount = (p: Product): boolean =>
+    typeof p.discountPrice === "number" && p.discountPrice < p.price;
+
 
   return (
     <div className="fixed top-0 right-0 h-full w-[350px] bg-white shadow-xl z-50 p-4 overflow-y-auto">

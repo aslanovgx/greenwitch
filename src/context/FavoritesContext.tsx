@@ -11,36 +11,39 @@ interface FavoriteContextType {
 
 const FavoriteContext = createContext<FavoriteContextType>({
   favorites: [],
-  toggleFavorite: () => {},
-  removeFromFavorites: () => {},
+  toggleFavorite: () => { },
+  removeFromFavorites: () => { },
   isFavorite: () => false,
 });
 
 export const useFavorites = () => useContext(FavoriteContext);
 
 // Köməkçi: boolean sahələri təhlükəsiz çevir
-const toBool = (v: any) =>
-  v === true || v === 1 || (typeof v === "string" && v.toLowerCase() === "true");
+const toBool = (v: unknown): boolean =>
+  v === true ||
+  v === 1 ||
+  (typeof v === "string" && v.toLowerCase() === "true");
+
 
 // Köməkçi: məhsulu normalizə et (şəkil, qiymət, boolean, s.)
 function normalizeProduct(p: Product): Product {
   const images = Array.isArray(p.images)
-    ? p.images.filter((x) => typeof x === "string" && x.trim() !== "")
+    ? p.images.filter((x): x is string => typeof x === "string" && x.trim() !== "")
     : [];
 
   return {
     ...p,
-    name: p.name ?? (p as any).title ?? "",
-    description: p.description ?? "",
+    name: p.name ?? p.title ?? "",
+    description: p.description ?? p.desc ?? "",
     images,
     price: Number(p.price ?? 0),
-    discountPrice:
-      typeof p.discountPrice === "number" ? p.discountPrice : null,
-    bestSeller: toBool((p as any).bestSeller ?? false),
-    isNew: toBool((p as any).isNew ?? false),
+    discountPrice: typeof p.discountPrice === "number" ? p.discountPrice : null,
+    bestSeller: typeof p.bestSeller === "boolean" ? p.bestSeller : toBool(p.bestSeller as unknown),
+    isNew: typeof p.isNew === "boolean" ? p.isNew : toBool(p.isNew as unknown),
     brandName: p.brandName ?? "",
   };
 }
+
 
 export const FavoriteProvider = ({ children }: { children: React.ReactNode }) => {
   const [favorites, setFavorites] = useState<Product[]>([]);
@@ -58,7 +61,7 @@ export const FavoriteProvider = ({ children }: { children: React.ReactNode }) =>
   useEffect(() => {
     try {
       localStorage.setItem("favorites", JSON.stringify(favorites));
-    } catch {}
+    } catch { }
   }, [favorites]);
 
   const toggleFavorite = (product: Product) => {

@@ -151,7 +151,7 @@
 }
 
 .successField {
-    border: 1px solid green !important;
+    border: default;
 }
 
 .errorMessage {

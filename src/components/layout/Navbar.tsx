@@ -16,6 +16,7 @@ import { handleScroll, lockBodyScroll, unlockBodyScroll } from "@/utils/navbarUt
 import menuItems from "@/data/menuItems";
 import textSwitcherTexts from "@/components/layout/textSwitcherTexts";
 import { getProducts } from "@/lib/api/products";
+import type { RawProduct } from "@/types/Product";
 
 type SearchResult = {
   id: number;
@@ -86,16 +87,22 @@ export default function Navbar() {
         const products = await getProducts({ search: debouncedSearchTerm, size: 20 });
 
         // 2) API -> SearchResult adaptasiyası
-        const toSearchResult = (p: any): SearchResult => ({
-          id: p.id,
-          // bəzi endpointlərdə brand adı `brandName`, bəzilərində `brand?.name` və ya sadəcə `name` ola bilər
-          brandName: p.brandName ?? p.brand?.name ?? p.name ?? "",
-          description: p.description ?? "",
-          price: p.price ?? p.discountPrice ?? "",
-          image: Array.isArray(p.images) && p.images[0]
-            ? buildImageUrl(p.images[0])
-            : (p.image ? buildImageUrl(p.image) : null),
-        });
+        const toSearchResult = (p: RawProduct): SearchResult => {
+          const firstImage =
+            Array.isArray(p.images) && typeof p.images[0] === "string"
+              ? p.images[0]
+              : null;
+
+          return {
+            id: p.id,
+            // bəzi BE-lərdə brandName boş ola bilər, ona görə name ilə də fallback edirik
+            brandName: (p as { brandName?: string } | RawProduct).brandName ?? p.name ?? "",
+            description: (p.description ?? "") as string,
+            price: p.price,
+            image: firstImage ? buildImageUrl(firstImage) : null,
+          };
+        };
+
 
         setFilteredResults(products.map(toSearchResult));
       } catch (e) {

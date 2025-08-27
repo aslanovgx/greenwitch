@@ -158,9 +158,9 @@ export default function ProductsDetail({ product }: Props) {
                                 className={`product-detail-swiper ${styles.thumbnails}`}
                                 style={{ height: `${thumbsConfig.height}px`, maxWidth: `${thumbsConfig.width}px` }}
                                 onBeforeInit={(swiper) => {
-                                    // @ts-ignore
+                                    // @ts-expect-error – Swiper-in type definisiyası ilə real istifadəmiz uyğun gəlmir, amma işləyir
                                     swiper.params.navigation.prevEl = prevRef.current;
-                                    // @ts-ignore
+                                    // @ts-expect-error – eyni səbəb
                                     swiper.params.navigation.nextEl = nextRef.current;
                                 }}
                                 onSwiper={(swiper) => (swiperRef.current = swiper)}
@@ -224,19 +224,31 @@ export default function ProductsDetail({ product }: Props) {
                         className={styles.buyButton}
                         onClick={(e) => {
                             e.stopPropagation();
-                            const bagItem = {
+
+                            // addToBag-in istədiyi tip birbaşa funksiyadan oxunur
+                            type AddToBagArg = Parameters<typeof addToBag>[0];
+
+                            const bagItem: AddToBagArg = {
                                 id: product.id,
-                                title: product.name,
-                                desc: product.description,
-                                price: product.price,
-                                image: product.thumbnails?.[0] || "",
+                                name: product.name ?? "",
+                                description: product.description ?? "",
+                                bestSeller: false,
+                                isNew: false,
+                                price: typeof product.price === "number" ? product.price : Number(product.price ?? 0),
+                                discountPrice: null,
+                                brandName: product.brandName ?? "",
+                                images: product.thumbnails || [],
+                                image: product.thumbnails?.[0] || null,
                                 thumbnails: product.thumbnails || [],
-                                brandName: product.brandName,
+                                title: product.name ?? undefined,
+                                desc: product.description ?? undefined,
                                 quantity: qty,
                             };
-                            addToBag(bagItem as any); // BagItem tipin varsa ona cast et
+
+                            addToBag(bagItem);
                             router.push(`/purchase`);
                         }}
+
                     >
                         İndi Al
                     </button>

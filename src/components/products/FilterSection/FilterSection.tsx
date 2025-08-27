@@ -90,7 +90,6 @@ export default function FilterSection() {
                 setLoading(false);
             }
         })();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []); // ilk yükləmə
 
     // utilities
@@ -147,7 +146,6 @@ export default function FilterSection() {
             reng: colors.find(x => x.id === colorId)?.name,
             forma: shapes.find(x => x.id === shapeId)?.name,
         }));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchParams, brands, shapes, colors, genders]);
 
     return (

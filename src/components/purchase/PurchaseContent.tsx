@@ -3,18 +3,20 @@ import { useRouter } from "next/navigation";
 import styles from "./PurchaseContent.module.css";
 import { useBag } from "@/context/BagContext";
 import Image from "next/image";
+import type { Product } from "@/types/Product";
 
 export default function PurchaseContent() {
   const { bagItems, removeFromBag, updateQuantity } = useBag();
   const router = useRouter();
 
   // Endirimi nəzərə alaraq vahid qiymət
-  const getUnitPrice = (item: any) => {
+  const getUnitPrice = (item: Product & { quantity: number }) => {
     const price = Number(item.price ?? 0);
     const dp = typeof item.discountPrice === "number" ? item.discountPrice : null;
     const hasDiscount = dp !== null && dp < price;
     return hasDiscount ? dp : price;
   };
+
 
   // Ümumi məbləğ
   const totalPrice = bagItems.reduce((total, item) => {

@@ -4,6 +4,7 @@ import { useBag } from "@/context/BagContext";
 import Image from "next/image";
 import { X, Trash2, Minus, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
+import type { Product } from "@/types/Product";
 
 export default function BaglistDrawer({
   isOpen,
@@ -14,13 +15,14 @@ export default function BaglistDrawer({
 }) {
   const { bagItems, removeFromBag, updateQuantity, clearBag } = useBag();
 
-  const getUnitPrice = (item: any) => {
+  const getUnitPrice = (item: Product & { quantity: number }) => {
     const hasDiscount =
       typeof item.discountPrice === "number" &&
       typeof item.price === "number" &&
       item.discountPrice < item.price;
     return hasDiscount ? item.discountPrice : item.price;
   };
+
 
   const totalPrice = bagItems.reduce((total, item) => {
     const unit = Number(getUnitPrice(item) ?? 0);
@@ -48,11 +50,11 @@ export default function BaglistDrawer({
             return (
               <div key={item.id} className="mb-4 border-b pb-4 flex items-center gap-3">
                 <Image
-                    src={item.images?.[0] ?? "/assets/placeholders/product.png"}
-                    alt={item.name ?? "Product"}
-                    width={60}
-                    height={60}
-                    className="rounded object-cover"
+                  src={item.images?.[0] ?? "/assets/placeholders/product.png"}
+                  alt={item.name ?? "Product"}
+                  width={60}
+                  height={60}
+                  className="rounded object-cover"
                 />
                 <div className="flex-1">
                   <p className="font-semibold text-sm uppercase">
@@ -61,8 +63,8 @@ export default function BaglistDrawer({
 
                   {/* Qiymət vizualı: endirim varsa iki qiymət göstər */}
                   {typeof item.discountPrice === "number" &&
-                   typeof item.price === "number" &&
-                   item.discountPrice < item.price ? (
+                    typeof item.price === "number" &&
+                    item.discountPrice < item.price ? (
                     <div className="flex items-center gap-2">
                       <span className="line-through opacity-60 text-sm">
                         {item.price.toFixed(2)} AZN

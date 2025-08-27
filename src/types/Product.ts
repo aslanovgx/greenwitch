@@ -11,10 +11,6 @@ export type Product = {
   discountPrice: number | null;
   brandName: string;
   images: string[];        // UI-də artıq absolute URL-lər olacaq (buildImageUrl ilə)
-  // Lazım olsa sonradan aç:
-  // colorNames?: string[];
-  
-  // UI üçün əlavə etdiklərin:
   image?: string | null;
   thumbnails?: string[];
   title?: string;

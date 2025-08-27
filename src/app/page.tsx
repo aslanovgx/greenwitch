@@ -8,16 +8,21 @@ import IconInfo from "@/components/home/IconInfo/IconInfo";
 import ImageGrid from "@/components/home/ImageGrid/ImageGrid";
 import Contact from "@/components/home/Contact/Contact";
 import { getProductsServer } from "@/lib/api/products-server";
+import type { Product } from "@/types/Product"; // ← mövcud Product tipin haradadırsa oradan import et
 
 export default async function Home() {
-  const allProducts = await getProductsServer({ size: 100 });
+  const allProducts: Product[] = await getProductsServer({ size: 100 });
 
   // bestSeller dəyərini etibarlı boolean-a çevirək (true | "true" | 1)
-  const toBool = (v: any) =>
-    v === true || v === 1 || (typeof v === "string" && v.toLowerCase() === "true");
+  const toBool = (v: unknown): boolean => {
+    if (typeof v === "boolean") return v;
+    if (typeof v === "number") return v === 1;
+    if (typeof v === "string") return v.toLowerCase() === "true";
+    return false;
+  };
 
-  const initialBestSellers = allProducts
-    .filter((p: any) => toBool(p?.bestSeller))
+  const initialBestSellers: Product[] = allProducts
+    .filter((p: Product) => toBool((p as Product).bestSeller as unknown))
     .slice(0, 5);
 
   return (

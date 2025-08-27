@@ -18,16 +18,16 @@ const buildImageUrl = (rel: string) => {
 };
 
 type APIProduct = {
-  id: number;
-  name?: string;
-  description?: string;
-  images?: string[];
-  thumbnails?: string[];
-  bestSeller?: boolean;
-  isNew?: boolean;
-  price?: number;
-  discountPrice?: number | null;
-  brandName?: string;
+    id: number;
+    name?: string;
+    description?: string;
+    images?: string[];
+    thumbnails?: string[];
+    bestSeller?: boolean;
+    isNew?: boolean;
+    price?: number;
+    discountPrice?: number | null;
+    brandName?: string;
 };
 
 type Props = { initialProducts?: APIProduct[] };
@@ -35,15 +35,20 @@ type Props = { initialProducts?: APIProduct[] };
 export default function Products({ initialProducts = [] }: Props) {
     const [activeCardId, setActiveCardId] = useState<number | null>(null);
     const [activeCategory, setActiveCategory] = useState<"all" | "new" | "discount">("all");
-    const [visibleCount, setVisibleCount] = useState<number>(5);
+    const [visibleCount] = useState<number>(5);
 
-    const adapt = useCallback((p: any): UIProduct => {
-        const rawImages = Array.isArray(p.images) ? p.images : (Array.isArray(p.thumbnails) ? p.thumbnails : []);
-        const images = rawImages.filter((x: string) => typeof x === "string" && x.trim() !== "").map(buildImageUrl);
+    const adapt = useCallback((p: APIProduct): UIProduct => {
+        const rawImages = Array.isArray(p.images)
+            ? p.images
+            : (Array.isArray(p.thumbnails) ? p.thumbnails : []);
+        const images = rawImages
+            .filter((x: string) => typeof x === "string" && x.trim() !== "")
+            .map(buildImageUrl);
+
         return {
             id: p.id,
-            name: p.name ?? p.title ?? "",
-            description: p.description ?? p.desc ?? "",
+            name: p.name ?? (p as any).title ?? "",           // BE-də bəzən title/desc ola bilər
+            description: p.description ?? (p as any).desc ?? "",
             bestSeller: !!p.bestSeller,
             isNew: !!p.isNew,
             price: Number(p.price ?? 0),
@@ -52,6 +57,7 @@ export default function Products({ initialProducts = [] }: Props) {
             images,
         } as UIProduct;
     }, []);
+
 
     const products = useMemo(() => initialProducts.map(adapt), [initialProducts, adapt]);
 

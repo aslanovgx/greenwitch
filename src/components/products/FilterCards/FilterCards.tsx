@@ -8,6 +8,7 @@ import ProductCard from "@/components/common/ProductCard";
 import MoreButton from "@/components/ui/MoreButton";
 import type { Product as UIProduct } from "@/types/Product";
 import { getProducts } from "@/lib/api/products";
+import type { RawProduct } from "@/types/Product";
 
 // Relative image pathları (images/products/...) tam URL-ə çevir
 function buildImageUrl(rel: string) {
@@ -38,21 +39,25 @@ export default function FilterCards() {
   const [error, setError] = useState<string | null>(null);
 
   // API məhsulunu UI tipinə uyğunlaşdır
-  const adapt = (p: any): UIProduct => ({
-    id: p.id,
-    name: p.name,
-    description: p.description,
-    bestSeller: !!p.bestSeller,
-    isNew: !!p.isNew,
-    price: p.price,
-    discountPrice: p.discountPrice ?? null,
-    brandName: p.brandName,
-    images: Array.isArray(p.images)
-      ? p.images
-        .filter((x: string) => x && x.trim() !== "")
-        .map(buildImageUrl)
-      : [],
-  });
+  const adapt = (p: RawProduct): UIProduct => {
+    const rawImgs = Array.isArray(p.images) ? p.images : [];
+    const images = rawImgs
+      .filter((x): x is string => typeof x === "string" && x.trim() !== "")
+      .map(buildImageUrl);
+
+    return {
+      id: p.id,
+      name: p.name,
+      description: p.description ?? "",
+      bestSeller: !!p.bestSeller,
+      isNew: !!p.isNew,
+      price: p.price,
+      discountPrice: p.discountPrice ?? null,
+      brandName: p.brandName ?? "",
+      images,
+    };
+  };
+
 
   // Filtr dəyişdikcə datanı çək
   useEffect(() => {
@@ -61,16 +66,21 @@ export default function FilterCards() {
         setLoading(true);
         setError(null);
 
-        const params: any = { size: 100 };
-        if (brandId) params.brandId = brandId;
-        if (genderId) params.genderId = genderId;
-        if (shapeId) params.shapeId = shapeId;
-        if (colorId) params.colorId = colorId;
+        type GetProductsArg = Parameters<typeof getProducts>[0];
+
+        const params: GetProductsArg = {
+          size: 100,
+          ...(brandId ? { brandId } : {}),
+          ...(genderId ? { genderId } : {}),
+          ...(shapeId ? { shapeId } : {}),
+          ...(colorId ? { colorId } : {}),
+        };
 
         const list = await getProducts(params);
+
         setProducts(list.map(adapt));
         setVisibleCount(5); // hər yeni filtrdə “load more” reset
-      } catch (e: any) {
+      } catch (e: unknown) {
         console.error(e);
         setError("Məhsulları yükləmək mümkün olmadı.");
         setProducts([]);
@@ -87,13 +97,13 @@ export default function FilterCards() {
 
   const handleLoadMore = () => setVisibleCount((prev) => prev + 5);
 
-  
+
 
   if (loading) return <div className="py-10 text-center">Yüklənir...</div>;
   if (error) return <div className="py-10 text-center text-red-600">{error}</div>;
   if (products.length === 0) return <div className="py-10 text-center">Məhsul tapılmadı.</div>;
 
-  
+
 
   return (
     <div className={styles.filterCards}>
