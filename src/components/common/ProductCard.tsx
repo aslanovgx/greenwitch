@@ -19,7 +19,6 @@ type Props = {
 
 function ProductCardComponent({
     item,
-    isMostSales: _isMostSales = false, // <-- isMostSales lokalda _isMostSales kimi adlandırıldı
     forceBestBadge = false,
     activeCategory = 'all',
     activeCardId,

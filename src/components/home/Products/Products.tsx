@@ -3,11 +3,10 @@
 import { useMemo, useState, useCallback } from "react";
 import productStyles from "./Products.module.css";
 import cardStyles from "@/components/common/ProductCard.module.css";
-import type { Product as UIProduct } from "@/types/Product";
+import type { Product as UIProduct, RawProduct } from "@/types/Product";
 import ProductCard from "@/components/common/ProductCard";
 import MoreButton from "@/components/ui/MoreButton";
 import Link from "next/link";
-// import { getProducts } from "@/lib/api/products";
 
 // Relative image pathları (images/products/...) tam URL-ə çevir
 const buildImageUrl = (rel: string) => {
@@ -17,47 +16,38 @@ const buildImageUrl = (rel: string) => {
     return `${ROOT}/${encodeURI(clean)}`;
 };
 
-type APIProduct = {
-    id: number;
-    name?: string;
-    description?: string;
-    images?: string[];
-    thumbnails?: string[];
-    bestSeller?: boolean;
-    isNew?: boolean;
-    price?: number;
-    discountPrice?: number | null;
-    brandName?: string;
-};
+type Props = { initialProducts?: RawProduct[] };
 
-type Props = { initialProducts?: APIProduct[] };
 
 export default function Products({ initialProducts = [] }: Props) {
     const [activeCardId, setActiveCardId] = useState<number | null>(null);
     const [activeCategory, setActiveCategory] = useState<"all" | "new" | "discount">("all");
     const [visibleCount] = useState<number>(5);
 
-    const adapt = useCallback((p: APIProduct): UIProduct => {
+    const adapt = useCallback((p: RawProduct): UIProduct => {
+        const thumbs = (p as { thumbnails?: unknown[] }).thumbnails;
         const rawImages = Array.isArray(p.images)
             ? p.images
-            : (Array.isArray(p.thumbnails) ? p.thumbnails : []);
+            : (Array.isArray(thumbs) ? (thumbs as unknown[]) : []);
+
         const images = rawImages
-            .filter((x: string) => typeof x === "string" && x.trim() !== "")
+            .filter((x): x is string => typeof x === "string" && x.trim() !== "")
             .map(buildImageUrl);
+
+        const { title, desc } = p as { title?: string; desc?: string };
 
         return {
             id: p.id,
-            name: p.name ?? (p as any).title ?? "",           // BE-də bəzən title/desc ola bilər
-            description: p.description ?? (p as any).desc ?? "",
+            name: p.name ?? title ?? "",
+            description: p.description ?? desc ?? "",
             bestSeller: !!p.bestSeller,
             isNew: !!p.isNew,
             price: Number(p.price ?? 0),
             discountPrice: p.discountPrice ?? null,
             brandName: p.brandName ?? "",
             images,
-        } as UIProduct;
+        };
     }, []);
-
 
     const products = useMemo(() => initialProducts.map(adapt), [initialProducts, adapt]);
 

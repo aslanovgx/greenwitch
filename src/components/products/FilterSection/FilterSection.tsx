@@ -90,7 +90,7 @@ export default function FilterSection() {
                 setLoading(false);
             }
         })();
-    }, []); // ilk yükləmə
+    }, [searchParams]); // ilk yükləmə
 
     // utilities
     const brandOptions = useMemo(() => brands.map(b => b.name), [brands]);
