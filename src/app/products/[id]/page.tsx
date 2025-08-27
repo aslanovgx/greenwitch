@@ -4,13 +4,14 @@ import SimilarProducts from "./SimilarProducts";
 import Contact from "@/components/home/Contact/Contact";
 import { getProductById } from "@/lib/api/products";
 
-type Props = {
-  params: { id: string };
-};
+// ⬇️ params Promise kimi tiplenir
+type Params = Promise<{ id: string }>;
 
-export async function generateMetadata({ params }: Props) {
-  const id = Number(params.id);
-  const product = await getProductById(id).catch(() => null);
+export async function generateMetadata(
+  { params }: { params: Params }
+) {
+  const { id } = await params;              // ⬅️ await
+  const product = await getProductById(Number(id)).catch(() => null);
 
   return {
     title: product?.name || "Product Page",
@@ -18,9 +19,11 @@ export async function generateMetadata({ params }: Props) {
   };
 }
 
-export default async function Page({ params }: Props) {
-  const id = Number(params.id);
-  const product = await getProductById(id).catch(() => null);
+export default async function Page(
+  { params }: { params: Params }
+) {
+  const { id } = await params;              // ⬅️ await
+  const product = await getProductById(Number(id)).catch(() => null);
   if (!product) return notFound();
 
   return (

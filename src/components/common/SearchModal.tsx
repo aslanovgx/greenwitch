@@ -1,64 +1,78 @@
+// src/components/common/SearchModal.tsx
 "use client";
-import React from "react";
-import { Product } from "@/types/Product";
 import Image from "next/image";
+import { X } from "lucide-react";
 
-interface SearchModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    results: Product[];
-}
+type SearchResult = {
+  id: number;
+  brandName: string;
+  description: string;
+  price: number | string;
+  image?: string | null; // thumbnail üçün (olmasa fallback verəcəyik)
+};
 
-export default function SearchModal({ isOpen, onClose, results }: SearchModalProps) {
-    if (!isOpen) return null;
+export default function SearchModal({
+  isOpen,
+  onClose,
+  results,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  results: SearchResult[];
+}) {
+  if (!isOpen) return null;
 
-    return (
-        <>
-            {/* Overlay with blur */}
-            <div
-                className="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm transition-opacity duration-300"
-                onClick={onClose}
-            />
+  const formatAZN = (v: number | string) => {
+    const n = typeof v === "string" ? Number(v) : v;
+    if (Number.isFinite(n)) {
+      return new Intl.NumberFormat("az-AZ", {
+        style: "currency",
+        currency: "AZN",
+      }).format(n as number);
+    }
+    return String(v);
+  };
 
-            {/* Modal container */}
-            <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-                <div className="bg-white max-h-[80vh] w-full max-w-3xl overflow-y-auto rounded-lg shadow-lg p-6 relative">
-                    <button
-                        onClick={onClose}
-                        className="cursor-pointer absolute top-2 right-2 text-gray-600 hover:text-black text-xl"
-                    >
-                        ✕
-                    </button>
-                    <h2 className="text-xl font-bold mb-4">Axtarış nəticələri ({results.length})</h2>
+  // Şəkil yoxdursa 1x1 şəffaf PNG fallback (Next/Image error-un qarşısı)
+  const FALLBACK_DATAURI =
+    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg==";
 
-                    {results.length === 0 ? (
-                        <p className="text-gray-500">Nəticə tapılmadı.</p>
-                    ) : (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            {results.map((item) => (
-                                <div
-                                    key={item.id}
-                                    className="border rounded-lg p-3 flex items-center gap-4 hover:shadow transition"
-                                >
-                                    <div className="relative w-20 h-20 flex-shrink-0">
-                                        <Image
-                                            src={item.image}
-                                            alt={item.title}
-                                            fill
-                                            className="object-cover rounded"
-                                        />
-                                    </div>
-                                    <div>
-                                        <p className="font-semibold !uppercase">{item.title}</p>
-                                        <p className="text-sm text-gray-500">{item.desc}</p>
-                                        <p className="text-red-600 font-bold">{item.price}</p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    )}
+  return (
+    <div className="fixed inset-0 bg-black/30 z-50 flex justify-center items-center">
+      <div className="bg-white rounded-lg w-[90%] max-w-[600px] max-h-[80vh] overflow-y-auto p-6 shadow-lg relative">
+        <button onClick={onClose} className="absolute top-3 right-3 text-gray-600 hover:text-black">
+          <X />
+        </button>
+
+        <h2 className="text-lg font-semibold mb-4">
+          Axtarış nəticələri ({results.length})
+        </h2>
+
+        {results.length === 0 ? (
+          <p>Heç bir uyğun məhsul tapılmadı.</p>
+        ) : (
+          <ul className="space-y-3">
+            {results.map((r) => (
+              <li key={r.id} className="flex gap-3 items-center">
+                <div className="relative w-16 h-16 flex-shrink-0 rounded overflow-hidden border">
+                  <Image
+                    src={r.image || FALLBACK_DATAURI}
+                    alt={r.brandName || "product"}
+                    fill
+                    sizes="64px"
+                    className="object-cover"
+                  />
                 </div>
-            </div>
-        </>
-    );
+                <div className="min-w-0">
+                  <p className="text-sm font-medium truncate">{r.brandName}</p>
+                  <p className="text-xs text-gray-600 line-clamp-2">{r.description}</p>
+                  <p className="text-sm font-semibold mt-1">{formatAZN(r.price)}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  );
 }
