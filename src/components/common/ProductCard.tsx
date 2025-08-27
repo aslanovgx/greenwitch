@@ -11,6 +11,7 @@ import { useBag } from "@/context/BagContext";
 type Props = {
     item: Product;
     isMostSales?: boolean;
+    forceBestBadge?: boolean;
     activeCategory?: string;
     activeCardId?: number | null;
     setActiveCardId?: (id: number | null) => void;
@@ -19,6 +20,7 @@ type Props = {
 function ProductCardComponent({
     item,
     isMostSales = false,
+    forceBestBadge = false,
     activeCategory = 'all',
     activeCardId,
     setActiveCardId,
@@ -29,27 +31,9 @@ function ProductCardComponent({
     const isActive = isTouch && activeCardId === item.id;
     const { addToBag } = useBag();  // Burada
 
-    // console.log(
-    //     "%cProductCard Debug",
-    //     "color: #1e90ff; font-weight: bold;",
-    //     {
-    //         isTouch,
-    //         activeCardId,
-    //         "item.id": item.id,
-    //         isActive
-    //     }
-    // );
+    const cover = item.images?.[0] ?? "/assets/placeholders/product.png";
+    const hover = item.images?.[1] ?? null;
 
-
-
-    // console.log("ProductCard", item.id, "isActive", isActive);
-    // console.log("isTouch", isTouch, "activeCardId", activeCardId, "item.id", item.id, "isActive", isActive);
-
-    // const handleCardTouch = () => {
-    //     if (!isActive && setActiveCardId) {
-    //         setActiveCardId(item.id);
-    //     }
-    // };
 
     const handleClick = () => {
         if (isTouch && setActiveCardId) {
@@ -64,20 +48,26 @@ function ProductCardComponent({
     };
 
 
-    const badge = isMostSales
-        ? 'BEST'
-        : activeCategory === 'new' && item.isNew
-            ? 'NEW'
-            : activeCategory === 'discount' && item.coupon > 0
-                ? 'ENDİRİM'
-                : activeCategory === 'all'
-                    ? item.isNew
-                        ? 'NEW'
-                        : item.coupon > 0
-                            ? 'ENDİRİM'
-                            : null
-                    : null;
+    const hasDiscount =
+        typeof item.discountPrice === "number" && item.discountPrice < item.price;
 
+    const badge = forceBestBadge
+        ? "BEST"
+        : activeCategory === "discount" && hasDiscount
+            ? "ENDİRİM"
+            : activeCategory === "all"
+                ? hasDiscount
+                    ? "ENDİRİM"
+                    : item.bestSeller
+                        ? "BEST"
+                        : item.isNew
+                            ? "NEW"
+                            : null
+                : activeCategory === "new" && item.isNew
+                    ? "NEW"
+                    : activeCategory === "best" && item.bestSeller
+                        ? "BEST"
+                        : null;
     return (
         <div
             onClick={handleClick}
@@ -85,8 +75,8 @@ function ProductCardComponent({
         >
             <div className={`${styles.cards_image} relative mx-auto`}>
                 <Image
-                    src={item.image}
-                    alt={item.title}
+                    src={cover}
+                    alt={item.name || "Product image"}
                     fill
                     loading="lazy"
                     className={`w-full h-full scale-105 transition-opacity duration-600 ${!isTouch
@@ -97,10 +87,10 @@ function ProductCardComponent({
                         }`}
                     style={{ objectFit: 'cover' }}
                 />
-                {item.hoverImage && (
+                {hover && (
                     <Image
-                        src={item.hoverImage}
-                        alt={item.title}
+                        src={hover}
+                        alt={item.name || "Product image"}
                         fill
                         loading="lazy"
                         className={`${styles.hoverImage} scale-95 w-full h-full absolute top-0 left-0 transition-opacity duration-700 ${!isTouch
@@ -115,18 +105,44 @@ function ProductCardComponent({
             </div>
 
             <div className={`${styles.cards_desc}`}>
-                <h3 className="transition-all duration-700">{item.title}</h3>
-                <p>{item.desc}</p>
-                <p
-                    className={`${!isTouch
-                        ? 'opacity-0 group-hover:opacity-100'
-                        : isActive
-                            ? 'opacity-100'
-                            : 'opacity-0'
-                        } transition-opacity duration-700 !font-bold`}
-                >
-                    {item.price}
-                </p>
+                <h3 className="transition-all duration-700">{item.name}</h3>
+                <p>{item.description}</p>
+                {item.discountPrice && item.discountPrice < item.price ? (
+                    <div className="flex gap-2 justify-center">
+                        <p
+                            className={`${!isTouch
+                                ? 'opacity-0 group-hover:opacity-100'
+                                : isActive
+                                    ? 'opacity-100'
+                                    : 'opacity-0'
+                                } transition-opacity duration-700 !font-bold ${styles.normalPrice}`}
+                        >
+                            {item.price} AZN
+                        </p>
+                        <p
+                            className={`${!isTouch
+                                ? 'opacity-0 group-hover:opacity-100'
+                                : isActive
+                                    ? 'opacity-100'
+                                    : 'opacity-0'
+                                } transition-opacity duration-700 !font-bold ${styles.discountPrice}`}
+                        >
+                            {item.discountPrice} AZN
+                        </p>
+                    </div>
+                ) : (
+                    <p
+                        className={`${!isTouch
+                            ? 'opacity-0 group-hover:opacity-100'
+                            : isActive
+                                ? 'opacity-100'
+                                : 'opacity-0'
+                            } transition-opacity duration-700 !font-bold`}
+                    >
+                        {item.price} AZN
+                    </p>
+                )}
+
                 <div
                     className={`${styles.card_buttons} absolute bottom-0 left-0 flex transition-opacity duration-700 ${!isTouch
                         ? 'opacity-0 group-hover:opacity-100'
@@ -160,15 +176,7 @@ function ProductCardComponent({
             <div
                 onClick={(e) => {
                     e.stopPropagation();
-                    toggleFavorite({
-                        id: item.id,
-                        title: item.title,
-                        price: Number(String(item.price).replace(/\D/g, '')),
-                        image: item.image,
-                        originalPrice: item.originalPrice,
-                        coupon: item.coupon,
-                        colors: item.colors,
-                    });
+                    toggleFavorite(item);
                 }}
                 className={`absolute top-3 right-3 z-10 cursor-pointer`}
             >

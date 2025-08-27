@@ -1,7 +1,8 @@
 "use client";
 import { useState, useEffect, useRef } from 'react';
 import styles from './ProductsDetail.module.css';
-import { Product } from '@/types/Product';
+// import { Product } from '@/types/Product';
+import type { ProductDetail } from '@/lib/api/products';
 import Image from "next/image";
 import ImageMagnifier from '@/components/ImageMagnifier';
 import { useRouter } from 'next/navigation';
@@ -15,13 +16,22 @@ import { useBag } from "@/context/BagContext";
 import type { Swiper as SwiperClass } from 'swiper';
 
 type Props = {
-    product: Product;
+    product: ProductDetail;
 };
 
 export default function ProductsDetail({ product }: Props) {
-    const [activeImage, setActiveImage] = useState<string | null>(
-        product.image?.trim() || null
-    );
+    // helper
+    const firstThumb = (p: ProductDetail) =>
+        p.thumbnails?.find((t) => t && t.trim()) || null;
+
+    // state
+    const [activeImage, setActiveImage] = useState<string | null>(() => firstThumb(product));
+
+    // məhsul dəyişəndə yenilə (məs: route dəyişdi, adapterdən fərqli data gəldi və s.)
+    useEffect(() => {
+        setActiveImage(firstThumb(product));
+    }, [product]);
+
 
     const [qty, setQty] = useState(1);
     const router = useRouter();
@@ -101,10 +111,16 @@ export default function ProductsDetail({ product }: Props) {
             <div className={styles.leftSide}>
                 {showMobileSlider ? (
                     <Swiper
+                        key={`${product.id}-${activeImage ?? "0"}`}
                         slidesPerView={1}
                         pagination={{ clickable: true }}
                         modules={[Pagination]}
                         className={styles.mobileImageSlider}
+                        initialSlide={
+                            activeImage
+                                ? Math.max(0, (product.thumbnails?.findIndex((t) => t === activeImage) ?? 0))
+                                : 0
+                        }
                         onSlideChange={(swiper) => {
                             const newImage = product.thumbnails?.[swiper.activeIndex];
                             if (newImage) setActiveImage(newImage);
@@ -137,14 +153,17 @@ export default function ProductsDetail({ product }: Props) {
                                 slidesPerView={thumbsConfig.slidesPerView}
                                 slidesPerGroup={1}
                                 spaceBetween={10}
-                                onSwiper={(swiper) => (swiperRef.current = swiper)}
                                 allowTouchMove={false}
                                 modules={[Pagination, Navigation]}
                                 className={`product-detail-swiper ${styles.thumbnails}`}
-                                style={{
-                                    height: `${thumbsConfig.height}px`,
-                                    maxWidth: `${thumbsConfig.width}px`,
+                                style={{ height: `${thumbsConfig.height}px`, maxWidth: `${thumbsConfig.width}px` }}
+                                onBeforeInit={(swiper) => {
+                                    // @ts-ignore
+                                    swiper.params.navigation.prevEl = prevRef.current;
+                                    // @ts-ignore
+                                    swiper.params.navigation.nextEl = nextRef.current;
                                 }}
+                                onSwiper={(swiper) => (swiperRef.current = swiper)}
                             >
                                 {product.thumbnails?.map((thumb) =>
                                     thumb?.trim() ? (
@@ -189,24 +208,9 @@ export default function ProductsDetail({ product }: Props) {
             </div>
 
             <div className={styles.rightSide}>
-                <h1 className={styles.title}>{product.title}</h1>
-                <p className={styles.desc}>{product.desc}</p>
-                <p className={styles.price}>{product.price}</p>
-
-                {/* <div className={styles.colorRow}>
-                    <span>
-                        Rəng: {product.colors.map((clr) => clr.name).join(", ")}
-                    </span>
-                    <div className={styles.colorList}>
-                        {product.colors.map((clr, idx) => (
-                            <div
-                                key={idx}
-                                style={{ background: clr.hex }}
-                                className={styles.colorDot}
-                            />
-                        ))}
-                    </div>
-                </div> */}
+                <h1 className={styles.title}>{product.brandName}, {product.name}</h1>
+                <p className={styles.desc}>{product.description}</p>
+                <p className={styles.price}>{product.price}AZN</p>
 
                 <div className={styles.buyRow}>
                     <input
@@ -220,7 +224,17 @@ export default function ProductsDetail({ product }: Props) {
                         className={styles.buyButton}
                         onClick={(e) => {
                             e.stopPropagation();
-                            addToBag({ ...product, quantity: qty });
+                            const bagItem = {
+                                id: product.id,
+                                title: product.name,
+                                desc: product.description,
+                                price: product.price,
+                                image: product.thumbnails?.[0] || "",
+                                thumbnails: product.thumbnails || [],
+                                brandName: product.brandName,
+                                quantity: qty,
+                            };
+                            addToBag(bagItem as any); // BagItem tipin varsa ona cast et
                             router.push(`/purchase`);
                         }}
                     >

@@ -1,11 +1,10 @@
 "use client";
-import React, { useEffect, useState, useRef, useMemo } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Link from 'next/link';
 import Image from "next/image";
 import "@/components/layout/Navbar.css";
 import WishlistDrawer from "@/context/WishlistDrawer";
 import BaglistDrawer from "@/context/BaglistDrawer";
-import mehsullar from '@/components/Mock/Home/mehsullar.json';
 import { useSearch } from "@/context/SearchContext";
 import useDebounce from "@/hooks/useDebounce";
 import SearchModal from "@/components/common/SearchModal";
@@ -16,6 +15,23 @@ import BagButton from "../ui/BagButton";
 import { handleScroll, lockBodyScroll, unlockBodyScroll } from "@/utils/navbarUtils";
 import menuItems from "@/data/menuItems";
 import textSwitcherTexts from "@/components/layout/textSwitcherTexts";
+import { getProducts } from "@/lib/api/products";
+
+type SearchResult = {
+  id: number;
+  brandName: string;
+  description: string;
+  price: number | string;
+  image?: string | null;
+};
+
+
+function buildImageUrl(rel: string) {
+  const API = (process.env.NEXT_PUBLIC_API_URL ?? "").trim();
+  const ROOT = API.replace(/\/api\/?$/i, ""); // .../api -> ...
+  const clean = (rel ?? "").replace(/^\/+/, ""); // başdakı /-ları sil
+  return `${ROOT}/${clean}`;
+}
 
 export default function Navbar() {
   const [fixed, setFixed] = useState(false);
@@ -25,12 +41,8 @@ export default function Navbar() {
   const [baglistOpen, setBaglistOpen] = useState(false);
   const { searchTerm } = useSearch();
   const debouncedSearchTerm = useDebounce(searchTerm, 1500);
-  const filteredResults = useMemo(() => {
-    console.log("🔍 filter çalışdı"); // << BURADAN yoxlayacaqsan
-    return mehsullar.filter((item) =>
-      `${item.title} ${item.desc}`.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
-    );
-  }, [debouncedSearchTerm]);
+
+  const [filteredResults, setFilteredResults] = useState<SearchResult[]>([]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -62,6 +74,36 @@ export default function Navbar() {
     }
     return () => unlockBodyScroll();
   }, [isMenuOpen]);
+
+  useEffect(() => {
+    if (!debouncedSearchTerm.trim()) {
+      setFilteredResults([]);
+      return;
+    }
+
+    (async () => {
+      try {
+        const products = await getProducts({ search: debouncedSearchTerm, size: 20 });
+
+        // 2) API -> SearchResult adaptasiyası
+        const toSearchResult = (p: any): SearchResult => ({
+          id: p.id,
+          // bəzi endpointlərdə brand adı `brandName`, bəzilərində `brand?.name` və ya sadəcə `name` ola bilər
+          brandName: p.brandName ?? p.brand?.name ?? p.name ?? "",
+          description: p.description ?? "",
+          price: p.price ?? p.discountPrice ?? "",
+          image: Array.isArray(p.images) && p.images[0]
+            ? buildImageUrl(p.images[0])
+            : (p.image ? buildImageUrl(p.image) : null),
+        });
+
+        setFilteredResults(products.map(toSearchResult));
+      } catch (e) {
+        console.error("Search API error:", e);
+        setFilteredResults([]);
+      }
+    })();
+  }, [debouncedSearchTerm]);
 
   return (
     <nav className="w-full bg-white">

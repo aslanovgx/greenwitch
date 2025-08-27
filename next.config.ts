@@ -2,8 +2,14 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ['fakestoreapi.com'],
-    unoptimized: false, // <== BUNU ƏLAVƏ ETDİK
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**.ngrok-free.app',
+        pathname: '/**',
+      },
+    ],
+    unoptimized: false,
   },
   webpack(config) {
     config.module.rules.push({

@@ -11,37 +11,61 @@ interface FavoriteContextType {
 
 const FavoriteContext = createContext<FavoriteContextType>({
   favorites: [],
-  toggleFavorite: () => { },
-  removeFromFavorites: () => { },
+  toggleFavorite: () => {},
+  removeFromFavorites: () => {},
   isFavorite: () => false,
 });
 
 export const useFavorites = () => useContext(FavoriteContext);
 
+// Köməkçi: boolean sahələri təhlükəsiz çevir
+const toBool = (v: any) =>
+  v === true || v === 1 || (typeof v === "string" && v.toLowerCase() === "true");
+
+// Köməkçi: məhsulu normalizə et (şəkil, qiymət, boolean, s.)
+function normalizeProduct(p: Product): Product {
+  const images = Array.isArray(p.images)
+    ? p.images.filter((x) => typeof x === "string" && x.trim() !== "")
+    : [];
+
+  return {
+    ...p,
+    name: p.name ?? (p as any).title ?? "",
+    description: p.description ?? "",
+    images,
+    price: Number(p.price ?? 0),
+    discountPrice:
+      typeof p.discountPrice === "number" ? p.discountPrice : null,
+    bestSeller: toBool((p as any).bestSeller ?? false),
+    isNew: toBool((p as any).isNew ?? false),
+    brandName: p.brandName ?? "",
+  };
+}
+
 export const FavoriteProvider = ({ children }: { children: React.ReactNode }) => {
   const [favorites, setFavorites] = useState<Product[]>([]);
 
-  // 🔁 localStorage-dan oxu (yalnız clientdə)
   useEffect(() => {
-    const stored = localStorage.getItem("favorites");
-    if (stored) {
-      setFavorites(JSON.parse(stored));
+    try {
+      const stored = localStorage.getItem("favorites");
+      if (stored) setFavorites(JSON.parse(stored));
+    } catch {
+      localStorage.removeItem("favorites");
+      setFavorites([]);
     }
   }, []);
 
-  // 💾 favorites dəyişdikcə localStorage-a yaz
   useEffect(() => {
-    localStorage.setItem("favorites", JSON.stringify(favorites));
+    try {
+      localStorage.setItem("favorites", JSON.stringify(favorites));
+    } catch {}
   }, [favorites]);
 
   const toggleFavorite = (product: Product) => {
+    const normalized = normalizeProduct(product);
     setFavorites((prev) => {
-      const exists = prev.some((p) => p.id === product.id);
-      if (exists) {
-        return prev.filter((p) => p.id !== product.id);
-      } else {
-        return [...prev, product];
-      }
+      const exists = prev.some((p) => p.id === normalized.id);
+      return exists ? prev.filter((p) => p.id !== normalized.id) : [...prev, normalized];
     });
   };
 
