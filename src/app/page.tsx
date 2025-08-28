@@ -1,4 +1,6 @@
 // src/app/page.tsx
+export const dynamic = "force-dynamic";
+
 import Banner from "@/components/home/Banner/Banner";
 import Products from "@/components/home/Products/Products";
 import Olivia from "@/components/home/Olivia/Olivia";
@@ -13,10 +15,9 @@ import { getProductsServer } from "@/lib/api/products-server";
 import type { Product } from "@/types/Product";
 
 export default async function Home() {
-  // 1) Məhsulları serverdə çək
+  // BURANI ƏLAVƏ ETMİSƏN: allProducts elan olunur
   const allProducts: Product[] = await getProductsServer();
 
-  // 2) bestSeller-i etibarlı boolean-a çevirən helper
   const toBool = (v: unknown): boolean => {
     if (typeof v === "boolean") return v;
     if (typeof v === "number") return v === 1;
@@ -24,7 +25,6 @@ export default async function Home() {
     return false;
   };
 
-  // 3) İlk 5 best seller
   const initialBestSellers: Product[] = (allProducts ?? [])
     .filter((p) => toBool(p.bestSeller as unknown))
     .slice(0, 5);
@@ -34,7 +34,7 @@ export default async function Home() {
       <section><Banner /></section>
 
       <section>
-        {/* Home Products grid-inə bütün məhsulları ötürürük */}
+        {/* Products komponentinin prop adı səndə fərqlidirsə, uyğunlaşdır */}
         <Products initialProducts={allProducts} />
       </section>
 
