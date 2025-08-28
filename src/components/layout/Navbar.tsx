@@ -149,16 +149,29 @@ export default function Navbar() {
           />
         )}
         <TextSwitcher texts={textSwitcherTexts} onIndexChange={setCurrentTextIndex} />
-        <p className="fixedNumber"><BsTelephone /> +994 50 233 88 11</p>
-        <p className="fixedSocialMedia"><FaInstagram /> saat.az</p>
-        {/* <p className="fixedNumber">Əlaqə: +994 50 233 88 11</p> */}
+        <a href="tel:+994502338811" className="fixedNumber">
+          <BsTelephone /> +994 50 233 88 11
+        </a>
+        <a href="https://instagram.com/saat.az" target="_blank" rel="noopener noreferrer" className="fixedSocialMedia">
+          <FaInstagram /> saat.az
+        </a>
       </div>
 
       {/* Mobile-only top strip */}
       <div className="row-1-mobile">
-        <p className="fixedNumber"><BsTelephone /> +994 50 233 88 11</p>
-        <p className="fixedSocialMedia"><FaInstagram /> saat.az</p>
+        <a href="tel:+994502338811" className="fixedNumber">
+          <BsTelephone /> +994 50 233 88 11
+        </a>
+        <a
+          href="https://instagram.com/saat.az"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="fixedSocialMedia"
+        >
+          <FaInstagram /> saat.az
+        </a>
       </div>
+
 
 
       {/* Placeholder div — row-2 fixed olduqda burada yer saxlayır */}

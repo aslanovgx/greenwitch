@@ -18,6 +18,11 @@
   font-weight: 500;
   line-height: 33.553px;
   margin: 0;
+  text-decoration: none;
+}
+
+.row-1 a {
+  color: #fdfdfd;
 }
 
 .fixedNumber,
@@ -26,7 +31,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 9px;
+  gap: 7px;
   top: 50%;
   transform: translateY(-50%);
   font-style: italic;
@@ -145,7 +150,15 @@
   .row-1 .fixedNumber,
   .row-1 .fixedSocialMedia {
     font-size: 15px;
-    gap: 7px;
+    gap: 6px;
+  }
+
+  .fixedNumber {
+    left:20px;
+  }
+
+  .fixedSocialMedia {
+    right: 20px;
   }
 
   .row-2 {
@@ -208,7 +221,15 @@
   .row-1 .fixedNumber,
   .row-1 .fixedSocialMedia {
     font-size: 12px;
-    gap: 5px;
+    gap: 4px;
+  }
+
+  .fixedNumber {
+    left: 15px;
+  }
+
+  .fixedSocialMedia {
+    right: 15px;
   }
 
   .row-2 {
@@ -276,7 +297,8 @@
     position: relative;
   }
 
-  .row-1-mobile p {
+  .row-1-mobile p,
+  .row-1-mobile a {
     font-size: 13px;
     color: #fdfdfd;
   }
@@ -287,12 +309,12 @@
   }
 
   .fixedNumber {
-  left: 15px;
-}
+    left: 15px;
+  }
 
-.fixedSocialMedia {
-  right: 15px;
-}
+  .fixedSocialMedia {
+    right: 15px;
+  }
 
   /* ------- */
 
@@ -347,7 +369,6 @@
 
   /* ----- */
 
-  /* .mobileNavbar button img {} */
 
   .mobileNavbar {
     overflow: hidden;
