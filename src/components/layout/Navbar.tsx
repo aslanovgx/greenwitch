@@ -18,6 +18,9 @@ import textSwitcherTexts from "@/components/layout/textSwitcherTexts";
 import { getProducts } from "@/lib/api/products";
 import type { RawProduct } from "@/types/Product";
 
+import { FaInstagram } from "react-icons/fa";
+import { BsTelephone } from "react-icons/bs";
+
 type SearchResult = {
   id: number;
   brandName: string;
@@ -146,9 +149,17 @@ export default function Navbar() {
           />
         )}
         <TextSwitcher texts={textSwitcherTexts} onIndexChange={setCurrentTextIndex} />
-        <p className="fixedNumber">+994 50 233 88 11</p>
+        <p className="fixedNumber"><BsTelephone /> +994 50 233 88 11</p>
+        <p className="fixedSocialMedia"><FaInstagram /> saat.az</p>
         {/* <p className="fixedNumber">Əlaqə: +994 50 233 88 11</p> */}
       </div>
+
+      {/* Mobile-only top strip */}
+      <div className="row-1-mobile">
+        <p className="fixedNumber"><BsTelephone /> +994 50 233 88 11</p>
+        <p className="fixedSocialMedia"><FaInstagram /> saat.az</p>
+      </div>
+
 
       {/* Placeholder div — row-2 fixed olduqda burada yer saxlayır */}
       {fixed && (
