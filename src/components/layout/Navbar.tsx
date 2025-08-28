@@ -148,7 +148,9 @@ export default function Navbar() {
             className="object-contain"
           />
         )}
+        
         <TextSwitcher texts={textSwitcherTexts} onIndexChange={setCurrentTextIndex} />
+
         <a href="tel:+994502338811" className="fixedNumber">
           <BsTelephone /> +994 50 233 88 11
         </a>
