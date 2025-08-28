@@ -1,3 +1,4 @@
+// src/app/page.tsx
 import Banner from "@/components/home/Banner/Banner";
 import Products from "@/components/home/Products/Products";
 import Olivia from "@/components/home/Olivia/Olivia";
@@ -7,13 +8,15 @@ import SpecialOffer from "@/components/home/SpecialOffer/SpecialOffer";
 import IconInfo from "@/components/home/IconInfo/IconInfo";
 import ImageGrid from "@/components/home/ImageGrid/ImageGrid";
 import Contact from "@/components/home/Contact/Contact";
-// import { getProductsServer } from "@/lib/api/products-server";
-import type { Product } from "@/types/Product"; // ← mövcud Product tipin haradadırsa oradan import et
+
+import { getProductsServer } from "@/lib/api/products-server";
+import type { Product } from "@/types/Product";
 
 export default async function Home() {
-  // const allProducts: Product[] = await getProductsServer({ size: 100 });
+  // 1) Məhsulları serverdə çək
+  const allProducts: Product[] = await getProductsServer();
 
-  // bestSeller dəyərini etibarlı boolean-a çevirək (true | "true" | 1)
+  // 2) bestSeller-i etibarlı boolean-a çevirən helper
   const toBool = (v: unknown): boolean => {
     if (typeof v === "boolean") return v;
     if (typeof v === "number") return v === 1;
@@ -21,8 +24,9 @@ export default async function Home() {
     return false;
   };
 
-  const initialBestSellers: Product[] = allProducts
-    .filter((p: Product) => toBool((p as Product).bestSeller as unknown))
+  // 3) İlk 5 best seller
+  const initialBestSellers: Product[] = (allProducts ?? [])
+    .filter((p) => toBool(p.bestSeller as unknown))
     .slice(0, 5);
 
   return (
@@ -30,6 +34,7 @@ export default async function Home() {
       <section><Banner /></section>
 
       <section>
+        {/* Home Products grid-inə bütün məhsulları ötürürük */}
         <Products initialProducts={allProducts} />
       </section>
 
