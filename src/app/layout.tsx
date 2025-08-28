@@ -10,7 +10,6 @@ import "react-toastify/dist/ReactToastify.css";   // ✅ toastify CSS-i
 import { BagProvider } from "@/context/BagContext";
 import { Toaster } from "react-hot-toast";
 import ScrollToTop from "@/components/common/ScrollToTop";
-import FixedNumber from "@/components/common/FixedNumber";
 
 export const metadata: Metadata = {
   title: "Greenwitch | Sustainable Lifestyle",
@@ -48,7 +47,6 @@ export default function RootLayout({
             <BagProvider>
               <Navbar />
               <main>{children}</main>
-              <FixedNumber />
               <ScrollToTop /> 
               <Footer />
 
