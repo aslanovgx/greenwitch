@@ -7,11 +7,11 @@ import SpecialOffer from "@/components/home/SpecialOffer/SpecialOffer";
 import IconInfo from "@/components/home/IconInfo/IconInfo";
 import ImageGrid from "@/components/home/ImageGrid/ImageGrid";
 import Contact from "@/components/home/Contact/Contact";
-import { getProductsServer } from "@/lib/api/products-server";
+// import { getProductsServer } from "@/lib/api/products-server";
 import type { Product } from "@/types/Product"; // ← mövcud Product tipin haradadırsa oradan import et
 
 export default async function Home() {
-  const allProducts: Product[] = await getProductsServer({ size: 100 });
+  // const allProducts: Product[] = await getProductsServer({ size: 100 });
 
   // bestSeller dəyərini etibarlı boolean-a çevirək (true | "true" | 1)
   const toBool = (v: unknown): boolean => {

@@ -69,7 +69,6 @@ export default function FilterCards() {
         type GetProductsArg = Parameters<typeof getProducts>[0];
 
         const params: GetProductsArg = {
-          size: 100,
           ...(brandId ? { brandId } : {}),
           ...(genderId ? { genderId } : {}),
           ...(shapeId ? { shapeId } : {}),
