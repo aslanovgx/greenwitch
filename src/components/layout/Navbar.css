@@ -34,7 +34,7 @@
   gap: 7px;
   top: 50%;
   transform: translateY(-50%);
-  font-style: italic;
+  font-style: normal;
   font-size: 20px;
 }
 
@@ -49,6 +49,48 @@
 .row-1-mobile {
   display: none;
 }
+
+.menuItemsList li {
+  position: relative;
+}
+
+/* Linkin özü */
+.menuItemsList li .menuLink {
+  position: relative;
+  display: inline-block;
+  text-decoration: none;
+}
+
+/* Xətt (default: gizli) */
+.menuItemsList li .menuLink::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(90deg,
+      rgb(255, 255, 255) 0%,
+      rgb(0, 0, 0) 29.38%,
+      rgb(0, 0, 0) 51.41%,
+      rgb(0, 0, 0) 71.33%,
+      rgb(255, 255, 255) 100%);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+  pointer-events: none;
+}
+
+/* Hover-də xətt açılsın (istəyə bağlı) */
+.menuItemsList li .menuLink:hover::before {
+  transform: scaleX(1);
+}
+
+/* Aktiv olanda xətt həmişə görünsün */
+.menuItemsList li .menuLink.active::before {
+  transform: scaleX(1);
+}
+
 
 
 /* ----------------------- row-2 --------------------- */
@@ -154,7 +196,7 @@
   }
 
   .fixedNumber {
-    left:20px;
+    left: 20px;
   }
 
   .fixedSocialMedia {

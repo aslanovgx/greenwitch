@@ -1,5 +1,6 @@
 // src/app/page.tsx
-export const dynamic = "force-dynamic";
+// ❌ Bunu çıxart: export const dynamic = "force-dynamic";
+export const revalidate = 60; // ✅ ISR: 60 saniyədən bir yenilə
 
 import Banner from "@/components/home/Banner/Banner";
 import Products from "@/components/home/Products/Products";
@@ -12,11 +13,15 @@ import ImageGrid from "@/components/home/ImageGrid/ImageGrid";
 import Contact from "@/components/home/Contact/Contact";
 
 import { getProductsServer } from "@/lib/api/products-server";
+import { getInfoSections } from "@/lib/api/infoSections";
 import type { Product } from "@/types/Product";
 
 export default async function Home() {
-  // BURANI ƏLAVƏ ETMİSƏN: allProducts elan olunur
+  // SSR: məhsullar
   const allProducts: Product[] = await getProductsServer();
+
+  // SSR: banner üçün info sections
+  const allSections = await getInfoSections();
 
   const toBool = (v: unknown): boolean => {
     if (typeof v === "boolean") return v;
@@ -31,10 +36,11 @@ export default async function Home() {
 
   return (
     <>
-      <section><Banner /></section>
+      <section>
+        <Banner initialSections={allSections} />
+      </section>
 
       <section>
-        {/* Products komponentinin prop adı səndə fərqlidirsə, uyğunlaşdır */}
         <Products initialProducts={allProducts} />
       </section>
 

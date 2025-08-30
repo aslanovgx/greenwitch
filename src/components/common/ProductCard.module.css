@@ -92,7 +92,7 @@
     align-items: center;
     flex-shrink: 0;
     border-radius: 245px;
-    background: linear-gradient(222deg, #DADADA 11.07%, #DADADA 34.55%, #FFF 46%, #DADADA 62%);
+    /* background: linear-gradient(222deg, #DADADA 11.07%, #DADADA 34.55%, #FFF 46%, #DADADA 62%); */
 }
 
 .new_card span {
@@ -104,18 +104,18 @@
     line-height: normal;
 }
 
-.discountBadge {
+/* .discountBadge {
     background: linear-gradient(212deg, #FFB986 9.76%, #FFB986 33.85%, #FFF 45.6%, #FFB986 62.02%);
-    /* background: linear-gradient(212deg, #F26600 9.76%, #F26600 33.85%, #FFF 45.6%, #F26600 62.02%); */
-}
+    background: linear-gradient(212deg, #F26600 9.76%, #F26600 33.85%, #FFF 45.6%, #F26600 62.02%);
+} */
 
 .discountBadge span {
     font-size: 9px;
 }
 
-.bestSpan {
+/* .bestSpan {
     background: linear-gradient(222deg, #EFEBAA 11.07%, #EFEBAA 34.55%, #FFF 46%, #EFEBAA 62%) !important;
-}
+} */
 
 .normalPrice {
     text-decoration: line-through;
@@ -188,24 +188,24 @@
         width: 34px;
         height: 34px;
         border-radius: 50%;
-        background: linear-gradient(222deg, #DADADA 11.07%, #DADADA 34.55%, #FFF 46%, #DADADA 62%);
+        /* background: linear-gradient(222deg, #DADADA 11.07%, #DADADA 34.55%, #FFF 46%, #DADADA 62%); */
     }
 
     .new_card span {
         font-size: 10.224px;
     }
-
+/* 
     .discountBadge {
         background: linear-gradient(212deg, #FFB986 9.76%, #FFB986 33.85%, #FFF 45.6%, #FFB986 62.02%);
-    }
+    } */
 
     .discountBadge span {
         font-size: 6.5px;
     }
 
-    .bestSpan {
+    /* .bestSpan {
         background: linear-gradient(222deg, #EFEBAA 11.07%, #EFEBAA 34.55%, #FFF 46%, #EFEBAA 62%) !important;
-    }
+    } */
 
 }
 

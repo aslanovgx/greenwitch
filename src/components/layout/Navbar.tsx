@@ -17,7 +17,8 @@ import menuItems from "@/data/menuItems";
 import textSwitcherTexts from "@/components/layout/textSwitcherTexts";
 import { getProducts } from "@/lib/api/products";
 import type { RawProduct } from "@/types/Product";
-
+import { getGenders } from "@/lib/api/gender";
+import { usePathname, useSearchParams } from "next/navigation";
 import { FaInstagram } from "react-icons/fa";
 import { BsTelephone } from "react-icons/bs";
 
@@ -29,6 +30,18 @@ type SearchResult = {
   image?: string | null;
 };
 
+const normalize = (s?: string) => {
+  return String(s ?? "")
+    .toLowerCase()
+    .trim()
+    .normalize("NFKD")
+    .replace(/\p{Diacritic}/gu, "")   // ş → s, ç → c, ö → o, ü → u
+    .replace(/ə/g, "e")
+    .replace(/ı/g, "i")
+    .replace(/ğ/g, "g")
+    .replace(/ş/g, "s")
+    .replace(/ç/g, "c");
+};
 
 function buildImageUrl(rel: string) {
   const API = (process.env.NEXT_PUBLIC_API_URL ?? "").trim();
@@ -51,6 +64,43 @@ export default function Navbar() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
+
+  const [finalMenu, setFinalMenu] = useState(menuItems);
+  const [loadingMenu, setLoadingMenu] = useState(false);
+
+  const pathname = usePathname();
+  const params = useSearchParams();
+
+  const activeGenderId = Number(params.get("genderId") || 0);
+  const isProducts = pathname?.startsWith("/products");
+
+  const isActive = (href: string) => {
+    // /products?genderId=ID olanlar üçün
+    const m = href.match(/genderId=(\d+)/);
+    if (m) return isProducts && Number(m[1]) === activeGenderId;
+
+    // digər statik linklər
+    return pathname === href || pathname?.startsWith(href);
+  };
+
+  useEffect(() => {
+    (async () => {
+      try {
+        setLoadingMenu(true);
+        const genders = await getGenders(); // [{id,name}]
+        const nameToId = new Map<string, number>();
+        (genders ?? []).forEach(g => nameToId.set(normalize(g.name), g.id));
+        // "Kişi / Qadın / Uşaq" kimi label-ları API adları ilə tutuşdur
+        const patched = menuItems.map(it => {
+          const id = nameToId.get(normalize(it.label));
+          return id ? { ...it, href: `/products?genderId=${id}` } : it;
+        }); setFinalMenu(patched);
+      } catch (e) {
+        console.error("Navbar genders fetch error:", e); setFinalMenu(menuItems); // fallback       
+
+      } finally { setLoadingMenu(false); }
+    })();
+  }, []);
 
 
   useEffect(() => {
@@ -148,7 +198,7 @@ export default function Navbar() {
             className="object-contain"
           />
         )}
-        
+
         <TextSwitcher texts={textSwitcherTexts} onIndexChange={setCurrentTextIndex} />
 
         <a href="tel:+994502338811" className="fixedNumber">
@@ -248,21 +298,22 @@ export default function Navbar() {
         </div>
       </div>
       <div className="row_3">
-        <ul className="flex justify-center items-center">
-          <li>Kişi</li>
-          <li>Qadın</li>
-          <li>Uşaq</li>
-          <li>Aksesuar</li>
-          <Link href="/products">
-            <li>Saatlar</li>
-          </Link>
-          <Link href="/location">
-            <li>Mağazalar</li>
-          </Link>
-          <Link href="/about">
-            <li>Haqqımızda</li>
-          </Link>
+        <ul className="flex justify-center items-center menuItemsList">
+          {loadingMenu && <li>Yüklənir...</li>}
+          {!loadingMenu &&
+            finalMenu.map((item, i) => (
+              <li key={i}>
+                <Link
+                  href={item.href}
+                  className={`menuLink ${isActive(item.href) ? "active" : ""}`}
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))
+          }
         </ul>
+
       </div>
 
       {/* Wishlist Drawer */}
@@ -288,12 +339,16 @@ export default function Navbar() {
           </button>
 
           <ul className="flex">
-            {menuItems.map((item, idx) => (
+            {finalMenu.map((item, idx) => (
               <li
                 key={idx}
                 className="flex justify-between items-center cursor-pointer"
               >
-                <Link href={item.href} onClick={() => setIsMenuOpen(false)}>
+                <Link
+                  href={item.href}
+                  onClick={() => setIsMenuOpen(false)}
+                  className={`menuLink ${isActive(item.href) ? "active" : ""}`}
+                >
                   {item.label}
                 </Link>
                 <Link href={item.href} onClick={() => setIsMenuOpen(false)}>

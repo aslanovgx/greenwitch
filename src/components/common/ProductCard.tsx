@@ -1,13 +1,14 @@
 'use client';
 import { memo } from 'react';
 import Image from 'next/image';
+import useLabelColors from "@/hooks/useLabelColors";
 import { Heart } from 'lucide-react';
 import { useFavorites } from '@/context/FavoritesContext';
 import { useRouter } from 'next/navigation';
 import styles from '@/components/common/ProductCard.module.css';
 import { Product } from '@/types/Product';
 import useIsTouchDevice from '@/hooks/useIsTouchDevice';
-import { useBag } from "@/context/BagContext";
+import { useBag } from "@/context/BagContext"
 type Props = {
     item: Product;
     isMostSales?: boolean;
@@ -34,6 +35,7 @@ function ProductCardComponent({
     const hover = item.images?.[1] ?? null;
 
 
+
     const handleClick = () => {
         if (isTouch && setActiveCardId) {
             if (activeCardId !== item.id) {
@@ -46,10 +48,13 @@ function ProductCardComponent({
         }
     };
 
+    const { colors, loading } = useLabelColors();
 
+    // 1) Endirim olub-olmadığını tap
     const hasDiscount =
         typeof item.discountPrice === "number" && item.discountPrice < item.price;
 
+    // 2) Badge mətnini çıxart (BEST | NEW | ENDİRİM | null)
     const badge = forceBestBadge
         ? "BEST"
         : activeCategory === "discount" && hasDiscount
@@ -67,6 +72,34 @@ function ProductCardComponent({
                     : activeCategory === "best" && item.bestSeller
                         ? "BEST"
                         : null;
+
+    // 3) Badge string → type (1=BEST, 2=NEW, 3=ENDİRİM)
+    const badgeType: 1 | 2 | 3 | null =
+        badge === "BEST" ? 1 : badge === "NEW" ? 2 : badge === "ENDİRİM" ? 3 : null;
+
+    // 4) Fallback rənglər (admin seçməyibsə)
+    const DEFAULTS: Record<1 | 2 | 3, string> = {
+        1: "#DADADA", // BEST
+        2: "#75A7B0", // NEW
+        3: "#EBD078", // ENDİRİM
+    };
+
+
+
+    // 5) Adminin aktiv rəng xəritəsindən rəngi tap
+    const badgeColor = badgeType ? colors[badgeType] : undefined;
+
+
+    // 6) Kontrast mətni seçmək üçün helper
+    const pickText = (hex?: string) => {
+        if (!hex) return "#000";
+        const h = hex.replace("#", "");
+        const r = parseInt(h.substring(0, 2), 16);
+        const g = parseInt(h.substring(2, 4), 16);
+        const b = parseInt(h.substring(4, 6), 16);
+        const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
+        return luminance > 186 ? "#000" : "#fff";
+    };
     return (
         <div
             onClick={handleClick}
@@ -187,7 +220,7 @@ function ProductCardComponent({
                 )}
             </div>
 
-            {badge && (
+            {/* {badge && (
                 <div
                     className={`
             ${styles.new_card}
@@ -198,7 +231,31 @@ function ProductCardComponent({
                 >
                     <span>{badge}</span>
                 </div>
+            )} */}
+            {badge && badgeType && (
+                <div
+                    className={`
+      ${styles.new_card}
+      ${badge === 'ENDİRİM' ? styles.discountBadge : ''}
+      absolute top-3 left-3 z-10 cursor-default
+    `}
+                    style={{
+                        background: `linear-gradient(
+      222deg,
+      rgba(255,255,255,0.7) 10%,
+      rgba(255,255,255,0.3) 35%,
+      rgba(255,255,255,0.9) 46%,
+      rgba(255,255,255,0.2) 62%
+    ), ${badgeColor}`,   // ✅ adminin verdiyi rəng
+                        color: pickText(colors[badgeType]),   // ✅ kontrast mətni seçir
+                        border: "1px solid rgba(0,0,0,0.06)"
+                    }}
+                >
+                    <span>{badge}</span>
+                </div>
             )}
+
+
         </div>
     );
 }
