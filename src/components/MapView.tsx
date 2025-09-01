@@ -15,7 +15,7 @@ export default function MapView() {
             <ul className={styles.sideBar}>
                 <h1>Mağazalarımız</h1>
 
-                <ul className={styles.areaList}>
+                {/* <ul className={styles.areaList}>
                     {["Bakı üzrə", "Bölgələr üzrə", "Servis Mərkəzi"].map((area) => (
                         <li
                             key={area}
@@ -25,7 +25,7 @@ export default function MapView() {
                             {area}
                         </li>
                     ))}
-                </ul>
+                </ul> */}
 
                 <ul className={`${styles.storePlaces} ${activeCategory !== "Bakı üzrə" ? styles.hideOverflow : ""
                     }`}>

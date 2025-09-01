@@ -85,13 +85,13 @@
 
 .new_card {
     display: inline-flex;
-    width: 51px;
-    height: 51px;
-    /* padding: 16.066px 8.967px 16.934px 8.033px; */
+    padding: 5px 12px;
+    border-radius: 4px;
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
-    border-radius: 245px;
+    border: transparent;
+    /* border-radius: 245px; */
     /* background: linear-gradient(222deg, #DADADA 11.07%, #DADADA 34.55%, #FFF 46%, #DADADA 62%); */
 }
 
@@ -109,9 +109,9 @@
     background: linear-gradient(212deg, #F26600 9.76%, #F26600 33.85%, #FFF 45.6%, #F26600 62.02%);
 } */
 
-.discountBadge span {
+/* .discountBadge span {
     font-size: 9px;
-}
+} */
 
 /* .bestSpan {
     background: linear-gradient(222deg, #EFEBAA 11.07%, #EFEBAA 34.55%, #FFF 46%, #EFEBAA 62%) !important;

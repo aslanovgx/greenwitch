@@ -17,6 +17,7 @@
     flex-direction: column;
     overflow: hidden;
     padding: 26px 16px 16px 16px;
+    width: 426px;
 }
 
 .sideBar h1 {
@@ -347,6 +348,8 @@
     .sideBar {
         position: static;
         margin: 30px auto;
+        max-width: 426px;
+        width: auto;
     }
 }
 

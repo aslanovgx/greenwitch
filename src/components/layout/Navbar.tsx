@@ -66,41 +66,48 @@ export default function Navbar() {
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
 
   const [finalMenu, setFinalMenu] = useState(menuItems);
-  const [loadingMenu, setLoadingMenu] = useState(false);
 
   const pathname = usePathname();
   const params = useSearchParams();
 
   const activeGenderId = Number(params.get("genderId") || 0);
+  const activeCategoryId = Number(params.get("categoryId") || 0);
   const isProducts = pathname?.startsWith("/products");
 
   const isActive = (href: string) => {
-    // /products?genderId=ID olanlar üçün
-    const m = href.match(/genderId=(\d+)/);
-    if (m) return isProducts && Number(m[1]) === activeGenderId;
+    const g = href.match(/genderId=(\d+)/);
+    if (g) return isProducts && Number(g[1]) === activeGenderId;
+
+    const c = href.match(/categoryId=(\d+)/);
+    if (c) return isProducts && Number(c[1]) === activeCategoryId;
 
     // digər statik linklər
     return pathname === href || pathname?.startsWith(href);
   };
 
+
   useEffect(() => {
     (async () => {
       try {
-        setLoadingMenu(true);
-        const genders = await getGenders(); // [{id,name}]
+        const genders = await getGenders(); // [{id, name}]
         const nameToId = new Map<string, number>();
         (genders ?? []).forEach(g => nameToId.set(normalize(g.name), g.id));
-        // "Kişi / Qadın / Uşaq" kimi label-ları API adları ilə tutuşdur
+
         const patched = menuItems.map(it => {
           const id = nameToId.get(normalize(it.label));
           return id ? { ...it, href: `/products?genderId=${id}` } : it;
-        }); setFinalMenu(patched);
+        });
+        setFinalMenu(patched);
       } catch (e) {
-        console.error("Navbar genders fetch error:", e); setFinalMenu(menuItems); // fallback       
-
-      } finally { setLoadingMenu(false); }
+        console.error("Navbar genders fetch error:", e);
+        setFinalMenu(menuItems); // fallback
+      }
     })();
   }, []);
+
+
+
+
 
 
   useEffect(() => {
@@ -299,21 +306,17 @@ export default function Navbar() {
       </div>
       <div className="row_3">
         <ul className="flex justify-center items-center menuItemsList">
-          {loadingMenu && <li>Yüklənir...</li>}
-          {!loadingMenu &&
-            finalMenu.map((item, i) => (
-              <li key={i}>
-                <Link
-                  href={item.href}
-                  className={`menuLink ${isActive(item.href) ? "active" : ""}`}
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))
-          }
+          {finalMenu.map((item, i) => (
+            <li key={i}>
+              <Link
+                href={item.href}
+                className={`menuLink ${isActive(item.href) ? "active" : ""}`}
+              >
+                {item.label}
+              </Link>
+            </li>
+          ))}
         </ul>
-
       </div>
 
       {/* Wishlist Drawer */}
