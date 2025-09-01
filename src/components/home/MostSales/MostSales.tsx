@@ -4,6 +4,8 @@ import styles from "./MostSales.module.css";
 import SectionTitle from "@/components/common/SectionTitle";
 import ProductCard from "@/components/common/ProductCard";
 import type { Product as UIProduct } from "@/types/Product";
+import Link from "next/link";
+import MoreButton from "@/components/ui/MoreButton";
 
 type APIProduct = {
   id: number;
@@ -58,12 +60,17 @@ export default function MostSales({ initialProducts = [] }: Props) {
             key={item.id}
             item={item}
             isMostSales
-            forceBestBadge   // <-- MostSales üçün “BEST” prioritet
+            // forceBestBadge   // <-- MostSales üçün “BEST” prioritet
             activeCategory="all"
             activeCardId={activeCardId}
             setActiveCardId={setActiveCardId}
           />
         ))}
+      </div>
+      <div>
+        <Link href="/products?sirala=best" scroll={true}>
+    <MoreButton>Daha çox</MoreButton>
+  </Link> ̰
       </div>
     </div>
   );

@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import styles from "./FilterCards.module.css";
@@ -10,11 +9,19 @@ import type { Product as UIProduct } from "@/types/Product";
 import { getProducts } from "@/lib/api/products";
 import type { RawProduct } from "@/types/Product";
 
-// Relative image pathları (images/products/...) tam URL-ə çevir
+// URL-dən gələn kodlarla eyni olsun deyə
+const SORT_LABEL_TO_CODE: Record<string, string> = {
+  "Yeni Gələnlər": "new",
+  "Endirimli Məhsullar": "discount",
+  "Ən Çox Satılanlar": "best",
+  "Qiymət (Aşağıdan Yuxarıya)": "price_asc",
+  "Qiymət (Yuxarıdan Aşağıya)": "price_desc",
+};
+
 function buildImageUrl(rel: string) {
   const API = (process.env.NEXT_PUBLIC_API_URL ?? "").trim();
-  const ROOT = API.replace(/\/api\/?$/i, ""); // .../api -> ...
-  const clean = (rel ?? "").replace(/^\/+/, ""); // başdakı /-ları sil
+  const ROOT = API.replace(/\/api\/?$/i, "");
+  const clean = (rel ?? "").replace(/^\/+/, "");
   return `${ROOT}/${clean}`;
 }
 
@@ -23,6 +30,37 @@ const toInt = (v: string | null) => {
   return Number.isFinite(n) && n > 0 ? n : undefined;
 };
 
+// 🔹 Effektiv qiymət (endirim varsa onu göstər)
+const effectivePrice = (p: RawProduct) =>
+  typeof p.discountPrice === "number" && p.discountPrice < p.price
+    ? p.discountPrice
+    : p.price;
+
+// 🔹 Front-end filter/sort tətbiqi
+function applySortAndFilter(list: RawProduct[], sortCode?: string): RawProduct[] {
+  if (!sortCode) return list;
+
+  switch (sortCode) {
+    case "new":
+      return list.filter(p => !!p.isNew);
+
+    case "best":
+      return list.filter(p => !!p.bestSeller);
+
+    case "discount":
+      return list.filter(p => typeof p.discountPrice === "number" && p.discountPrice < p.price);
+
+    case "price_asc":
+      return [...list].sort((a, b) => effectivePrice(a) - effectivePrice(b));
+
+    case "price_desc":
+      return [...list].sort((a, b) => effectivePrice(b) - effectivePrice(a));
+
+    default:
+      return list;
+  }
+}
+
 export default function FilterCards() {
   const sp = useSearchParams();
 
@@ -30,7 +68,15 @@ export default function FilterCards() {
   const brandId = toInt(sp.get("brandId"));
   const genderId = toInt(sp.get("genderId"));
   const shapeId = toInt(sp.get("shapeId"));
-  const colorId = toInt(sp.get("colorId")); // single-select; BE-də array lazımdırsa colorIds=[id]
+  const colorId = toInt(sp.get("colorId"));
+  const sortCode = sp.get("sort") ?? undefined;
+
+  // 🔹 sort → activeCategory xəritəsi
+  const activeCategory =
+    sortCode === "new" ? "new" :
+      sortCode === "best" ? "best" :
+        sortCode === "discount" ? "discount" :
+          "all";
 
   const [activeCardId, setActiveCardId] = useState<number | null>(null);
   const [visibleCount, setVisibleCount] = useState<number>(5);
@@ -38,7 +84,6 @@ export default function FilterCards() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // API məhsulunu UI tipinə uyğunlaşdır
   const adapt = (p: RawProduct): UIProduct => {
     const rawImgs = Array.isArray(p.images) ? p.images : [];
     const images = rawImgs
@@ -58,8 +103,7 @@ export default function FilterCards() {
     };
   };
 
-
-  // Filtr dəyişdikcə datanı çək
+  // 🔹 Filter və sort dəyişdikcə datanı çək + front-end sort/filter tətbiq et
   useEffect(() => {
     (async () => {
       try {
@@ -67,18 +111,21 @@ export default function FilterCards() {
         setError(null);
 
         type GetProductsArg = Parameters<typeof getProducts>[0];
-
         const params: GetProductsArg = {
           ...(brandId ? { brandId } : {}),
           ...(genderId ? { genderId } : {}),
           ...(shapeId ? { shapeId } : {}),
           ...(colorId ? { colorId } : {}),
+          // 🔸 sort yoxdur → heç nə göndərmirik
         };
 
-        const list = await getProducts(params);
+        const rawList = await getProducts(params);
 
-        setProducts(list.map(adapt));
-        setVisibleCount(5); // hər yeni filtrdə “load more” reset
+        // 🔹 Front-end tətbiqi
+        const processed = applySortAndFilter(rawList, sortCode);
+
+        setProducts(processed.map(adapt));
+        setVisibleCount(5);
       } catch (e: unknown) {
         console.error(e);
         setError("Məhsulları yükləmək mümkün olmadı.");
@@ -87,7 +134,7 @@ export default function FilterCards() {
         setLoading(false);
       }
     })();
-  }, [brandId, genderId, shapeId, colorId]);
+  }, [brandId, genderId, shapeId, colorId, sortCode]);
 
   const visibleProducts = useMemo(
     () => products.slice(0, visibleCount),
@@ -96,13 +143,9 @@ export default function FilterCards() {
 
   const handleLoadMore = () => setVisibleCount((prev) => prev + 5);
 
-
-
   if (loading) return <div className="py-10 text-center">Yüklənir...</div>;
   if (error) return <div className="py-10 text-center text-red-600">{error}</div>;
   if (products.length === 0) return <div className="py-10 text-center">Məhsul tapılmadı.</div>;
-
-
 
   return (
     <div className={styles.filterCards}>
@@ -113,6 +156,7 @@ export default function FilterCards() {
             item={item}
             activeCardId={activeCardId}
             setActiveCardId={setActiveCardId}
+            activeCategory={activeCategory}
           />
         ))}
       </div>

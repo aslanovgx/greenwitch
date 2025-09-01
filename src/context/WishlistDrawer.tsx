@@ -38,7 +38,7 @@ export default function WishlistDrawer({
               alt={product.name ?? "Product"}
               width={60}
               height={60}
-              className="rounded object-cover"
+              className="rounded w-[60px] h-[60px] object-contain"
             />
             <div className="flex-1">
               <p className="font-semibold text-sm uppercase">

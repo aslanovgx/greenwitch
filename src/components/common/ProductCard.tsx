@@ -13,7 +13,7 @@ import { useBag } from "@/context/BagContext"
 type Props = {
   item: Product;
   isMostSales?: boolean;
-  forceBestBadge?: boolean;
+  // forceBestBadge?: boolean;
   activeCategory?: string;
   activeCardId?: number | null;
   setActiveCardId?: (id: number | null) => void;
@@ -21,7 +21,7 @@ type Props = {
 
 function ProductCardComponent({
   item,
-  forceBestBadge = false,
+  // forceBestBadge = false,
   activeCategory = 'all',
   activeCardId,
   setActiveCardId,
@@ -54,18 +54,24 @@ function ProductCardComponent({
 
   const { colors, loading } = useLabelColors();
 
-  // 1) Endirim varmı?
-  const hasDiscount = typeof item.discountPrice === "number" && item.discountPrice < item.price;
+  // 1) Endirim var?
+  const hasDiscount =
+    typeof item.discountPrice === "number" && item.discountPrice < item.price;
 
-  // 2) Badge mətni
+  // 2) Badge seçimi
   const badge =
-    forceBestBadge ? "BEST" :
-    activeCategory === "discount" && hasDiscount ? "ENDİRİM" :
-    activeCategory === "all" ?
-      (hasDiscount ? "ENDİRİM" : item.bestSeller ? "BEST" : item.isNew ? "NEW" : null) :
-    activeCategory === "new" && item.isNew ? "NEW" :
-    activeCategory === "best" && item.bestSeller ? "BEST" :
-    null;
+    activeCategory === "discount"
+      ? (hasDiscount ? "ENDİRİM" : null)                 // endirim səhifəsində həmişə ENDİRİM
+      : activeCategory === "new"
+        ? (item.isNew ? "NEW" : null)                      // yeni səhifəsində həmişə NEW
+        : activeCategory === "best"
+          ? (item.bestSeller ? "BEST" : null)                // best səhifəsində həmişə BEST
+          : /* activeCategory === "all" */
+          (hasDiscount ? "ENDİRİM"                         // ümumi siyahıda prioritet: ENDİRİM → BEST → NEW
+            : item.bestSeller ? "BEST"
+              : item.isNew ? "NEW"
+                : null);
+
 
   // 3) Badge → type (1=BEST, 2=NEW, 3=ENDİRİM)
   const badgeType: 1 | 2 | 3 | null =
@@ -115,9 +121,8 @@ function ProductCardComponent({
           alt={item.name || "Product image"}
           fill
           loading="lazy"
-          className={`w-full h-full scale-105 transition-opacity duration-600 ${
-            !isTouch ? 'group-hover:opacity-0' : (isActive ? 'opacity-0' : 'opacity-100')
-          }`}
+          className={`w-full h-full scale-105 transition-opacity duration-600 ${!isTouch ? 'group-hover:opacity-0' : (isActive ? 'opacity-0' : 'opacity-100')
+            }`}
           style={{ objectFit: 'cover' }}
         />
         {hover && (
@@ -126,9 +131,8 @@ function ProductCardComponent({
             alt={item.name || "Product image"}
             fill
             loading="lazy"
-            className={`${styles.hoverImage} scale-95 w-full h-full absolute top-0 left-0 transition-opacity duration-700 ${
-              !isTouch ? 'opacity-0 group-hover:opacity-100' : (isActive ? 'opacity-100' : 'opacity-0')
-            }`}
+            className={`${styles.hoverImage} scale-95 w-full h-full absolute top-0 left-0 transition-opacity duration-700 ${!isTouch ? 'opacity-0 group-hover:opacity-100' : (isActive ? 'opacity-100' : 'opacity-0')
+              }`}
             style={{ objectFit: 'cover' }}
           />
         )}
@@ -154,9 +158,8 @@ function ProductCardComponent({
         )}
 
         <div
-          className={`${styles.card_buttons} absolute bottom-0 left-0 flex transition-opacity duration-700 ${
-            !isTouch ? 'opacity-0 group-hover:opacity-100' : (isActive ? 'opacity-100' : 'opacity-0')
-          }`}
+          className={`${styles.card_buttons} absolute bottom-0 left-0 flex transition-opacity duration-700 ${!isTouch ? 'opacity-0 group-hover:opacity-100' : (isActive ? 'opacity-100' : 'opacity-0')
+            }`}
         >
           <button
             onClick={(e) => {
