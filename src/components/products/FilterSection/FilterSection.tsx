@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import styles from "./FilterSection.module.css";
+import { SORT_LABEL_TO_CODE, SORT_CODE_TO_LABEL, SORT_LABELS, isValidSort } from "@/constants/sort";
 import FilterItem from "@/components/Filter/FilterItem";
 import { getBrands } from "@/lib/api/brand";
 import { getShapes } from "@/lib/api/shape";
@@ -11,16 +12,6 @@ import { getGenders } from "@/lib/api/gender";
 
 type Opt = { id: number; name: string };
 
-const SORT_LABEL_TO_CODE: Record<string, string> = {
-  "Yeni Gələnlər": "new",
-  "Endirimli Məhsullar": "discount",
-  "Ən Çox Satılanlar": "best",
-  "Qiymət (Aşağıdan Yuxarıya)": "price_asc",
-  "Qiymət (Yuxarıdan Aşağıya)": "price_desc",
-};
-const SORT_CODE_TO_LABEL: Record<string, string> =
-  Object.fromEntries(Object.entries(SORT_LABEL_TO_CODE).map(([k, v]) => [v, k]));
-const SORT_LABELS = Object.keys(SORT_LABEL_TO_CODE);
 
 export default function FilterSection() {
   const [openFilter, setOpenFilter] = useState<string | null>(null);
@@ -77,19 +68,19 @@ export default function FilterSection() {
         setGenders(g ?? []);
 
         // URL-də id varsa, label-ları doldur (refresh zamanı)
-       const brandId = Number(searchParams.get("brandId") || 0);
-const genderId = Number(searchParams.get("genderId") || 0);
-const colorId  = Number(searchParams.get("colorId")  || 0);
-const shapeId  = Number(searchParams.get("shapeId")  || 0);
-const sortCode = searchParams.get("sort") || ""; // <-- əlavə
+        const brandId = Number(searchParams.get("brandId") || 0);
+        const genderId = Number(searchParams.get("genderId") || 0);
+        const colorId = Number(searchParams.get("colorId") || 0);
+        const shapeId = Number(searchParams.get("shapeId") || 0);
+        const sortCode = searchParams.get("sort") || ""; // <-- əlavə
 
-setSelectedFilters({
-  brendler: (b ?? []).find((x) => x.id === brandId)?.name,
-  cins:     (g ?? []).find((x) => x.id === genderId)?.name,
-  reng:     (c ?? []).find((x) => x.id === colorId)?.name,
-  forma:    (s ?? []).find((x) => x.id === shapeId)?.name,
-  sirala:   SORT_CODE_TO_LABEL[sortCode] as string | undefined, // <-- əlavə
-}); 
+        setSelectedFilters({
+          brendler: (b ?? []).find((x) => x.id === brandId)?.name,
+          cins: (g ?? []).find((x) => x.id === genderId)?.name,
+          reng: (c ?? []).find((x) => x.id === colorId)?.name,
+          forma: (s ?? []).find((x) => x.id === shapeId)?.name,
+          sirala: isValidSort(sortCode) ? SORT_CODE_TO_LABEL[sortCode] : undefined,
+        });
       } catch (e) {
         console.error("FilterSection fetch error:", e);
         setBrands([]);
@@ -112,15 +103,15 @@ setSelectedFilters({
 
   /* -------- URL yazıcı util -------- */
   const setQuery = (key: string, value?: string | number) => {
-  const sp = new URLSearchParams(searchParams.toString());
-  if (value !== undefined && value !== null && String(value).length > 0) {
-    sp.set(key, String(value));
-  } else {
-    sp.delete(key);
-  }
-  const qs = sp.toString();
-  router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
-};
+    const sp = new URLSearchParams(searchParams.toString());
+    if (value !== undefined && value !== null && String(value).length > 0) {
+      sp.set(key, String(value));
+    } else {
+      sp.delete(key);
+    }
+    const qs = sp.toString();
+    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+  };
 
   /* -------- Seçim handler-ları (öncə bağla, sonra URL) -------- */
   const onSelectGender = (label?: string) => {
@@ -149,34 +140,35 @@ setSelectedFilters({
   };
 
   const onSelectSort = (label?: string) => {
-  const code = label ? SORT_LABEL_TO_CODE[label] : undefined;
-  setSelectedFilters(prev => ({ ...prev, sirala: label }));
-  setOpenFilter(null);
-  setQuery("sort", code); // <-- əsas düzəliş
-};
- 
+    const code = label ? SORT_LABEL_TO_CODE[label as keyof typeof SORT_LABEL_TO_CODE] : undefined;
+    setSelectedFilters(prev => ({ ...prev, sirala: label }));
+    setOpenFilter(null);
+    setQuery("sort", code);
+  };
+
+
 
 
 
   /* -------- URL dəyişəndə label-ları yenilə -------- */
   useEffect(() => {
-  if (!brands.length && !shapes.length && !colors.length && !genders.length) return;
+    if (!brands.length && !shapes.length && !colors.length && !genders.length) return;
 
-  const brandId = Number(searchParams.get("brandId") || 0);
-  const genderId = Number(searchParams.get("genderId") || 0);
-  const colorId = Number(searchParams.get("colorId") || 0);
-  const shapeId = Number(searchParams.get("shapeId") || 0);
-  const sortCode = searchParams.get("sort") || ""; // <-- əlavə
+    const brandId = Number(searchParams.get("brandId") || 0);
+    const genderId = Number(searchParams.get("genderId") || 0);
+    const colorId = Number(searchParams.get("colorId") || 0);
+    const shapeId = Number(searchParams.get("shapeId") || 0);
+    const sortCode = searchParams.get("sort") || ""; // <-- əlavə
 
-  setSelectedFilters(prev => ({
-    ...prev,
-    brendler: brands.find(x => x.id === brandId)?.name,
-    cins:     genders.find(x => x.id === genderId)?.name,
-    reng:     colors.find(x => x.id === colorId)?.name,
-    forma:    shapes.find(x => x.id === shapeId)?.name,
-    sirala:   SORT_CODE_TO_LABEL[sortCode] as string | undefined, // <-- əlavə
-  }));
-}, [searchParams, brands, shapes, colors, genders]);
+    setSelectedFilters(prev => ({
+      ...prev,
+      brendler: brands.find(x => x.id === brandId)?.name,
+      cins: genders.find(x => x.id === genderId)?.name,
+      reng: colors.find(x => x.id === colorId)?.name,
+      forma: shapes.find(x => x.id === shapeId)?.name,
+      sirala: isValidSort(sortCode) ? SORT_CODE_TO_LABEL[sortCode] : undefined,
+    }));
+  }, [searchParams, brands, shapes, colors, genders]);
 
   return (
     <div ref={filterRef} className={styles.flterSection}>
@@ -226,14 +218,14 @@ setSelectedFilters({
 
       <ul className={styles.rightSide}>
         <FilterItem
-  title="Sırala"
-  options={SORT_LABELS} // eyni siyahı iki yerdə yazılmasın
-  selected={selectedFilters.sirala}
-  onSelect={onSelectSort}
-  onClear={() => onSelectSort(undefined)}
-  isOpen={openFilter === "sirala"}
-  toggle={() => toggleFilter("sirala")}
-/>
+          title="Sırala"
+          options={SORT_LABELS} // eyni siyahı iki yerdə yazılmasın
+          selected={selectedFilters.sirala}
+          onSelect={onSelectSort}
+          onClear={() => onSelectSort(undefined)}
+          isOpen={openFilter === "sirala"}
+          toggle={() => toggleFilter("sirala")}
+        />
       </ul>
     </div>
   );
