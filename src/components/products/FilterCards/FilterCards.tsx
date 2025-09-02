@@ -8,6 +8,7 @@ import ProductCard from "@/components/common/ProductCard";
 import type { Product as UIProduct, RawProduct } from "@/types/Product";
 import { getProducts } from "@/lib/api/products";
 import { isValidSort, SortCode } from "@/constants/sort";
+import { scrollToTop } from "@/utils/scrollToTop";
 
 const SERVER_PAGE_SIZE = 20;   // backend page size (təxmini/fallback)
 const UI_PAGE_SIZE     = 20;   // UI-də göstərilən say
@@ -82,24 +83,14 @@ export default function FilterCards() {
 
   const gridTopRef = useRef<HTMLDivElement>(null);
 
-  /* Top-a scroll (tam sayfa başı) */
-  useEffect(() => {
-    // həm anchor-a, həm də document top-a
-    gridTopRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    if (typeof window !== "undefined") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  }, [page]);
-
-  /* URL yazıcı (page dəyişəndə default scroll işləsin) */
+  /* URL yazıcı — router-in default scroll davranışını söndürürük,
+     çünki scroll-u biz klikdə manual edirik */
   const setQuery = (key: string, value?: string | number) => {
     const next = new URLSearchParams(sp.toString());
     if (value === undefined || value === null || String(value).length === 0) next.delete(key);
     else next.set(key, String(value));
-
-    const isPageChange = key === "page";
     const qs = next.toString();
-    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: isPageChange ? undefined : false });
+    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
   };
 
   /* Filter/sort dəyişəndə page=1 */
@@ -187,15 +178,13 @@ export default function FilterCards() {
         }
 
         /* ============  B) VIRTUAL PAGINATION (best/new/discount)  ============ */
-        // Məqsəd: UI_PAGE_SIZE * page sayda uyğun element toplayana qədər server səhifələrini ardıcıl çək.
-        // Sonra həmin dəstdən "UI page" dilimini göstər, üstəlik növbəti UI səhifə üçün uyğun element olub-olmadığını hesabla.
-        const needCount = UI_PAGE_SIZE * page;      // bu qədər uyğun məhsulu toplasaq, cari UI səhifəyi çıxara bilirik
-        const capExtra  = UI_PAGE_SIZE;             // növbəti səhifə üçün bir qədər artıq toplayaq
-        const maxToCollect = needCount + capExtra;  // maksimum toplama həddi
+        const needCount    = UI_PAGE_SIZE * page;     // cari UI səhifə üçün lazım olan uyğun say
+        const capExtra     = UI_PAGE_SIZE;            // növbəti səhifəyə baxmaq üçün əlavə
+        const maxToCollect = needCount + capExtra;
 
         const bag: UIProduct[] = [];
         let serverPage = 1;
-        const MAX_SERVER_PAGES = 200;              // təhlükəsizlik limiti (loop guard)
+        const MAX_SERVER_PAGES = 200;                 // loop guard
 
         while (!aborted && serverPage <= MAX_SERVER_PAGES) {
           const resp = await getProducts({ ...baseParams, page: serverPage } as any);
@@ -207,9 +196,9 @@ export default function FilterCards() {
           bag.push(...filtered);
 
           // Dayanma şərtləri:
-          const reachedEnd = adapted.length < SERVER_PAGE_SIZE;       // server data bitdi
-          const enoughForNow = bag.length >= maxToCollect;            // cari + növbəti üçün yetər
-          if (reachedEnd || enoughForNow) break;
+          const reachedEnd  = adapted.length < SERVER_PAGE_SIZE; // server data bitdi
+          const enoughNow   = bag.length >= maxToCollect;        // cari + növbəti üçün yetər
+          if (reachedEnd || enoughNow) break;
 
           serverPage++;
         }
@@ -219,9 +208,8 @@ export default function FilterCards() {
         const end   = start + UI_PAGE_SIZE;
         const pageSlice = bag.slice(start, end);
 
-        // hasMore: növbəti UI səhifə start nöqtəsindən sonra element varmı?
-        const nextStart = end;
-        const hasNextUi = bag.length > nextStart;
+        // hasMore: növbəti UI səhifə üçün element varmı?
+        const hasNextUi = bag.length > end;
 
         if (!aborted) {
           setItems(pageSlice);
@@ -248,15 +236,18 @@ export default function FilterCards() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [brandId, genderId, shapeId, colorId, serverSort, filterCategory, page]);
 
-  /* Handlers */
-  const goToPage   = (p: number) => setQuery("page", Math.max(1, p));
+  /* Handlers (CLICK → dərhal scroll 0) */
+  const goToPage = (p: number) => {
+    const target = Math.max(1, p);
+    setQuery("page", target);
+    scrollToTop();                     // instant
+    requestAnimationFrame(scrollToTop); // route change sonrası da zəmanət
+    // istəsən: gridTopRef.current?.scrollIntoView({ behavior: "auto", block: "start" });
+  };
   const onClickFirst = () => goToPage(1);
   const onClickPrev  = () => goToPage(page - 1);
   const onClickNext  = () => goToPage(page + 1);
-  const onClickLast  = () => {
-    // virtual rejimdə totalPages yoxdur; “Son” yalnız “all” + total olduqda işləyir
-    if (totalPages) goToPage(totalPages);
-  };
+  const onClickLast  = () => { if (totalPages) goToPage(totalPages); };
 
   // Rəqəmsal düymələr
   const windowPages = useMemo(() => {
@@ -328,21 +319,11 @@ export default function FilterCards() {
 
       {/* Pagination */}
       <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
-        <button
-          className="px-3 py-2 border rounded-md disabled:opacity-50"
-          onClick={onClickFirst}
-          disabled={page <= 1}
-          aria-label="Birinci"
-        >
+        <button className="px-3 py-2 border rounded-md disabled:opacity-50" onClick={onClickFirst} disabled={page <= 1} aria-label="Birinci">
           Birinci
         </button>
 
-        <button
-          className="px-3 py-2 border rounded-md disabled:opacity-50"
-          onClick={onClickPrev}
-          disabled={page <= 1}
-          aria-label="Əvvəlki"
-        >
+        <button className="px-3 py-2 border rounded-md disabled:opacity-50" onClick={onClickPrev} disabled={page <= 1} aria-label="Əvvəlki">
           Əvvəlki
         </button>
 
@@ -361,22 +342,13 @@ export default function FilterCards() {
 
         {showRightEllipsis && <span className="px-2 select-none">…</span>}
 
-        <button
-          className="px-3 py-2 border rounded-md disabled:opacity-50"
-          onClick={onClickNext}
-          disabled={totalPages != null ? page >= totalPages : !hasMore}
-          aria-label="Sonraki"
-        >
+        <button className="px-3 py-2 border rounded-md disabled:opacity-50" onClick={onClickNext}
+          disabled={totalPages != null ? page >= totalPages : !hasMore} aria-label="Sonraki">
           Növbəti
         </button>
 
-        <button
-          className="px-3 py-2 border rounded-md disabled:opacity-50"
-          onClick={onClickLast}
-          disabled={!(totalPages && page < totalPages)}
-          aria-label="Son"
-          title="Son"
-        >
+        <button className="px-3 py-2 border rounded-md disabled:opacity-50" onClick={onClickLast}
+          disabled={!(totalPages && page < totalPages)} aria-label="Son" title="Son">
           Son
         </button>
       </div>

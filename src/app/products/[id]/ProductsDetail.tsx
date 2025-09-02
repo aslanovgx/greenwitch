@@ -1,263 +1,290 @@
 "use client";
-import { useState, useEffect, useRef } from 'react';
-import styles from './ProductsDetail.module.css';
-// import { Product } from '@/types/Product';
-import type { ProductDetail } from '@/lib/api/products';
+import { useState, useEffect, useRef, useMemo } from "react";
+import styles from "./ProductsDetail.module.css";
+import type { ProductDetail } from "@/lib/api/products";
 import Image from "next/image";
-import ImageMagnifier from '@/components/ImageMagnifier';
-import { useRouter } from 'next/navigation';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination, Navigation } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation';
-import { FiChevronUp, FiChevronDown } from 'react-icons/fi';
+// import ImageMagnifier from "@/components/ImageMagnifier";
+import ImageMagnifierBG from "@/components/magnifier/ImageMagnifierBG";
+import { useRouter } from "next/navigation";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination, Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import { FiChevronUp, FiChevronDown } from "react-icons/fi";
 import { useBag } from "@/context/BagContext";
-import type { Swiper as SwiperClass } from 'swiper';
+import type { Swiper as SwiperClass } from "swiper";
 
-type Props = {
-    product: ProductDetail;
+// —— Responsive breakpoint-lar (magic ədədləri bir yerə çıxardıq)
+const BP_SM = 640;
+const BP_MD = 769;
+const BP_LG = 1025;
+
+// —— Ölçü helper-ləri
+const getImageSizeByWidth = (width: number) => {
+  if (width < BP_SM) return { width: 360, height: 420 } as const;
+  if (width < BP_MD) return { width: 200, height: 300 } as const;
+  if (width < BP_LG) return { width: 270, height: 388 } as const;
+  return { width: 380, height: 547 } as const;
 };
 
+const getThumbsConfigByWidth = (width: number) => {
+  if (width < BP_SM) return { slidesPerView: 4, height: 280, width: 75 } as const;
+  if (width < BP_MD) return { slidesPerView: 4, height: 300, width: 80 } as const;
+  if (width < BP_LG) return { slidesPerView: 4, height: 390, width: 67 } as const;
+  return { slidesPerView: 4, height: 538, width: 95 } as const;
+};
+
+// —— İlk düzgün thumbnail-i tapır
+const firstThumb = (p: ProductDetail) => p.thumbnails?.find((t) => t && t.trim()) || null;
+
+type Props = { product: ProductDetail };
+
 export default function ProductsDetail({ product }: Props) {
-    // helper
-    const firstThumb = (p: ProductDetail) =>
-        p.thumbnails?.find((t) => t && t.trim()) || null;
+  // ——— State
+  const [activeImage, setActiveImage] = useState<string | null>(() => firstThumb(product));
 
-    // state
-    const [activeImage, setActiveImage] = useState<string | null>(() => firstThumb(product));
+  // Məhsul dəyişəndə reset
+  useEffect(() => {
+    setActiveImage(firstThumb(product));
+  }, [product]);
 
-    // məhsul dəyişəndə yenilə (məs: route dəyişdi, adapterdən fərqli data gəldi və s.)
-    useEffect(() => {
-        setActiveImage(firstThumb(product));
-    }, [product]);
+  // Qty — UX üçün raw string + derived number
+  const [qtyRaw, setQtyRaw] = useState("1");
+  const qty = useMemo(() => Math.max(1, Number(qtyRaw || "1")), [qtyRaw]);
 
+  const router = useRouter();
+  const { addToBag } = useBag();
 
-    const [qty, setQty] = useState(1);
-    const router = useRouter();
-    const { addToBag } = useBag();
+  const prevRef = useRef<HTMLButtonElement | null>(null);
+  const nextRef = useRef<HTMLButtonElement | null>(null);
+  const swiperRef = useRef<SwiperClass | null>(null);
 
-    const prevRef = useRef<HTMLButtonElement | null>(null);
-    const nextRef = useRef<HTMLButtonElement | null>(null);
-    const swiperRef = useRef<SwiperClass | null>(null);
+  const [showMobileSlider, setShowMobileSlider] = useState(false);
+  const [hasMounted, setHasMounted] = useState(false);
 
-    const [showMobileSlider, setShowMobileSlider] = useState(false);
-    const [hasMounted, setHasMounted] = useState(false);
+  const [imageSize, setImageSize] = useState(() => getImageSizeByWidth(typeof window !== "undefined" ? window.innerWidth : BP_LG));
+  const [thumbsConfig, setThumbsConfig] = useState(() => getThumbsConfigByWidth(typeof window !== "undefined" ? window.innerWidth : BP_LG));
 
-    const [imageSize, setImageSize] = useState({ width: 380, height: 400 });
-    const [thumbsConfig, setThumbsConfig] = useState({ slidesPerView: 3, height: 400, width: 95 });
-
-    const getImageSizeByWidth = (width: number) => {
-        if (width < 640) return { width: 360, height: 420 };
-        if (width < 769) return { width: 200, height: 300 };
-        if (width < 1025) return { width: 270, height: 388 };
-        return { width: 380, height: 547 };
+  // ——— Resize throttling (rAF)
+  useEffect(() => {
+    let raf = 0;
+    const onResize = () => {
+      if (raf) cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const width = window.innerWidth;
+        setShowMobileSlider(width < BP_SM);
+        setImageSize(getImageSizeByWidth(width));
+        setThumbsConfig(getThumbsConfigByWidth(width));
+      });
     };
 
-    const getThumbsConfigByWidth = (width: number) => {
-        if (width < 640) return { slidesPerView: 4, height: 280, width: 75 };
-        if (width < 769) return { slidesPerView: 4, height: 300, width: 80 };
-        if (width < 1025) return { slidesPerView: 4, height: 390, width: 67 };
-        return { slidesPerView: 4, height: 538, width: 95 };
+    setHasMounted(true);
+    onResize();
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("resize", onResize);
+      if (raf) cancelAnimationFrame(raf);
     };
+  }, []);
 
-    useEffect(() => {
-        const handleResize = () => {
-            const width = window.innerWidth;
-            setShowMobileSlider(width < 640);
-            setImageSize(getImageSizeByWidth(width));
-            setThumbsConfig(getThumbsConfigByWidth(width));
-        };
+  // ——— Swiper navigation ref-lərinin tək nöqtədən bağlanması
+  const handleSwiperInit = (swiper: SwiperClass) => {
+    swiperRef.current = swiper;
+    if (swiper.params.navigation && typeof swiper.params.navigation !== "boolean") {
+      // @ts-expect-error Swiper-in typing-lə uyğunlaşdırma
+      swiper.params.navigation.prevEl = prevRef.current;
+      // @ts-expect-error Swiper-in typing-lə uyğunlaşdırma
+      swiper.params.navigation.nextEl = nextRef.current;
+      swiper.navigation.init();
+      swiper.navigation.update();
+    }
+  };
 
-        setHasMounted(true);
-        handleResize();
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
+  // ——— Swiper clean-up (memory sızıntısının qarşısı)
+  useEffect(() => () => {
+    if (swiperRef.current && !swiperRef.current.destroyed) {
+      swiperRef.current.destroy(true, false);
+    }
+  }, []);
 
-    useEffect(() => {
-        if (
-            !swiperRef.current ||
-            showMobileSlider ||
-            !prevRef.current ||
-            !nextRef.current
-        ) return;
+  // ——— Mount guard (SSR/hydration uyğunsuzluqlarına qarşı)
+  if (!hasMounted) return <div style={{ minHeight: 400 }} />;
 
-        if (
-            swiperRef.current.params?.navigation &&
-            typeof swiperRef.current.params.navigation !== "boolean"
-        ) {
-            swiperRef.current.params.navigation.prevEl = prevRef.current;
-            swiperRef.current.params.navigation.nextEl = nextRef.current;
+  return (
+    <div className={styles.products_detail}>
+      <div className={styles.leftSide}>
+        {showMobileSlider ? (
+          <Swiper
+            key={String(product.id)} // yalnız məhsul dəyişəndə re-mount
+            slidesPerView={1}
+            spaceBetween={8}
+            pagination={{ clickable: true }}
+            modules={[Pagination]}
+            className={styles.mobileImageSlider}
+            initialSlide={Math.max(0, product.thumbnails?.findIndex((t) => t === activeImage) ?? 0)}
+            onSlideChange={(swiper) => {
+              const newImage = product.thumbnails?.[swiper.activeIndex];
+              if (newImage) setActiveImage(newImage);
+            }}
+          >
+            {product.thumbnails?.map((thumb, idx) =>
+              thumb?.trim() ? (
+                <SwiperSlide key={thumb || idx}>
+                  <Image
+                    src={thumb}
+                    alt={`${product.brandName}, ${product.name} — şəkil ${idx + 1}`}
+                    width={imageSize.width}
+                    height={imageSize.height}
+                    priority={idx === 0}
+                    loading={idx === 0 ? "eager" : "lazy"}
+                    className={styles.mainImageMobile}
+                    style={{ objectFit: "cover", borderRadius: 8 }}
+                  />
+                </SwiperSlide>
+              ) : null
+            )}
+          </Swiper>
+        ) : (
+          <>
+            <div className="product-detail-swiper-wrapper w-full relative">
+              <button
+                ref={prevRef}
+                className={styles.swiperPrev}
+                aria-label="Əvvəlki şəkillər"
+                type="button"
+              >
+                <FiChevronUp color="black" />
+              </button>
 
-            if (!swiperRef.current.destroyed) {
-                swiperRef.current.navigation.init();
-                swiperRef.current.navigation.update();
-            }
-        }
-    }, [thumbsConfig, showMobileSlider]);
-
-    const handleQtyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const number = Number(e.target.value);
-        if (!isNaN(number) && number >= 1) {
-            setQty(number);
-        }
-    };
-
-    if (!hasMounted) return <div style={{ minHeight: "400px" }} />;
-
-    return (
-        <div className={styles.products_detail}>
-            <div className={styles.leftSide}>
-                {showMobileSlider ? (
-                    <Swiper
-                        key={`${product.id}-${activeImage ?? "0"}`}
-                        slidesPerView={1}
-                        pagination={{ clickable: true }}
-                        modules={[Pagination]}
-                        className={styles.mobileImageSlider}
-                        initialSlide={
-                            activeImage
-                                ? Math.max(0, (product.thumbnails?.findIndex((t) => t === activeImage) ?? 0))
-                                : 0
-                        }
-                        onSlideChange={(swiper) => {
-                            const newImage = product.thumbnails?.[swiper.activeIndex];
-                            if (newImage) setActiveImage(newImage);
+              <Swiper
+                direction="vertical"
+                slidesPerView={thumbsConfig.slidesPerView}
+                slidesPerGroup={1}
+                spaceBetween={10}
+                allowTouchMove={false}
+                modules={[Pagination, Navigation]}
+                className={`product-detail-swiper ${styles.thumbnails}`}
+                style={{ height: `${thumbsConfig.height}px`, maxWidth: `${thumbsConfig.width}px` }}
+                onSwiper={handleSwiperInit}
+              >
+                {product.thumbnails?.map((thumb, idx) =>
+                  thumb?.trim() ? (
+                    <SwiperSlide key={thumb || idx}>
+                      <Image
+                        src={thumb}
+                        alt={`${product.brandName}, ${product.name} — thumbnail ${idx + 1}`}
+                        width={95}
+                        height={127}
+                        className={styles.thumbnailImage}
+                        onClick={() => setActiveImage(thumb)}
+                        role="button"
+                        aria-pressed={activeImage === thumb}
+                        style={{
+                          cursor: "pointer",
+                          border: activeImage === thumb ? "2px solid black" : "1px solid #ccc",
+                          borderRadius: 6,
                         }}
-                    >
-                        {product.thumbnails?.map((thumb) =>
-                            thumb?.trim() ? (
-                                <SwiperSlide key={thumb}>
-                                    <Image
-                                        src={thumb}
-                                        alt="mobile-thumb"
-                                        width={imageSize.width}
-                                        height={imageSize.height}
-                                        priority
-                                        className={styles.mainImageMobile}
-                                        style={{ objectFit: "cover", borderRadius: "8px" }}
-                                    />
-                                </SwiperSlide>
-                            ) : null
-                        )}
-                    </Swiper>
-                ) : (
-                    <>
-                        <div className="product-detail-swiper-wrapper w-full relative">
-                            <button ref={prevRef} className={styles.swiperPrev}>
-                                <FiChevronUp color="black" />
-                            </button>
-                            <Swiper
-                                direction="vertical"
-                                slidesPerView={thumbsConfig.slidesPerView}
-                                slidesPerGroup={1}
-                                spaceBetween={10}
-                                allowTouchMove={false}
-                                modules={[Pagination, Navigation]}
-                                className={`product-detail-swiper ${styles.thumbnails}`}
-                                style={{ height: `${thumbsConfig.height}px`, maxWidth: `${thumbsConfig.width}px` }}
-                                onBeforeInit={(swiper) => {
-                                    // @ts-expect-error – Swiper-in type definisiyası ilə real istifadəmiz uyğun gəlmir, amma işləyir
-                                    swiper.params.navigation.prevEl = prevRef.current;
-                                    // @ts-expect-error – eyni səbəb
-                                    swiper.params.navigation.nextEl = nextRef.current;
-                                }}
-                                onSwiper={(swiper) => (swiperRef.current = swiper)}
-                            >
-                                {product.thumbnails?.map((thumb) =>
-                                    thumb?.trim() ? (
-                                        <SwiperSlide key={thumb}>
-                                            <Image
-                                                src={thumb}
-                                                alt="thumb"
-                                                width={95}
-                                                height={127}
-                                                className={styles.thumbnailImage}
-                                                onClick={() => setActiveImage(thumb)}
-                                                style={{
-                                                    cursor: "pointer",
-                                                    border: activeImage === thumb
-                                                        ? "2px solid black"
-                                                        : "1px solid #ccc",
-                                                    borderRadius: "6px",
-                                                }}
-                                            />
-                                        </SwiperSlide>
-                                    ) : null
-                                )}
-                            </Swiper>
-                            <button ref={nextRef} className={styles.swiperNext}>
-                                <FiChevronDown color="black" />
-                            </button>
-                        </div>
-
-                        {activeImage && (
-                            <div className={styles.mainImage}>
-                                <ImageMagnifier
-                                    src={activeImage}
-                                    width={imageSize.width}
-                                    height={imageSize.height}
-                                    zoom={1.5}
-                                    isRound={true}
-                                />
-                            </div>
-                        )}
-                    </>
+                      />
+                    </SwiperSlide>
+                  ) : null
                 )}
+              </Swiper>
+
+              <button
+                ref={nextRef}
+                className={styles.swiperNext}
+                aria-label="Növbəti şəkillər"
+                type="button"
+              >
+                <FiChevronDown color="black" />
+              </button>
             </div>
 
-            <div className={styles.rightSide}>
-                <h1 className={styles.title}>{product.brandName}, {product.name}</h1>
-                <p className={styles.desc}>{product.description}</p>
-                <p className={styles.price}>{product.price}AZN</p>
+            {activeImage && (
+              <div className={styles.mainImage}>
+                <ImageMagnifierBG
+                  src={activeImage}
+                  width={imageSize.width}
+                  height={imageSize.height}
+                  zoom={1.8}     // 1.8–2.5 arası sına
+                  isRound={false}
+                  hiResSrc={`/api/proxy-image?url=${encodeURIComponent(activeImage)}`}
+                />
+              </div>
+            )}
+          </>
+        )}
+      </div>
 
-                <div className={styles.buyRow}>
-                    <input
-                        type="number"
-                        min="1"
-                        className={styles.qtyInput}
-                        value={qty}
-                        onChange={handleQtyChange}
-                    />
-                    <button
-                        className={styles.buyButton}
-                        onClick={(e) => {
-                            e.stopPropagation();
+      <div className={styles.rightSide}>
+        <h1 className={styles.title}>
+          {product.brandName}, {product.name}
+        </h1>
+        {product.description && <p className={styles.desc}>{product.description}</p>}
+        {typeof product.price !== "undefined" && (
+          <p className={styles.price} aria-label={`Qiymət ${product.price} AZN`}>
+            {product.price}AZN
+          </p>
+        )}
 
-                            // addToBag-in istədiyi tip birbaşa funksiyadan oxunur
-                            type AddToBagArg = Parameters<typeof addToBag>[0];
+        <div className={styles.buyRow}>
+          <input
+            type="text"
+            inputMode="numeric"
+            pattern="\\d*"
+            min={1}
+            className={styles.qtyInput}
+            value={qtyRaw}
+            onChange={(e) => setQtyRaw(e.target.value.replace(/[^\d]/g, ""))}
+            onBlur={() => setQtyRaw(String(qty))}
+            aria-label="Miqdar"
+          />
 
-                            const bagItem: AddToBagArg = {
-                                id: product.id,
-                                name: product.name ?? "",
-                                description: product.description ?? "",
-                                bestSeller: false,
-                                isNew: false,
-                                price: typeof product.price === "number" ? product.price : Number(product.price ?? 0),
-                                discountPrice: null,
-                                brandName: product.brandName ?? "",
-                                images: product.thumbnails || [],
-                                image: product.thumbnails?.[0] || null,
-                                thumbnails: product.thumbnails || [],
-                                title: product.name ?? undefined,
-                                desc: product.description ?? undefined,
-                                quantity: qty,
-                            };
+          <button
+            className={styles.buyButton}
+            onClick={async (e) => {
+              e.stopPropagation();
 
-                            addToBag(bagItem);
-                            router.push(`/purchase`);
-                        }}
+              type AddToBagArg = Parameters<typeof addToBag>[0];
+              const price =
+                typeof product.price === "number"
+                  ? product.price
+                  : Number.isFinite(Number(product.price))
+                    ? Number(product.price)
+                    : 0;
 
-                    >
-                        İndi Al
-                    </button>
-                </div>
+              const bagItem: AddToBagArg = {
+                id: product.id,
+                name: product.name ?? "",
+                description: product.description ?? "",
+                bestSeller: false,
+                isNew: false,
+                price,
+                discountPrice: null,
+                brandName: product.brandName ?? "",
+                images: product.thumbnails || [],
+                image: product.thumbnails?.[0] || null,
+                thumbnails: product.thumbnails || [],
+                title: product.name ?? undefined,
+                desc: product.description ?? undefined,
+                quantity: qty,
+              };
 
-                <div className={styles.note}>
-                    <p>Məhsul detalları və çatdırılma</p>
-                </div>
-            </div>
+              await Promise.resolve(addToBag(bagItem));
+              router.push(`/purchase`);
+            }}
+            type="button"
+            aria-label="İndi al"
+          >
+            İndi Al
+          </button>
         </div>
-    );
+
+        <div className={styles.note}>
+          <p>Məhsul detalları və çatdırılma</p>
+        </div>
+      </div>
+    </div>
+  );
 }
