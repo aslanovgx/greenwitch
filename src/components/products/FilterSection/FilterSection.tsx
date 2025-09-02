@@ -12,7 +12,6 @@ import { getGenders } from "@/lib/api/gender";
 
 type Opt = { id: number; name: string };
 
-
 export default function FilterSection() {
   const [openFilter, setOpenFilter] = useState<string | null>(null);
   const filterRef = useRef<HTMLDivElement>(null);
@@ -28,7 +27,7 @@ export default function FilterSection() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  // Ekranda göstərilən seçilmiş adlar (label)
+  // UI-də görünən seçilmiş label-lar
   const [selectedFilters, setSelectedFilters] = useState<{
     cins?: string;
     brendler?: string;
@@ -41,7 +40,7 @@ export default function FilterSection() {
     setOpenFilter((prev) => (prev === filterName ? null : filterName));
   };
 
-  /* -------- Outside click (pointerdown) -------- */
+  /* Outside click */
   useEffect(() => {
     const onPointerDown = (e: PointerEvent) => {
       const el = filterRef.current;
@@ -51,7 +50,7 @@ export default function FilterSection() {
     return () => document.removeEventListener("pointerdown", onPointerDown);
   }, []);
 
-  /* -------- Dataları çək -------- */
+  /* Dataları çək */
   useEffect(() => {
     (async () => {
       try {
@@ -67,106 +66,100 @@ export default function FilterSection() {
         setColors(c ?? []);
         setGenders(g ?? []);
 
-        // URL-də id varsa, label-ları doldur (refresh zamanı)
-        const brandId = Number(searchParams.get("brandId") || 0);
+        // URL → label sync (refresh)
+        const brandId  = Number(searchParams.get("brandId") || 0);
         const genderId = Number(searchParams.get("genderId") || 0);
-        const colorId = Number(searchParams.get("colorId") || 0);
-        const shapeId = Number(searchParams.get("shapeId") || 0);
-        const sortCode = searchParams.get("sort") || ""; // <-- əlavə
+        const colorId  = Number(searchParams.get("colorId") || 0);
+        const shapeId  = Number(searchParams.get("shapeId") || 0);
+        const sortCode = searchParams.get("sort") || "";
 
         setSelectedFilters({
           brendler: (b ?? []).find((x) => x.id === brandId)?.name,
-          cins: (g ?? []).find((x) => x.id === genderId)?.name,
-          reng: (c ?? []).find((x) => x.id === colorId)?.name,
-          forma: (s ?? []).find((x) => x.id === shapeId)?.name,
-          sirala: isValidSort(sortCode) ? SORT_CODE_TO_LABEL[sortCode] : undefined,
+          cins:     (g ?? []).find((x) => x.id === genderId)?.name,
+          reng:     (c ?? []).find((x) => x.id === colorId)?.name,
+          forma:    (s ?? []).find((x) => x.id === shapeId)?.name,
+          sirala:   isValidSort(sortCode) ? SORT_CODE_TO_LABEL[sortCode] : undefined,
         });
       } catch (e) {
         console.error("FilterSection fetch error:", e);
-        setBrands([]);
-        setShapes([]);
-        setColors([]);
-        setGenders([]);
+        setBrands([]); setShapes([]); setColors([]); setGenders([]);
       } finally {
         setLoading(false);
       }
     })();
-    // yalnız ilk yükləmə üçün; URL dəyişimini aşağıdakı effekt idarə edir
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  /* -------- Options (memo) -------- */
-  const brandOptions = useMemo(() => brands.map((b) => b.name), [brands]);
-  const shapeOptions = useMemo(() => shapes.map((c) => c.name), [shapes]);
-  const colorOptions = useMemo(() => colors.map((c) => c.name), [colors]);
+  /* Options (memo) */
+  const brandOptions  = useMemo(() => brands.map((b) => b.name), [brands]);
+  const shapeOptions  = useMemo(() => shapes.map((c) => c.name), [shapes]);
+  const colorOptions  = useMemo(() => colors.map((c) => c.name), [colors]);
   const genderOptions = useMemo(() => genders.map((g) => g.name), [genders]);
 
-  /* -------- URL yazıcı util -------- */
-  const setQuery = (key: string, value?: string | number) => {
+  /* URL yazıcı util (hər dəyişikliyə page=1) */
+  const writeQuery = (key: string, value?: string | number) => {
     const sp = new URLSearchParams(searchParams.toString());
+    sp.delete("page");
     if (value !== undefined && value !== null && String(value).length > 0) {
       sp.set(key, String(value));
     } else {
       sp.delete(key);
     }
     const qs = sp.toString();
+    // filter dəyişəndə skrol etməyək; FilterCards page=1 olanda özü skrol edəcək
     router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
   };
 
-  /* -------- Seçim handler-ları (öncə bağla, sonra URL) -------- */
+  /* Seçim handler-ları */
   const onSelectGender = (label?: string) => {
     const id = genders.find((x) => x.name === label)?.id;
     setSelectedFilters((prev) => ({ ...prev, cins: label }));
     setOpenFilter(null);
-    setQuery("genderId", id);
+    writeQuery("genderId", id);
   };
   const onSelectBrand = (label?: string) => {
     const id = brands.find((x) => x.name === label)?.id;
     setSelectedFilters((prev) => ({ ...prev, brendler: label }));
     setOpenFilter(null);
-    setQuery("brandId", id);
+    writeQuery("brandId", id);
   };
   const onSelectColor = (label?: string) => {
     const id = colors.find((x) => x.name === label)?.id;
     setSelectedFilters((prev) => ({ ...prev, reng: label }));
     setOpenFilter(null);
-    setQuery("colorId", id);
+    writeQuery("colorId", id);
   };
   const onSelectShape = (label?: string) => {
     const id = shapes.find((x) => x.name === label)?.id;
     setSelectedFilters((prev) => ({ ...prev, forma: label }));
     setOpenFilter(null);
-    setQuery("shapeId", id);
+    writeQuery("shapeId", id);
   };
 
   const onSelectSort = (label?: string) => {
     const code = label ? SORT_LABEL_TO_CODE[label as keyof typeof SORT_LABEL_TO_CODE] : undefined;
     setSelectedFilters(prev => ({ ...prev, sirala: label }));
     setOpenFilter(null);
-    setQuery("sort", code);
+    writeQuery("sort", code);
   };
 
-
-
-
-
-  /* -------- URL dəyişəndə label-ları yenilə -------- */
+  /* URL dəyişəndə label-ları yenilə */
   useEffect(() => {
     if (!brands.length && !shapes.length && !colors.length && !genders.length) return;
 
-    const brandId = Number(searchParams.get("brandId") || 0);
+    const brandId  = Number(searchParams.get("brandId") || 0);
     const genderId = Number(searchParams.get("genderId") || 0);
-    const colorId = Number(searchParams.get("colorId") || 0);
-    const shapeId = Number(searchParams.get("shapeId") || 0);
-    const sortCode = searchParams.get("sort") || ""; // <-- əlavə
+    const colorId  = Number(searchParams.get("colorId") || 0);
+    const shapeId  = Number(searchParams.get("shapeId") || 0);
+    const sortCode = searchParams.get("sort") || "";
 
     setSelectedFilters(prev => ({
       ...prev,
       brendler: brands.find(x => x.id === brandId)?.name,
-      cins: genders.find(x => x.id === genderId)?.name,
-      reng: colors.find(x => x.id === colorId)?.name,
-      forma: shapes.find(x => x.id === shapeId)?.name,
-      sirala: isValidSort(sortCode) ? SORT_CODE_TO_LABEL[sortCode] : undefined,
+      cins:     genders.find(x => x.id === genderId)?.name,
+      reng:     colors.find(x => x.id === colorId)?.name,
+      forma:    shapes.find(x => x.id === shapeId)?.name,
+      sirala:   isValidSort(sortCode) ? SORT_CODE_TO_LABEL[sortCode] : undefined,
     }));
   }, [searchParams, brands, shapes, colors, genders]);
 
@@ -219,7 +212,7 @@ export default function FilterSection() {
       <ul className={styles.rightSide}>
         <FilterItem
           title="Sırala"
-          options={SORT_LABELS} // eyni siyahı iki yerdə yazılmasın
+          options={SORT_LABELS}
           selected={selectedFilters.sirala}
           onSelect={onSelectSort}
           onClear={() => onSelectSort(undefined)}
