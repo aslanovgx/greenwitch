@@ -111,6 +111,12 @@ export default function ProductsDetail({ product }: Props) {
   // ——— Mount guard (SSR/hydration uyğunsuzluqlarına qarşı)
   if (!hasMounted) return <div style={{ minHeight: 400 }} />;
 
+  // —— Endirim helper-ləri
+  const basePrice = Number(product.price ?? 0);
+  const dp = typeof (product as any)?.discountPrice === "number" ? Number((product as any).discountPrice) : null;
+  const hasDiscount = typeof dp === "number" && dp < basePrice;
+  const discountPct = hasDiscount ? Math.round(((basePrice - (dp as number)) / basePrice) * 100) : 0;
+
   return (
     <div className={styles.products_detail}>
       <div className={styles.leftSide}>
@@ -219,24 +225,60 @@ export default function ProductsDetail({ product }: Props) {
 
       <div className={styles.rightSide}>
         <h1 className={styles.title}>
-          {product.brandName}, {product.name}
+          {product.brandName}
         </h1>
-        {product.description && <p className={styles.desc}>{product.description}</p>}
+        
+        {product.description && <p className={styles.desc}>{product.description}, MK6946</p>}
+
+        <p className={styles.desc}><span className="font-bold">Cins: </span>{product.genderName}</p>
+
         {typeof product.price !== "undefined" && (
-          <p className={styles.price} aria-label={`Qiymət ${product.price} AZN`}>
-            {product.price}AZN
-          </p>
+          hasDiscount ? (
+            <div style={{ display: "flex", alignItems: "center", gap: 15 }}>
+              <p
+                className={styles.price}
+                style={{ textDecoration: "line-through" }}
+                aria-label={`Köhnə qiymət ${basePrice} AZN`}
+              >
+                {basePrice}AZN
+              </p>
+
+              <p className={styles.price} style={{ color: "red" }} aria-label={`Endirimli qiymət ${dp} AZN`}>
+                {dp}AZN
+              </p>
+
+              <span
+                style={{
+                  // marginLeft: 8,
+                  fontSize: 14,
+                  padding: "2px 6px",
+                  borderRadius: 4,
+                  background: "rgba(8, 7, 7, 0.61)",
+                  color: "#fff",
+                  lineHeight: 1.2,
+                  display: "inline-block",
+                }}
+                aria-label={`Endirim faizi ${discountPct}%`}
+              >
+                -{discountPct}%
+              </span>
+            </div>
+          ) : (
+            <p className={styles.price} aria-label={`Qiymət ${product.price} AZN`}>
+              {product.price}AZN
+            </p>
+          )
         )}
+
 
         <div className={styles.buyRow}>
           <input
-            type="text"
-            inputMode="numeric"
-            pattern="\\d*"
+            type="number"
             min={1}
+            step={1}
             className={styles.qtyInput}
             value={qtyRaw}
-            onChange={(e) => setQtyRaw(e.target.value.replace(/[^\d]/g, ""))}
+            onChange={(e) => setQtyRaw(e.target.value)}
             onBlur={() => setQtyRaw(String(qty))}
             aria-label="Miqdar"
           />
@@ -261,7 +303,7 @@ export default function ProductsDetail({ product }: Props) {
                 bestSeller: false,
                 isNew: false,
                 price,
-                discountPrice: null,
+                discountPrice: hasDiscount ? dp : null,  // <-- endirim səbətə də düşür
                 brandName: product.brandName ?? "",
                 images: product.thumbnails || [],
                 image: product.thumbnails?.[0] || null,

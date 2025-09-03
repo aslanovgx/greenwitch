@@ -25,6 +25,13 @@ export const metadata: Metadata = {
 
   title: "Greenwitch | Sustainable Lifestyle",
   description: "Discover eco-friendly products with Greenwitch.",
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", type: "image/x-icon" }, // Safari üçün
+      { url: "/favicon.png", type: "image/png" },     // iOS üçün
+    ],
+  },
   openGraph: {
     title: "Greenwitch",
     description: "Discover eco-friendly products with Greenwitch.",
@@ -43,6 +50,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     // (Opsional) saytı azərbaycanca edirsənsə 'az' yaz
     <html lang="az">
+      <head>
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+      </head>
       <body className={`${montserrat.variable} ${lato.variable} antialiased`}>
         <SearchProvider>
           <FavoriteProvider>

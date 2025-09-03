@@ -35,7 +35,7 @@ type ErrorMessageData = {
 };
 
 export default function CheckoutForm() {
-  const { bagItems, clearBag } = useBag();
+  const { bagItems, clearBag, verifyAll } = useBag();
   const router = useRouter();
 
   const DEFAULT_CITY = "Bakı";
@@ -60,7 +60,6 @@ export default function CheckoutForm() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [phone, setPhone] = useState({ prefix: "050", number: "" });
   const [submitting, setSubmitting] = useState(false);
-
 
   // Telefonu form state-ə yaz
   useEffect(() => {
@@ -193,12 +192,32 @@ export default function CheckoutForm() {
       return;
     }
 
+    // ⬇️ Checkout öncəsi son stok-yoxlama: səbətdə düzəliş varsa, göndərişi dayandırırıq
+    try {
+      const verify = await verifyAll();
+      if (!verify.ok) {
+        // ilk düzəlişə dair qısa mesaj (istəsən burada daha detallı xəritə də çıxara bilərik)
+        const first = verify.adjustments[0];
+        if (first) {
+          const adjustedTitle =
+            bagItems.find((b) => b.id === first.id)?.name ?? "Məhsul";
+          toast.error(`"${adjustedTitle}" üçün maksimum ${first.available} ədəd qalıb. Miqdar yeniləndi.`);
+        } else {
+          toast.error("Bəzi məhsullar stokla uyğunlaşdırıldı. Zəhmət olmasa yoxlayın.");
+        }
+        return; // createOrder göndərmirik
+      }
+    } catch {
+      // verifyAll-da gözlənilməz xəta olsa belə sifarişi bloklamaq olar (sən nasıl istəyirsənsə).
+      // Burada bloklamırıq ki, admin tərəfdə də yoxlama varsa sifariş itmesin.
+    }
+
     // Payload-a map
     const payload = {
       fullName: form.fullName.trim(),
-      phoneNumber: digitsOnly,                                            // backend-ə təmiz rəqəm göndərək
+      phoneNumber: form.phoneNumber.replace(/\D/g, ""),   // backend-ə təmiz rəqəm
       mail: form.mail.trim(),
-      customerAdress: form.location.trim(),                               // ← API-nin istədiyi ad
+      customerAdress: form.location.trim(),               // ← API-nin istədiyi ad
       city: form.city.trim(),
       additionalInfo: form.additionalInfo?.trim()
         ? `${form.additionalInfo.trim()}${form.selectedStore ? ` | Store: ${form.selectedStore}` : ""}`

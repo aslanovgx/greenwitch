@@ -117,7 +117,7 @@ export default function BaglistDrawer({
                 onClose();
                 router.push("/purchase");
               }}
-              className="w-full cursor-pointer bg-green-600 text-white py-2 rounded mt-3 hover:bg-green-700"
+              className="w-full cursor-pointer bg-black text-white py-2 rounded mt-3"
             >
               Alış səhifəsinə keç
             </button>

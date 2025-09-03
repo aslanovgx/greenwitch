@@ -37,8 +37,8 @@ export default function MapView() {
                                 className={store.name === activeStore.name ? styles.active : ""}
                             >
                                 <span>{store.name}</span>
-                                <span>{store.address}</span>
                                 <span>{store.hours}</span>
+                                <span>{store.phone}</span>
                                 <button
                                     className={styles.storeActionBtn}
                                     onClick={(e) => {

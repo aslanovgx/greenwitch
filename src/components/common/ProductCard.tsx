@@ -121,9 +121,9 @@ function ProductCardComponent({
           alt={item.name || "Product image"}
           fill
           loading="lazy"
-          className={`w-full h-full scale-105 transition-opacity duration-600 ${!isTouch ? 'group-hover:opacity-0' : (isActive ? 'opacity-0' : 'opacity-100')
+          className={`w-full h-full  transition-opacity duration-600 ${!isTouch ? 'group-hover:opacity-0' : (isActive ? 'opacity-0' : 'opacity-100')
             }`}
-          style={{ objectFit: 'cover' }}
+          style={{ objectFit: 'contain' }}
         />
         {hover && (
           <Image
@@ -131,16 +131,16 @@ function ProductCardComponent({
             alt={item.name || "Product image"}
             fill
             loading="lazy"
-            className={`${styles.hoverImage} scale-95 w-full h-full absolute top-0 left-0 transition-opacity duration-700 ${!isTouch ? 'opacity-0 group-hover:opacity-100' : (isActive ? 'opacity-100' : 'opacity-0')
+            className={`${styles.hoverImage}  w-full h-full absolute top-0 left-0 transition-opacity duration-700 ${!isTouch ? 'opacity-0 group-hover:opacity-100' : (isActive ? 'opacity-100' : 'opacity-0')
               }`}
-            style={{ objectFit: 'cover' }}
+            style={{ objectFit: 'contain' }}
           />
         )}
       </div>
 
       <div className={`${styles.cards_desc}`}>
         <h3 className="transition-all duration-700">{item.name}</h3>
-        <p>{item.description}</p>
+        <p className="clampText">{item.description}</p>
 
         {hasDiscount ? (
           <div className="flex gap-2 justify-center">

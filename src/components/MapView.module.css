@@ -125,7 +125,7 @@
 .sideBar .storePlaces li span:first-child {
     font-size: 16px;
     font-weight: 600;
-    text-transform: capitalize;
+    text-transform: inherit;
 }
 
 .sideBar .storePlaces li span:last-child {
@@ -289,7 +289,7 @@
     .sideBar .storePlaces li span:first-child {
         font-size: 16px;
         font-weight: 600;
-        text-transform: capitalize;
+        text-transform: inherit;
     }
 
     .sideBar .storePlaces li span:last-child {
@@ -470,7 +470,7 @@
     .sideBar .storePlaces li span:first-child {
         font-size: 16px;
         font-weight: 600;
-        text-transform: capitalize;
+        text-transform: inherit;
     }
 
     .sideBar .storePlaces li span:last-child {

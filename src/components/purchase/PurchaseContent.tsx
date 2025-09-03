@@ -4,12 +4,38 @@ import styles from "./PurchaseContent.module.css";
 import { useBag } from "@/context/BagContext";
 import Image from "next/image";
 import type { Product } from "@/types/Product";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function PurchaseContent() {
   const { bagItems, removeFromBag, updateQuantity } = useBag();
   const router = useRouter();
 
-  // Endirimi nəzərə alaraq vahid qiymət
+  // —— API kökünü sabitlə (iki dəfə /api problemini aradan qaldırır)
+  const RAW_API = (process.env.NEXT_PUBLIC_API_URL ?? "").trim();
+  const API_ROOT = RAW_API.replace(/\/$/, "");
+  const API_BASE = API_ROOT.replace(/\/api$/i, "");
+  const productUrl = (id: number) => `${API_BASE}/api/Product/${id}`;
+
+  // —— Real stok oxuyucu (backend-də field adı fərqli ola bilər)
+  async function readStockById(id: number): Promise<number> {
+    try {
+      const res = await fetch(productUrl(id), {
+        cache: "no-store",
+        headers: { "ngrok-skip-browser-warning": "true" },
+      });
+      if (!res.ok) return 0;
+      const data = await res.json();
+      const stockCandidate = [data?.stock, data?.quantityInStock, data?.quantity].find(
+        (v) => typeof v === "number"
+      );
+      return typeof stockCandidate === "number" ? Math.max(0, stockCandidate) : 0;
+    } catch {
+      return 0;
+    }
+  }
+
+  // —— Endirimi nəzərə alaraq vahid qiymət
   const getUnitPrice = (item: Product & { quantity: number }) => {
     const price = Number(item.price ?? 0);
     const dp = typeof item.discountPrice === "number" ? item.discountPrice : null;
@@ -17,12 +43,42 @@ export default function PurchaseContent() {
     return hasDiscount ? dp : price;
   };
 
-
-  // Ümumi məbləğ
+  // —— Ümumi məbləğ
   const totalPrice = bagItems.reduce((total, item) => {
     const unit = getUnitPrice(item);
     return total + unit * item.quantity;
   }, 0);
+
+  // —— Checkout-dan əvvəl stok yoxlaması
+  const [checking, setChecking] = useState(false);
+
+  async function handleCheckoutClick() {
+    if (checking) return;
+    setChecking(true);
+
+    // Hamısını paralel yoxla
+    const results = await Promise.all(
+      bagItems.map(async (it) => {
+        const have = await readStockById(it.id);
+        return { id: it.id, name: it.name, want: it.quantity, have, ok: it.quantity <= have };
+      })
+    );
+
+    const insufficient = results.filter((r) => !r.ok);
+
+    if (insufficient.length > 0) {
+      insufficient.forEach((x) => {
+        toast.error(
+          `${x.name ?? "Məhsul"} üçün stok kifayət deyil: istənilən ${x.want}, stokda ${x.have} ədəd qalıb.`
+        );
+      });
+      setChecking(false);
+      return; // keçidi saxlayırıq
+    }
+
+    router.push("/checkout");
+    setChecking(false);
+  }
 
   if (bagItems.length === 0) {
     return (
@@ -83,7 +139,7 @@ export default function PurchaseContent() {
                 <div className={styles.itemBox}>
                   <div className={styles.itemDesc}>
                     <h1 className="font-medium uppercase text-sm">
-                      {item.name}
+                      {item.brandName || "Greenwich"} - {item.name}
                     </h1>
 
                     {/* Əlavə detalları bura bağlaya bilərsən (rəng/ölçü seçimi gələcəkdə olacaqsa) */}
@@ -92,7 +148,7 @@ export default function PurchaseContent() {
                     {/* Qiymət görünüşü */}
                     {hasDiscount ? (
                       <p className="">
-                        Qiyməti:{" "}
+                        Qiymət:{" "}
                         <span className="line-through opacity-60 mr-2">
                           {Number(item.price ?? 0).toFixed(2)}₼
                         </span>
@@ -104,7 +160,9 @@ export default function PurchaseContent() {
                       </p>
                     )}
 
-                    <p className="">Miqdar: <span>{item.quantity}</span></p>
+                    <p className="">
+                      Miqdar: <span>{item.quantity}</span>
+                    </p>
                   </div>
 
                   <div className={styles.itemButtons}>
@@ -142,7 +200,7 @@ export default function PurchaseContent() {
         <div>
           <h2>Ümumi Baxış</h2>
 
-          <div className={styles.generalMoney}>
+        <div className={styles.generalMoney}>
             <span>Cəmi:</span>
             <span>{totalPrice.toFixed(2)}₼</span>
           </div>
@@ -157,8 +215,13 @@ export default function PurchaseContent() {
         </div>
 
         <div className={styles.buttonDiv}>
-          <button onClick={() => router.push("/checkout")} className="...">
-            Alış-verişi tamamla
+          <button
+            onClick={handleCheckoutClick}
+            className="..."
+            disabled={checking}
+            aria-busy={checking ? "true" : "false"}
+          >
+            {checking ? "Yoxlanılır..." : "Alış-verişi tamamla"}
           </button>
         </div>
       </div>

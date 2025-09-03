@@ -44,3 +44,12 @@ select:focus,
 textarea:focus {
   outline: none;
 }
+
+.clampText {
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* neçə sətir göstərmək istəyirsənsə */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+

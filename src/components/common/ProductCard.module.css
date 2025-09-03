@@ -21,6 +21,9 @@
     height: 30px;
     /* font-weight: 400; */
 }
+.cards_desc {
+    margin-top: 10px;
+}
 
 .cards .cards_desc h3 {
     color: #100F0F;
