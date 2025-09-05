@@ -57,7 +57,7 @@
 }
 
 .flterSection .dropdown li {
-    font-weight: 600;
+    font-weight: 500;
 }
 
 .flterSection .rightSide .dropdown {
@@ -121,6 +121,11 @@
     cursor: pointer;
     color: black;
 }
+
+.activeOption  {
+    font-weight: bold !important;
+}
+
 
 @media (max-width: 1280px) {
     .flterSection li {

@@ -3,7 +3,6 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import styles from "./ProductsDetail.module.css";
 import type { ProductDetail } from "@/lib/api/products";
 import Image from "next/image";
-// import ImageMagnifier from "@/components/ImageMagnifier";
 import ImageMagnifierBG from "@/components/magnifier/ImageMagnifierBG";
 import { useRouter } from "next/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -14,6 +13,7 @@ import "swiper/css/navigation";
 import { FiChevronUp, FiChevronDown } from "react-icons/fi";
 import { useBag } from "@/context/BagContext";
 import type { Swiper as SwiperClass } from "swiper";
+
 
 // —— Responsive breakpoint-lar (magic ədədləri bir yerə çıxardıq)
 const BP_SM = 640;
@@ -92,9 +92,7 @@ export default function ProductsDetail({ product }: Props) {
   const handleSwiperInit = (swiper: SwiperClass) => {
     swiperRef.current = swiper;
     if (swiper.params.navigation && typeof swiper.params.navigation !== "boolean") {
-      // @ts-expect-error Swiper-in typing-lə uyğunlaşdırma
       swiper.params.navigation.prevEl = prevRef.current;
-      // @ts-expect-error Swiper-in typing-lə uyğunlaşdırma
       swiper.params.navigation.nextEl = nextRef.current;
       swiper.navigation.init();
       swiper.navigation.update();
@@ -145,7 +143,7 @@ export default function ProductsDetail({ product }: Props) {
                     priority={idx === 0}
                     loading={idx === 0 ? "eager" : "lazy"}
                     className={styles.mainImageMobile}
-                    style={{ objectFit: "cover", borderRadius: 8 }}
+                    style={{ objectFit: "contain", borderRadius: 8 }}
                   />
                 </SwiperSlide>
               ) : null
@@ -230,8 +228,6 @@ export default function ProductsDetail({ product }: Props) {
         
         {product.description && <p className={styles.desc}>{product.description}, MK6946</p>}
 
-        <p className={styles.desc}><span className="font-bold">Cins: </span>{product.genderName}</p>
-
         {typeof product.price !== "undefined" && (
           hasDiscount ? (
             <div style={{ display: "flex", alignItems: "center", gap: 15 }}>
@@ -269,6 +265,14 @@ export default function ProductsDetail({ product }: Props) {
             </p>
           )
         )}
+        <p className={styles.desc}><span className="font-500">Cins: </span>{product.genderName}</p>
+        <p className={styles.desc}><span className="font-500">Şüşə: </span>{product.siferblatMaterialName}</p>
+        <p className={styles.desc}><span className="font-500">Material: </span>{product.materialName}</p>
+        <p className={styles.desc}><span className="font-500">Mexanizm: </span>{product.mechanismName}</p>
+        <p className={styles.desc}><span className="font-500">Suyadavamlılıq: </span>{product.waterResistanceAtm} ATM</p>
+        <p className={styles.desc}><span className="font-500">Korpus ölçüsü: </span>{product.caseSizeMm}mm</p>
+        <p className={styles.desc}>100% Original / 2 il Zəmanətli</p>
+
 
 
         <div className={styles.buyRow}>

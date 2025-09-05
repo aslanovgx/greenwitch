@@ -1,9 +1,11 @@
+// src/data/menuItems.ts
+
 const menuItems = [
-  { label: "Kişi", href: "/products?category=kisi" },
-  { label: "Qadın", href: "/products?category=qadin" },
-  { label: "Uşaq", href: "/products?category=usaq" },
-  { label: "Aksesuar", href: "/products?category=aksesuar" },
-  { label: "Saatlar", href: "/products" },
+  { label: "Kişi", href: "/products?Gender=1" },
+  { label: "Qadın", href: "/products?Gender=2" },
+  { label: "Uşaq", href: "/products?Gender=3" },
+  { label: "Aksesuar", href: "/products?categoryId=2" },
+  { label: "Saatlar", href: "/products?categoryId=1" },
   { label: "Mağazalar", href: "/location" },
   { label: "Haqqımızda", href: "/about" },
 ];

@@ -30,7 +30,10 @@ export default function FilterItem({
             if (!selected) toggle();
         }}>
             {selected ? (
-                <span className={styles.badge} onClick={(e) => e.stopPropagation()}>
+                <span
+                    className={`${styles.badge} ${styles.activeOption}`}
+                    onClick={(e) => e.stopPropagation()}
+                >
                     {selected}
                     <span
                         className={styles.badgeClose}
@@ -40,22 +43,13 @@ export default function FilterItem({
                             toggle();
                         }}
                     >
-                        <IoClose
-                            size={20}
-                            color="black"
-                            className={styles.removeIcon}
-                        />
-                        {/* <Image
-                            src="/assets/icons/remove.svg"
-                            alt="remove icon"
-                            width={16}
-                            height={16}
-                        /> */}
+                        <IoClose size={20} color="black" className={styles.removeIcon} />
                     </span>
                 </span>
             ) : (
                 <span>{title}</span>
             )}
+
 
             {!selected && <ArrowIcon isOpen={isOpen} />}
 

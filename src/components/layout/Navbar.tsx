@@ -17,7 +17,6 @@ import menuItems from "@/data/menuItems";
 import textSwitcherTexts from "@/components/layout/textSwitcherTexts";
 import { getProducts } from "@/lib/api/products";
 import type { RawProduct } from "@/types/Product";
-import { getGenders } from "@/lib/api/gender";
 import { usePathname, useSearchParams } from "next/navigation";
 import { FaInstagram } from "react-icons/fa";
 import { BsTelephone } from "react-icons/bs";
@@ -28,19 +27,6 @@ type SearchResult = {
   description: string;
   price: number | string;
   image?: string | null;
-};
-
-const normalize = (s?: string) => {
-  return String(s ?? "")
-    .toLowerCase()
-    .trim()
-    .normalize("NFKD")
-    .replace(/\p{Diacritic}/gu, "")   // ş → s, ç → c, ö → o, ü → u
-    .replace(/ə/g, "e")
-    .replace(/ı/g, "i")
-    .replace(/ğ/g, "g")
-    .replace(/ş/g, "s")
-    .replace(/ç/g, "c");
 };
 
 function buildImageUrl(rel: string) {
@@ -70,39 +56,41 @@ export default function Navbar() {
   const pathname = usePathname();
   const params = useSearchParams();
 
-  const activeGenderId = Number(params.get("genderId") || 0);
+  const activeGenderId = Number(params.get("Gender") || 0);
   const activeCategoryId = Number(params.get("categoryId") || 0);
+
   const isProducts = pathname?.startsWith("/products");
 
-  const isActive = (href: string) => {
-    const g = href.match(/genderId=(\d+)/);
+  const isWatchesActive =
+    isProducts &&
+    (
+      activeCategoryId === 1 ||              // /products?categoryId=1 → Saatlar
+      (activeCategoryId === 0 && activeGenderId > 0) // yalnız genderName varsa → yenə Saatlar aktiv
+    );
+
+
+  const isAccessoriesActive =
+    isProducts && activeCategoryId === 2;    // /products?categoryId=2 → Aksesuar
+
+  // ——— isActive funksiyasını item qəbul edəcək hala gətir:
+  const isActive = (item: { label: string; href: string }) => {
+    // Xüsusi qaydalar
+    if (item.label === "Aksesuar") return isAccessoriesActive;
+    if (item.label === "Saatlar") return isWatchesActive;
+
+    // Fallback: href-də Gender/categoryId varsa onlarla müqayisə et
+    const g = item.href.match(/[?&]Gender=(\d+)/);
     if (g) return isProducts && Number(g[1]) === activeGenderId;
 
-    const c = href.match(/categoryId=(\d+)/);
-    if (c) return isProducts && Number(c[1]) === activeCategoryId;
+    const c = item.href.match(/category(Id)?=(\d+)/i);
+    if (c) return isProducts && Number(c[2]) === activeCategoryId;
 
-    // digər statik linklər
-    return pathname === href || pathname?.startsWith(href);
+    // Statik linklər (Mağazalar, Haqqımızda və s.)
+    return pathname === item.href || pathname?.startsWith(item.href);
   };
 
-
   useEffect(() => {
-    (async () => {
-      try {
-        const genders = await getGenders(); // [{id, name}]
-        const nameToId = new Map<string, number>();
-        (genders ?? []).forEach(g => nameToId.set(normalize(g.name), g.id));
-
-        const patched = menuItems.map(it => {
-          const id = nameToId.get(normalize(it.label));
-          return id ? { ...it, href: `/products?genderId=${id}` } : it;
-        });
-        setFinalMenu(patched);
-      } catch (e) {
-        console.error("Navbar genders fetch error:", e);
-        setFinalMenu(menuItems); // fallback
-      }
-    })();
+    setFinalMenu(menuItems); // artıq statik gəlir
   }, []);
 
 
@@ -310,11 +298,12 @@ export default function Navbar() {
             <li key={i}>
               <Link
                 href={item.href}
-                className={`menuLink ${isActive(item.href) ? "active" : ""}`}
+                className={`menuLink ${isActive(item) ? "active" : ""}`}
               >
                 {item.label}
               </Link>
             </li>
+
           ))}
         </ul>
       </div>

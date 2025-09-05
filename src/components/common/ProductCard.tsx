@@ -10,6 +10,7 @@ import { Product } from '@/types/Product';
 import useIsTouchDevice from '@/hooks/useIsTouchDevice';
 import { useBag } from "@/context/BagContext"
 
+
 type Props = {
   item: Product;
   isMostSales?: boolean;
@@ -139,7 +140,7 @@ function ProductCardComponent({
       </div>
 
       <div className={`${styles.cards_desc}`}>
-        <h3 className="transition-all duration-700">{item.name}</h3>
+        <h3 className="transition-all duration-700">{item.brandName}</h3>
         <p className="clampText">{item.description}</p>
 
         {hasDiscount ? (

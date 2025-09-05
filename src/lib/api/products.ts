@@ -2,29 +2,28 @@
 import { apiGet } from "./fetcher";
 
 export type ProductFilter = {
-  genderId?: number;
+  Gender?: number;
   brandId?: number;
   shapeId?: number;
   categoryId?: number;
-  colorId?: number;   // <<— singular
+  colorId?: number;
   page?: number;
   size?: number;
   search?: string;
+  sort?: "price_asc" | "price_desc";
 };
 
 function buildQuery(p: ProductFilter = {}) {
   const qp = new URLSearchParams();
-  if (p.genderId) qp.set("genderId", String(p.genderId));
-  if (p.brandId) qp.set("brandId", String(p.brandId));
-  if (p.shapeId) qp.set("shapeId", String(p.shapeId));
+  if (p.Gender)     qp.set("Gender", String(p.Gender));
+  if (p.brandId)    qp.set("brandId", String(p.brandId));
+  if (p.shapeId)    qp.set("shapeId", String(p.shapeId));
   if (p.categoryId) qp.set("categoryId", String(p.categoryId));
-  if (p.colorId) qp.set("colorId", String(p.colorId));   // <<— vacib
-  if (p.page) qp.set("page", String(p.page));
-  if (p.size) qp.set("size", String(p.size));
-
-  // ⚠️ backend-ə uyğun açarı seç: aşağıdakı sətirdə "q" yerinə "search" və ya "name" ola bilər
-  if (p.search && p.search.trim()) qp.set("q", p.search.trim());
-
+  if (p.colorId)    qp.set("colorId", String(p.colorId));
+  if (p.page)       qp.set("page", String(p.page));
+  if (p.size)       qp.set("size", String(p.size));
+  if (p.sort)       qp.set("sort", p.sort);
+  if (p.search && p.search.trim()) qp.set("q", p.search.trim()); // backend uyğunlaşsa dəyişərik
   const qs = qp.toString();
   return qs ? `?${qs}` : "";
 }
@@ -36,7 +35,8 @@ export async function getProducts(params: ProductFilter = {}) {
   return list;
 }
 
-// detal tip (endpoint-də thumbnails gəlir)
+/* -------------------- Product DETAIL -------------------- */
+
 export type ProductDetail = {
   id: number;
   name: string;
@@ -45,26 +45,64 @@ export type ProductDetail = {
   discountPrice: number | null;
   bestSeller: boolean;
   isNew: boolean;
+
+  // mövcud sahələr
   brandName: string;
   genderName?: string;
   shapeName?: string;
   categoryName?: string;
   thumbnails: string[];
   colorNames?: string[];
+
+  // 🔥 yeni sahələr (JSON nümunəsinə görə)
+  stock?: number;
+  mechanismName?: string;           // Kvars və s.
+  waterResistanceAtm?: number;      // 10 ATM
+  caseSizeMm?: number;              // 27 mm
+  materialName?: string;            // Keramik
+  siferblatMaterialName?: string;   // Safir (dial materialı)
 };
 
 export async function getProductById(id: number): Promise<ProductDetail> {
   const data = await apiGet(`/Product/${id}`);
-  // bəzi backend-lər {product:{...}} qaytara bilər, ehtiyat üçün:
-  const p = (data?.product ?? data) as ProductDetail;
+  const p = (data?.product ?? data) as Partial<ProductDetail> & Record<string, any>;
 
-  // relative şəkilləri absolute et (API base .../api-dırsa)
-  const API = (process.env.NEXT_PUBLIC_API_URL ?? "").trim();
+  // relative -> absolute şəkil
+  const API  = (process.env.NEXT_PUBLIC_API_URL ?? "").trim();
   const ROOT = API.replace(/\/api\/?$/i, "");
   const toAbs = (rel: string) => `${ROOT}/${String(rel ?? "").replace(/^\/+/, "")}`;
 
+  const thumbs = Array.isArray(p.thumbnails) ? p.thumbnails.map(toAbs) : [];
+
+  // rəqəmsal sahələri təhlükəsiz tipə salaq
+  const toNum = (v: any): number | undefined =>
+    Number.isFinite(Number(v)) ? Number(v) : undefined;
+
   return {
-    ...p,
-    thumbnails: Array.isArray(p.thumbnails) ? p.thumbnails.map(toAbs) : [],
+    id: Number(p.id ?? id),
+    name: String(p.name ?? ""),
+    description: String(p.description ?? ""),
+    price: Number(p.price ?? 0),
+    discountPrice:
+      p.discountPrice === null || p.discountPrice === undefined
+        ? null
+        : Number(p.discountPrice),
+    bestSeller: Boolean(p.bestSeller),
+    isNew: Boolean(p.isNew),
+
+    brandName: String(p.brandName ?? ""),
+    genderName: p.genderName,
+    shapeName: p.shapeName,
+    categoryName: p.categoryName,
+    thumbnails: thumbs,
+    colorNames: Array.isArray(p.colorNames) ? p.colorNames : undefined,
+
+    // yeni sahələr
+    stock: toNum(p.stock),
+    mechanismName: p.mechanismName,
+    waterResistanceAtm: toNum(p.waterResistanceAtm),
+    caseSizeMm: toNum(p.caseSizeMm),
+    materialName: p.materialName,
+    siferblatMaterialName: p.siferblatMaterialName,
   };
 }

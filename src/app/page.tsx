@@ -12,13 +12,13 @@ import IconInfo from "@/components/home/IconInfo/IconInfo";
 import ImageGrid from "@/components/home/ImageGrid/ImageGrid";
 import Contact from "@/components/home/Contact/Contact";
 
-import { getProductsServer } from "@/lib/api/products-server";
+import { getProducts } from "@/lib/api/products";
 import { getInfoSections } from "@/lib/api/infoSections";
 import type { Product } from "@/types/Product";
 
 export default async function Home() {
   // SSR: məhsullar
-  const allProducts: Product[] = await getProductsServer();
+  const allProducts = await getProducts();
 
   // SSR: banner üçün info sections
   const allSections = await getInfoSections();

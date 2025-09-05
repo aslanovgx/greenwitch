@@ -11,7 +11,7 @@ import { isValidSort, SortCode } from "@/constants/sort";
 import { scrollToTop } from "@/utils/scrollToTop";
 
 const SERVER_PAGE_SIZE = 20;   // backend page size (təxmini/fallback)
-const UI_PAGE_SIZE     = 20;   // UI-də göstərilən say
+const UI_PAGE_SIZE = 20;   // UI-də göstərilən say
 
 /* ───────────── helpers ───────────── */
 function buildImageUrl(rel: string) {
@@ -35,10 +35,11 @@ export default function FilterCards() {
   const pathname = usePathname();
 
   // URL → filterlər
-  const brandId  = toPosIntOrUndef(sp.get("brandId"));
-  const genderId = toPosIntOrUndef(sp.get("genderId"));
-  const shapeId  = toPosIntOrUndef(sp.get("shapeId"));
-  const colorId  = toPosIntOrUndef(sp.get("colorId"));
+  const brandId = toPosIntOrUndef(sp.get("brandId"));
+  const genderId = toPosIntOrUndef(sp.get("Gender"));
+  const shapeId = toPosIntOrUndef(sp.get("shapeId"));
+  const colorId = toPosIntOrUndef(sp.get("colorId"));
+  const categoryId = toPosIntOrUndef(sp.get("categoryId"));
 
   // URL → sort
   const s = sp.get("sort");
@@ -64,10 +65,10 @@ export default function FilterCards() {
 
   const predicate = (p: UIProduct) => {
     switch (filterCategory) {
-      case "new":      return p.isNew === true;
+      case "new": return p.isNew === true;
       case "discount": return hasDiscount(p);
-      case "best":     return p.bestSeller === true;
-      default:         return true;
+      case "best": return p.bestSeller === true;
+      default: return true;
     }
   };
 
@@ -75,10 +76,10 @@ export default function FilterCards() {
   const page = toPageOr1(sp.get("page"));
 
   // UI state
-  const [items, setItems]           = useState<UIProduct[]>([]);
-  const [loading, setLoading]       = useState(true);
-  const [error, setError]           = useState<string | null>(null);
-  const [hasMore, setHasMore]       = useState<boolean>(false);
+  const [items, setItems] = useState<UIProduct[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [hasMore, setHasMore] = useState<boolean>(false);
   const [totalPages, setTotalPages] = useState<number | null>(null); // yalnız “all” + metaTotal olduqda dolacaq
 
   const gridTopRef = useRef<HTMLDivElement>(null);
@@ -98,7 +99,7 @@ export default function FilterCards() {
     const current = Number(sp.get("page")) || 1;
     if (current !== 1) setQuery("page", 1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [brandId, genderId, shapeId, colorId, sortCode]);
+  }, [brandId, genderId, shapeId, colorId, categoryId, sortCode]);
 
   /* Data fetch
      — “all” ikən normal server pagination (total varsa totalPages dəqiqdir).
@@ -112,10 +113,11 @@ export default function FilterCards() {
         setError(null);
 
         const baseParams = {
-          ...(brandId  ? { brandId }  : {}),
-          ...(genderId ? { genderId } : {}),
-          ...(shapeId  ? { shapeId }  : {}),
-          ...(colorId  ? { colorId }  : {}),
+          ...(brandId ? { brandId } : {}),
+          ...(genderId ? { Gender: genderId } : {}),
+          ...(shapeId ? { shapeId } : {}),
+          ...(colorId ? { colorId } : {}),
+          ...(categoryId ? { categoryId } : {}),
           ...(serverSort ? { sort: serverSort } : {}),
         };
 
@@ -178,8 +180,8 @@ export default function FilterCards() {
         }
 
         /* ============  B) VIRTUAL PAGINATION (best/new/discount)  ============ */
-        const needCount    = UI_PAGE_SIZE * page;     // cari UI səhifə üçün lazım olan uyğun say
-        const capExtra     = UI_PAGE_SIZE;            // növbəti səhifəyə baxmaq üçün əlavə
+        const needCount = UI_PAGE_SIZE * page;     // cari UI səhifə üçün lazım olan uyğun say
+        const capExtra = UI_PAGE_SIZE;            // növbəti səhifəyə baxmaq üçün əlavə
         const maxToCollect = needCount + capExtra;
 
         const bag: UIProduct[] = [];
@@ -196,8 +198,8 @@ export default function FilterCards() {
           bag.push(...filtered);
 
           // Dayanma şərtləri:
-          const reachedEnd  = adapted.length < SERVER_PAGE_SIZE; // server data bitdi
-          const enoughNow   = bag.length >= maxToCollect;        // cari + növbəti üçün yetər
+          const reachedEnd = adapted.length < SERVER_PAGE_SIZE; // server data bitdi
+          const enoughNow = bag.length >= maxToCollect;        // cari + növbəti üçün yetər
           if (reachedEnd || enoughNow) break;
 
           serverPage++;
@@ -205,7 +207,7 @@ export default function FilterCards() {
 
         // UI page slice
         const start = (page - 1) * UI_PAGE_SIZE;
-        const end   = start + UI_PAGE_SIZE;
+        const end = start + UI_PAGE_SIZE;
         const pageSlice = bag.slice(start, end);
 
         // hasMore: növbəti UI səhifə üçün element varmı?
@@ -234,7 +236,7 @@ export default function FilterCards() {
 
     return () => { aborted = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [brandId, genderId, shapeId, colorId, serverSort, filterCategory, page]);
+  }, [brandId, genderId, shapeId, colorId, categoryId, serverSort, filterCategory, page]);
 
   /* Handlers (CLICK → dərhal scroll 0) */
   const goToPage = (p: number) => {
@@ -245,9 +247,9 @@ export default function FilterCards() {
     // istəsən: gridTopRef.current?.scrollIntoView({ behavior: "auto", block: "start" });
   };
   const onClickFirst = () => goToPage(1);
-  const onClickPrev  = () => goToPage(page - 1);
-  const onClickNext  = () => goToPage(page + 1);
-  const onClickLast  = () => { if (totalPages) goToPage(totalPages); };
+  const onClickPrev = () => goToPage(page - 1);
+  const onClickNext = () => goToPage(page + 1);
+  const onClickLast = () => { if (totalPages) goToPage(totalPages); };
 
   // Rəqəmsal düymələr
   const windowPages = useMemo(() => {
@@ -255,7 +257,7 @@ export default function FilterCards() {
       const around = 2;
       let pages: number[] = [];
       const start = Math.max(1, page - around);
-      const end   = Math.min(totalPages, page + around);
+      const end = Math.min(totalPages, page + around);
       for (let p = start; p <= end; p++) pages.push(p);
       if (!pages.includes(1)) pages = [1, ...pages];
       if (!pages.includes(totalPages)) pages = [...pages, totalPages];
@@ -267,7 +269,7 @@ export default function FilterCards() {
     return Array.from(set).filter(n => n >= 1).sort((a, b) => a - b);
   }, [page, totalPages, hasMore]);
 
-  const showLeftEllipsis  = totalPages ? windowPages[0] > 1 : page - 2 > 1;
+  const showLeftEllipsis = totalPages ? windowPages[0] > 1 : page - 2 > 1;
   const showRightEllipsis = totalPages
     ? windowPages[windowPages.length - 1] < (totalPages ?? 1)
     : hasMore;
@@ -275,14 +277,21 @@ export default function FilterCards() {
   /* Render */
   if (loading) {
     return (
-      <div className={`${cardStyles.cards_container} ${styles.cards_box} flex justify-center items-center pt-[60px]`}>
-        {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className={`${cardStyles.cards} ${cardStyles.skelCard} relative text-center`}>
+      <div
+        className={`${cardStyles.cards_container} ${styles.cards_box} flex justify-center items-center pt-[60px]`}
+      >
+        {Array.from({ length: UI_PAGE_SIZE }).map((_, i) => (
+          <div
+            key={i}
+            className={`${cardStyles.cards} ${cardStyles.skelCard} relative text-center`}
+          >
             <div className={`${cardStyles.cards_image} relative mx-auto`}>
               <div className="w-full h-full bg-gray-200 animate-pulse rounded-lg" />
             </div>
             <div className={cardStyles.cards_desc}>
-              <div className={`${cardStyles.card_buttons} absolute bottom-0 left-0 flex`}>
+              <div
+                className={`${cardStyles.card_buttons} absolute bottom-0 left-0 flex`}
+              >
                 <button disabled className={cardStyles.btnSkeleton} />
                 <button disabled className={cardStyles.btnSkeleton} />
               </div>
@@ -293,14 +302,15 @@ export default function FilterCards() {
     );
   }
 
+
   if (error) return <div className="py-10 text-center text-red-600">{error}</div>;
 
   if (!items.length) {
     return <div className="py-10 text-center">
       {filterCategory === "new" ? "Yeni məhsul tapılmadı."
         : filterCategory === "discount" ? "Endirimli məhsul tapılmadı."
-        : filterCategory === "best" ? "Çox satılan məhsul tapılmadı."
-        : "Məhsul tapılmadı."}
+          : filterCategory === "best" ? "Çox satılan məhsul tapılmadı."
+            : "Məhsul tapılmadı."}
     </div>;
   }
 
