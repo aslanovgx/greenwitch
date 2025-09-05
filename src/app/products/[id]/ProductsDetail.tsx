@@ -66,6 +66,14 @@ export default function ProductsDetail({ product }: Props) {
   const [imageSize, setImageSize] = useState(() => getImageSizeByWidth(typeof window !== "undefined" ? window.innerWidth : BP_LG));
   const [thumbsConfig, setThumbsConfig] = useState(() => getThumbsConfigByWidth(typeof window !== "undefined" ? window.innerWidth : BP_LG));
 
+  // valid thumbnail-lar və oxların lazım olub-olmadığı
+  const validThumbs = useMemo(
+    () => (product.thumbnails ?? []).filter((t) => t && t.trim()),
+    [product.thumbnails]
+  );
+  const shouldShowNav = validThumbs.length > thumbsConfig.slidesPerView;
+
+
   // ——— Resize throttling (rAF)
   useEffect(() => {
     let raf = 0;
@@ -91,13 +99,16 @@ export default function ProductsDetail({ product }: Props) {
   // ——— Swiper navigation ref-lərinin tək nöqtədən bağlanması
   const handleSwiperInit = (swiper: SwiperClass) => {
     swiperRef.current = swiper;
-    if (swiper.params.navigation && typeof swiper.params.navigation !== "boolean") {
+
+    // Oxlar lazımdırsa navigation-u bağla və init et
+    if (shouldShowNav && swiper.params.navigation && typeof swiper.params.navigation !== "boolean") {
       swiper.params.navigation.prevEl = prevRef.current;
       swiper.params.navigation.nextEl = nextRef.current;
       swiper.navigation.init();
       swiper.navigation.update();
     }
   };
+
 
   // ——— Swiper clean-up (memory sızıntısının qarşısı)
   useEffect(() => () => {
@@ -152,16 +163,19 @@ export default function ProductsDetail({ product }: Props) {
         ) : (
           <>
             <div className="product-detail-swiper-wrapper w-full relative">
-              <button
-                ref={prevRef}
-                className={styles.swiperPrev}
-                aria-label="Əvvəlki şəkillər"
-                type="button"
-              >
-                <FiChevronUp color="black" />
-              </button>
+              {shouldShowNav && (
+                <button
+                  ref={prevRef}
+                  className={styles.swiperPrev}
+                  aria-label="Əvvəlki şəkillər"
+                  type="button"
+                >
+                  <FiChevronUp color="black" />
+                </button>
+              )}
 
               <Swiper
+                key={`thumbs-${product.id}-${thumbsConfig.height}-${shouldShowNav}`} // shouldShowNav dəyişəndə re-mount
                 direction="vertical"
                 slidesPerView={thumbsConfig.slidesPerView}
                 slidesPerGroup={1}
@@ -172,38 +186,39 @@ export default function ProductsDetail({ product }: Props) {
                 style={{ height: `${thumbsConfig.height}px`, maxWidth: `${thumbsConfig.width}px` }}
                 onSwiper={handleSwiperInit}
               >
-                {product.thumbnails?.map((thumb, idx) =>
-                  thumb?.trim() ? (
-                    <SwiperSlide key={thumb || idx}>
-                      <Image
-                        src={thumb}
-                        alt={`${product.brandName}, ${product.name} — thumbnail ${idx + 1}`}
-                        width={95}
-                        height={127}
-                        className={styles.thumbnailImage}
-                        onClick={() => setActiveImage(thumb)}
-                        role="button"
-                        aria-pressed={activeImage === thumb}
-                        style={{
-                          cursor: "pointer",
-                          border: activeImage === thumb ? "2px solid black" : "1px solid #ccc",
-                          borderRadius: 6,
-                        }}
-                      />
-                    </SwiperSlide>
-                  ) : null
-                )}
+                {validThumbs.map((thumb, idx) => (
+                  <SwiperSlide key={thumb || idx}>
+                    <Image
+                      src={thumb}
+                      alt={`${product.brandName}, ${product.name} — thumbnail ${idx + 1}`}
+                      width={95}
+                      height={127}
+                      className={styles.thumbnailImage}
+                      onClick={() => setActiveImage(thumb)}
+                      role="button"
+                      aria-pressed={activeImage === thumb}
+                      style={{
+                        cursor: "pointer",
+                        border: activeImage === thumb ? "2px solid black" : "1px solid #ccc",
+                        borderRadius: 6,
+                      }}
+                    />
+                  </SwiperSlide>
+                ))}
               </Swiper>
 
-              <button
-                ref={nextRef}
-                className={styles.swiperNext}
-                aria-label="Növbəti şəkillər"
-                type="button"
-              >
-                <FiChevronDown color="black" />
-              </button>
+              {shouldShowNav && (
+                <button
+                  ref={nextRef}
+                  className={styles.swiperNext}
+                  aria-label="Növbəti şəkillər"
+                  type="button"
+                >
+                  <FiChevronDown color="black" />
+                </button>
+              )}
             </div>
+
 
             {activeImage && (
               <div className={styles.mainImage}>
@@ -222,57 +237,63 @@ export default function ProductsDetail({ product }: Props) {
       </div>
 
       <div className={styles.rightSide}>
-        <h1 className={styles.title}>
-          {product.brandName}
-        </h1>
-        
-        {product.description && <p className={styles.desc}>{product.description}, MK6946</p>}
+        <h1 className={styles.title}>{product.brandName}</h1>
 
-        {typeof product.price !== "undefined" && (
-          hasDiscount ? (
-            <div style={{ display: "flex", alignItems: "center", gap: 15 }}>
-              <p
-                className={styles.price}
-                style={{ textDecoration: "line-through" }}
-                aria-label={`Köhnə qiymət ${basePrice} AZN`}
-              >
-                {basePrice}AZN
-              </p>
-
-              <p className={styles.price} style={{ color: "red" }} aria-label={`Endirimli qiymət ${dp} AZN`}>
-                {dp}AZN
-              </p>
-
-              <span
-                style={{
-                  // marginLeft: 8,
-                  fontSize: 14,
-                  padding: "2px 6px",
-                  borderRadius: 4,
-                  background: "rgba(8, 7, 7, 0.61)",
-                  color: "#fff",
-                  lineHeight: 1.2,
-                  display: "inline-block",
-                }}
-                aria-label={`Endirim faizi ${discountPct}%`}
-              >
-                -{discountPct}%
-              </span>
-            </div>
-          ) : (
-            <p className={styles.price} aria-label={`Qiymət ${product.price} AZN`}>
-              {product.price}AZN
-            </p>
-          )
+        {product.description && (
+          <p className={`${styles.desc} ${styles.descLong}`}>
+            {product.description} - {product.name}
+          </p>
         )}
-        <p className={styles.desc}><span className="font-500">Cins: </span>{product.genderName}</p>
-        <p className={styles.desc}><span className="font-500">Şüşə: </span>{product.siferblatMaterialName}</p>
-        <p className={styles.desc}><span className="font-500">Material: </span>{product.materialName}</p>
-        <p className={styles.desc}><span className="font-500">Mexanizm: </span>{product.mechanismName}</p>
-        <p className={styles.desc}><span className="font-500">Suyadavamlılıq: </span>{product.waterResistanceAtm} ATM</p>
-        <p className={styles.desc}><span className="font-500">Korpus ölçüsü: </span>{product.caseSizeMm}mm</p>
-        <p className={styles.desc}>100% Original / 2 il Zəmanətli</p>
 
+        {[
+          // 1) Qiymət sətiri specs kimidir
+          // specs massivi içində qiymət sətiri
+          {
+            label: "Qiyməti",
+            value: hasDiscount ? (
+              <span className={styles.priceWrapper}>
+                <span className={styles.priceOld} aria-label={`Köhnə qiymət ${basePrice} AZN`}>
+                  {basePrice}AZN
+                </span>
+                <span className={styles.priceNew} aria-label={`Endirimli qiymət ${dp} AZN`}>
+                  {dp}AZN
+                </span>
+                <span className={styles.desc_badge} aria-label={`Endirim faizi ${discountPct}%`}>
+                  -{discountPct}%
+                </span>
+              </span>
+            ) : (
+              <span className={styles.priceWrapper}>
+                <span className={styles.priceSingle} aria-label={`Qiymət ${product.price} AZN`}>
+                  {product.price}AZN
+                </span>
+              </span>
+            ),
+          },
+
+          // 2) Digər spesifikasiyalar
+          { label: "Cins", value: product.genderName },
+          { label: "Şüşə", value: product.siferblatMaterialName },
+          { label: "Material", value: product.materialName },
+          { label: "Mexanizm", value: product.mechanismName },
+          {
+            label: "Suyadavamlılıq",
+            value: product.waterResistanceAtm ? `${product.waterResistanceAtm} ATM` : undefined,
+          },
+          {
+            label: "Korpus ölçüsü",
+            value: product.caseSizeMm ? `${product.caseSizeMm}mm` : undefined,
+          },
+        ]
+          .filter((row) => row.value)
+          .map((row) => (
+            <p key={row.label} className={styles.desc}>
+              <span>{row.label}: </span>
+              {row.value}
+            </p>
+          ))}
+
+        <p className={`${styles.desc} ${styles.descInfo}`}>100% Original / 2 il Zəmanətli</p>
 
 
         <div className={styles.buyRow}>
@@ -327,9 +348,9 @@ export default function ProductsDetail({ product }: Props) {
           </button>
         </div>
 
-        <div className={styles.note}>
+        {/* <div className={styles.note}>
           <p>Məhsul detalları və çatdırılma</p>
-        </div>
+        </div> */}
       </div>
     </div>
   );
