@@ -50,7 +50,7 @@
     height: 334px;
     flex-shrink: 0;
     aspect-ratio: 125/167;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .purchaseContent .leftSide .itemBag .itemBox {

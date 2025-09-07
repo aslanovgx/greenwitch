@@ -75,7 +75,7 @@ export default function Navbar() {
   // ——— isActive funksiyasını item qəbul edəcək hala gətir:
   const isActive = (item: { label: string; href: string }) => {
     // Xüsusi qaydalar
-    if (item.label === "Aksesuar") return isAccessoriesActive;
+    if (item.label === "Aksesuarlar") return isAccessoriesActive;
     if (item.label === "Saatlar") return isWatchesActive;
 
     // Fallback: href-də Gender/categoryId varsa onlarla müqayisə et

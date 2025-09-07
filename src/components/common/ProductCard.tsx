@@ -22,7 +22,7 @@ type Props = {
 
 function ProductCardComponent({
   item,
-  // forceBestBadge = false,
+  isMostSales = false,
   activeCategory = 'all',
   activeCardId,
   setActiveCardId,
@@ -59,19 +59,26 @@ function ProductCardComponent({
   const hasDiscount =
     typeof item.discountPrice === "number" && item.discountPrice < item.price;
 
-  // 2) Badge seçimi
-  const badge =
-    activeCategory === "discount"
-      ? (hasDiscount ? "ENDİRİM" : null)                 // endirim səhifəsində həmişə ENDİRİM
-      : activeCategory === "new"
-        ? (item.isNew ? "NEW" : null)                      // yeni səhifəsində həmişə NEW
-        : activeCategory === "best"
-          ? (item.bestSeller ? "BEST" : null)                // best səhifəsində həmişə BEST
-          : /* activeCategory === "all" */
-          (hasDiscount ? "ENDİRİM"                         // ümumi siyahıda prioritet: ENDİRİM → BEST → NEW
-            : item.bestSeller ? "BEST"
-              : item.isNew ? "NEW"
-                : null);
+  // 2) Badge seçimi (YENİ QAYDA)
+  // — MostSales bölməsində: bestseller true-dursa, həmişə "BEST"
+  // — Qalan hallarda: sənin əvvəlki qaydan eyni qalır
+  let badge: "ENDİRİM" | "NEW" | "BEST" | null = null;
+
+  if (isMostSales && item.bestSeller) {
+    badge = "BEST";
+  } else if (activeCategory === "discount") {
+    badge = hasDiscount ? "ENDİRİM" : null;
+  } else if (activeCategory === "new") {
+    badge = item.isNew ? "NEW" : null;
+  } else if (activeCategory === "best") {
+    badge = item.bestSeller ? "BEST" : null;
+  } else {
+    // all
+    badge = hasDiscount ? "ENDİRİM"
+      : item.bestSeller ? "BEST"
+      : item.isNew ? "NEW"
+      : null;
+  }
 
 
   // 3) Badge → type (1=BEST, 2=NEW, 3=ENDİRİM)
@@ -108,7 +115,7 @@ function ProductCardComponent({
     ), ${base}`;
 
   if (process.env.NODE_ENV !== "production") {
-    console.log("LabelColors:", { colors, loading, badgeType, badgeColor });
+    // console.log("LabelColors:", { colors, loading, badgeType, badgeColor });
   }
 
   // ✅ Badge-in SSR/CSR uyğunsuzluğunu önləmək üçün yalnız hazır olanda göstər

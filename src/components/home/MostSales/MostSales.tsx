@@ -68,7 +68,7 @@ export default function MostSales({ initialProducts = [] }: Props) {
         ))}
       </div>
       <div>
-        <Link href="/products?sirala=best" scroll={true}>
+        <Link href="/products?sort=best" scroll={true}>
     <MoreButton>Daha çox</MoreButton>
   </Link> ̰
       </div>

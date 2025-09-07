@@ -15,14 +15,14 @@ export type ProductFilter = {
 
 function buildQuery(p: ProductFilter = {}) {
   const qp = new URLSearchParams();
-  if (p.Gender)     qp.set("Gender", String(p.Gender));
-  if (p.brandId)    qp.set("brandId", String(p.brandId));
-  if (p.shapeId)    qp.set("shapeId", String(p.shapeId));
+  if (p.Gender) qp.set("Gender", String(p.Gender));
+  if (p.brandId) qp.set("brandId", String(p.brandId));
+  if (p.shapeId) qp.set("shapeId", String(p.shapeId));
   if (p.categoryId) qp.set("categoryId", String(p.categoryId));
-  if (p.colorId)    qp.set("colorId", String(p.colorId));
-  if (p.page)       qp.set("page", String(p.page));
-  if (p.size)       qp.set("size", String(p.size));
-  if (p.sort)       qp.set("sort", p.sort);
+  if (p.colorId) qp.set("colorId", String(p.colorId));
+  if (p.page) qp.set("page", String(p.page));
+  if (p.size) qp.set("size", String(p.size));
+  if (p.sort) qp.set("sort", p.sort);
   if (p.search && p.search.trim()) qp.set("q", p.search.trim()); // backend uyğunlaşsa dəyişərik
   const qs = qp.toString();
   return qs ? `?${qs}` : "";
@@ -68,7 +68,7 @@ export async function getProductById(id: number): Promise<ProductDetail> {
   const p = (data?.product ?? data) as Partial<ProductDetail> & Record<string, any>;
 
   // relative -> absolute şəkil
-  const API  = (process.env.NEXT_PUBLIC_API_URL ?? "").trim();
+  const API = (process.env.NEXT_PUBLIC_API_URL ?? "").trim();
   const ROOT = API.replace(/\/api\/?$/i, "");
   const toAbs = (rel: string) => `${ROOT}/${String(rel ?? "").replace(/^\/+/, "")}`;
 

@@ -104,7 +104,7 @@ export default function PurchaseContent() {
             </div>
           </div>
           <div className={styles.buttonDiv}>
-            <button onClick={() => router.push("/")} className="...">
+            <button onClick={() => router.push("/products")} className="...">
               Məhsullara qayıt
             </button>
           </div>
@@ -133,7 +133,7 @@ export default function PurchaseContent() {
                   alt={item.name ?? "Product"}
                   width={250}
                   height={334}
-                  className="rounded object-cover"
+                  className="rounded object-contain"
                 />
 
                 <div className={styles.itemBox}>

@@ -14,8 +14,7 @@ import { FiChevronUp, FiChevronDown } from "react-icons/fi";
 import { useBag } from "@/context/BagContext";
 import type { Swiper as SwiperClass } from "swiper";
 
-
-// —— Responsive breakpoint-lar (magic ədədləri bir yerə çıxardıq)
+// —— Breakpoint-lar
 const BP_SM = 640;
 const BP_MD = 769;
 const BP_LG = 1025;
@@ -38,18 +37,21 @@ const getThumbsConfigByWidth = (width: number) => {
 // —— İlk düzgün thumbnail-i tapır
 const firstThumb = (p: ProductDetail) => p.thumbnails?.find((t) => t && t.trim()) || null;
 
+// —— Thumbnail sütunu üçün sabitlər (Swiper hündürlüyü)
+const THUMB_H = 127;
+const GAP = 10;
+const calcThumbsHeight = (slides: number) => slides * THUMB_H + (slides - 1) * GAP;
+
 type Props = { product: ProductDetail };
 
 export default function ProductsDetail({ product }: Props) {
   // ——— State
   const [activeImage, setActiveImage] = useState<string | null>(() => firstThumb(product));
 
-  // Məhsul dəyişəndə reset
   useEffect(() => {
     setActiveImage(firstThumb(product));
   }, [product]);
 
-  // Qty — UX üçün raw string + derived number
   const [qtyRaw, setQtyRaw] = useState("1");
   const qty = useMemo(() => Math.max(1, Number(qtyRaw || "1")), [qtyRaw]);
 
@@ -63,16 +65,19 @@ export default function ProductsDetail({ product }: Props) {
   const [showMobileSlider, setShowMobileSlider] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
 
-  const [imageSize, setImageSize] = useState(() => getImageSizeByWidth(typeof window !== "undefined" ? window.innerWidth : BP_LG));
-  const [thumbsConfig, setThumbsConfig] = useState(() => getThumbsConfigByWidth(typeof window !== "undefined" ? window.innerWidth : BP_LG));
+  const [imageSize, setImageSize] = useState(() =>
+    getImageSizeByWidth(typeof window !== "undefined" ? window.innerWidth : BP_LG)
+  );
+  const [thumbsConfig, setThumbsConfig] = useState(() =>
+    getThumbsConfigByWidth(typeof window !== "undefined" ? window.innerWidth : BP_LG)
+  );
 
-  // valid thumbnail-lar və oxların lazım olub-olmadığı
+  // valid thumbnail-lar
   const validThumbs = useMemo(
     () => (product.thumbnails ?? []).filter((t) => t && t.trim()),
     [product.thumbnails]
   );
   const shouldShowNav = validThumbs.length > thumbsConfig.slidesPerView;
-
 
   // ——— Resize throttling (rAF)
   useEffect(() => {
@@ -96,11 +101,10 @@ export default function ProductsDetail({ product }: Props) {
     };
   }, []);
 
-  // ——— Swiper navigation ref-lərinin tək nöqtədən bağlanması
+  // ——— Swiper navigation ref-lərinin tək nöqtədən bağlanması (custom)
   const handleSwiperInit = (swiper: SwiperClass) => {
     swiperRef.current = swiper;
 
-    // Oxlar lazımdırsa navigation-u bağla və init et
     if (shouldShowNav && swiper.params.navigation && typeof swiper.params.navigation !== "boolean") {
       swiper.params.navigation.prevEl = prevRef.current;
       swiper.params.navigation.nextEl = nextRef.current;
@@ -109,20 +113,34 @@ export default function ProductsDetail({ product }: Props) {
     }
   };
 
-
-  // ——— Swiper clean-up (memory sızıntısının qarşısı)
+  // ——— Swiper clean-up
   useEffect(() => () => {
     if (swiperRef.current && !swiperRef.current.destroyed) {
       swiperRef.current.destroy(true, false);
     }
   }, []);
 
-  // ——— Mount guard (SSR/hydration uyğunsuzluqlarına qarşı)
+  // ——— shouldShowNav/layout dəyişəndə yenilə
+  useEffect(() => {
+    if (swiperRef.current) {
+      // navigation obyekti varsa yenilə
+      // @ts-ignore
+      if (shouldShowNav && swiperRef.current.params?.navigation) {
+        swiperRef.current.navigation?.update();
+      }
+      swiperRef.current.update();
+    }
+  }, [shouldShowNav, thumbsConfig.slidesPerView, validThumbs.length]);
+
+  // ——— Mount guard
   if (!hasMounted) return <div style={{ minHeight: 400 }} />;
 
   // —— Endirim helper-ləri
   const basePrice = Number(product.price ?? 0);
-  const dp = typeof (product as any)?.discountPrice === "number" ? Number((product as any).discountPrice) : null;
+  const dp =
+    typeof (product as any)?.discountPrice === "number"
+      ? Number((product as any).discountPrice)
+      : null;
   const hasDiscount = typeof dp === "number" && dp < basePrice;
   const discountPct = hasDiscount ? Math.round(((basePrice - (dp as number)) / basePrice) * 100) : 0;
 
@@ -131,7 +149,7 @@ export default function ProductsDetail({ product }: Props) {
       <div className={styles.leftSide}>
         {showMobileSlider ? (
           <Swiper
-            key={String(product.id)} // yalnız məhsul dəyişəndə re-mount
+            key={String(product.id)}
             slidesPerView={1}
             spaceBetween={8}
             pagination={{ clickable: true }}
@@ -175,16 +193,60 @@ export default function ProductsDetail({ product }: Props) {
               )}
 
               <Swiper
-                key={`thumbs-${product.id}-${thumbsConfig.height}-${shouldShowNav}`} // shouldShowNav dəyişəndə re-mount
+                key={`thumbs-${product.id}`} // sabit key
                 direction="vertical"
                 slidesPerView={thumbsConfig.slidesPerView}
                 slidesPerGroup={1}
-                spaceBetween={10}
+                spaceBetween={GAP}
                 allowTouchMove={false}
                 modules={[Pagination, Navigation]}
                 className={`product-detail-swiper ${styles.thumbnails}`}
-                style={{ height: `${thumbsConfig.height}px`, maxWidth: `${thumbsConfig.width}px` }}
-                onSwiper={handleSwiperInit}
+                style={{
+                  // hündürlük formulla: 4 slide üçün 538px
+                  height: `${calcThumbsHeight(thumbsConfig.slidesPerView)}px`,
+                  maxWidth: `${thumbsConfig.width}px`,
+                }}
+                // navigation prop YOXDUR — param-ları özümüz yazırıq
+                onBeforeInit={(swiper) => {
+                  if (shouldShowNav) {
+                    if (!swiper.params.navigation || typeof swiper.params.navigation === "boolean") {
+                      // @ts-ignore
+                      swiper.params.navigation = {};
+                    }
+                    // @ts-ignore
+                    swiper.params.navigation.prevEl = prevRef.current;
+                    // @ts-ignore
+                    swiper.params.navigation.nextEl = nextRef.current;
+                    // @ts-ignore
+                    swiper.params.navigation.enabled = true;
+                  }
+                }}
+                onSwiper={(swiper) => {
+                  swiperRef.current = swiper;
+
+                  // Bəzən onBeforeInit vaxtı ref-lər null olur — 1 “tick” gecikdir
+                  setTimeout(() => {
+                    if (shouldShowNav) {
+                      // @ts-ignore
+                      if (!swiper.params.navigation || typeof swiper.params.navigation === "boolean") {
+                        // @ts-ignore
+                        swiper.params.navigation = {};
+                      }
+                      // @ts-ignore
+                      swiper.params.navigation.prevEl = prevRef.current;
+                      // @ts-ignore
+                      swiper.params.navigation.nextEl = nextRef.current;
+
+                      swiper.navigation.init();
+                      swiper.navigation.update();
+                    }
+                    swiper.update();
+                  }, 0);
+                }}
+                watchSlidesProgress
+                observeParents
+                observeSlideChildren
+                resizeObserver
               >
                 {validThumbs.map((thumb, idx) => (
                   <SwiperSlide key={thumb || idx}>
@@ -192,7 +254,7 @@ export default function ProductsDetail({ product }: Props) {
                       src={thumb}
                       alt={`${product.brandName}, ${product.name} — thumbnail ${idx + 1}`}
                       width={95}
-                      height={127}
+                      height={THUMB_H}
                       className={styles.thumbnailImage}
                       onClick={() => setActiveImage(thumb)}
                       role="button"
@@ -219,14 +281,13 @@ export default function ProductsDetail({ product }: Props) {
               )}
             </div>
 
-
             {activeImage && (
               <div className={styles.mainImage}>
                 <ImageMagnifierBG
                   src={activeImage}
                   width={imageSize.width}
                   height={imageSize.height}
-                  zoom={1.8}     // 1.8–2.5 arası sına
+                  zoom={1.8}
                   isRound={false}
                   hiResSrc={`/api/proxy-image?url=${encodeURIComponent(activeImage)}`}
                 />
@@ -246,8 +307,6 @@ export default function ProductsDetail({ product }: Props) {
         )}
 
         {[
-          // 1) Qiymət sətiri specs kimidir
-          // specs massivi içində qiymət sətiri
           {
             label: "Qiyməti",
             value: hasDiscount ? (
@@ -270,8 +329,6 @@ export default function ProductsDetail({ product }: Props) {
               </span>
             ),
           },
-
-          // 2) Digər spesifikasiyalar
           { label: "Cins", value: product.genderName },
           { label: "Şüşə", value: product.siferblatMaterialName },
           { label: "Material", value: product.materialName },
@@ -294,7 +351,6 @@ export default function ProductsDetail({ product }: Props) {
           ))}
 
         <p className={`${styles.desc} ${styles.descInfo}`}>100% Original / 2 il Zəmanətli</p>
-
 
         <div className={styles.buyRow}>
           <input
@@ -328,7 +384,7 @@ export default function ProductsDetail({ product }: Props) {
                 bestSeller: false,
                 isNew: false,
                 price,
-                discountPrice: hasDiscount ? dp : null,  // <-- endirim səbətə də düşür
+                discountPrice: hasDiscount ? dp : null,
                 brandName: product.brandName ?? "",
                 images: product.thumbnails || [],
                 image: product.thumbnails?.[0] || null,
@@ -347,10 +403,6 @@ export default function ProductsDetail({ product }: Props) {
             İndi Al
           </button>
         </div>
-
-        {/* <div className={styles.note}>
-          <p>Məhsul detalları və çatdırılma</p>
-        </div> */}
       </div>
     </div>
   );
