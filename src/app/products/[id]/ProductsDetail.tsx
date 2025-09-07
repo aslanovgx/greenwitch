@@ -102,16 +102,16 @@ export default function ProductsDetail({ product }: Props) {
   }, []);
 
   // ——— Swiper navigation ref-lərinin tək nöqtədən bağlanması (custom)
-  const handleSwiperInit = (swiper: SwiperClass) => {
-    swiperRef.current = swiper;
+  // const handleSwiperInit = (swiper: SwiperClass) => {
+  //   swiperRef.current = swiper;
 
-    if (shouldShowNav && swiper.params.navigation && typeof swiper.params.navigation !== "boolean") {
-      swiper.params.navigation.prevEl = prevRef.current;
-      swiper.params.navigation.nextEl = nextRef.current;
-      swiper.navigation.init();
-      swiper.navigation.update();
-    }
-  };
+  //   if (shouldShowNav && swiper.params.navigation && typeof swiper.params.navigation !== "boolean") {
+  //     swiper.params.navigation.prevEl = prevRef.current;
+  //     swiper.params.navigation.nextEl = nextRef.current;
+  //     swiper.navigation.init();
+  //     swiper.navigation.update();
+  //   }
+  // };
 
   // ——— Swiper clean-up
   useEffect(() => () => {
@@ -122,15 +122,47 @@ export default function ProductsDetail({ product }: Props) {
 
   // ——— shouldShowNav/layout dəyişəndə yenilə
   useEffect(() => {
-    if (swiperRef.current) {
-      // navigation obyekti varsa yenilə
-      // @ts-ignore
-      if (shouldShowNav && swiperRef.current.params?.navigation) {
-        swiperRef.current.navigation?.update();
-      }
-      swiperRef.current.update();
-    }
-  }, [shouldShowNav, thumbsConfig.slidesPerView, validThumbs.length]);
+  const s = swiperRef.current;
+  const prev = prevRef.current;
+  const next = nextRef.current;
+
+  if (!s) return;
+
+  // shouldShowNav false-dursa, navigation-u söndür
+  if (!shouldShowNav) {
+    try {
+      s.navigation?.destroy?.();
+    } catch {}
+    s.update?.();
+    return;
+  }
+
+  // ——— Təhlükəsiz init: params və navigation obyektlərini qur
+  if (!s.params) s.params = {};
+  if (!s.params.navigation || typeof s.params.navigation === "boolean") {
+    s.params.navigation = { enabled: true };
+  }
+
+  // Ref-lər hazırdırsa təyin et
+  s.params.navigation.prevEl = prev || undefined;
+  s.params.navigation.nextEl = next || undefined;
+
+  // Tam init + update
+  try {
+    s.navigation?.destroy?.(); // təmiz start üçün
+  } catch {}
+  try {
+    s.navigation?.init?.();
+    s.navigation?.update?.();
+  } catch {}
+
+  s.update?.();
+}, [
+  shouldShowNav,
+  thumbsConfig.slidesPerView,
+  validThumbs.length,
+]);
+
 
   // ——— Mount guard
   if (!hasMounted) return <div style={{ minHeight: 400 }} />;
@@ -208,11 +240,16 @@ export default function ProductsDetail({ product }: Props) {
                 }}
                 // navigation prop YOXDUR — param-ları özümüz yazırıq
                 onBeforeInit={(swiper) => {
+                  // params həmişə olsun
+                  // @ts-ignore
+                  swiper.params = swiper.params ?? {};
+                  // @ts-ignore
+                  if (!swiper.params.navigation || typeof swiper.params.navigation === "boolean") {
+                    // @ts-ignore
+                    swiper.params.navigation = {};
+                  }
+
                   if (shouldShowNav) {
-                    if (!swiper.params.navigation || typeof swiper.params.navigation === "boolean") {
-                      // @ts-ignore
-                      swiper.params.navigation = {};
-                    }
                     // @ts-ignore
                     swiper.params.navigation.prevEl = prevRef.current;
                     // @ts-ignore
@@ -224,23 +261,35 @@ export default function ProductsDetail({ product }: Props) {
                 onSwiper={(swiper) => {
                   swiperRef.current = swiper;
 
-                  // Bəzən onBeforeInit vaxtı ref-lər null olur — 1 “tick” gecikdir
+                  // Bir "tick" gecikdirib, yenə də guard-larla init et
                   setTimeout(() => {
-                    if (shouldShowNav) {
-                      // @ts-ignore
-                      if (!swiper.params.navigation || typeof swiper.params.navigation === "boolean") {
-                        // @ts-ignore
-                        swiper.params.navigation = {};
-                      }
-                      // @ts-ignore
-                      swiper.params.navigation.prevEl = prevRef.current;
-                      // @ts-ignore
-                      swiper.params.navigation.nextEl = nextRef.current;
+                    // @ts-ignore
+                    const params = swiper.params ?? {};
+                    // @ts-ignore
+                    const navParams = params.navigation;
 
-                      swiper.navigation.init();
-                      swiper.navigation.update();
+                    if (shouldShowNav && navParams) {
+                      // @ts-ignore
+                      navParams.prevEl = prevRef.current;
+                      // @ts-ignore
+                      navParams.nextEl = nextRef.current;
+
+                      // Module yüklənibsə ancaq onda çağır
+                      if (swiper.navigation) {
+                        try {
+                          swiper.navigation.init();
+                          swiper.navigation.update();
+                        } catch {
+                          /* noop */
+                        }
+                      }
                     }
-                    swiper.update();
+
+                    try {
+                      swiper.update();
+                    } catch {
+                      /* noop */
+                    }
                   }, 0);
                 }}
                 watchSlidesProgress
