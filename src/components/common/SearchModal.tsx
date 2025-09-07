@@ -9,8 +9,8 @@ type SearchResult = {
   brandName: string;
   description: string;
   price: number | string;
-  discountPrice?: number | string | null; // 👈 əlavə olundu
-  image?: string | null; // thumbnail üçün (olmasa fallback verəcəyik)
+  discountPrice?: number | string | null;
+  image?: string | null;
 };
 
 type Props = {
@@ -35,14 +35,13 @@ export default function SearchModal({
   const formatAZN = (v: number | string | null | undefined) => {
     const n = typeof v === "string" ? Number(v) : v;
     if (n != null && Number.isFinite(n)) {
-      return new Intl.NumberFormat("az-AZ", {
-        style: "currency",
-        currency: "AZN",
+      return `${new Intl.NumberFormat("az-AZ", {
         maximumFractionDigits: 2,
-      }).format(n as number);
+      }).format(n as number)} AZN`;
     }
     return "";
   };
+
 
   const FALLBACK_DATAURI =
     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg==";
@@ -54,16 +53,24 @@ export default function SearchModal({
   return (
     <div className="fixed inset-0 bg-black/30 z-50 flex justify-center items-center">
       <div className="bg-white rounded-lg w-[90%] max-w-[600px] max-h-[80vh] overflow-y-auto p-6 shadow-lg relative">
-        <button onClick={onClose} className="absolute top-3 right-3 text-gray-600 hover:text-black">
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 text-gray-600 hover:text-black"
+        >
           <X />
         </button>
 
         <h2 className="text-lg font-semibold mb-4">
-          Axtarış nəticələri{!loading && results.length > 0 ? ` (${results.length})` : ""}
+          Axtarış nəticələri
+          {!loading && results.length > 0 ? ` (${results.length})` : ""}
         </h2>
 
-        {/* İlk boş klikdə heç nə göstərmə */}
-        {showInitial && null}
+        {/* İlk dəfə inputa klik ediləndə yönləndirici mesaj */}
+        {showInitial && (
+          <p className="text-sm text-gray-900">
+            Axtarış üçün yuxarıdakı xanaya yazın…
+          </p>
+        )}
 
         {/* Yüklənir */}
         {loading && <p className="text-sm text-gray-600">Axtarılır…</p>}
@@ -81,7 +88,9 @@ export default function SearchModal({
                     : Number(r.discountPrice) || null;
               const hasDiscount = dp != null && dp < basePrice;
               const discountPct =
-                hasDiscount && basePrice > 0 ? Math.round(((basePrice - dp) / basePrice) * 100) : 0;
+                hasDiscount && basePrice > 0
+                  ? Math.round(((basePrice - dp) / basePrice) * 100)
+                  : 0;
 
               return (
                 <li key={r.id}>
@@ -101,7 +110,9 @@ export default function SearchModal({
                     </div>
                     <div className="min-w-0">
                       <p className="text-sm font-medium truncate">{r.brandName}</p>
-                      <p className="text-xs text-gray-600 line-clamp-2">{r.description}</p>
+                      <p className="text-xs text-gray-600 line-clamp-2">
+                        {r.description}
+                      </p>
 
                       {hasDiscount ? (
                         <div className="flex items-center gap-2 mt-1">
@@ -111,9 +122,7 @@ export default function SearchModal({
                           <span className="text-sm font-semibold text-red-600">
                             {formatAZN(dp)}
                           </span>
-                          <span
-                            className="text-sm px-[4px] py-[2px] rounded bg-[rgba(8,7,7,0.61)] text-white leading-[1.2] inline-block ml-[6px]"
-                          >
+                          <span className="text-sm px-[4px] py-[2px] rounded bg-[rgba(8,7,7,0.61)] text-white leading-[1.2] inline-block ml-[6px]">
                             -{discountPct}%
                           </span>
                         </div>

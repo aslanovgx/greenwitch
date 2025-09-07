@@ -122,7 +122,7 @@ function ProductCardComponent({
   const badgeReady = mounted && !!badge && !loading && typeof badgeColor === 'string' && badgeColor.length > 0;
 
   return (
-    <div onClick={handleClick} className={`${styles.cards} relative group rounded shadow text-center`}>
+    <div data-card-id={item.id} onClick={handleClick} className={`${styles.cards} relative group rounded shadow text-center`}>
       <div className={`${styles.cards_image} relative mx-auto`}>
         <Image
           src={cover}

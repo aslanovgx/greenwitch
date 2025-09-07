@@ -40,6 +40,7 @@ export default function FadeImage({ current, previous, activeIndex, prevIndex }:
               src={previous.src}
               alt={previous.title}
               fill
+              sizes="100vw"
               priority
               className="object-cover"
               onError={() => setPrevBroken(true)}
@@ -65,6 +66,7 @@ export default function FadeImage({ current, previous, activeIndex, prevIndex }:
             src={current.src}
             alt={current.title}
             fill
+            sizes="100vw"
             priority
             className="object-cover"
             onError={() => setCurrBroken(true)}

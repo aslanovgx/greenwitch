@@ -106,13 +106,15 @@ export default async function Page({ params }: { params: Params }) {
   let sameBrandFull: RawProduct[] = [];
   if (resolvedBrandId) {
     sameBrandFull = await getProducts({ brandId: resolvedBrandId, size: 10 }).catch(() => []);
+    // 👇 ehtiyat üçün burada da çıxarırıq
+    sameBrandFull = sameBrandFull.filter(p => Number(p?.id) !== Number(product.id));
   }
 
   return (
     <>
       <ProductsDetail product={product} />
       {/* sameBrand ListItem[] olsa da, SimilarProducts RawProduct[] istəyir — struktur uyğun gəlir */}
-      <SimilarProducts initialProducts={sameBrandFull} brandId={resolvedBrandId} />
+      <SimilarProducts initialProducts={sameBrandFull} brandId={resolvedBrandId} excludeId={product.id} />
       <Contact />
     </>
   );

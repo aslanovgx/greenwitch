@@ -12,6 +12,7 @@ import { BagProvider } from "@/context/BagContext";
 import { Toaster } from "react-hot-toast";
 import ScrollToTop from "@/components/common/ScrollToTop";
 import { Suspense } from "react"; // ✅ əlavə et
+import ConsoleFilters from "@/components/dev/ConsoleFilters";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
@@ -46,6 +47,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
       </head>
       <body className={`${montserrat.variable} ${lato.variable} antialiased`}>
+        <ConsoleFilters />
         <SearchProvider>
           <FavoriteProvider>
             <BagProvider>

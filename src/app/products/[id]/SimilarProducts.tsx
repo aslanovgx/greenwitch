@@ -18,11 +18,11 @@ const buildImageUrl = (rel: string) => {
 
 type Props = {
   initialProducts?: RawProduct[];
-  /** Səhifədəki əsas məhsulun brend id-si (detail gəlmirsə, listdən/brand-lardan götürüb ötürürük) */
   brandId?: number;
+  excludeId?: number;
 };
 
-export default function SimilarProducts({ initialProducts = [], brandId }: Props) {
+export default function SimilarProducts({ initialProducts = [], brandId, excludeId }: Props) {
   const [activeCardId, setActiveCardId] = useState<number | null>(null);
 
   const adapt = useCallback((p: RawProduct): Product => {
@@ -58,7 +58,12 @@ export default function SimilarProducts({ initialProducts = [], brandId }: Props
 }, []);
 
 
-  const products = useMemo(() => initialProducts.map(adapt), [initialProducts, adapt]);
+  const products = useMemo(() => {
+    const adapted = initialProducts.map(adapt);
+    return typeof excludeId === "number"
+      ? adapted.filter(p => p.id !== excludeId)
+      : adapted;
+  }, [initialProducts, adapt, excludeId]);
 
   const MAX = 5;
   const visible = products.slice(0, MAX);
@@ -74,24 +79,32 @@ export default function SimilarProducts({ initialProducts = [], brandId }: Props
     <div className={styles.brands}>
       <SectionTitle>Oxşar Məhsullar</SectionTitle>
 
-      <div className={`${styles.cards_container} flex flex-wrap gap-4 justify-center items-stretch`}>
-        {visible.map((item) => (
-          <ProductCard
-            key={item.id}
-            item={item}
-            activeCategory="all"
-            activeCardId={activeCardId}
-            setActiveCardId={setActiveCardId}
-          />
-        ))}
-      </div>
+      {visible.length > 0 ? (
+        <>
+          <div
+            className={`${styles.cards_container} flex flex-wrap gap-4 justify-center items-stretch`}
+          >
+            {visible.map((item) => (
+              <ProductCard
+                key={item.id}
+                item={item}
+                activeCategory="all"
+                activeCardId={activeCardId}
+                setActiveCardId={setActiveCardId}
+              />
+            ))}
+          </div>
 
-      {canShowMore && href && (
-        <div className="mt-6 flex justify-center">
-          <Link href={href} scroll>
-            <MoreButton>Daha çox</MoreButton>
-          </Link>
-        </div>
+          {canShowMore && href && (
+            <div className="mt-6 flex justify-center">
+              <Link href={href} scroll>
+                <MoreButton>Daha çox</MoreButton>
+              </Link>
+            </div>
+          )}
+        </>
+      ) : (
+        <p className="py-2 text-xl text-center">Oxşar məhsul tapılmadı.</p>
       )}
     </div>
   );

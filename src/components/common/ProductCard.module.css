@@ -21,6 +21,7 @@
     height: 30px;
     /* font-weight: 400; */
 }
+
 .cards_desc {
     margin-top: 10px;
 }
@@ -90,12 +91,10 @@
     display: inline-flex;
     padding: 5px 12px;
     border-radius: 4px;
+    border: transparent;
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
-    border: transparent;
-    /* border-radius: 245px; */
-    /* background: linear-gradient(222deg, #DADADA 11.07%, #DADADA 34.55%, #FFF 46%, #DADADA 62%); */
 }
 
 .new_card span {
@@ -106,19 +105,6 @@
     font-weight: 400;
     line-height: normal;
 }
-
-/* .discountBadge {
-    background: linear-gradient(212deg, #FFB986 9.76%, #FFB986 33.85%, #FFF 45.6%, #FFB986 62.02%);
-    background: linear-gradient(212deg, #F26600 9.76%, #F26600 33.85%, #FFF 45.6%, #F26600 62.02%);
-} */
-
-/* .discountBadge span {
-    font-size: 9px;
-} */
-
-/* .bestSpan {
-    background: linear-gradient(222deg, #EFEBAA 11.07%, #EFEBAA 34.55%, #FFF 46%, #EFEBAA 62%) !important;
-} */
 
 .normalPrice {
     text-decoration: line-through;
@@ -147,7 +133,7 @@
     .cards {
         padding: 8px 8px 11px 8px;
         width: 172px;
-        height: 276px;
+        height: 282px;
     }
 
     .cards_image {
@@ -189,23 +175,28 @@
     }
 
     .new_card {
-        width: 34px;
-        height: 34px;
-        border-radius: 50%;
-        /* background: linear-gradient(222deg, #DADADA 11.07%, #DADADA 34.55%, #FFF 46%, #DADADA 62%); */
+        display: inline-flex;
+        padding: 3px 7px;
+        border-radius: 4px;
+        border: transparent;
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
     }
 
     .new_card span {
-        font-size: 10.224px;
+        color: #000;
+        text-align: center;
+        font-size: 11.224px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
     }
-/* 
+
+    /* 
     .discountBadge {
         background: linear-gradient(212deg, #FFB986 9.76%, #FFB986 33.85%, #FFF 45.6%, #FFB986 62.02%);
     } */
-
-    .discountBadge span {
-        font-size: 6.5px;
-    }
 
     /* .bestSpan {
         background: linear-gradient(222deg, #EFEBAA 11.07%, #EFEBAA 34.55%, #FFF 46%, #EFEBAA 62%) !important;
@@ -222,7 +213,7 @@
     .cards {
         padding: 8px 8px 11px 8px;
         width: 150px;
-        height: 262.5px;
+        height: 270px;
     }
 
     .cards_image {
@@ -262,16 +253,22 @@
     }
 
     .new_card {
-        width: 32px;
-        height: 32px;
+        display: inline-flex;
+        padding: 3px 4px;
+        border-radius: 4px;
+        border: transparent;
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
     }
 
     .new_card span {
-        font-size: 8.706px;
-    }
-
-    .discountBadge span {
-        font-size: 6px;
+        color: #000;
+        text-align: center;
+        font-size: 10.224px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
     }
 }
 
@@ -279,6 +276,10 @@
     .cards_container {
         gap: 8px;
         padding-bottom: 30px;
+    }
+    .cards {
+        padding: 8px 8px 11px 8px;
+        height: 280px;
     }
 
     .heartIcon {
@@ -292,45 +293,53 @@
 
 /* shimmer */
 @keyframes skeleton-shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
 }
 
 /* ümumi skeleton fonu */
 .skeletonBase {
-  background-color: #e5e7eb; /* boz fallback */
-  background-image: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
-  background-size: 200% 100%;
-  background-repeat: no-repeat;
-  animation: skeleton-shimmer 1.5s infinite linear;
+    background-color: #e5e7eb;
+    /* boz fallback */
+    background-image: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+    background-size: 200% 100%;
+    background-repeat: no-repeat;
+    animation: skeleton-shimmer 1.5s infinite linear;
 }
 
 /* kart skeleton wrapper (şəffaf olmasın) */
 .skelCard {
-  background-color: #fff;
-  border: 1px solid rgba(0,0,0,0.06);
-  border-radius: 12px;
-  pointer-events: none; /* hover-tranzisiyalar işləməsin */
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 12px;
+    pointer-events: none;
+    /* hover-tranzisiyalar işləməsin */
 }
 
 /* şəkil zonası skeleton – .cards_image ölçüsünü saxlayır */
 .skeletonBox {
-  width: 100%;
-  height: 100%;
-  border-radius: 12px;
-  /* skeletonBase mixin */
-  background-color: #e5e7eb;
-  background-image: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
-  background-size: 200% 100%;
-  background-repeat: no-repeat;
-  animation: skeleton-shimmer 1.5s infinite linear;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    /* skeletonBase mixin */
+    background-color: #e5e7eb;
+    background-image: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+    background-size: 200% 100%;
+    background-repeat: no-repeat;
+    animation: skeleton-shimmer 1.5s infinite linear;
 }
 
 /* düymələri boz etmək (mövcud qara background-u override) */
 .btnSkeleton {
-  background-color: #e5e7eb !important;
-  border-color: transparent !important;
-  color: transparent !important; /* mətn görünməsin */
+    background-color: #e5e7eb !important;
+    border-color: transparent !important;
+    color: transparent !important;
+    /* mətn görünməsin */
 }
 
 
@@ -338,21 +347,42 @@
 .skeletonInlineIcon,
 .skeletonInlineTextSm,
 .skeletonInlineTextLg {
-  background-color: #e5e7eb;
-  background-image: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
-  background-size: 200% 100%;
-  background-repeat: no-repeat;
-  animation: skeleton-shimmer 1.5s infinite linear;
-  display: inline-block;
-  vertical-align: middle;
+    background-color: #e5e7eb;
+    background-image: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+    background-size: 200% 100%;
+    background-repeat: no-repeat;
+    animation: skeleton-shimmer 1.5s infinite linear;
+    display: inline-block;
+    vertical-align: middle;
 }
 
-.skeletonInlineIcon { width: 16px; height: 16px; border-radius: 4px; }
-.skeletonInlineTextSm { width: 28px; height: 12px; border-radius: 4px; }
-.skeletonInlineTextLg { width: 64px; height: 12px; border-radius: 4px; }
+.skeletonInlineIcon {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+}
+
+.skeletonInlineTextSm {
+    width: 28px;
+    height: 12px;
+    border-radius: 4px;
+}
+
+.skeletonInlineTextLg {
+    width: 64px;
+    height: 12px;
+    border-radius: 4px;
+}
 
 /* ekran üçün gizli, screen-reader üçün görünən */
 .srOnly {
-  position: absolute; width:1px; height:1px; padding:0; margin:-1px;
-  overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
 }
