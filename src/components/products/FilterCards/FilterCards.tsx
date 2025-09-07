@@ -11,7 +11,7 @@ import { isValidSort, SortCode } from "@/constants/sort";
 import { scrollToTop } from "@/utils/scrollToTop";
 
 const SERVER_PAGE_SIZE = 20;   // backend page size (təxmini/fallback)
-const UI_PAGE_SIZE = 20;   // UI-də göstərilən say
+const UI_PAGE_SIZE = 20;       // UI-də göstərilən say
 
 /* ───────────── helpers ───────────── */
 function buildImageUrl(rel: string) {
@@ -20,10 +20,12 @@ function buildImageUrl(rel: string) {
   const clean = String(rel ?? "").replace(/^\/+/, "");
   return `${ROOT}/${encodeURI(clean)}`;
 }
+
 const toPosIntOrUndef = (v: string | null) => {
   const n = Number(v);
   return Number.isFinite(n) && n > 0 ? Math.trunc(n) : undefined;
 };
+
 const toPageOr1 = (v: string | null) => {
   const n = Number(v);
   return Number.isFinite(n) && n > 0 ? Math.trunc(n) : 1;
@@ -35,10 +37,10 @@ export default function FilterCards() {
   const pathname = usePathname();
 
   // URL → filterlər
-  const brandId = toPosIntOrUndef(sp.get("brandId"));
-  const genderId = toPosIntOrUndef(sp.get("Gender"));
-  const shapeId = toPosIntOrUndef(sp.get("shapeId"));
-  const colorId = toPosIntOrUndef(sp.get("colorId"));
+  const brandId    = toPosIntOrUndef(sp.get("brandId"));
+  const genderId   = toPosIntOrUndef(sp.get("Gender"));
+  const shapeId    = toPosIntOrUndef(sp.get("shapeId"));
+  const colorId    = toPosIntOrUndef(sp.get("colorId"));
   const categoryId = toPosIntOrUndef(sp.get("categoryId"));
 
   // URL → sort
@@ -56,8 +58,8 @@ export default function FilterCards() {
   const orderCode: "price_asc" | "price_desc" | undefined =
     isOrderCode(sortCode) ? sortCode : undefined;
 
-  // Yalnız qiymət sırası serverə "sort" kimi getsin
-  const serverSort = orderCode;
+  // orderCode varsa və ya filterCategory “all” deyilirsə → virtual pagination
+  const isVirtual = filterCategory !== "all" || !!orderCode;
 
   // FE predicate (server filtr etmir deyə)
   const hasDiscount = (p: UIProduct) =>
@@ -72,6 +74,19 @@ export default function FilterCards() {
     }
   };
 
+  // Qiyməti (endirim nəzərə alınaraq) hesabla
+  const priceOf = (p: UIProduct) =>
+    typeof p.discountPrice === "number" && p.discountPrice < p.price
+      ? p.discountPrice
+      : p.price;
+
+  // FE sort
+  const sortClient = (arr: UIProduct[]) => {
+    if (!orderCode) return arr;
+    const sign = orderCode === "price_asc" ? 1 : -1;
+    return [...arr].sort((a, b) => (priceOf(a) - priceOf(b)) * sign);
+  };
+
   // page (1-based)
   const page = toPageOr1(sp.get("page"));
 
@@ -80,12 +95,11 @@ export default function FilterCards() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState<boolean>(false);
-  const [totalPages, setTotalPages] = useState<number | null>(null); // yalnız “all” + metaTotal olduqda dolacaq
+  const [totalPages, setTotalPages] = useState<number | null>(null); // yalnız “all” + server meta olduqda dolacaq
 
   const gridTopRef = useRef<HTMLDivElement>(null);
 
-  /* URL yazıcı — router-in default scroll davranışını söndürürük,
-     çünki scroll-u biz klikdə manual edirik */
+  /* URL yazıcı — router-in default scroll davranışını söndürürük */
   const setQuery = (key: string, value?: string | number) => {
     const next = new URLSearchParams(sp.toString());
     if (value === undefined || value === null || String(value).length === 0) next.delete(key);
@@ -102,11 +116,14 @@ export default function FilterCards() {
   }, [brandId, genderId, shapeId, colorId, categoryId, sortCode]);
 
   /* Data fetch
-     — “all” ikən normal server pagination (total varsa totalPages dəqiqdir).
-     — “best/new/discount” ikən VIRTUAL PAGINATION: filtered nəticələr üçün UI səhifələr yığılır.
+     — “all” + orderCode YOX → normal server pagination (əgər backend total/size verirsə).
+     — Qalan bütün hallarda VIRTUAL PAGINATION:
+         * filter=new/discount/best → lazımi qədər yığ (hazırki + növbəti UI səhifə üçün)
+         * orderCode varsa → BÜTÜN səhifələri yığ (global sort üçün), sonra slice
   */
   useEffect(() => {
     let aborted = false;
+
     (async () => {
       try {
         setLoading(true);
@@ -118,46 +135,49 @@ export default function FilterCards() {
           ...(shapeId ? { shapeId } : {}),
           ...(colorId ? { colorId } : {}),
           ...(categoryId ? { categoryId } : {}),
-          ...(serverSort ? { sort: serverSort } : {}),
+          // sort-u BE-yə göndərmirik (FE sort)
         };
 
         // Helper: server cavabını UIProduct-a çevir
         const adapt = (raw: RawProduct[]): UIProduct[] =>
           raw.map((p) => {
+            const priceNum =
+              typeof p.price === "number" ? p.price : Number(p.price) || 0;
+            const discountNum =
+              p.discountPrice == null
+                ? null
+                : (typeof p.discountPrice === "number"
+                    ? p.discountPrice
+                    : (Number(p.discountPrice) || 0));
+
             const imgs = (Array.isArray(p.images) ? p.images : [])
               .filter((x): x is string => typeof x === "string" && x.trim() !== "")
               .map(buildImageUrl);
+
             return {
-              id: p.id,
-              name: p.name,
-              description: p.description ?? "",
+              id: Number(p.id),
+              name: String(p.name ?? ""),
+              description: String(p.description ?? ""),
               bestSeller: !!p.bestSeller,
               isNew: !!p.isNew,
-              price: p.price,
-              discountPrice: p.discountPrice ?? null,
-              brandName: p.brandName ?? "",
+              price: priceNum,
+              discountPrice: discountNum,
+              brandName: String(p.brandName ?? ""),
               images: imgs,
             };
           });
 
-        /* ============  A) ALL  ============ */
-        if (filterCategory === "all") {
+        // ─────────── NORMAL (server pagination) YALNIZ: all + orderCode YOX ───────────
+        if (filterCategory === "all" && !orderCode) {
           const resp = await getProducts({ ...baseParams, page } as any);
 
-          let raw: RawProduct[] = [];
-          let metaTotal: number | null = null;
-          let metaSize = SERVER_PAGE_SIZE;
-
-          if (Array.isArray(resp)) {
-            raw = resp;
-            metaTotal = null;
-          } else {
-            raw = resp.items ?? [];
-            metaTotal = typeof resp.total === "number" ? resp.total : null;
-            metaSize = typeof (resp as any).size === "number" ? (resp as any).size : SERVER_PAGE_SIZE;
-          }
-
+          const raw: RawProduct[] = Array.isArray(resp) ? resp : (resp?.items ?? []);
           const adapted = adapt(raw);
+
+          const metaTotal: number | null =
+            typeof (resp as any)?.total === "number" ? (resp as any).total : null;
+          const metaSize: number =
+            typeof (resp as any)?.size === "number" ? (resp as any).size : SERVER_PAGE_SIZE;
 
           // totalPages / hasMore
           if (metaTotal != null) {
@@ -179,44 +199,82 @@ export default function FilterCards() {
           return;
         }
 
-        /* ============  B) VIRTUAL PAGINATION (best/new/discount)  ============ */
-        const needCount = UI_PAGE_SIZE * page;     // cari UI səhifə üçün lazım olan uyğun say
-        const capExtra = UI_PAGE_SIZE;            // növbəti səhifəyə baxmaq üçün əlavə
-        const maxToCollect = needCount + capExtra;
-
+        // ─────────── VIRTUAL ───────────
         const bag: UIProduct[] = [];
         let serverPage = 1;
-        const MAX_SERVER_PAGES = 200;                 // loop guard
+        const MAX_SERVER_PAGES = 500; // təhlükəsizlik limiti
+
+        // A) GLOBAL SORT lazımdırsa (orderCode var) → BÜTÜN səhifələri yığ
+        if (orderCode) {
+          while (!aborted && serverPage <= MAX_SERVER_PAGES) {
+            const resp = await getProducts({ ...baseParams, page: serverPage } as any);
+            const raw: RawProduct[] = Array.isArray(resp) ? resp : (resp?.items ?? []);
+            const adapted = adapt(raw);
+
+            // əvvəlcə filter (əgər "all" deyilsə)
+            const filtered = filterCategory === "all" ? adapted : adapted.filter(predicate);
+            bag.push(...filtered);
+
+            const reachedEnd = adapted.length < SERVER_PAGE_SIZE; // server data bitdi
+            if (reachedEnd) break;
+
+            serverPage++;
+          }
+
+          // Bütün yığılmış nəticələr üzərində PRICE SORT
+          const sorted = sortClient(bag);
+
+          // UI slice
+          const start = (page - 1) * UI_PAGE_SIZE;
+          const end = start + UI_PAGE_SIZE;
+          const pageSlice = sorted.slice(start, end);
+
+          const hasNextUi = sorted.length > end;
+
+          if (!aborted) {
+            setItems(pageSlice);
+            setHasMore(hasNextUi);
+            setTotalPages(null); // filtrli/virtual rejimdə total məlum deyil
+            if (pageSlice.length === 0 && page > 1) {
+              setQuery("page", page - 1);
+              return;
+            }
+          }
+          return;
+        }
+
+        // B) YALNIZ filter=new/discount/best → cari + növbəti UI səhifə qədər yığ
+        const needCount = UI_PAGE_SIZE * page;
+        const capExtra  = UI_PAGE_SIZE;
+        const maxToCollect = needCount + capExtra;
 
         while (!aborted && serverPage <= MAX_SERVER_PAGES) {
           const resp = await getProducts({ ...baseParams, page: serverPage } as any);
           const raw: RawProduct[] = Array.isArray(resp) ? resp : (resp?.items ?? []);
           const adapted = adapt(raw);
 
-          // Filtrlə
+          // yalnız filter tətbiq olunur (price sort yoxdur)
           const filtered = adapted.filter(predicate);
           bag.push(...filtered);
 
-          // Dayanma şərtləri:
-          const reachedEnd = adapted.length < SERVER_PAGE_SIZE; // server data bitdi
-          const enoughNow = bag.length >= maxToCollect;        // cari + növbəti üçün yetər
+          const reachedEnd = adapted.length < SERVER_PAGE_SIZE;
+          const enoughNow  = bag.length >= maxToCollect;
           if (reachedEnd || enoughNow) break;
 
           serverPage++;
         }
 
-        // UI page slice
+        // UI slice (filter-only)
         const start = (page - 1) * UI_PAGE_SIZE;
         const end = start + UI_PAGE_SIZE;
         const pageSlice = bag.slice(start, end);
 
-        // hasMore: növbəti UI səhifə üçün element varmı?
         const hasNextUi = bag.length > end;
 
         if (!aborted) {
           setItems(pageSlice);
           setHasMore(hasNextUi);
-          setTotalPages(null); // filtrli total məlum deyil
+          setTotalPages(null);
           if (pageSlice.length === 0 && page > 1) {
             setQuery("page", page - 1);
             return;
@@ -236,20 +294,19 @@ export default function FilterCards() {
 
     return () => { aborted = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [brandId, genderId, shapeId, colorId, categoryId, serverSort, filterCategory, page]);
+  }, [brandId, genderId, shapeId, colorId, categoryId, sortCode, filterCategory, page]);
 
   /* Handlers (CLICK → dərhal scroll 0) */
   const goToPage = (p: number) => {
     const target = Math.max(1, p);
     setQuery("page", target);
-    scrollToTop();                     // instant
-    requestAnimationFrame(scrollToTop); // route change sonrası da zəmanət
-    // istəsən: gridTopRef.current?.scrollIntoView({ behavior: "auto", block: "start" });
+    scrollToTop();
+    requestAnimationFrame(scrollToTop);
   };
   const onClickFirst = () => goToPage(1);
-  const onClickPrev = () => goToPage(page - 1);
-  const onClickNext = () => goToPage(page + 1);
-  const onClickLast = () => { if (totalPages) goToPage(totalPages); };
+  const onClickPrev  = () => goToPage(page - 1);
+  const onClickNext  = () => goToPage(page + 1);
+  const onClickLast  = () => { if (totalPages) goToPage(totalPages); };
 
   // Rəqəmsal düymələr
   const windowPages = useMemo(() => {
@@ -257,7 +314,7 @@ export default function FilterCards() {
       const around = 2;
       let pages: number[] = [];
       const start = Math.max(1, page - around);
-      const end = Math.min(totalPages, page + around);
+      const end   = Math.min(totalPages, page + around);
       for (let p = start; p <= end; p++) pages.push(p);
       if (!pages.includes(1)) pages = [1, ...pages];
       if (!pages.includes(totalPages)) pages = [...pages, totalPages];
@@ -269,7 +326,7 @@ export default function FilterCards() {
     return Array.from(set).filter(n => n >= 1).sort((a, b) => a - b);
   }, [page, totalPages, hasMore]);
 
-  const showLeftEllipsis = totalPages ? windowPages[0] > 1 : page - 2 > 1;
+  const showLeftEllipsis  = totalPages ? windowPages[0] > 1 : page - 2 > 1;
   const showRightEllipsis = totalPages
     ? windowPages[windowPages.length - 1] < (totalPages ?? 1)
     : hasMore;
@@ -302,16 +359,22 @@ export default function FilterCards() {
     );
   }
 
-
-  if (error) return <div className="py-10 text-center text-red-600">{error}</div>;
+  if (error) {
+    return <div className="py-10 text-center text-red-600">{error}</div>;
+  }
 
   if (!items.length) {
-    return <div className="py-10 text-center">
-      {filterCategory === "new" ? "Yeni məhsul tapılmadı."
-        : filterCategory === "discount" ? "Endirimli məhsul tapılmadı."
-          : filterCategory === "best" ? "Çox satılan məhsul tapılmadı."
-            : "Məhsul tapılmadı."}
-    </div>;
+    return (
+      <div className="py-10 text-center">
+        {filterCategory === "new"
+          ? "Yeni məhsul tapılmadı."
+          : filterCategory === "discount"
+          ? "Endirimli məhsul tapılmadı."
+          : filterCategory === "best"
+          ? "Çox satılan məhsul tapılmadı."
+          : "Məhsul tapılmadı."}
+      </div>
+    );
   }
 
   return (
@@ -322,7 +385,7 @@ export default function FilterCards() {
           <ProductCard
             key={item.id}
             item={item}
-            activeCategory={filterCategory} // 👈 sənin badge məntiqinə birbaşa bağlıdır
+            activeCategory={filterCategory} // badge məntiqinə bağlıdır
           />
         ))}
       </div>
@@ -352,13 +415,22 @@ export default function FilterCards() {
 
         {showRightEllipsis && <span className="px-2 select-none">…</span>}
 
-        <button className="px-3 py-2 border rounded-md disabled:opacity-50" onClick={onClickNext}
-          disabled={totalPages != null ? page >= totalPages : !hasMore} aria-label="Sonraki">
+        <button
+          className="px-3 py-2 border rounded-md disabled:opacity-50"
+          onClick={onClickNext}
+          disabled={totalPages != null ? page >= totalPages : !hasMore}
+          aria-label="Sonraki"
+        >
           Növbəti
         </button>
 
-        <button className="px-3 py-2 border rounded-md disabled:opacity-50" onClick={onClickLast}
-          disabled={!(totalPages && page < totalPages)} aria-label="Son" title="Son">
+        <button
+          className="px-3 py-2 border rounded-md disabled:opacity-50"
+          onClick={onClickLast}
+          disabled={!(totalPages && page < totalPages)}
+          aria-label="Son"
+          title="Son"
+        >
           Son
         </button>
       </div>

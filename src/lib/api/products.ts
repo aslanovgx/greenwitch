@@ -10,7 +10,7 @@ export type ProductFilter = {
   page?: number;
   size?: number;
   search?: string;
-  sort?: "price_asc" | "price_desc";
+  // sort?: "price_asc" | "price_desc";
 };
 
 function buildQuery(p: ProductFilter = {}) {
@@ -22,7 +22,7 @@ function buildQuery(p: ProductFilter = {}) {
   if (p.colorId) qp.set("colorId", String(p.colorId));
   if (p.page) qp.set("page", String(p.page));
   if (p.size) qp.set("size", String(p.size));
-  if (p.sort) qp.set("sort", p.sort);
+  // if (p.sort) qp.set("sort", p.sort);
   if (p.search && p.search.trim()) qp.set("q", p.search.trim()); // backend uyğunlaşsa dəyişərik
   const qs = qp.toString();
   return qs ? `?${qs}` : "";
