@@ -1,3 +1,4 @@
+
 "use client";
 import Image from "next/image";
 import { useSearch } from "@/context/SearchContext";
@@ -5,16 +6,18 @@ import { useCallback } from "react";
 
 type Props = {
   onFocusOpenModal?: () => void;
+  onUserType?: () => void; // ✅ əlavə olundu
 };
 
-export default function SearchInput({ onFocusOpenModal }: Props) {
+export default function SearchInput({ onFocusOpenModal, onUserType }: Props) {
   const { searchTerm, setSearchTerm } = useSearch();
 
   const onChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setSearchTerm(e.target.value);
+      onUserType?.(); // ✅ user typing siqnalı
     },
-    [setSearchTerm]
+    [setSearchTerm, onUserType]
   );
 
   return (
@@ -32,7 +35,7 @@ export default function SearchInput({ onFocusOpenModal }: Props) {
         className="border-0 rounded px-2 py-1 text-sm focus:outline-none"
         value={searchTerm}
         onChange={onChange}
-        onFocus={onFocusOpenModal}
+        onFocus={() => onFocusOpenModal?.()} // ✅ optional call
         onKeyDown={(e) => {
           if (e.key === "Escape") (e.target as HTMLInputElement).blur();
         }}

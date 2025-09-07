@@ -35,7 +35,7 @@ type ErrorMessageData = {
 };
 
 export default function CheckoutForm() {
-  const { bagItems, clearBag, verifyAll } = useBag();
+  const { bagItems, clearBag } = useBag();
   const router = useRouter();
 
   const DEFAULT_CITY = "Bakı";
@@ -193,24 +193,6 @@ export default function CheckoutForm() {
     }
 
     // ⬇️ Checkout öncəsi son stok-yoxlama: səbətdə düzəliş varsa, göndərişi dayandırırıq
-    try {
-      const verify = await verifyAll();
-      if (!verify.ok) {
-        // ilk düzəlişə dair qısa mesaj (istəsən burada daha detallı xəritə də çıxara bilərik)
-        const first = verify.adjustments[0];
-        if (first) {
-          const adjustedTitle =
-            bagItems.find((b) => b.id === first.id)?.name ?? "Məhsul";
-          toast.error(`"${adjustedTitle}" üçün maksimum ${first.available} ədəd qalıb. Miqdar yeniləndi.`);
-        } else {
-          toast.error("Bəzi məhsullar stokla uyğunlaşdırıldı. Zəhmət olmasa yoxlayın.");
-        }
-        return; // createOrder göndərmirik
-      }
-    } catch {
-      // verifyAll-da gözlənilməz xəta olsa belə sifarişi bloklamaq olar (sən nasıl istəyirsənsə).
-      // Burada bloklamırıq ki, admin tərəfdə də yoxlama varsa sifariş itmesin.
-    }
 
     // Payload-a map
     const payload = {

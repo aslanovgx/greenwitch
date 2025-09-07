@@ -1,7 +1,7 @@
 // src/components/home/Banner/Banner.tsx
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import styles from "./Banner.module.css";
 import FadeImage from "@/components/FadeImage";
 import useAutoSlide from "@/hooks/useAutoSlide";

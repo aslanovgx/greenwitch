@@ -15,13 +15,15 @@ import BagButton from "../ui/BagButton";
 import { handleScroll, lockBodyScroll, unlockBodyScroll } from "@/utils/navbarUtils";
 import menuItems from "@/data/menuItems";
 import textSwitcherTexts from "@/components/layout/textSwitcherTexts";
-import type { RawProduct } from "@/types/Product";
+// import type { RawProduct } from "@/types/Product";
 import { usePathname, useSearchParams } from "next/navigation";
 import { FaInstagram } from "react-icons/fa";
 import { BsTelephone } from "react-icons/bs";
 
 // FE search util
 import { feSearchAll, rawToCard, type FeSearchResult } from "@/lib/utils/searchService";
+
+
 
 export default function Navbar() {
   const [fixed, setFixed] = useState(false);

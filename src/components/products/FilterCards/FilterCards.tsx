@@ -31,6 +31,24 @@ const toPageOr1 = (v: string | null) => {
   return Number.isFinite(n) && n > 0 ? Math.trunc(n) : 1;
 };
 
+/* —— Tip-guard & parser-lər —— */
+type ListResponse<T> = { items: T[]; total?: number; size?: number };
+
+const isRecord = (v: unknown): v is Record<string, unknown> =>
+  typeof v === "object" && v !== null;
+
+function parseProductsResponse(input: unknown): ListResponse<RawProduct> | { items: RawProduct[] } {
+  if (Array.isArray(input)) {
+    return { items: input as RawProduct[] };
+  }
+  if (isRecord(input) && Array.isArray(input.items)) {
+    const total = typeof input.total === "number" ? input.total : undefined;
+    const size  = typeof input.size === "number" ? input.size : undefined;
+    return { items: input.items as RawProduct[], total, size };
+  }
+  return { items: [] };
+}
+
 export default function FilterCards() {
   const sp = useSearchParams();
   const router = useRouter();
@@ -57,9 +75,6 @@ export default function FilterCards() {
     isFilterCode(sortCode) ? sortCode : "all";
   const orderCode: "price_asc" | "price_desc" | undefined =
     isOrderCode(sortCode) ? sortCode : undefined;
-
-  // orderCode varsa və ya filterCategory “all” deyilirsə → virtual pagination
-  const isVirtual = filterCategory !== "all" || !!orderCode;
 
   // FE predicate (server filtr etmir deyə)
   const hasDiscount = (p: UIProduct) =>
@@ -135,7 +150,6 @@ export default function FilterCards() {
           ...(shapeId ? { shapeId } : {}),
           ...(colorId ? { colorId } : {}),
           ...(categoryId ? { categoryId } : {}),
-          // sort-u BE-yə göndərmirik (FE sort)
         };
 
         // Helper: server cavabını UIProduct-a çevir
@@ -169,15 +183,15 @@ export default function FilterCards() {
 
         // ─────────── NORMAL (server pagination) YALNIZ: all + orderCode YOX ───────────
         if (filterCategory === "all" && !orderCode) {
-          const resp = await getProducts({ ...baseParams, page } as any);
-
-          const raw: RawProduct[] = Array.isArray(resp) ? resp : (resp?.items ?? []);
+          const resp = await getProducts({ ...baseParams, page });
+          const parsed = parseProductsResponse(resp);
+          const raw = parsed.items;
           const adapted = adapt(raw);
 
           const metaTotal: number | null =
-            typeof (resp as any)?.total === "number" ? (resp as any).total : null;
+            "total" in parsed && typeof parsed.total === "number" ? parsed.total : null;
           const metaSize: number =
-            typeof (resp as any)?.size === "number" ? (resp as any).size : SERVER_PAGE_SIZE;
+            "size" in parsed && typeof parsed.size === "number" ? parsed.size : SERVER_PAGE_SIZE;
 
           // totalPages / hasMore
           if (metaTotal != null) {
@@ -207,8 +221,9 @@ export default function FilterCards() {
         // A) GLOBAL SORT lazımdırsa (orderCode var) → BÜTÜN səhifələri yığ
         if (orderCode) {
           while (!aborted && serverPage <= MAX_SERVER_PAGES) {
-            const resp = await getProducts({ ...baseParams, page: serverPage } as any);
-            const raw: RawProduct[] = Array.isArray(resp) ? resp : (resp?.items ?? []);
+            const resp = await getProducts({ ...baseParams, page: serverPage });
+            const parsed = parseProductsResponse(resp);
+            const raw = parsed.items;
             const adapted = adapt(raw);
 
             // əvvəlcə filter (əgər "all" deyilsə)
@@ -249,8 +264,9 @@ export default function FilterCards() {
         const maxToCollect = needCount + capExtra;
 
         while (!aborted && serverPage <= MAX_SERVER_PAGES) {
-          const resp = await getProducts({ ...baseParams, page: serverPage } as any);
-          const raw: RawProduct[] = Array.isArray(resp) ? resp : (resp?.items ?? []);
+          const resp = await getProducts({ ...baseParams, page: serverPage });
+          const parsed = parseProductsResponse(resp);
+          const raw = parsed.items;
           const adapted = adapt(raw);
 
           // yalnız filter tətbiq olunur (price sort yoxdur)
@@ -280,8 +296,7 @@ export default function FilterCards() {
             return;
           }
         }
-      } catch (e) {
-        console.error(e);
+      } catch {
         if (page > 1) setQuery("page", page - 1);
         setError("Məhsulları yükləmək mümkün olmadı.");
         setItems([]);

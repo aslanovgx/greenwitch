@@ -1,5 +1,4 @@
 // src/app/page.tsx
-// ❌ Bunu çıxart: export const dynamic = "force-dynamic";
 export const revalidate = 60; // ✅ ISR: 60 saniyədən bir yenilə
 
 import Banner from "@/components/home/Banner/Banner";
@@ -18,7 +17,7 @@ import type { Product } from "@/types/Product";
 
 export default async function Home() {
   // SSR: məhsullar
-  const allProducts = await getProducts();
+  const allProducts: Product[] = await getProducts();
 
   // SSR: banner üçün info sections
   const allSections = await getInfoSections();

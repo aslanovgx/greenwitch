@@ -13,6 +13,7 @@ import "swiper/css/navigation";
 import { FiChevronUp, FiChevronDown } from "react-icons/fi";
 import { useBag } from "@/context/BagContext";
 import type { Swiper as SwiperClass } from "swiper";
+import type { SwiperOptions, NavigationOptions } from "swiper/types";
 
 // —— Breakpoint-lar
 const BP_SM = 640;
@@ -43,6 +44,21 @@ const GAP = 10;
 const calcThumbsHeight = (slides: number) => slides * THUMB_H + (slides - 1) * GAP;
 
 type Props = { product: ProductDetail };
+
+// Swiper Navigation üçün tip
+type NavParams = NavigationOptions & {
+  prevEl?: HTMLElement | null;
+  nextEl?: HTMLElement | null;
+};
+
+function ensureNav(swiper: SwiperClass): NavParams {
+  const p = (swiper.params as SwiperOptions) ?? ({} as SwiperOptions);
+  swiper.params = p; // run-time genişləndirmə
+  if (!p.navigation || typeof p.navigation === "boolean") {
+    p.navigation = {} as NavigationOptions; // tipli quruluş
+  }
+  return p.navigation as NavParams;
+}
 
 export default function ProductsDetail({ product }: Props) {
   // ——— State
@@ -101,18 +117,6 @@ export default function ProductsDetail({ product }: Props) {
     };
   }, []);
 
-  // ——— Swiper navigation ref-lərinin tək nöqtədən bağlanması (custom)
-  // const handleSwiperInit = (swiper: SwiperClass) => {
-  //   swiperRef.current = swiper;
-
-  //   if (shouldShowNav && swiper.params.navigation && typeof swiper.params.navigation !== "boolean") {
-  //     swiper.params.navigation.prevEl = prevRef.current;
-  //     swiper.params.navigation.nextEl = nextRef.current;
-  //     swiper.navigation.init();
-  //     swiper.navigation.update();
-  //   }
-  // };
-
   // ——— Swiper clean-up
   useEffect(() => () => {
     if (swiperRef.current && !swiperRef.current.destroyed) {
@@ -122,47 +126,33 @@ export default function ProductsDetail({ product }: Props) {
 
   // ——— shouldShowNav/layout dəyişəndə yenilə
   useEffect(() => {
-  const s = swiperRef.current;
-  const prev = prevRef.current;
-  const next = nextRef.current;
+    const s = swiperRef.current;
+    const prev = prevRef.current;
+    const next = nextRef.current;
+    if (!s) return;
 
-  if (!s) return;
+    if (!shouldShowNav) {
+      // naviqasiyanı dayandır, swiper-i yenilə
+      try { s.navigation?.destroy?.(); } catch {}
+      try { s.update?.(); } catch {}
+      return;
+    }
 
-  // shouldShowNav false-dursa, navigation-u söndür
-  if (!shouldShowNav) {
+    // ——— Təhlükəsiz: params/navigation qurulması helper ilə
+    const nav = ensureNav(s);
+    nav.prevEl = prev ?? undefined;
+    nav.nextEl = next ?? undefined;
+    nav.enabled = true;
+
     try {
-      s.navigation?.destroy?.();
+      s.navigation?.destroy?.(); // təmiz start üçün
     } catch {}
-    s.update?.();
-    return;
-  }
-
-  // ——— Təhlükəsiz init: params və navigation obyektlərini qur
-  if (!s.params) s.params = {};
-  if (!s.params.navigation || typeof s.params.navigation === "boolean") {
-    s.params.navigation = { enabled: true };
-  }
-
-  // Ref-lər hazırdırsa təyin et
-  s.params.navigation.prevEl = prev || undefined;
-  s.params.navigation.nextEl = next || undefined;
-
-  // Tam init + update
-  try {
-    s.navigation?.destroy?.(); // təmiz start üçün
-  } catch {}
-  try {
-    s.navigation?.init?.();
-    s.navigation?.update?.();
-  } catch {}
-
-  s.update?.();
-}, [
-  shouldShowNav,
-  thumbsConfig.slidesPerView,
-  validThumbs.length,
-]);
-
+    try {
+      s.navigation?.init?.();
+      s.navigation?.update?.();
+    } catch {}
+    try { s.update?.(); } catch {}
+  }, [shouldShowNav, thumbsConfig.slidesPerView, validThumbs.length]);
 
   // ——— Mount guard
   if (!hasMounted) return <div style={{ minHeight: 400 }} />;
@@ -170,8 +160,8 @@ export default function ProductsDetail({ product }: Props) {
   // —— Endirim helper-ləri
   const basePrice = Number(product.price ?? 0);
   const dp =
-    typeof (product as any)?.discountPrice === "number"
-      ? Number((product as any).discountPrice)
+    typeof product.discountPrice === "number"
+      ? product.discountPrice
       : null;
   const hasDiscount = typeof dp === "number" && dp < basePrice;
   const discountPct = hasDiscount ? Math.round(((basePrice - (dp as number)) / basePrice) * 100) : 0;
@@ -240,22 +230,11 @@ export default function ProductsDetail({ product }: Props) {
                 }}
                 // navigation prop YOXDUR — param-ları özümüz yazırıq
                 onBeforeInit={(swiper) => {
-                  // params həmişə olsun
-                  // @ts-ignore
-                  swiper.params = swiper.params ?? {};
-                  // @ts-ignore
-                  if (!swiper.params.navigation || typeof swiper.params.navigation === "boolean") {
-                    // @ts-ignore
-                    swiper.params.navigation = {};
-                  }
-
+                  const nav = ensureNav(swiper);
                   if (shouldShowNav) {
-                    // @ts-ignore
-                    swiper.params.navigation.prevEl = prevRef.current;
-                    // @ts-ignore
-                    swiper.params.navigation.nextEl = nextRef.current;
-                    // @ts-ignore
-                    swiper.params.navigation.enabled = true;
+                    nav.prevEl = prevRef.current ?? undefined;
+                    nav.nextEl = nextRef.current ?? undefined;
+                    nav.enabled = true;
                   }
                 }}
                 onSwiper={(swiper) => {
@@ -263,33 +242,24 @@ export default function ProductsDetail({ product }: Props) {
 
                   // Bir "tick" gecikdirib, yenə də guard-larla init et
                   setTimeout(() => {
-                    // @ts-ignore
-                    const params = swiper.params ?? {};
-                    // @ts-ignore
-                    const navParams = params.navigation;
-
-                    if (shouldShowNav && navParams) {
-                      // @ts-ignore
-                      navParams.prevEl = prevRef.current;
-                      // @ts-ignore
-                      navParams.nextEl = nextRef.current;
-
-                      // Module yüklənibsə ancaq onda çağır
-                      if (swiper.navigation) {
-                        try {
-                          swiper.navigation.init();
-                          swiper.navigation.update();
-                        } catch {
-                          /* noop */
-                        }
-                      }
+                    if (!shouldShowNav) {
+                      try { swiper.update?.(); } catch {}
+                      return;
                     }
 
-                    try {
-                      swiper.update();
-                    } catch {
-                      /* noop */
+                    const nav = ensureNav(swiper);
+                    nav.prevEl = prevRef.current ?? undefined;
+                    nav.nextEl = nextRef.current ?? undefined;
+                    nav.enabled = true;
+
+                    if (swiper.navigation) {
+                      try {
+                        swiper.navigation.init();
+                        swiper.navigation.update();
+                      } catch { /* noop */ }
                     }
+
+                    try { swiper.update?.(); } catch { /* noop */ }
                   }, 0);
                 }}
                 watchSlidesProgress

@@ -7,7 +7,7 @@ import { useState } from 'react';
 
 export default function MapView() {
     const [activeStore, setActiveStore] = useState<Store>(stores[0]);
-    const [activeCategory, setActiveCategory] = useState("Bakı üzrə");
+    const [activeCategory] = useState("Bakı üzrə");
 
     return (
         <div className={styles.mapContainer}>

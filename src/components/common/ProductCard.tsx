@@ -82,8 +82,8 @@ function ProductCardComponent({
 
 
   // 3) Badge → type (1=BEST, 2=NEW, 3=ENDİRİM)
-  const badgeType: 1 | 2 | 3 | null =
-    badge === "BEST" ? 1 : badge === "NEW" ? 2 : badge === "ENDİRİM" ? 3 : null;
+  // const badgeType: 1 | 2 | 3 | null =
+  //   badge === "BEST" ? 1 : badge === "NEW" ? 2 : badge === "ENDİRİM" ? 3 : null;
 
   // 4) Admin rəngi
   const colorByBadge: Record<"BEST" | "NEW" | "ENDİRİM", string | undefined> = {

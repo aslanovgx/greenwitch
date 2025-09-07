@@ -65,7 +65,7 @@ export type ProductDetail = {
 
 export async function getProductById(id: number): Promise<ProductDetail> {
   const data = await apiGet(`/Product/${id}`);
-  const p = (data?.product ?? data) as Partial<ProductDetail> & Record<string, any>;
+   const p = (data?.product ?? data) as Partial<ProductDetail> & Record<string, unknown>;
 
   // relative -> absolute şəkil
   const API = (process.env.NEXT_PUBLIC_API_URL ?? "").trim();
@@ -75,7 +75,7 @@ export async function getProductById(id: number): Promise<ProductDetail> {
   const thumbs = Array.isArray(p.thumbnails) ? p.thumbnails.map(toAbs) : [];
 
   // rəqəmsal sahələri təhlükəsiz tipə salaq
-  const toNum = (v: any): number | undefined =>
+  const toNum = (v: unknown): number | undefined =>
     Number.isFinite(Number(v)) ? Number(v) : undefined;
 
   return {

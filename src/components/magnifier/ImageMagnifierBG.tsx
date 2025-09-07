@@ -92,7 +92,7 @@ export default function ImageMagnifierBG({
                 alt="product"
                 fill
                 sizes={`${width}px`}
-                style={{ objectFit: "contain" }}
+                style={{ objectFit: "cover" }}
                 draggable={false}
                 onLoadingComplete={onDone}
                 priority={false}

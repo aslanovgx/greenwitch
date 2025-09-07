@@ -4,9 +4,56 @@ import ProductsDetail from "./ProductsDetail";
 import SimilarProducts from "./SimilarProducts";
 import Contact from "@/components/home/Contact/Contact";
 import { getProductById, getProducts } from "@/lib/api/products";
-import { getBrands } from "@/lib/api/brand"; // <<<< ƏLAVƏ ET
+import { getBrands } from "@/lib/api/brand";
+import type { RawProduct } from "@/types/Product";
 
 type Params = Promise<{ id: string }>;
+
+// Köməkçilər
+const norm = (s: string | undefined | null) => String(s ?? "").trim().toLowerCase();
+const toNum = (v: unknown): number | undefined => {
+  const n = Number(v);
+  return Number.isFinite(n) && n > 0 ? n : undefined;
+};
+const isValid = (v: unknown) => typeof toNum(v) === "number";
+const isRecord = (v: unknown): v is Record<string, unknown> =>
+  typeof v === "object" && v !== null;
+
+// Sadə list tipi (yalnız bizə lazım olan sahələr)
+type ListItem = Pick<RawProduct, "id" | "brandId" | "brandName">;
+
+// xam list → təhlükəsiz ListItem[]
+function toList(input: unknown): ListItem[] {
+  if (!Array.isArray(input)) return [];
+  const out: ListItem[] = [];
+  for (const v of input) {
+    if (!isRecord(v)) continue;
+
+    const id = toNum(v.id);
+    if (!id) continue;
+
+    const brandId = toNum(v.brandId);
+    const brandName = typeof v.brandName === "string" ? v.brandName : undefined;
+
+    out.push({ id, brandId, brandName });
+  }
+  return out;
+}
+
+type Brand = { id: number; name: string };
+
+// xam brands → Brand[]
+function toBrands(input: unknown): Brand[] {
+  if (!Array.isArray(input)) return [];
+  const out: Brand[] = [];
+  for (const v of input) {
+    if (!isRecord(v)) continue;
+    const id = toNum(v.id);
+    const name = typeof v.name === "string" ? v.name : undefined;
+    if (id && name) out.push({ id, name });
+  }
+  return out;
+}
 
 export async function generateMetadata({ params }: { params: Params }) {
   const { id } = await params;
@@ -20,54 +67,52 @@ export async function generateMetadata({ params }: { params: Params }) {
 
 export default async function Page({ params }: { params: Params }) {
   const { id } = await params;
+
   const product = await getProductById(Number(id)).catch(() => null);
   if (!product) return notFound();
 
-  // ümumi product list
-  const list = await getProducts({ size: 60 }).catch(() => []);
+  // Ümumi product list (xam) → təhlükəsiz ListItem[]
+  const rawList = await getProducts({ size: 60 }).catch(() => []);
+  const list = toList(rawList);
 
-  // eyni brendin məhsullarını filterlə
-  const norm = (s: string | undefined | null) => String(s ?? "").trim().toLowerCase();
-  const target = norm((product as any).brandName);
-
-  const sameBrand = (Array.isArray(list) ? list : []).filter(
-    (p: any) => Number(p?.id) !== Number(product.id) && norm(p?.brandName) === target
+  // Eyni brendə aid məhsullar
+  const target = norm(product.brandName);
+  const sameBrand: ListItem[] = list.filter(
+    (p) => p.id !== product.id && norm(p.brandName) === target
   );
 
-  // 1) detail-dan brandId
-  const brandIdFromDetail = Number((product as any)?.brandId);
-  const isValid = (v: unknown) => Number.isFinite(Number(v)) && Number(v) > 0;
+  // 1) detail-dən brandId (əgər BE qaytarırsa; ProductDetail tipinə əlavə etməmisənsə belə təhlükəsiz oxuyuruq)
+  const brandIdFromDetail = toNum((product as unknown as { brandId?: unknown }).brandId);
 
-  // 2) list-dən brandId
-  const brandIdFromList = (() => {
-    const found = sameBrand.find((x: any) => isValid(x?.brandId));
-    return found ? Number(found.brandId) : undefined;
-  })();
+  // 2) list-dən brandId (eyni brendli məhsullardan birində varsa)
+  const brandIdFromList = toNum(sameBrand.find((x) => isValid(x.brandId))?.brandId);
 
-  // 3) brendlərdən ad ilə tap
-  let brandIdFromName: number | undefined = undefined;
-  if (!isValid(brandIdFromDetail) && !isValid(brandIdFromList) && target) {
+  // 3) brend siyahısından ad ilə tap
+  let brandIdFromName: number | undefined;
+  if (!brandIdFromDetail && !brandIdFromList && target) {
     try {
-      const brands = await getBrands(); // [{id, name}, ...] dönür fərz edirik
-      const found = Array.isArray(brands)
-        ? brands.find((b: any) => norm(b?.name) === target)
-        : undefined;
-      if (found && isValid(found.id)) brandIdFromName = Number(found.id);
+      const brandsRaw = await getBrands();
+      const brands = toBrands(brandsRaw); // [{id, name}]
+      const found = brands.find((b) => norm(b.name) === target);
+      brandIdFromName = toNum(found?.id);
     } catch {
       // ignore
     }
   }
 
   const resolvedBrandId =
-    isValid(brandIdFromDetail) ? Number(brandIdFromDetail)
-    : isValid(brandIdFromList) ? Number(brandIdFromList)
-    : isValid(brandIdFromName) ? Number(brandIdFromName)
-    : undefined;
+    brandIdFromDetail ?? brandIdFromList ?? brandIdFromName ?? undefined;
+
+  let sameBrandFull: RawProduct[] = [];
+  if (resolvedBrandId) {
+    sameBrandFull = await getProducts({ brandId: resolvedBrandId, size: 10 }).catch(() => []);
+  }
 
   return (
     <>
       <ProductsDetail product={product} />
-      <SimilarProducts initialProducts={sameBrand} brandId={resolvedBrandId} />
+      {/* sameBrand ListItem[] olsa da, SimilarProducts RawProduct[] istəyir — struktur uyğun gəlir */}
+      <SimilarProducts initialProducts={sameBrandFull} brandId={resolvedBrandId} />
       <Contact />
     </>
   );

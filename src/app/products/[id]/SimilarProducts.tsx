@@ -26,30 +26,37 @@ export default function SimilarProducts({ initialProducts = [], brandId }: Props
   const [activeCardId, setActiveCardId] = useState<number | null>(null);
 
   const adapt = useCallback((p: RawProduct): Product => {
-    const rawImgs = Array.isArray(p.images) ? p.images : [];
-    const images = rawImgs
-      .filter((x) => typeof x === "string" && x.trim() !== "")
-      .map(buildImageUrl);
+  // 1) images yoxdursa thumbnails-dan istifadə et
+  const thumbs = (p as { thumbnails?: unknown[] }).thumbnails;
+  const rawImages = Array.isArray(p.images)
+    ? p.images
+    : (Array.isArray(thumbs) ? (thumbs as unknown[]) : []);
 
-    const toNum = (v: unknown) => (Number.isFinite(Number(v)) ? Number(v) : 0);
+  const images = rawImages
+    .filter((x): x is string => typeof x === "string" && x.trim() !== "")
+    .map(buildImageUrl);
 
-    return {
-      id: Number(p.id),
-      name: p.name ?? "",
-      description: p.description ?? "",
-      bestSeller: !!p.bestSeller,
-      isNew: !!p.isNew,
-      price: toNum(p.price),
-      discountPrice:
-        p.discountPrice === null || p.discountPrice === undefined ? null : toNum(p.discountPrice),
-      brandName: p.brandName ?? "",
-      images,
-      image: undefined,
-      thumbnails: undefined,
-      title: undefined,
-      desc: undefined,
-    };
-  }, []);
+  // 2) rəqəmləri normalizə et
+  const toNum = (v: unknown) => (Number.isFinite(Number(v)) ? Number(v) : 0);
+
+  // 3) ad/descr fallback (Products.tsx ilə eyni)
+  const { title, desc } = p as { title?: string; desc?: string };
+
+  return {
+    id: Number(p.id),
+    name: (p.name ?? title ?? "").trim(),
+    description: (p.description ?? desc ?? "").trim(),
+    bestSeller: !!p.bestSeller,
+    isNew: !!p.isNew,
+    price: toNum(p.price),
+    discountPrice: p.discountPrice == null ? null : toNum(p.discountPrice),
+    brandName: p.brandName ?? "",
+    images,
+    // optional sahələr UI type-də opsional olduğuna görə verməyə ehtiyac yoxdur
+    // brandId-ə toxunmuruq
+  };
+}, []);
+
 
   const products = useMemo(() => initialProducts.map(adapt), [initialProducts, adapt]);
 
