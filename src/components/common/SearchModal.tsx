@@ -105,7 +105,7 @@ export default function SearchModal({
                         alt={r.brandName || "product"}
                         fill
                         sizes="64px"
-                        className="object-cover"
+                        className="object-contain"
                       />
                     </div>
                     <div className="min-w-0">
