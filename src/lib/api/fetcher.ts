@@ -1,52 +1,34 @@
 // lib/api/fetcher.ts
-export type FetchOpts = {
-  revalidate?: number;          // SSR/ISR üçün saniyə (serverdə işləyir)
-  cache?: RequestCache;         // CSR üçün cache siyasəti (brauzerdə işləyir)
-  signal?: AbortSignal;         // (ops.) abort/timeout
-  headers?: Record<string, string>; // (ops.) əlavə header-lər
-};
+type FetchOpts = { revalidate?: number; cache?: RequestCache };
 
-export async function apiGet<T = unknown>(path: string, opts: FetchOpts = {}) {
+export async function apiGet(path: string, opts: FetchOpts = {}) {
   const BASE = (process.env.NEXT_PUBLIC_API_URL ?? '')
     .trim()
-    .replaceAll('"', '')
+    .replaceAll('"','')
     .replace(/\/+$/, '');
-
-  if (!BASE) throw new Error('NEXT_PUBLIC_API_URL təyin edilməyib');
-
   const url = `${BASE}${path.startsWith('/') ? '' : '/'}${path}`;
-  const isServer = typeof window === 'undefined';
+  const isServer = typeof window === "undefined";
 
-  const fetchOpts: RequestInit & { next?: { revalidate?: number } } = {
+  // ✅ fetch konfiqurasiyası üçün düzgün tip
+  const fetchOpts: RequestInit & { next?: { revalidate: number } } = {
     method: 'GET',
     headers: {
       'ngrok-skip-browser-warning': 'true',
       'Accept': 'application/json',
-      ...(opts.headers ?? {}),
     },
-    signal: opts.signal,
   };
 
   if (isServer) {
-    // ✅ Backend IMemoryCache (5 dəq) ilə uyğun olsun deyə default 300s
-    fetchOpts.next = { revalidate: opts.revalidate ?? 300 };
+    fetchOpts.next = { revalidate: opts.revalidate ?? 60 }; // ISR serverdə
   } else {
-    // ✅ CSR tərəfdə filter/search üçün hər zaman təzə çəkmək daha yaxşıdır
-    fetchOpts.cache = opts.cache ?? 'no-store';
+    fetchOpts.cache = opts.cache ?? 'no-store';             // clientdə no-store
   }
 
   const res = await fetch(url, fetchOpts);
   const ct = res.headers.get('content-type') || '';
-
-  if (!res.ok) {
-    let body = '';
-    try { body = await res.text(); } catch {}
-    throw new Error(`[${res.status}] ${url}${body ? ` — ${body}` : ''}`);
-  }
-
+  if (!res.ok) throw new Error(`[${res.status}] ${url}`);
   if (!ct.includes('application/json')) {
-    throw new Error(`Server JSON əvəzinə ${ct || 'naməlum content-type'} qaytardı: ${url}`);
+    throw new Error(`Server JSON əvəzinə ${ct} qaytardı: ${url}`);
   }
-
-  return res.json() as Promise<T>;
+  return res.json();
 }
