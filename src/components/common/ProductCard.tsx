@@ -38,6 +38,14 @@ function ProductCardComponent({
   const isTouch = useIsTouchDevice();
   const isActive = isTouch && activeCardId === item.id;
 
+  const SIZES =
+    "(max-width: 640px) 150px, " +
+    "(max-width: 769px) 150px, " +
+    "(max-width: 1025px) 172px, " +
+    "(max-width: 1280px) 243px, " + // 1026–1280 aralığı üçün
+    "243px";                        // >1280 üçün fallback
+
+
   const cover = item.images?.[0] ?? "/assets/placeholders/product.png";
   const hover = item.images?.[1] ?? null;
 
@@ -76,8 +84,8 @@ function ProductCardComponent({
     // all
     badge = hasDiscount ? "ENDİRİM"
       : item.bestSeller ? "BEST"
-      : item.isNew ? "NEW"
-      : null;
+        : item.isNew ? "NEW"
+          : null;
   }
 
 
@@ -129,6 +137,9 @@ function ProductCardComponent({
           alt={item.name || "Product image"}
           fill
           loading="lazy"
+          decoding="async"
+          fetchPriority="low"
+          sizes={SIZES}
           className={`w-full h-full  transition-opacity duration-600 ${!isTouch ? 'group-hover:opacity-0' : (isActive ? 'opacity-0' : 'opacity-100')
             }`}
           style={{ objectFit: 'contain' }}
@@ -139,6 +150,8 @@ function ProductCardComponent({
             alt={item.name || "Product image"}
             fill
             loading="lazy"
+            decoding="async"
+            sizes={SIZES}
             className={`${styles.hoverImage}  w-full h-full absolute top-0 left-0 transition-opacity duration-700 ${!isTouch ? 'opacity-0 group-hover:opacity-100' : (isActive ? 'opacity-100' : 'opacity-0')
               }`}
             style={{ objectFit: 'contain' }}

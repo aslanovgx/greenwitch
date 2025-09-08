@@ -12,7 +12,7 @@ const aboutContent: Offer = {
     sections: [
         {
             heading: "Brendimiz haqqında",
-            text: "Greenwich Saatları, zamanın dəqiqliyini və zərif zövqü birləşdirən prestijli bir saat markasıdır. Azərbaycanda orijinallığa və keyfiyyətə önəm verən müştərilər üçün seçilmiş dünya brendlərini təqdim edirik. Hər bir saat, zamanla yarışan, dəb və funksionallığı eyni anda yaşamaq istəyənlər üçün xüsusi seçimdir."
+            text: "BayGroup şirkəti olaraq Azərbaycanda orijinallığa və keyfiyyətə önəm verən müştərilər üçün dünyaca tanınmış, seçilmiş markaları təqdim edirik. Şirkəmiz Fossil,Emporio Armani, Michael Kors,  Armani Exchange, Diesel, Lacoste, Tommy Hilfiger, Calvin Klein, Anne Klein, DKNY, Swiss Military Hanova və diqər markaların Azərbaycanda rəsmi distributorudur. Bay Group şirkəti qol saatlarının Azərbaycanda pərakəndə , korporativ  və topdan, satışını həyata keçirir. Bizim təqdim etdiyimiz hər bir saat sadəcə bir aksessuar deyil, həyat tərzinizi tamamlayan dəyərli bir seçimdir."
         },
         {
             heading: "Missiyamız",
@@ -22,23 +22,24 @@ const aboutContent: Offer = {
         {
             heading: "Dəyərlərimiz",
             text: [
-                "Orijinallıq və zəmanət: Satışa çıxardığımız bütün saatlar rəsmi distribütorlardan alınır və orijinal zəmanətlə təqdim olunur.",
-                "Müştəri məmnuniyyəti: Bizim üçün hər bir müştəri özəldir. Satış öncəsi və sonrası xidmətlərlə daim yanınızdayıq.",
-                "Keyfiyyətli xidmət: Peşəkar komandamızla sizə doğru məhsulu seçməkdə və qulluqda dəstək oluruq."
+                "Orijinallıq və zəmanət: Bütün təqdim etdiyimiz məhsullar orijinaldır və beynəlxalq zəmanət təqdim edilir.",
+                "Müştəri məmnuniyyəti: Hər bir müştərimiz bizim üçün dəyərlidir. Satış prosesinin hər mərhələsində fərdi yanaşma və etibarlı dəstək ilə hər zaman sizinləyik.",
+                "Peşəkar xidmət: Komandamız məhsul seçimi, qulluq və texniki dəstək mərhələlərində sizə tam peşəkarlıqla xidmət göstərir."
             ]
         },
         {
             heading: "Məhsul çeşidimiz",
             text: [
-                "Greenwich-də siz həm klassik, həm də müasir dizayna sahib kişi və qadın saatlarını tapa bilərsiniz. Seçimlərimiz arasında:",
+                "Greenwich saat mağazalar şəbəkəsində hər zövqə və həyat tərzinə uyğun qadın və kişi modelləri mövcuddur:",
+                "Klassik və müasir dizaynlar",
                 "Avtomatik və kvars mexanizmlər",
                 "Suya davamlı modellər",
-                "Lüks və gündəlik istifadə üçün uyğun alternativlər mövcuddur."
+                "Lüks və gündəlik istifadə üçün fərqli üslublar"
             ]
         },
         {
             heading: "Haradayıq?",
-            text: "Bizi Azərbaycanın aparıcı ticarət mərkəzlərində və rəsmi vebsaytımızda tapa bilərsiniz. Online və fiziki satışlarımızla ölkənin hər yerinə çatdırılma imkanı təqdim edirik."
+            text: "Greenwich saat mağazalar şəbəkəsi olaraq təqdim etdiyimiz brendlərin saatlarını Azərbaycanın aparıcı ticarət mərkəzlərində, həmçinin rəsmi onlayn saytımızdan əldə edə bilərsiniz. Online sifarişlə ölkənin istənilən bölgəsinə sürətli və təhlükəsiz çatdırılma həyata keçiririk."
         },
     ]
 };

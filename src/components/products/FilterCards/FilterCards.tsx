@@ -43,22 +43,25 @@ function parseProductsResponse(input: unknown): ListResponse<RawProduct> | { ite
   }
   if (isRecord(input) && Array.isArray(input.items)) {
     const total = typeof input.total === "number" ? input.total : undefined;
-    const size  = typeof input.size === "number" ? input.size : undefined;
+    const size = typeof input.size === "number" ? input.size : undefined;
     return { items: input.items as RawProduct[], total, size };
   }
   return { items: [] };
 }
 
 export default function FilterCards() {
+  const [activeCardId, setActiveCardId] = useState<number | null>(null);
+
+
   const sp = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
 
   // URL → filterlər
-  const brandId    = toPosIntOrUndef(sp.get("brandId"));
-  const genderId   = toPosIntOrUndef(sp.get("Gender"));
-  const shapeId    = toPosIntOrUndef(sp.get("shapeId"));
-  const colorId    = toPosIntOrUndef(sp.get("colorId"));
+  const brandId = toPosIntOrUndef(sp.get("brandId"));
+  const genderId = toPosIntOrUndef(sp.get("Gender"));
+  const shapeId = toPosIntOrUndef(sp.get("shapeId"));
+  const colorId = toPosIntOrUndef(sp.get("colorId"));
   const categoryId = toPosIntOrUndef(sp.get("categoryId"));
 
   // URL → sort
@@ -130,12 +133,6 @@ export default function FilterCards() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [brandId, genderId, shapeId, colorId, categoryId, sortCode]);
 
-  /* Data fetch
-     — “all” + orderCode YOX → normal server pagination (əgər backend total/size verirsə).
-     — Qalan bütün hallarda VIRTUAL PAGINATION:
-         * filter=new/discount/best → lazımi qədər yığ (hazırki + növbəti UI səhifə üçün)
-         * orderCode varsa → BÜTÜN səhifələri yığ (global sort üçün), sonra slice
-  */
   useEffect(() => {
     let aborted = false;
 
@@ -161,8 +158,8 @@ export default function FilterCards() {
               p.discountPrice == null
                 ? null
                 : (typeof p.discountPrice === "number"
-                    ? p.discountPrice
-                    : (Number(p.discountPrice) || 0));
+                  ? p.discountPrice
+                  : (Number(p.discountPrice) || 0));
 
             const imgs = (Array.isArray(p.images) ? p.images : [])
               .filter((x): x is string => typeof x === "string" && x.trim() !== "")
@@ -260,7 +257,7 @@ export default function FilterCards() {
 
         // B) YALNIZ filter=new/discount/best → cari + növbəti UI səhifə qədər yığ
         const needCount = UI_PAGE_SIZE * page;
-        const capExtra  = UI_PAGE_SIZE;
+        const capExtra = UI_PAGE_SIZE;
         const maxToCollect = needCount + capExtra;
 
         while (!aborted && serverPage <= MAX_SERVER_PAGES) {
@@ -274,7 +271,7 @@ export default function FilterCards() {
           bag.push(...filtered);
 
           const reachedEnd = adapted.length < SERVER_PAGE_SIZE;
-          const enoughNow  = bag.length >= maxToCollect;
+          const enoughNow = bag.length >= maxToCollect;
           if (reachedEnd || enoughNow) break;
 
           serverPage++;
@@ -311,6 +308,11 @@ export default function FilterCards() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [brandId, genderId, shapeId, colorId, categoryId, sortCode, filterCategory, page]);
 
+  useEffect(() => {
+    setActiveCardId(null);
+  }, [brandId, genderId, shapeId, colorId, categoryId, sortCode, page]);
+
+
   /* Handlers (CLICK → dərhal scroll 0) */
   const goToPage = (p: number) => {
     const target = Math.max(1, p);
@@ -319,9 +321,9 @@ export default function FilterCards() {
     requestAnimationFrame(scrollToTop);
   };
   const onClickFirst = () => goToPage(1);
-  const onClickPrev  = () => goToPage(page - 1);
-  const onClickNext  = () => goToPage(page + 1);
-  const onClickLast  = () => { if (totalPages) goToPage(totalPages); };
+  const onClickPrev = () => goToPage(page - 1);
+  const onClickNext = () => goToPage(page + 1);
+  const onClickLast = () => { if (totalPages) goToPage(totalPages); };
 
   // Rəqəmsal düymələr
   const windowPages = useMemo(() => {
@@ -329,7 +331,7 @@ export default function FilterCards() {
       const around = 2;
       let pages: number[] = [];
       const start = Math.max(1, page - around);
-      const end   = Math.min(totalPages, page + around);
+      const end = Math.min(totalPages, page + around);
       for (let p = start; p <= end; p++) pages.push(p);
       if (!pages.includes(1)) pages = [1, ...pages];
       if (!pages.includes(totalPages)) pages = [...pages, totalPages];
@@ -341,7 +343,7 @@ export default function FilterCards() {
     return Array.from(set).filter(n => n >= 1).sort((a, b) => a - b);
   }, [page, totalPages, hasMore]);
 
-  const showLeftEllipsis  = totalPages ? windowPages[0] > 1 : page - 2 > 1;
+  const showLeftEllipsis = totalPages ? windowPages[0] > 1 : page - 2 > 1;
   const showRightEllipsis = totalPages
     ? windowPages[windowPages.length - 1] < (totalPages ?? 1)
     : hasMore;
@@ -384,10 +386,10 @@ export default function FilterCards() {
         {filterCategory === "new"
           ? "Yeni məhsul tapılmadı."
           : filterCategory === "discount"
-          ? "Endirimli məhsul tapılmadı."
-          : filterCategory === "best"
-          ? "Çox satılan məhsul tapılmadı."
-          : "Məhsul tapılmadı."}
+            ? "Endirimli məhsul tapılmadı."
+            : filterCategory === "best"
+              ? "Çox satılan məhsul tapılmadı."
+              : "Məhsul tapılmadı."}
       </div>
     );
   }
@@ -395,12 +397,22 @@ export default function FilterCards() {
   return (
     <div className={styles.filterCards}>
       <div ref={gridTopRef} />
-      <div className={`${cardStyles.cards_container} ${styles.cards_box} flex justify-center items-center`}>
+      <div
+        className={`${cardStyles.cards_container} ${styles.cards_box} flex justify-center items-center`}
+        onTouchStart={(e) => {
+          // kartın özünə/uşaqlarına toxunmadıqda aktivliyi söndür
+          if (!(e.target as HTMLElement).closest("[data-card-id]")) {
+            setActiveCardId(null);
+          }
+        }}
+      >
         {items.map((item) => (
           <ProductCard
             key={item.id}
             item={item}
             activeCategory={filterCategory} // badge məntiqinə bağlıdır
+            activeCardId={activeCardId}          {/* 👈 əlavə */}
+            setActiveCardId={setActiveCardId}    {/* 👈 əlavə */}
           />
         ))}
       </div>
