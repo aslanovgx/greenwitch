@@ -7,7 +7,7 @@ import FadeImage from "@/components/FadeImage";
 import useAutoSlide from "@/hooks/useAutoSlide";
 import type { InfoSection } from "@/lib/api/infoSections";
 
-type BannerSet = { images: { src: string; alt: string }[] };
+type BannerSet = { images: { src: string; alt: string; url?: string | null }[] };
 
 const buildImageUrl = (rel?: string) => {
   const API = (process.env.NEXT_PUBLIC_API_URL ?? "").trim();
@@ -29,6 +29,7 @@ function sectionsToSets(sections: InfoSection[] = []): BannerSet[] {
     const imgs = (sec.images ?? []).map((im, i) => ({
       src: buildImageUrl(im.imagePath),
       alt: `${sec.title ?? "section"}-${i + 1}`,
+      url: sec.url ?? undefined, // 👈 burada url saxlanılır
     }));
     return chunk3(imgs).map((block) => ({ images: block }));
   });
@@ -36,12 +37,11 @@ function sectionsToSets(sections: InfoSection[] = []): BannerSet[] {
 }
 
 export default function Banner({ initialSections = [] }: { initialSections?: InfoSection[] }) {
-  // İlk renderdə data artıq hazırdır → layout tərpənmir
   const [sets] = useState<BannerSet[]>(() => sectionsToSets(initialSections));
   const slideCount = Math.max(sets.length, 1);
   const { activeIndex, prevIndex } = useAutoSlide(slideCount);
 
-  if (!sets.length) return null; // SSR-də də boş gəlirsə, heç nə göstərmirik
+  if (!sets.length) return null;
 
   const curr = sets[activeIndex % sets.length];
   const prev = sets[prevIndex % sets.length];
@@ -51,12 +51,23 @@ export default function Banner({ initialSections = [] }: { initialSections?: Inf
       <div className="flex justify-center items-center w-full">
         {curr.images.map((img, idx) => (
           <div key={`${img.src}-${idx}`} className={`relative ${styles[`banner_${idx + 1}`]}`}>
-            <FadeImage
-              current={{ src: curr.images[idx].src, title: curr.images[idx].alt }}
-              previous={{ src: prev.images[idx].src, title: prev.images[idx].alt }}
-              activeIndex={activeIndex}
-              prevIndex={prevIndex}
-            />
+            {img.url ? (
+              <a href={img.url} target="_blank" rel="noopener noreferrer">
+                <FadeImage
+                  current={{ src: curr.images[idx].src, title: curr.images[idx].alt }}
+                  previous={{ src: prev.images[idx].src, title: prev.images[idx].alt }}
+                  activeIndex={activeIndex}
+                  prevIndex={prevIndex}
+                />
+              </a>
+            ) : (
+              <FadeImage
+                current={{ src: curr.images[idx].src, title: curr.images[idx].alt }}
+                previous={{ src: prev.images[idx].src, title: prev.images[idx].alt }}
+                activeIndex={activeIndex}
+                prevIndex={prevIndex}
+              />
+            )}
           </div>
         ))}
       </div>

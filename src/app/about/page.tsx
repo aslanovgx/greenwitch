@@ -12,7 +12,7 @@ const aboutContent: Offer = {
     sections: [
         {
             heading: "Brendimiz haqqında",
-            text: "BayGroup şirkəti olaraq Azərbaycanda orijinallığa və keyfiyyətə önəm verən müştərilər üçün dünyaca tanınmış, seçilmiş markaları təqdim edirik. Şirkəmiz Fossil,Emporio Armani, Michael Kors,  Armani Exchange, Diesel, Lacoste, Tommy Hilfiger, Calvin Klein, Anne Klein, DKNY, Swiss Military Hanova və diqər markaların Azərbaycanda rəsmi distributorudur. Bay Group şirkəti qol saatlarının Azərbaycanda pərakəndə , korporativ  və topdan, satışını həyata keçirir. Bizim təqdim etdiyimiz hər bir saat sadəcə bir aksessuar deyil, həyat tərzinizi tamamlayan dəyərli bir seçimdir."
+            text: "BayGroup şirkəti olaraq Azərbaycanda orijinallığa və keyfiyyətə önəm verən müştərilər üçün dünyaca tanınmış, seçilmiş markaları təqdim edirik. Şirkəmiz Fossil, Emporio Armani, Michael Kors, Armani Exchange, Diesel, Lacoste, Tommy Hilfiger, Calvin Klein, Anne Klein, DKNY, Swiss Military Hanova və digər markaların Azərbaycanda rəsmi distributorudur. Bay Group şirkəti qol saatlarının Azərbaycanda pərakəndə, korporativ və topdan satışını həyata keçirir. Bizim təqdim etdiyimiz hər bir saat sadəcə bir aksessuar deyil, həyat tərzinizi tamamlayan dəyərli bir seçimdir."
         },
         {
             heading: "Missiyamız",
@@ -30,7 +30,7 @@ const aboutContent: Offer = {
         {
             heading: "Məhsul çeşidimiz",
             text: [
-                "Greenwich saat mağazalar şəbəkəsində hər zövqə və həyat tərzinə uyğun qadın və kişi modelləri mövcuddur:",
+                "Greenwich saat mağazaları şəbəkəsində hər zövqə və həyat tərzinə uyğun qadın və kişi modelləri mövcuddur:",
                 "Klassik və müasir dizaynlar",
                 "Avtomatik və kvars mexanizmlər",
                 "Suya davamlı modellər",
@@ -39,7 +39,7 @@ const aboutContent: Offer = {
         },
         {
             heading: "Haradayıq?",
-            text: "Greenwich saat mağazalar şəbəkəsi olaraq təqdim etdiyimiz brendlərin saatlarını Azərbaycanın aparıcı ticarət mərkəzlərində, həmçinin rəsmi onlayn saytımızdan əldə edə bilərsiniz. Online sifarişlə ölkənin istənilən bölgəsinə sürətli və təhlükəsiz çatdırılma həyata keçiririk."
+            text: "Greenwich saat mağazaları şəbəkəsi olaraq təqdim etdiyimiz brendlərin saatlarını Azərbaycanın aparıcı ticarət mərkəzlərində, həmçinin rəsmi onlayn saytımızdan əldə edə bilərsiniz. Onlayn sifarişlə ölkənin istənilən bölgəsinə sürətli və təhlükəsiz çatdırılma həyata keçiririk."
         },
     ]
 };

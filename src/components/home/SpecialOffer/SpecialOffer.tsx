@@ -89,22 +89,25 @@ export default function SpecialOffer({ hiddenId, children }: Props) {
                                     <div className={`${styles.desc} flex items-center justify-between w-full absolute bottom-0 left-0 px-4 bg-white/80 backdrop-blur-sm`}>
                                         <p className="text-black font-medium">{card.title}</p>
                                         <span className="relative flex items-center gap-2 overflow-hidden">
-                                            <span
-                                                onClick={() => router.push(`/special-offer/${card.id}`)}
-                                                className={`${styles.etrafliSpan} text-white cursor-pointer opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-2 group-hover:translate-x-0`}
-                                            >
-                                                Ətraflı
-                                            </span>
-                                            <span className={`${styles.generalEyeSpan} relative bg-[#EBEBEB] rounded-full flex items-center justify-center transition-transform duration-500 group-hover:rotate-180`}>
-                                                <Image
-                                                    src={"/assets/icons/eye-special.svg"}
-                                                    alt="account-icon"
-                                                    width={30}
-                                                    height={30}
-                                                    className="object-contain"
-                                                />
-                                                <span className="absolute opacity-0 group-hover:opacity-100 transition-all duration-300 bg-black rounded-full"></span>
-                                            </span>
+                                            <span className="relative flex items-center gap-2 overflow-hidden">
+  <span
+    onClick={() => router.push(`/special-offer/${card.id}`)}
+    className={`${styles.etrafliSpan} text-white cursor-pointer opacity-100 translate-x-0 transition-all duration-300`}
+  >
+    Ətraflı
+  </span>
+  <span className={`${styles.generalEyeSpan} relative bg-[#EBEBEB] rounded-full flex items-center justify-center transition-transform duration-500 rotate-180`}>
+    <Image
+      src={"/assets/icons/eye-special.svg"}
+      alt="account-icon"
+      width={30}
+      height={30}
+      className="object-contain"
+    />
+    <span className="absolute opacity-100 transition-all duration-300 bg-black rounded-full"></span>
+  </span>
+</span>
+
                                         </span>
                                     </div>
                                 </div>

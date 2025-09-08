@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from "next/link";
 import Image from 'next/image';
 import styles from './Footer.module.css';
 import Facebook from './../../../public/assets/footer/facebook.svg'
@@ -45,7 +46,7 @@ export default function Footer() {
                     </li>
                     {shouldShow(0) && (
                         <>
-                            <li><span><Image src="/assets/footer/phone.svg" alt="phone-icon" width={21} height={21} /></span>+9942002020</li>
+                            <li> <a href="tel:+9942002020" className="flex items-center gap-2"><span><Image src="/assets/footer/phone.svg" alt="phone-icon" width={21} height={21} /></span>+994 50 233 88 11</a></li>
                             <li><span><Image src="/assets/footer/location.svg" alt="location-icon" width={21} height={21} /></span>Nizami küçəsi 96C, AF Mall, 3-cü mərtəbə, Bakı, Azərbaycan</li>
                         </>
                     )}
@@ -53,7 +54,7 @@ export default function Footer() {
                 </ul>
                 <ul className={`${styles.footerLists}`}>
                     <li>
-                        <span>Haqqımızda</span>
+                        <span><Link href="/about">Haqqımızda</Link></span>
                         <span onClick={() => toggleSection(1)} className={styles.plusIcon}>
                             <Image
                                 src={"/assets/icons/plus.svg"}
@@ -66,16 +67,17 @@ export default function Footer() {
                     </li>
                     {shouldShow(1) && (
                         <>
-                            <li>Missiyamız</li>
-                            <li>Dəyərlərimiz</li>
-                            <li>Brendlərimiz</li>
-                            <li>Niyə Biz?</li>
+                            <li><Link href="/about">Haqqımızda</Link></li>
+                            <li><Link href="/about">Missiyamız</Link></li>
+                            <li><Link href="/about">Dəyərlərimiz</Link></li>
+                            <li><Link href="/about">Brendlərimiz</Link></li>
+                            <li><Link href="/about">Niyə Biz?</Link></li>
                         </>
                     )}
                 </ul>
                 <ul className={`${styles.footerLists}`}>
                     <li>
-                        <span>Məhsullar</span>
+                        <span><Link href="/products">Məhsullar</Link></span>
                         <span onClick={() => toggleSection(2)} className={styles.plusIcon}>
                             <Image
                                 src={"/assets/icons/plus.svg"}
@@ -88,20 +90,29 @@ export default function Footer() {
                     </li>
                     {shouldShow(2) && (
                         <>
-                            <li>Yeni gələnlər</li>
-                            <li>Ən çox satanlar</li>
-                            <li>Qadın</li>
-                            <li>Kişi</li>
-                            <li>Uşaq</li>
+                            <li><Link href="/products?categoryId=1">Saatlar</Link></li>
+                            <li><Link href="/products?categoryId=2">Aksesuarlar</Link></li>
+                            <li><Link href="/products?sort=new">Yeni gələnlər</Link></li>
+                            <li><Link href="/products?sort=discount">Endirimdə olanlar</Link></li>
+                            <li><Link href="/products?sort=best">Ən çox satılanlar</Link></li>
+                            {/* <li><Link href="/products?Gender=1">Kişi</Link></li>
+                            <li><Link href="/products?Gender=2">Qadın</Link></li>
+                            <li><Link href="/products?Gender=3">Uşaq</Link></li> */}
                         </>
                     )}
                 </ul>
                 <ul className={`${styles.socialContainer}`}>
                     <li>Social</li>
                     <li>
-                        <span><Facebook /></span>
-                        <span><Twitter /></span>
-                        <span><Instagram /></span>
+                        {/* <span><Facebook /></span> */}
+                        {/* <span><Twitter /></span> */}
+                        <a
+                            href="https://instagram.com/saat.az"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <Instagram />
+                        </a>
                     </li>
                 </ul>
             </div>

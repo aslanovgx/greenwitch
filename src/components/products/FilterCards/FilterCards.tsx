@@ -9,6 +9,7 @@ import type { Product as UIProduct, RawProduct } from "@/types/Product";
 import { getProducts } from "@/lib/api/products";
 import { isValidSort, SortCode } from "@/constants/sort";
 import { scrollToTop } from "@/utils/scrollToTop";
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
 
 const SERVER_PAGE_SIZE = 20;   // backend page size (təxmini/fallback)
 const UI_PAGE_SIZE = 20;       // UI-də göstərilən say
@@ -191,14 +192,31 @@ export default function FilterCards() {
             "size" in parsed && typeof parsed.size === "number" ? parsed.size : SERVER_PAGE_SIZE;
 
           // totalPages / hasMore
+          // totalPages / hasMore
           if (metaTotal != null) {
             const tp = Math.max(1, Math.ceil(metaTotal / metaSize));
             setTotalPages(tp);
             setHasMore(page < tp);
           } else {
             setTotalPages(null);
-            setHasMore(adapted.length === metaSize);
+
+            // ✅ Peek: yalnız ehtiyac olduqda növbəti səhifədə item var-yox de-yə baxırıq
+            if (adapted.length < metaSize) {
+              setHasMore(false); // bu səhifə full dolmayıbsa, deməli son səhifədəyik
+            } else {
+              // adapted.length === metaSize → bəlkə var… YOXLAYAQ
+              try {
+                const resp2 = await getProducts({ ...baseParams, page: page + 1 });
+                const parsed2 = parseProductsResponse(resp2);
+                const hasNext = (parsed2.items ?? []).length > 0;
+                setHasMore(hasNext);
+              } catch {
+                // problem olsa ehtiyatla "yox" deyək — UX olaraq səhvən boş 2-ci səhifə göstərməyək
+                setHasMore(false);
+              }
+            }
           }
+
 
           if (!aborted) {
             if (adapted.length === 0 && page > 1) {
@@ -420,11 +438,11 @@ export default function FilterCards() {
       {/* Pagination */}
       <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
         <button className="px-3 py-2 border rounded-md disabled:opacity-50" onClick={onClickFirst} disabled={page <= 1} aria-label="Birinci">
-          Birinci
+           <ChevronsLeft className="w-4 h-4" />
         </button>
 
         <button className="px-3 py-2 border rounded-md disabled:opacity-50" onClick={onClickPrev} disabled={page <= 1} aria-label="Əvvəlki">
-          Əvvəlki
+          <ChevronLeft className="w-4 h-4" />
         </button>
 
         {totalPages && showLeftEllipsis && <span className="px-2 select-none">…</span>}
@@ -448,7 +466,7 @@ export default function FilterCards() {
           disabled={totalPages != null ? page >= totalPages : !hasMore}
           aria-label="Sonraki"
         >
-          Növbəti
+          <ChevronRight className="w-4 h-4" />
         </button>
 
         <button
@@ -458,7 +476,7 @@ export default function FilterCards() {
           aria-label="Son"
           title="Son"
         >
-          Son
+          <ChevronsRight className="w-4 h-4" />
         </button>
       </div>
     </div>
