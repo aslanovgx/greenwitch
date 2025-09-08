@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react';
 import Link from "next/link";
 import Image from 'next/image';
 import styles from './Footer.module.css';
-import Facebook from './../../../public/assets/footer/facebook.svg'
-import Twitter from './../../../public/assets/footer/twitter.svg'
+// import Facebook from './../../../public/assets/footer/facebook.svg'
+// import Twitter from './../../../public/assets/footer/twitter.svg'
 import Instagram from './../../../public/assets/footer/instagram.svg'
 import Copyright from './../../../public/assets/footer/bx-copyright.svg.svg'
 import useIsMobile from '@/hooks/useIsMobile';
