@@ -1,8 +1,8 @@
 
 "use client";
-import Image from "next/image";
 import { useSearch } from "@/context/SearchContext";
 import { useCallback } from "react";
+import { PiMagnifyingGlass } from "react-icons/pi";
 
 type Props = {
   onFocusOpenModal?: () => void;
@@ -22,13 +22,7 @@ export default function SearchInput({ onFocusOpenModal, onUserType }: Props) {
 
   return (
     <div className="row-2-search flex items-center">
-      <Image
-        src={"/assets/icons/search.svg"}
-        alt="search-icon"
-        width={30}
-        height={30}
-        className="object-contain"
-      />
+      <PiMagnifyingGlass />
       <input
         type="text"
         placeholder="Axtar..."

@@ -2,8 +2,11 @@
 "use client";
 import { useFavorites } from "@/context/FavoritesContext";
 import Image from "next/image";
+import Link from "next/link";
 import { X } from "lucide-react";
 import type { Product } from "@/types/Product";
+
+const productHref = (p: Product) => `/products/${p.id}`;
 
 export default function WishlistDrawer({
   isOpen,
@@ -33,16 +36,32 @@ export default function WishlistDrawer({
       ) : (
         favorites.map((product) => (
           <div key={product.id} className="mb-4 border-b pb-4 flex items-center gap-3">
+             <Link
+              href={productHref(product)}
+              prefetch={false}
+              onClick={onClose}
+              className="shrink-0"
+              aria-label={`${product.name} detal səhifəsi`}
+            >
             <Image
               src={product.images?.[0] ?? "/assets/placeholders/product.png"}
               alt={product.name ?? "Product"}
               width={60}
               height={60}
+              sizes="60px"
               className="rounded w-[60px] h-[60px] object-contain"
             />
+            </Link>
             <div className="flex-1">
               <p className="font-semibold text-sm uppercase">
+                <Link
+                  href={productHref(product)}
+                  prefetch={false}
+                  onClick={onClose}
+                  className="hover:underline"
+                >
                 {product.name}
+                </Link>
               </p>
 
               {/* Endirim vizualı */}

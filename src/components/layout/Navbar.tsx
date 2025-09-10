@@ -19,6 +19,8 @@ import textSwitcherTexts from "@/components/layout/textSwitcherTexts";
 import { usePathname, useSearchParams } from "next/navigation";
 import { FaInstagram } from "react-icons/fa";
 import { BsTelephone } from "react-icons/bs";
+import { PiMapPinAreaLight } from "react-icons/pi";
+import { PiWatchLight } from "react-icons/pi";
 
 // FE search util
 import { feSearchAll, rawToCard, type FeSearchResult } from "@/lib/utils/searchService";
@@ -199,7 +201,7 @@ export default function Navbar() {
 
         {/* Mobile Burger Icon */}
         <div className="burgerIcon" onClick={() => setIsMenuOpen(true)}>
-          <Image src={"/assets/icons/burger.svg"} alt="burger-icon" width={25} height={25} className="object-contain" />
+          <Image src={"/assets/icons/burger.svg"} alt="burger-icon" width={22} height={22} className="object-contain" />
         </div>
 
         {/* Logo */}
@@ -210,7 +212,7 @@ export default function Navbar() {
         {/* Right icons */}
         <div className="row-2-icons flex items-center justify-center">
           <Link href="/products">
-            <Image src={"/assets/icons/watch2.svg"} alt="watch2-icon" width={30} height={30} className="object-contain" />
+            <PiWatchLight />
           </Link>
 
           {/* Mobile search icon opens modal */}
@@ -228,13 +230,7 @@ export default function Navbar() {
             <FavoritesButton onClick={() => setWishlistOpen(true)} />
           </div>
           <Link href="/location">
-            <Image
-              src="/assets/icons/location.svg"
-              alt="location-icon"
-              width={30}
-              height={30}
-              className="object-contain cursor-pointer location-icon"
-            />
+            <PiMapPinAreaLight />
           </Link>
         </div>
       </div>

@@ -2,9 +2,13 @@
 
 import { useBag } from "@/context/BagContext";
 import Image from "next/image";
+import { useMemo } from "react";
 import { X, Trash2, Minus, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import type { Product } from "@/types/Product";
+import Link from "next/link";
+
+const productHref = (p: Product) => `/products/${p.id}`; // lazım olsa slug-a çevirərsən
 
 export default function BaglistDrawer({
   isOpen,
@@ -13,6 +17,7 @@ export default function BaglistDrawer({
   isOpen: boolean;
   onClose: () => void;
 }) {
+
   const { bagItems, removeFromBag, updateQuantity, clearBag } = useBag();
 
   const getUnitPrice = (item: Product & { quantity: number }) => {
@@ -24,16 +29,18 @@ export default function BaglistDrawer({
   };
 
 
-  const totalPrice = bagItems.reduce((total, item) => {
-    const unit = Number(getUnitPrice(item) ?? 0);
-    return total + (isNaN(unit) ? 0 : unit * item.quantity);
-  }, 0);
+  const totalPrice = useMemo(() => {
+    return bagItems.reduce((total, item) => {
+      const unit = Number(getUnitPrice(item) ?? 0);
+      return total + (isNaN(unit) ? 0 : unit * item.quantity);
+    }, 0);
+  }, [bagItems]);
 
   const router = useRouter();
   if (!isOpen) return null;
 
   return (
-    <div className="fixed top-0 right-0 h-full w-[350px] bg-white shadow-xl z-50 p-4 overflow-y-auto">
+    <div className={`fixed top-0 right-0 h-full w-[100%] max-w-[350px] bg-white shadow-xl z-50 p-4 overflow-y-auto`}>
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold">Səbət ({bagItems.length})</h2>
         <button onClick={onClose} className="cursor-pointer">
@@ -49,16 +56,32 @@ export default function BaglistDrawer({
             const unit = getUnitPrice(item);
             return (
               <div key={item.id} className="mb-4 border-b pb-4 flex items-center gap-3">
-                <Image
-                  src={item.images?.[0] ?? "/assets/placeholders/product.png"}
-                  alt={item.name ?? "Product"}
-                  width={60}
-                  height={60}
-                  className="rounded w-[60px] h-[60px] object-contain"
-                />
+                <Link
+                  href={productHref(item)}
+                  prefetch={false} 
+                  onClick={onClose}
+                  className="shrink-0"
+                  aria-label={`${item.name} detal səhifəsi`}
+                >
+                  <Image
+                    src={item.images?.[0] ?? "/assets/placeholders/product.png"}
+                    alt={item.name ?? "Product"}
+                    width={60}
+                    height={60}
+                    sizes="60px"
+                    className="rounded w-[60px] h-[60px] object-contain"
+                  />
+                </Link>
                 <div className="flex-1">
                   <p className="font-semibold text-sm uppercase">
-                    {item.name}
+                    <Link
+                      href={productHref(item)}
+                      prefetch={false} 
+                      onClick={onClose}
+                      className="font-semibold text-sm uppercase hover:underline"
+                    >
+                      {item.name}
+                    </Link>
                   </p>
 
                   {/* Qiymət vizualı: endirim varsa iki qiymət göstər */}
@@ -81,14 +104,18 @@ export default function BaglistDrawer({
 
                   <div className="flex items-center gap-1 mt-1">
                     <button
-                      onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (item.quantity > 1) updateQuantity(item.id, item.quantity - 1);
+                      }}
+                      disabled={item.quantity <= 1}
                       className="p-1 bg-gray-200 rounded"
                     >
                       <Minus size={14} className="cursor-pointer" />
                     </button>
                     <span className="text-sm">{item.quantity}</span>
                     <button
-                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                      onClick={(e) => { e.stopPropagation(); e.preventDefault(); updateQuantity(item.id, item.quantity + 1); }}
                       className="p-1 bg-gray-200 rounded"
                     >
                       <Plus size={14} className="cursor-pointer" />
@@ -97,7 +124,7 @@ export default function BaglistDrawer({
                 </div>
 
                 <button
-                  onClick={() => removeFromBag(item.id)}
+                  onClick={(e) => { e.stopPropagation(); e.preventDefault(); removeFromBag(item.id); }}
                   className="bg-red-600 hover:bg-red-700 text-white p-1 rounded"
                 >
                   <Trash2 size={16} className="cursor-pointer" />
@@ -107,7 +134,7 @@ export default function BaglistDrawer({
           })}
 
           <div className="mt-4 pt-4">
-            <div className="flex justify-between font-bold text-lg">
+            <div className="flex justify-between font-bold text-lg" aria-live="polite">
               <span>Ümumi:</span>
               <span>{totalPrice.toFixed(2)} AZN</span>
             </div>

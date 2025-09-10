@@ -314,7 +314,7 @@
     }
 
     .itemsContainer {
-        max-height: 400px;
+        max-height: 363px;
     }
 
     .purchaseContent .leftSide .emptyBag {
@@ -419,7 +419,7 @@
     }
 
     .itemsContainer {
-        max-height: 400px;
+        max-height: 365px;
         padding-bottom: 0 0 39px 0;
     }
 
@@ -451,6 +451,7 @@
         flex-direction: column;
         align-items: start;
         justify-content: center;
+        padding-left: 10px;
     }
 
     .purchaseContent .leftSide .itemBag .itemBox .itemDesc {
@@ -534,7 +535,7 @@
     }
 
     .itemsContainer {
-        max-height: 400px;
+        max-height: 399px;
     }
 
     .purchaseContent .leftSide .emptyBag {
@@ -554,9 +555,10 @@
     }
 
     .purchaseContent .leftSide .itemBag img {
-        width: 200px;
-        height: 200px;
+        width: 170px;
+        height: 220px;
         object-fit: contain;
+        padding: 20px 0;
     }
 
     .purchaseContent .leftSide .itemBag .itemBox {
@@ -574,12 +576,12 @@
 
     .purchaseContent .leftSide .itemBag .itemBox .itemDesc h1,
     .purchaseContent .leftSide .itemBag .itemBox .itemDesc p {
-        font-size: 15px;
+        font-size: 14px;
     }
 
     .purchaseContent .leftSide .itemBag .itemBox .itemDesc h1 {
         padding-bottom: 7px;
-        font-size: 17px;
+        font-size: 15px;
     }
 
     .purchaseContent .leftSide .itemBag .itemBox .itemButtons {
@@ -587,9 +589,9 @@
     }
 
     .purchaseContent .leftSide .itemBag .itemBox .itemButtons button {
-        font-size: 15px;
-        width: 35px;
-        height: 35px;
+        font-size: 14px;
+        width: 30px;
+        height: 30px;
     }
 
     /* ------------------------------ */

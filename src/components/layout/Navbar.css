@@ -107,6 +107,11 @@
   background: #EFEEEE;
 }
 
+.row-2 .row-2-search svg {
+  width: 24px;
+  height: 24px;
+}
+
 .row-2 .burgerIcon {
   display: none;
 }
@@ -126,7 +131,7 @@
   gap: 12px;
 }
 
-.row-2-icons img {
+.row-2-icons svg {
   width: 30px;
   height: 30px;
   cursor: pointer;
@@ -212,9 +217,9 @@
     border-radius: 17.067px;
   }
 
-  .row-2 .row-2-search img {
-    width: 22px;
-    height: 22px;
+  .row-2 .row-2-search svg {
+    width: 20px;
+    height: 20px;
   }
 
   .row-2 .row-2-search input {
@@ -226,9 +231,9 @@
     height: 32px;
   }
 
-  .row-2-icons img {
-    width: 30px;
-    height: 30px;
+  .row-2-icons svg {
+    width: 24px;
+    height: 24px;
   }
 
   .row_3 {
@@ -379,26 +384,13 @@
   }
 
   .row-2-icons {
-    gap: 0;
-    /* justify-content: space-between; */
+    gap: 6px;
   }
 
 
-  .row-2-icons img {
-    width: 25px;
-    height: 25px;
-  }
-
-  .row-2-icons .location-icon {
-    display: none;
-  }
-
-  .row-2-icons .favorite-icon {
-    padding-left: 5px;
-  }
-
-  .row-2-icons .bag-icon {
-    padding-left: 5px;
+  .row-2-icons svg {
+    width: 22px;
+    height: 22px;
   }
 
   c .row-2-icons .searchMobile {
@@ -445,5 +437,11 @@
   .mobileNavbar ul li span img {
     width: 20px;
     height: 20px;
+  }
+}
+
+@media (max-width: 344px) {
+  .row-2-icons {
+    gap: 2px;
   }
 }
