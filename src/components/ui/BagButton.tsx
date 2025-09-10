@@ -1,7 +1,6 @@
 // components/ui/BagButton.tsx
 "use client";
 import { useBag } from "@/context/BagContext";
-import styles from './AddToCartButtons.css'
 import { useEffect, useState } from "react";
 import { PiBagLight } from "react-icons/pi";
 
