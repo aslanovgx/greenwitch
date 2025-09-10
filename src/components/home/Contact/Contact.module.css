@@ -150,6 +150,7 @@
         background: white;
         padding: 0;
         display: block;
+        margin-top: 20px;
     }
 
     .contactSection .contactBox .leftSide {
@@ -170,7 +171,7 @@
 
     /* ///////////////////////////// Right Side ///////////////////////// */
     .contactSection .contactBox .rightSide .sendEmail input {
-        font-size: 12px;
+        font-size: 14px;
         width: 216.113px;
         padding-left: 9px;
         color: #000;
@@ -185,7 +186,7 @@
 
     .contactSection .contactBox .rightSide .sendEmail button {
         padding: 18px 35.906px;
-        font-size: 12px;
+        font-size: 14px;
     }
 }
 

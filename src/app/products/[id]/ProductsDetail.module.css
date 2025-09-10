@@ -516,7 +516,117 @@
 }
 
 @media (max-width: 640px) {
+    .products_detail {
+        gap: 42px;
+        padding: 32px;
+        justify-content: center;
+    }
+
+    .products_detail .leftSide {
+        gap: 23px;
+    }
+
+    .products_detail .leftSide .thumbnails {
+        gap: 7px;
+    }
+
+    .products_detail .leftSide .thumbnails .thumbnailImage {
+        width: 50px;
+        height: 67px;
+        border-radius: 4px;
+    }
+
+    /* ----------------------------------------------------- */
+
+    .products_detail .rightSide {
+        text-align: center;
+        gap: 13px;
+    }
+
+    .products_detail .rightSide .title {
+        font-size: 22px;
+        line-height: 20px;
+        margin-bottom: 20px;
+    }
+
+    .products_detail .rightSide .desc {
+        font-size: 15px;
+        line-height: 20px;
+    }
+
+    .products_detail .rightSide .price {
+        font-size: 13px;
+    }
+
+    .products_detail .rightSide .colorRow {
+        gap: 13px;
+    }
+
+    .products_detail .rightSide .colorRow span {
+        font-size: 13px;
+    }
+
+    .products_detail .rightSide .colorRow .colorDot {
+        width: 30px;
+        height: 30px;
+    }
+
+    .products_detail .rightSide .buyRow {
+        gap: 13px;
+        margin-top: 0px;
+        justify-content: center;
+    }
+
+    .products_detail .rightSide .buyRow input {
+        padding: 2px 6px;
+        border-radius: 3px;
+        width: 43px;
+        font-size: 14px;
+    }
+
+    .products_detail .rightSide .buyRow .buyButton {
+        font-size: 15px;
+        line-height: 23.86px;
+        width: 200px;
+        padding: 9px 0px;
+    }
+
+    .products_detail .rightSide .note {
+        font-size: 11px;
+        margin-top: 10px;
+    }
+
+    .products_detail .rightSide .note p {
+        display: inline-block;
+        border-bottom: 1px solid #000;
+        cursor: pointer;
+    }
+
+
+    .swiperPrev svg,
+    .swiperNext svg {
+        width: 30px;
+        height: 30px;
+    }
+
+    .swiperPrev {
+        top: -41px;
+        left: 10px;
+    }
+
+    .swiperNext {
+        bottom: -41px;
+        left: 10px;
+    }
+
+    .swiperPrev:disabled,
+    .swiperNext:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
     .mobileImageSlider {
         margin-bottom: 20px;
     }
+
 }

@@ -326,6 +326,18 @@ export default function ProductsDetail({ product }: Props) {
         )}
 
         {[
+          { label: "Cins", value: product.genderName },
+          { label: "Şüşə", value: product.siferblatMaterialName },
+          { label: "Material", value: product.materialName },
+          { label: "Mexanizm", value: product.mechanismName },
+          {
+            label: "Suyadavamlılıq",
+            value: product.waterResistanceAtm ? `${product.waterResistanceAtm} ATM` : undefined,
+          },
+          {
+            label: "Korpus ölçüsü",
+            value: product.caseSizeMm ? `${product.caseSizeMm}mm` : undefined,
+          },
           {
             label: "Qiyməti",
             value: hasDiscount ? (
@@ -347,18 +359,6 @@ export default function ProductsDetail({ product }: Props) {
                 </span>
               </span>
             ),
-          },
-          { label: "Cins", value: product.genderName },
-          { label: "Şüşə", value: product.siferblatMaterialName },
-          { label: "Material", value: product.materialName },
-          { label: "Mexanizm", value: product.mechanismName },
-          {
-            label: "Suyadavamlılıq",
-            value: product.waterResistanceAtm ? `${product.waterResistanceAtm} ATM` : undefined,
-          },
-          {
-            label: "Korpus ölçüsü",
-            value: product.caseSizeMm ? `${product.caseSizeMm}mm` : undefined,
           },
         ]
           .filter((row) => row.value)
