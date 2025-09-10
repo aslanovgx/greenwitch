@@ -70,7 +70,7 @@ export default function MostSales({ initialProducts = [] }: Props) {
       <div>
         <Link href="/products?sort=best" scroll={true}>
     <MoreButton>Daha çox</MoreButton>
-  </Link> ̰
+  </Link>
       </div>
     </div>
   );

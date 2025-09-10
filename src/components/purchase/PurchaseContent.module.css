@@ -420,6 +420,7 @@
 
     .itemsContainer {
         max-height: 400px;
+        padding-bottom: 0 0 39px 0;
     }
 
     .purchaseContent .leftSide .emptyBag {
@@ -439,7 +440,7 @@
     }
 
     .purchaseContent .leftSide .itemBag img {
-        width: 200px;
+        width: 148px;
         height: 200px;
         object-fit: contain;
     }

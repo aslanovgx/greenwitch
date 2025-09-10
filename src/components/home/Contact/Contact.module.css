@@ -158,7 +158,7 @@
     }
 
     .contactSection .contactBox .leftSide h1 {
-        font-size: 11.292px;
+        font-size: 13.292px;
         color: #1E1D1D;
         text-align: center;
     }
@@ -170,11 +170,13 @@
 
     /* ///////////////////////////// Right Side ///////////////////////// */
     .contactSection .contactBox .rightSide .sendEmail input {
-        font-size: 10.642px;
+        font-size: 12px;
         width: 216.113px;
         padding-left: 9px;
         color: #000;
-        background: rgba(240, 240, 240, 0.50);
+        /* background: rgba(240, 240, 240, 0.50); */
+        background: rgb(217 215 215 / 65%);
+        ;
     }
 
     .contactSection .contactBox .rightSide .sendEmail input::placeholder {
@@ -182,20 +184,22 @@
     }
 
     .contactSection .contactBox .rightSide .sendEmail button {
-        padding: 12px 35.906px;
-        font-size: 10.575px;
+        padding: 18px 35.906px;
+        font-size: 12px;
     }
 }
 
 @media (max-width: 342px) {
 
     /* ///////////////////////////// Right Side ///////////////////////// */
-    .contactSection .contactBox .rightSide .sendEmail input {
-        width: 200.113px;
-        padding-left: 9px;
+    .contactSection .contactBox .rightSide .sendEmail  {
     }
 
-    .contactSection .contactBox .rightSide .sendEmail button {
-        padding: 11px 30.906px;
+    .contactSection .contactBox .rightSide .sendEmail input {
+        width: 180.113px;
     }
+
+    /* .contactSection .contactBox .rightSide .sendEmail button {
+        padding: 11px 30.906px;
+    } */
 }

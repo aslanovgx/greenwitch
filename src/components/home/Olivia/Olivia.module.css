@@ -50,35 +50,52 @@
 }
 
 .oliviaWatches .oliviaBurton {
-    top: -43px;
+    top: -42px;
     left: 50px;
 }
 
-.oliviaWatches .hilfigerGold{
-    top: 8px;
+.oliviaWatches .hilfigerGold {
+    top: 10px;
     right: 60px;
 }
 
 .oliviaWatches .michael {
-    bottom: 45%;
+    bottom: 44.8%;
     left: 37%;
 }
 
 /* ------ */
 
-.oliviaWatches .oliviaGreen {
-    top: -51px;
-    left: 70px;
-}
-
-.oliviaWatches .tommyHilfiger{
-    top: 10px;
-    right: 60px;
-}
-
 .oliviaWatches .fossil {
-    bottom: 45%;
-    left: 37%;
+    top: -55px;
+    left: 61px;
+}
+
+.oliviaWatches .lacoste {
+    top: 13px;
+    right: 78px;
+}
+
+.oliviaWatches .frederiqueConstant {
+    bottom: 50%;
+    left: 42%;
+}
+
+/* ------ */
+
+.oliviaWatches .calvinKlein {
+    top: -29px;
+    left: 85px;
+}
+
+.oliviaWatches .casio {
+    top: -3px;
+    right: 78px;
+}
+
+.oliviaWatches .emporioArmani {
+    bottom: 51%;
+    left: 35%;
 }
 
 .oliviaWatchesDesc div {
@@ -107,8 +124,8 @@
 }
 
 .oliviaWatchesDesc .descHilfigerGold {
-    top: -13px;
-    right: 8px;
+    top: -38px;
+    right: -10px;
 }
 
 .oliviaWatchesDesc .descMichael {
@@ -118,19 +135,36 @@
 
 /* ------ */
 
-.oliviaWatchesDesc .descOliviaGreen {
-    top: -77px;
-    left: 17px;
-}
-
-.oliviaWatchesDesc .descTommyHilfiger {
-    top: -13px;
-    right: -18px;
-}
-
 .oliviaWatchesDesc .descFossil {
+    top: -77px;
+    left: 66px;
+}
+
+.oliviaWatchesDesc .descLacoste {
+    top: -38px;
+    right: 28px;
+}
+
+.oliviaWatchesDesc .descfrederiqueConstant {
     bottom: 41%;
-    left: 34%;
+    left: 5%;
+}
+
+/* ------ */
+
+.oliviaWatchesDesc .descCalvinKlein {
+    top: -77px;
+    left: 28px;
+}
+
+.oliviaWatchesDesc .descCasio {
+    top: -55px;
+    right: 44px;
+}
+
+.oliviaWatchesDesc .descEmporioArmani {
+    bottom: 41%;
+    left: 13%;
 }
 
 
@@ -156,20 +190,6 @@
         flex-shrink: initial;
     }
 
-    .oliviaGroup .oliviaWatches img:nth-child(1) {
-        width: 106px;
-        height: 106px;
-    }
-
-    .oliviaGroup .oliviaWatches img:nth-child(2) {
-        width: 75.2px;
-        height: 100.267px;
-    }
-
-    .oliviaGroup .oliviaWatches img:nth-child(3) {
-        width: 46.618px;
-        height: 93.867px;
-    }
 
     .oliviaRight p {
         font-size: 21.333px;
@@ -183,19 +203,71 @@
     }
 
 
-    .oliviaWatches :nth-child(1) {
-        top: -26px;
-        left: 40px;
+    .oliviaWatches .oliviaBurton {
+        width: 104px;
+        height: 104px;
+        top: -24px;
+        left: 36px;
     }
 
-    .oliviaWatches :nth-child(2) {
-        top: 11px;
-        right: 39px;
+    .oliviaWatches .hilfigerGold {
+        width: 74.2px;
+        height: 97.27px;
+        top: 10px;
+        right: 44px;
     }
 
-    .oliviaWatches :nth-child(3) {
-        bottom: 47%;
-        left: 48%;
+    .oliviaWatches .michael {
+        width: 75.62px;
+        height: 102.87px;
+        bottom: 45.8%;
+        left: 42%;
+    }
+
+    /* ------ */
+
+    .oliviaWatches .fossil {
+        width: 104px;
+        height: 104px;
+        top: -21px;
+        left: 46px;
+    }
+
+    .oliviaWatches .lacoste {
+        width: 52px;
+        height: 76px;
+        top: 22px;
+        right: 47px;
+    }
+
+    .oliviaWatches .frederiqueConstant {
+        width: 74px;
+        height: 99px;
+        bottom: 50%;
+        left: 42%;
+    }
+
+    /* ------ */
+
+    .oliviaWatches .calvinKlein {
+        width: 68px;
+        height: 98px;
+        top: -22px;
+        left: 60px;
+    }
+
+    .oliviaWatches .casio {
+        width: 54px;
+        height: 98px;
+        top: 3px;
+        right: 52px;
+    }
+
+    .oliviaWatches .emporioArmani {
+        width: 90px;
+        height: 89px;
+        bottom: 51%;
+        left: 38%;
     }
 
     .oliviaWatchesDesc div {
@@ -206,19 +278,58 @@
         padding: 6px;
     }
 
-    .oliviaWatchesDesc :nth-child(1) {
+
+
+
+
+
+    .oliviaWatchesDesc .descOliviaBurton {
+        top: -60px;
+        left: 15px;
+    }
+
+    .oliviaWatchesDesc .descHilfigerGold {
+        top: -29px;
+        right: -4px;
+    }
+
+    .oliviaWatchesDesc .descMichael {
+        bottom: 41%;
+        left: 18%;
+    }
+
+    /* ------ */
+
+    .oliviaWatchesDesc .descFossil {
+        top: -57px;
+        left: 49px;
+    }
+
+    .oliviaWatchesDesc .descLacoste {
+        top: -21px;
+        right: 12px;
+    }
+
+    .oliviaWatchesDesc .descfrederiqueConstant {
+        bottom: 41%;
+        left: 3%;
+    }
+
+    /* ------ */
+
+    .oliviaWatchesDesc .descCalvinKlein {
         top: -67px;
-        left: 17px;
+        left: 28px;
     }
 
-    .oliviaWatchesDesc :nth-child(2) {
-        top: -27px;
-        right: 14px;
+    .oliviaWatchesDesc .descCasio {
+        top: -44px;
+        right: 29px;
     }
 
-    .oliviaWatchesDesc :nth-child(3) {
-        bottom: 38%;
-        left: 21%;
+    .oliviaWatchesDesc .descEmporioArmani {
+        bottom: 41%;
+        left: 12%;
     }
 
     .oliviaWatchesDesc p {

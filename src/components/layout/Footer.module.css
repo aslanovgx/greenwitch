@@ -58,13 +58,6 @@
     padding-bottom: 10px;
 }
 
-.footer .footerBox ul li span svg {
-    width: 22px;
-    height: 22px;
-    object-fit: contain;
-}
-
-
 .footerGradientLine {
     margin-bottom: 53px;
     max-width: 1147.856px;
@@ -79,6 +72,9 @@
     font-weight: 400;
 }
 
+.footerSocial {
+    margin-top: 19px;
+}
 
 @media (max-width: 1025px) {
     .footer {
@@ -99,7 +95,8 @@
     }
 
     .footer .footerBox ul svg {
-        font-size: 16px;
+        width: 15px;
+        height: 15px;
     }
 
     .footer .footerBox ul li:nth-child(1) {
@@ -117,6 +114,10 @@
     .footerGradientLine {
         max-width: 816px;
         margin-bottom: 38px;
+    }
+
+    .footerSocial {
+        margin-top: 1px;
     }
 }
 
@@ -139,7 +140,8 @@
     }
 
     .footer .footerBox ul svg {
-        font-size: 16px;
+        width: 12px;
+        height: 12px;
     }
 
     .footer .footerBox ul li:nth-child(1) {
@@ -157,6 +159,9 @@
     .footerGradientLine {
         max-width: 612px;
         margin-bottom: 28px;
+    }
+    .footerSocial {
+        margin-top: 17px;
     }
 }
 
@@ -177,6 +182,11 @@
     .footer .footerBox ul li {
         font-size: 14px;
         gap: 6px;
+    }
+
+    .footer .footerBox ul svg {
+        width: 14px;
+        height: 14px;
     }
 
     .footer .footerBox .footerLists {
@@ -224,10 +234,6 @@
         justify-content: center;
     }
 
-    .footer .footerBox ul svg {
-        font-size: 16px;
-    }
-
     .footer .footerBox ul li:nth-child(1) {
         font-size: 12.969px;
     }
@@ -243,5 +249,10 @@
     .footerGradientLine {
         width: 204px;
         margin-bottom: 28px;
+    }
+
+    .footerSocial {
+        justify-content: center;
+        margin-top: 10px;
     }
 }

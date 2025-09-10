@@ -77,11 +77,11 @@
 
 @media (max-width: 640px) {
     .row_1 {
-        padding: 14px 13px 22px 13px;
+        padding: 32px 13px 32px 13px;
     }
 
     .row_1 ul {
-        gap: 10px;
+        gap: 8px;
     }
 
     .row_1 ul li {
