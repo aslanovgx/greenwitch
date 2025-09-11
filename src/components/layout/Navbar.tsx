@@ -174,7 +174,7 @@ export default function Navbar() {
           <BsTelephone /> +994 50 233 88 11
         </a>
         <a href="https://instagram.com/saat.az" target="_blank" rel="noopener noreferrer" className="fixedSocialMedia">
-          <FaInstagram /> saat.az
+          <FaInstagram /> saat_az
         </a>
       </div>
 

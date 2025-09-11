@@ -179,6 +179,7 @@ export default function ProductsDetail({ product }: Props) {
             className={styles.mobileImageSlider}
             initialSlide={Math.max(0, product.thumbnails?.findIndex((t) => t === activeImage) ?? 0)}
             /* 🔽 Safari üçün vacib: */
+            style={{ height: imageSize.height }} 
             observer
             observeParents
             resizeObserver
@@ -209,9 +210,8 @@ export default function ProductsDetail({ product }: Props) {
                     alt={`${product.brandName}, ${product.name} — şəkil ${idx + 1}`}
                     width={imageSize.width}
                     height={imageSize.height}
-                    /* 🔽 Safari-nin lazy hündürlük bugu üçün: */
-                    priority={idx === 0}                   // ✅ yalnız ilk slayd üçün
-                    loading={idx === 0 ? "eager" : "lazy"} // ✅ 1-ci eager, qalanları lazy
+                    priority={idx === 0}
+                    loading={idx === 0 ? "eager" : "lazy"}
                     className={styles.mainImageMobile}
                     style={{ objectFit: "contain", borderRadius: 8 }}
                   />

@@ -628,10 +628,6 @@
         cursor: not-allowed;
     }
 
-    .mobileImageSlider {
-        margin-bottom: 20px;
-    }
-
     .mobileImageSlider .swiper-wrapper {
         height: 420px;
         /* mobil konteyner hündürlüyünə bərabər */
@@ -643,6 +639,28 @@
         justify-content: center;
         height: 420px;
         /* sabitlə */
+    }
+
+    /* ✅ HƏR ZAMAN tətbiq olunsun deyə @media-dan ÇIXAR */
+    .mobileImageSlider {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+        height: 420px;
+        margin-bottom: 20px;
+        /* baza hündürlük */
+    }
+
+    /* ✅ Swiper-in daxili siniflərini dəqiq tuturuq */
+    .mobileImageSlider :global(.swiper-wrapper) {
+        height: 420px;
+    }
+
+    .mobileImageSlider :global(.swiper-slide) {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 420px;
     }
 
 }
