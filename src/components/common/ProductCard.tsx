@@ -179,7 +179,9 @@ function ProductCardComponent({
         )}
 
         <div
-          className={`${styles.card_buttons} absolute bottom-0 left-0 flex transition-opacity duration-700 ${!isTouch ? 'opacity-0 group-hover:opacity-100' : (isActive ? 'opacity-100' : 'opacity-0')
+          className={`${styles.card_buttons} absolute bottom-0 left-0 flex transition-opacity duration-700 ${!isTouch
+              ? 'opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto'
+              : (isActive ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none')
             }`}
         >
           <button

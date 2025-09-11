@@ -25,13 +25,13 @@ const getImageSizeByWidth = (width: number) => {
   if (width < BP_SM) return { width: 360, height: 420 } as const;
   if (width < BP_MD) return { width: 200, height: 300 } as const;
   if (width < BP_LG) return { width: 270, height: 388 } as const;
-  return { width: 380, height: 547 } as const;
+  return { width: 380, height: 539 } as const;
 };
 
 const getThumbsConfigByWidth = (width: number) => {
-  if (width < BP_SM) return { slidesPerView: 4, height: 280, width: 75 } as const;
-  if (width < BP_MD) return { slidesPerView: 4, height: 300, width: 80 } as const;
-  if (width < BP_LG) return { slidesPerView: 4, height: 390, width: 67 } as const;
+  if (width < BP_SM) return { slidesPerView: 3, height: 280, width: 75 } as const;
+  if (width < BP_MD) return { slidesPerView: 3, height: 300, width: 80 } as const;
+  if (width < BP_LG) return { slidesPerView: 3, height: 390, width: 67 } as const;
   return { slidesPerView: 4, height: 538, width: 95 } as const;
 };
 
@@ -133,8 +133,8 @@ export default function ProductsDetail({ product }: Props) {
 
     if (!shouldShowNav) {
       // naviqasiyanı dayandır, swiper-i yenilə
-      try { s.navigation?.destroy?.(); } catch {}
-      try { s.update?.(); } catch {}
+      try { s.navigation?.destroy?.(); } catch { }
+      try { s.update?.(); } catch { }
       return;
     }
 
@@ -146,12 +146,12 @@ export default function ProductsDetail({ product }: Props) {
 
     try {
       s.navigation?.destroy?.(); // təmiz start üçün
-    } catch {}
+    } catch { }
     try {
       s.navigation?.init?.();
       s.navigation?.update?.();
-    } catch {}
-    try { s.update?.(); } catch {}
+    } catch { }
+    try { s.update?.(); } catch { }
   }, [shouldShowNav, thumbsConfig.slidesPerView, validThumbs.length]);
 
   // ——— Mount guard
@@ -178,6 +178,24 @@ export default function ProductsDetail({ product }: Props) {
             modules={[Pagination]}
             className={styles.mobileImageSlider}
             initialSlide={Math.max(0, product.thumbnails?.findIndex((t) => t === activeImage) ?? 0)}
+            /* 🔽 Safari üçün vacib: */
+            observer
+            observeParents
+            resizeObserver
+            autoHeight={false}
+            onInit={(s) => {
+              // ilk kadrdan sonra ölçünü yenilə
+              requestAnimationFrame(() => {
+                try { s.updateSize(); s.updateSlides(); s.update(); } catch { }
+              });
+              // şəkillər yüklənəndə də təkrar yenilə
+              setTimeout(() => { try { s.updateSize(); s.update(); } catch { } }, 100);
+            }}
+            onSwiper={(s) => {
+              // ehtiyat üçün bir az gec daha bir update
+              setTimeout(() => { try { s.updateSize(); s.update(); } catch { } }, 0);
+            }}
+
             onSlideChange={(swiper) => {
               const newImage = product.thumbnails?.[swiper.activeIndex];
               if (newImage) setActiveImage(newImage);
@@ -191,8 +209,9 @@ export default function ProductsDetail({ product }: Props) {
                     alt={`${product.brandName}, ${product.name} — şəkil ${idx + 1}`}
                     width={imageSize.width}
                     height={imageSize.height}
-                    priority={idx === 0}
-                    loading={idx === 0 ? "eager" : "lazy"}
+                    /* 🔽 Safari-nin lazy hündürlük bugu üçün: */
+                    priority={idx === 0}                   // ✅ yalnız ilk slayd üçün
+                    loading={idx === 0 ? "eager" : "lazy"} // ✅ 1-ci eager, qalanları lazy
                     className={styles.mainImageMobile}
                     style={{ objectFit: "contain", borderRadius: 8 }}
                   />
@@ -243,7 +262,7 @@ export default function ProductsDetail({ product }: Props) {
                   // Bir "tick" gecikdirib, yenə də guard-larla init et
                   setTimeout(() => {
                     if (!shouldShowNav) {
-                      try { swiper.update?.(); } catch {}
+                      try { swiper.update?.(); } catch { }
                       return;
                     }
 

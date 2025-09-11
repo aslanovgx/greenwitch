@@ -1,5 +1,7 @@
-button span {
-    font-size: 9px;
-    width: 13px;
-    height: 13px;
+@media (max-width: 641px) {
+    button span {
+        font-size: 9px;
+        width: 13px;
+        height: 13px;
+    }
 }

@@ -69,7 +69,7 @@ export default function PurchaseContent() {
     if (insufficient.length > 0) {
       insufficient.forEach((x) => {
         toast.error(
-          `${x.name ?? "Məhsul"} üçün stok kifayət deyil: istənilən ${x.want}, stokda ${x.have} ədəd qalıb.`
+          `${x.name ?? "Məhsul"} üçün stok kifayət etmir.\nSeçilən: ${x.want} - Mövcud: ${x.have}`
         );
       });
       setChecking(false);
@@ -200,7 +200,7 @@ export default function PurchaseContent() {
         <div>
           <h2>Ümumi Baxış</h2>
 
-        <div className={styles.generalMoney}>
+          <div className={styles.generalMoney}>
             <span>Cəmi:</span>
             <span>{totalPrice.toFixed(2)}₼</span>
           </div>
