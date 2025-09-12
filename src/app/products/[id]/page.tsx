@@ -72,7 +72,7 @@ export default async function Page({ params }: { params: Params }) {
   if (!product) return notFound();
 
   // Ümumi product list (xam) → təhlükəsiz ListItem[]
-  const rawList = await getProducts({ size: 60 }).catch(() => []);
+  const rawList = await getProducts({ size: 5 }).catch(() => []);
   const list = toList(rawList);
 
   // Eyni brendə aid məhsullar

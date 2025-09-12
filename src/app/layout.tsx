@@ -11,12 +11,13 @@ import "react-toastify/dist/ReactToastify.css";
 import { BagProvider } from "@/context/BagContext";
 import { Toaster } from "react-hot-toast";
 import ScrollToTop from "@/components/common/ScrollToTop";
-import { Suspense } from "react"; // ✅ əlavə et
+import { Suspense } from "react";
 import ConsoleFilters from "@/components/dev/ConsoleFilters";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+const SITE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000";
+const isProd = SITE_URL.startsWith("https://saat.az");
 
-export const robots = { index: false, follow: false };
+export const robots = { index: isProd, follow: isProd };
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -27,17 +28,17 @@ export const metadata: Metadata = {
       { url: "/favicon.svg", type: "image/svg+xml" },
       { url: "/favicon.ico", type: "image/x-icon" },
       { url: "/favicon.png", type: "image/png" },
-    ],
+    ]
   },
   openGraph: {
     title: "Greenwitch",
     description: "Discover eco-friendly products with Greenwitch.",
     type: "website",
-    locale: "en_US",
-    url: "/",
-    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "Greenwitch" }],
+    locale: "az_AZ",
+    url: SITE_URL, // absolute
+    images: [{ url: `${SITE_URL}/og-image.jpg`, width: 1200, height: 630, alt: "Greenwitch" }],
   },
-  alternates: { canonical: "/" },
+  alternates: { canonical: SITE_URL },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -46,17 +47,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
       </head>
-      <body className={`${montserrat.variable} ${lato.variable} antialiased`}>
+
+      {/* ✅ Sticky footer skeleti */}
+      <body className={`${montserrat.variable} ${lato.variable} antialiased min-h-screen flex flex-col`}>
         <ConsoleFilters />
+
         <SearchProvider>
           <FavoriteProvider>
             <BagProvider>
-              {/* ✅ useSearchParams istifadə edən Navbar üçün Suspense */}
-              <Suspense fallback={null}>
+
+              {/* ✅ Navbar Suspense skeleton: hündürlüyü Navbar-la eyni saxla */}
+              <Suspense fallback={<div className="h-16 md:h-20" aria-hidden="true" />}>
                 <Navbar />
               </Suspense>
 
-              <main>{children}</main>
+              {/* ✅ Kontent sahəsi footer-i aşağı itələyir */}
+              <main className="flex-1">{children}</main>
+
               <ScrollToTop />
               <Footer />
 

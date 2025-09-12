@@ -7,24 +7,25 @@ export async function apiGet(path: string, opts: FetchOpts = {}) {
     .replaceAll('"', '')
     .replace(/\/+$/, '');
 
-  const url = `${BASE}${path.startsWith('/') ? '' : '/'}${path}`;
+  // əgər path tam URL-disə (https:// ilə başlayır), BASE əlavə etmə
+  const isAbs = /^https?:\/\//i.test(path);
+  const url = isAbs
+    ? path
+    : `${BASE}${path.startsWith('/') ? '' : '/'}${path}`;
+
   const isServer = typeof window === 'undefined';
 
-  // ✅ fetch konfiqurasiyası (imza və struktur dəyişməyib)
-  const fetchOpts: RequestInit & { next?: { revalidate: number } } = {
+  const fetchOpts: RequestInit & { next?: { revalidate?: number } } = {
     method: 'GET',
     headers: {
-      'ngrok-skip-browser-warning': 'true',
-      'Accept': 'application/json',
+      Accept: 'application/json',
     },
   };
 
   if (isServer) {
-    // ✅ SSR/ISR: default 300s (5 dəqiqə). İstəsən opts.revalidate ilə override edə bilərsən
-    fetchOpts.next = { revalidate: opts.revalidate ?? 300 };
+    fetchOpts.next = { revalidate: opts.revalidate ?? 300 }; // SSR/ISR
   } else {
-    // ✅ CSR: həmişə təzə data (filter/axtarış üçün). İstəsən opts.cache ilə override edə bilərsən
-    fetchOpts.cache = opts.cache ?? 'no-store';
+    fetchOpts.cache = opts.cache ?? 'no-store'; // CSR
   }
 
   const res = await fetch(url, fetchOpts);
@@ -32,7 +33,9 @@ export async function apiGet(path: string, opts: FetchOpts = {}) {
 
   if (!res.ok) throw new Error(`[${res.status}] ${url}`);
   if (!ct.includes('application/json')) {
-    throw new Error(`Server JSON əvəzinə ${ct || 'naməlum content-type'} qaytardı: ${url}`);
+    throw new Error(
+      `Server JSON əvəzinə ${ct || 'naməlum content-type'} qaytardı: ${url}`
+    );
   }
 
   return res.json();

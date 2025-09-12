@@ -1,0 +1,19 @@
+.error_page {
+    padding-bottom: 70px;
+}
+
+.error_page h1 {
+    font-size: 60px;
+    /* margin-bottom: 16px; */
+}
+
+.error_page h2 {
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+.error_page p {
+    font-size: 17px;
+    max-width: 440px;
+    margin-bottom: 24px;
+}

@@ -118,7 +118,7 @@ export default function Products() {
         <div className={styles.oliviaWatches}>
           {currentWatches.map((watch, i) => (
             <Image
-              key={i}
+              key={watch.name}
               src={watch.src}
               alt={watch.name}
               width={watch.width}
