@@ -89,8 +89,6 @@ const watches = [
   },
 ];
 
-
-
 export default function Products() {
   const [index, setIndex] = useState(0);
 
@@ -101,7 +99,6 @@ export default function Products() {
 
     return () => clearInterval(interval);
   }, []);
-
 
   const currentWatches = watches.slice(index * 3, index * 3 + 3);
 
@@ -116,9 +113,9 @@ export default function Products() {
           className={`object-cover`}
         />
         <div className={styles.oliviaWatches}>
-          {currentWatches.map((watch, i) => (
+          {currentWatches.map((watch) => (
             <Image
-              key={watch.name}
+              key={watch.brandId ?? watch.name} // ✅ stabil key
               src={watch.src}
               alt={watch.name}
               width={watch.width}
@@ -128,11 +125,16 @@ export default function Products() {
           ))}
         </div>
         <div className={`${styles.oliviaWatchesDesc}`}>
-          {currentWatches.map((watch, i) => (
-            <div key={i} className={`flex items-center ${watch.descClass}`}>
+          {currentWatches.map((watch) => (
+            <div
+              key={watch.brandId ?? watch.name} // ✅ stabil key
+              className={`flex items-center ${watch.descClass}`}
+            >
               <p>{watch.name}</p>
               <Link href={`/products?brandId=${watch.brandId}`}>
-              <span className='cursor-pointer'><EyeIcon /></span>
+                <span className='cursor-pointer'>
+                  <EyeIcon />
+                </span>
               </Link>
             </div>
           ))}
@@ -141,7 +143,9 @@ export default function Products() {
 
       <div className={`${styles.oliviaRight} flex relative`}>
         <div className={styles.desc}>
-          <p>100% orijinal saatlar üçün <b>hədiyyə kartı</b> ilə ətrafınızı sevindirin.</p>
+          <p>
+            100% orijinal saatlar üçün <b>hədiyyə kartı</b> ilə ətrafınızı sevindirin.
+          </p>
           <Link href="/gift-card">
             <button className='cursor-pointer'>SİFARİŞ ET</button>
           </Link>
