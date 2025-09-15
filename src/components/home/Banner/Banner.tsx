@@ -6,15 +6,9 @@ import styles from "./Banner.module.css";
 import FadeImage from "@/components/FadeImage";
 import useAutoSlide from "@/hooks/useAutoSlide";
 import type { InfoSection } from "@/lib/api/infoSections";
-
+import { buildImageUrl } from "@/utils/images";
 type BannerSet = { images: { src: string; alt: string; url?: string | null }[] };
 
-const buildImageUrl = (rel?: string) => {
-  const API = (process.env.NEXT_PUBLIC_API_URL ?? "").trim();
-  const ROOT = API.replace(/\/api\/?$/i, "");
-  const clean = String(rel ?? "").replace(/^\/+/, "");
-  return `${ROOT}/${encodeURI(clean)}`;
-};
 
 function chunk3<T>(arr: T[]): T[][] {
   const out: T[][] = [];

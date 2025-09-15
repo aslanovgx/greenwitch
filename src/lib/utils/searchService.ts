@@ -1,5 +1,6 @@
 import { getProducts, type ProductFilter } from "@/lib/api/products";
 import type { RawProduct } from "@/types/Product";
+import { buildImageUrl } from "@/utils/images"; 
 
 export type FeSearchResult = {
   id: number;
@@ -15,13 +16,6 @@ export type FeSearchResult = {
 const CACHE = new Map<string, { ts: number; items: RawProduct[] }>();
 const TTL_MS = 60_000; // 1 dəqiqə
 
-/* ── Helpers ─────────────────────────────────────────── */
-export function buildImageUrl(rel: string) {
-  const API = (process.env.NEXT_PUBLIC_API_URL ?? "").trim();
-  const ROOT = API.replace(/\/api\/?$/i, "");
-  const clean = String(rel ?? "").replace(/^\/+/, "");
-  return `${ROOT}/${encodeURI(clean)}`;
-}
 
 function normalize(s: unknown) {
   return String(s ?? "")

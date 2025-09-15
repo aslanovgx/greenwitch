@@ -7,14 +7,7 @@ import type { Product as UIProduct, RawProduct } from "@/types/Product";
 import ProductCard from "@/components/common/ProductCard";
 import MoreButton from "@/components/ui/MoreButton";
 import Link from "next/link";
-
-// Relative image pathları (images/products/...) tam URL-ə çevir
-const buildImageUrl = (rel: string) => {
-    const API = (process.env.NEXT_PUBLIC_API_URL ?? "").trim();
-    const ROOT = API.replace(/\/api\/?$/i, "");
-    const clean = String(rel ?? "").replace(/^\/+/, "");
-    return `${ROOT}/${encodeURI(clean)}`;
-};
+import { buildImageUrl } from "@/utils/images";
 
 type Props = { initialProducts?: RawProduct[] };
 

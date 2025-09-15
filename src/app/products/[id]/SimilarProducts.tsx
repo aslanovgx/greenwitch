@@ -8,13 +8,7 @@ import ProductCard from "@/components/common/ProductCard";
 import type { Product, RawProduct } from "@/types/Product";
 import MoreButton from "@/components/ui/MoreButton";
 import Link from "next/link";
-
-const buildImageUrl = (rel: string) => {
-  const API = (process.env.NEXT_PUBLIC_API_URL ?? "").trim();
-  const ROOT = API.replace(/\/api\/?$/i, "");
-  const clean = String(rel ?? "").replace(/^\/+/, "");
-  return `${ROOT}/${encodeURI(clean)}`;
-};
+import { buildImageUrl } from "@/utils/images";
 
 type Props = {
   initialProducts?: RawProduct[];

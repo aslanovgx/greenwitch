@@ -6,6 +6,7 @@ import ProductCard from "@/components/common/ProductCard";
 import type { Product as UIProduct } from "@/types/Product";
 import Link from "next/link";
 import MoreButton from "@/components/ui/MoreButton";
+import { buildImageUrl } from "@/utils/images";
 
 type APIProduct = {
   id: number;
@@ -22,12 +23,6 @@ type APIProduct = {
 
 type Props = { initialProducts?: APIProduct[] };
 
-const buildImageUrl = (rel: string) => {
-  const API = (process.env.NEXT_PUBLIC_API_URL ?? "").trim();
-  const ROOT = API.replace(/\/api\/?$/i, "");
-  const clean = String(rel ?? "").replace(/^\/+/, "");
-  return `${ROOT}/${encodeURI(clean)}`;
-};
 
 export default function MostSales({ initialProducts = [] }: Props) {
   const [activeCardId, setActiveCardId] = useState<number | null>(null);

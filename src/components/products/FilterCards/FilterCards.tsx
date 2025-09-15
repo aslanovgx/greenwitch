@@ -10,17 +10,12 @@ import { getProducts } from "@/lib/api/products";
 import { isValidSort, SortCode } from "@/constants/sort";
 import { scrollToTop } from "@/utils/scrollToTop";
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
+import { buildImageUrl } from "@/utils/images";
 
 const SERVER_PAGE_SIZE = 20;   // backend page size (təxmini/fallback)
 const UI_PAGE_SIZE = 20;       // UI-də göstərilən say
 
-/* ───────────── helpers ───────────── */
-function buildImageUrl(rel: string) {
-  const API = (process.env.NEXT_PUBLIC_API_URL ?? "").trim();
-  const ROOT = API.replace(/\/api\/?$/i, "");
-  const clean = String(rel ?? "").replace(/^\/+/, "");
-  return `${ROOT}/${encodeURI(clean)}`;
-}
+
 
 const toPosIntOrUndef = (v: string | null) => {
   const n = Number(v);
@@ -438,7 +433,7 @@ export default function FilterCards() {
       {/* Pagination */}
       <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
         <button className="px-3 py-2 border rounded-md disabled:opacity-50" onClick={onClickFirst} disabled={page <= 1} aria-label="Birinci">
-           <ChevronsLeft className="w-4 h-4" />
+          <ChevronsLeft className="w-4 h-4" />
         </button>
 
         <button className="px-3 py-2 border rounded-md disabled:opacity-50" onClick={onClickPrev} disabled={page <= 1} aria-label="Əvvəlki">

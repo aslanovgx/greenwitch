@@ -1,6 +1,7 @@
 'use client';
 import { memo, useEffect, useState } from 'react';
 import Image from 'next/image';
+import { buildImageUrl } from "@/utils/images";
 import useLabelColors from "@/hooks/useLabelColors";
 import { Heart } from 'lucide-react';
 import { useFavorites } from '@/context/FavoritesContext';
@@ -44,10 +45,12 @@ function ProductCardComponent({
     "(max-width: 1025px) 172px, " +
     "(max-width: 1280px) 243px, " + // 1026–1280 aralığı üçün
     "243px";                        // >1280 üçün fallback
+    
 
 
-  const cover = item.images?.[0] ?? "/assets/placeholders/product.png";
-  const hover = item.images?.[1] ?? null;
+  const cover = buildImageUrl(item.images?.[0] || "/assets/placeholders/product.png");
+const hover = item.images?.[1] ? buildImageUrl(item.images[1]) : null;
+
 
   const handleClick = () => {
     if (isTouch && setActiveCardId) {
@@ -121,10 +124,7 @@ function ProductCardComponent({
       rgba(255,255,255,0.90) 46%,
       rgba(255,255,255,0.20) 62%
     ), ${base}`;
-
-  if (process.env.NODE_ENV !== "production") {
-    // console.log("LabelColors:", { colors, loading, badgeType, badgeColor });
-  }
+    
 
   // ✅ Badge-in SSR/CSR uyğunsuzluğunu önləmək üçün yalnız hazır olanda göstər
   const badgeReady = mounted && !!badge && !loading && typeof badgeColor === 'string' && badgeColor.length > 0;
