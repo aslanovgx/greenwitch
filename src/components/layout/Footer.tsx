@@ -155,7 +155,7 @@ export default function Footer() {
                 <span><FaFacebookF /></span>
                 <span><FaTwitter /></span>
                 <a
-                  href="https://instagram.com/saat.az"
+                  href="https://instagram.com/saat_az"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
