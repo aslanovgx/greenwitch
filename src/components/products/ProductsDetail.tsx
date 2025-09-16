@@ -101,7 +101,7 @@ export default function ProductsDetail({ product }: Props) {
       raf = requestAnimationFrame(() => {
         const width = window.innerWidth;
         setShowMobileSlider(width < BP_SM);
-        setImageSize(getImageSizeByWidth(width));
+        setImageSize(width < BP_SM ? { width: 360, height: 420 } : getImageSizeByWidth(width));
         setThumbsConfig(getThumbsConfigByWidth(width));
       });
     };
@@ -130,8 +130,8 @@ export default function ProductsDetail({ product }: Props) {
     if (!s) return;
 
     if (!shouldShowNav) {
-      try { s.navigation?.destroy?.(); } catch {}
-      try { s.update?.(); } catch {}
+      try { s.navigation?.destroy?.(); } catch { }
+      try { s.update?.(); } catch { }
       return;
     }
 
@@ -140,13 +140,10 @@ export default function ProductsDetail({ product }: Props) {
     nav.nextEl = next ?? undefined;
     nav.enabled = true;
 
-    try { s.navigation?.destroy?.(); } catch {}
-    try { s.navigation?.init?.(); s.navigation?.update?.(); } catch {}
-    try { s.update?.(); } catch {}
+    try { s.navigation?.destroy?.(); } catch { }
+    try { s.navigation?.init?.(); s.navigation?.update?.(); } catch { }
+    try { s.update?.(); } catch { }
   }, [shouldShowNav, thumbsConfig.slidesPerView, thumbs.length]);
-
-  // ——— Mount guard
-  if (!hasMounted) return <div style={{ minHeight: 400 }} />;
 
   // —— Endirim helper-ləri
   const basePrice = Number(product.price ?? 0);
@@ -166,19 +163,14 @@ export default function ProductsDetail({ product }: Props) {
             modules={[Pagination]}
             className={styles.mobileImageSlider}
             initialSlide={Math.max(0, thumbs.findIndex((t) => t === activeImage))}
-            style={{ height: imageSize.height }}
-            observer
-            observeParents
-            resizeObserver
-            autoHeight={false}
+            style={{ height: imageSize.height, minHeight: imageSize.height }}
+            autoHeight={true}
             onInit={(s) => {
-              requestAnimationFrame(() => {
-                try { s.updateSize(); s.updateSlides(); s.update(); } catch {}
-              });
-              setTimeout(() => { try { s.updateSize(); s.update(); } catch {} }, 100);
+              requestAnimationFrame(() => { try { s.updateAutoHeight?.(); s.update?.(); } catch { } });
+              setTimeout(() => { try { s.updateAutoHeight?.(); s.update?.(); } catch { } }, 80);
             }}
             onSwiper={(s) => {
-              setTimeout(() => { try { s.updateSize(); s.update(); } catch {} }, 0);
+              setTimeout(() => { try { s.updateAutoHeight?.(); s.update?.(); } catch { } }, 0);
             }}
             onSlideChange={(swiper) => {
               const newImage = thumbs[swiper.activeIndex];
@@ -239,15 +231,15 @@ export default function ProductsDetail({ product }: Props) {
                   swiperRef.current = swiper;
                   setTimeout(() => {
                     if (!shouldShowNav) {
-                      try { swiper.update?.(); } catch {}
+                      try { swiper.update?.(); } catch { }
                       return;
                     }
                     const nav = ensureNav(swiper);
                     nav.prevEl = prevRef.current ?? undefined;
                     nav.nextEl = nextRef.current ?? undefined;
                     nav.enabled = true;
-                    try { swiper.navigation?.init?.(); swiper.navigation?.update?.(); } catch {}
-                    try { swiper.update?.(); } catch {}
+                    try { swiper.navigation?.init?.(); swiper.navigation?.update?.(); } catch { }
+                    try { swiper.update?.(); } catch { }
                   }, 0);
                 }}
                 watchSlidesProgress
@@ -411,6 +403,6 @@ export default function ProductsDetail({ product }: Props) {
           </button>
         </div>
       </div>
-    </div>
+    </div >
   );
 }

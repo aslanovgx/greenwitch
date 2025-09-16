@@ -12,6 +12,8 @@
     gap: 16px;
     align-items: center;
     align-items: flex-start;
+    min-width: 0 !important;
+    min-height: 0 !important;
 }
 
 .products_detail .leftSide .thumbnails {
@@ -527,6 +529,8 @@
 
     .products_detail .leftSide {
         gap: 23px;
+        min-height: 420px !important;
+        order: 1;
     }
 
     .products_detail .leftSide .thumbnails {
@@ -544,6 +548,7 @@
     .products_detail .rightSide {
         text-align: center;
         gap: 13px;
+        order: 2;
     }
 
     .products_detail .rightSide .title {
@@ -629,8 +634,10 @@
     }
 
     .mobileImageSlider .swiper-wrapper {
-        height: 420px;
-        /* mobil konteyner hündürlüyünə bərabər */
+        height: 420px !important;
+        min-height: 420px !important;
+        width: 100%;
+        max-width: 360px;
     }
 
     .mobileImageSlider .swiper-slide {
@@ -652,15 +659,39 @@
     }
 
     /* ✅ Swiper-in daxili siniflərini dəqiq tuturuq */
+    .mobileImageSlider :global(.swiper) {
+        height: 420px !important;
+        min-height: 420px !important;
+    }
+
     .mobileImageSlider :global(.swiper-wrapper) {
-        height: 420px;
+        height: 420px !important;
+        min-height: 420px !important;
     }
 
     .mobileImageSlider :global(.swiper-slide) {
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 420px;
+        height: 420px !important;
+        min-height: 420px !important;
+    }
+
+
+
+
+
+
+    /* 3) WebKit/Safari üçün əlavə bərkidici patch */
+    @supports (-webkit-touch-callout: none) {
+
+        .mobileImageSlider,
+        .mobileImageSlider :global(.swiper),
+        .mobileImageSlider :global(.swiper-wrapper),
+        .mobileImageSlider :global(.swiper-slide) {
+            height: 420px !important;
+            min-height: 420px !important;
+        }
     }
 
 }
