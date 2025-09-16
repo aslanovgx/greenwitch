@@ -31,7 +31,7 @@ export async function generateMetadata(
   return {
     title: "Məhsullar | SaatAZ",
     description:
-      "Kişi, qadın və unisex orijinal brend saat modelləri. Rəsmi zəmanət və sərfəli qiymətlər.",
+      "Kişi, qadın və uşaq orijinal brend saat modelləri. Rəsmi zəmanət və sərfəli qiymətlər.",
     alternates: { canonical },
     robots: { index: onlyPageParam, follow: true },
     openGraph: {
