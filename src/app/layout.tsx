@@ -21,8 +21,8 @@ export const robots = { index: isProd, follow: isProd };
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "Greenwitch | Sustainable Lifestyle",
-  description: "Discover eco-friendly products with Greenwitch.",
+  title: "SaatAZ | Saat Dünyası, Brand Watches",
+  description: "SaatAZ – Azərbaycanda orijinal brend saatların rəsmi satış ünvanı. Premium keyfiyyət, zəmanət və sərfəli qiymətlər.",
   icons: {
     icon: [
       { url: "/favicon.svg", type: "image/svg+xml" },
@@ -31,15 +31,16 @@ export const metadata: Metadata = {
     ]
   },
   openGraph: {
-    title: "Greenwitch",
-    description: "Discover eco-friendly products with Greenwitch.",
+    title: "SaatAZ | Saat Dünyası, Brand Watches",
+    description: "Azərbaycanda orijinal brend saatlar. Premium keyfiyyət, zəmanət və sərfəli qiymətlər. Saat Dünyasına xoş gəlmisiniz!",
     type: "website",
     locale: "az_AZ",
-    url: SITE_URL, // absolute
-    images: [{ url: `${SITE_URL}/og-image.jpg`, width: 1200, height: 630, alt: "Greenwitch" }],
+    url: SITE_URL,
+    images: [{ url: `${SITE_URL}/og-image.jpg`, width: 1200, height: 630, alt: "SaatAZ" }],
   },
   alternates: { canonical: SITE_URL },
 };
+
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

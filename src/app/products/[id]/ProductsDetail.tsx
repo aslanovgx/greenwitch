@@ -1,3 +1,4 @@
+// src/app/products/[id]/ProductsDetail.tsx
 "use client";
 import { useState, useEffect, useRef, useMemo } from "react";
 import styles from "./ProductsDetail.module.css";
@@ -14,6 +15,7 @@ import { FiChevronUp, FiChevronDown } from "react-icons/fi";
 import { useBag } from "@/context/BagContext";
 import type { Swiper as SwiperClass } from "swiper";
 import type { SwiperOptions, NavigationOptions } from "swiper/types";
+import { buildImageUrl } from "@/utils/images";
 
 // —— Breakpoint-lar
 const BP_SM = 640;
@@ -35,9 +37,6 @@ const getThumbsConfigByWidth = (width: number) => {
   return { slidesPerView: 4, height: 538, width: 95 } as const;
 };
 
-// —— İlk düzgün thumbnail-i tapır
-const firstThumb = (p: ProductDetail) => p.thumbnails?.find((t) => t && t.trim()) || null;
-
 // —— Thumbnail sütunu üçün sabitlər (Swiper hündürlüyü)
 const THUMB_H = 127;
 const GAP = 10;
@@ -53,20 +52,24 @@ type NavParams = NavigationOptions & {
 
 function ensureNav(swiper: SwiperClass): NavParams {
   const p = (swiper.params as SwiperOptions) ?? ({} as SwiperOptions);
-  swiper.params = p; // run-time genişləndirmə
+  swiper.params = p;
   if (!p.navigation || typeof p.navigation === "boolean") {
-    p.navigation = {} as NavigationOptions; // tipli quruluş
+    p.navigation = {} as NavigationOptions;
   }
   return p.navigation as NavParams;
 }
 
 export default function ProductsDetail({ product }: Props) {
-  // ——— State
-  const [activeImage, setActiveImage] = useState<string | null>(() => firstThumb(product));
+  // —— Normalize edilmiş thumbnails
+  const validThumbsRaw = useMemo(
+    () => (product.thumbnails ?? []).filter((t) => t && t.trim()),
+    [product.thumbnails]
+  );
+  const thumbs = useMemo(() => validThumbsRaw.map(buildImageUrl), [validThumbsRaw]);
 
-  useEffect(() => {
-    setActiveImage(firstThumb(product));
-  }, [product]);
+  // ——— State
+  const [activeImage, setActiveImage] = useState<string | null>(() => thumbs[0] ?? null);
+  useEffect(() => { setActiveImage(thumbs[0] ?? null); }, [thumbs]);
 
   const [qtyRaw, setQtyRaw] = useState("1");
   const qty = useMemo(() => Math.max(1, Number(qtyRaw || "1")), [qtyRaw]);
@@ -88,12 +91,7 @@ export default function ProductsDetail({ product }: Props) {
     getThumbsConfigByWidth(typeof window !== "undefined" ? window.innerWidth : BP_LG)
   );
 
-  // valid thumbnail-lar
-  const validThumbs = useMemo(
-    () => (product.thumbnails ?? []).filter((t) => t && t.trim()),
-    [product.thumbnails]
-  );
-  const shouldShowNav = validThumbs.length > thumbsConfig.slidesPerView;
+  const shouldShowNav = thumbs.length > thumbsConfig.slidesPerView;
 
   // ——— Resize throttling (rAF)
   useEffect(() => {
@@ -132,37 +130,27 @@ export default function ProductsDetail({ product }: Props) {
     if (!s) return;
 
     if (!shouldShowNav) {
-      // naviqasiyanı dayandır, swiper-i yenilə
-      try { s.navigation?.destroy?.(); } catch { }
-      try { s.update?.(); } catch { }
+      try { s.navigation?.destroy?.(); } catch {}
+      try { s.update?.(); } catch {}
       return;
     }
 
-    // ——— Təhlükəsiz: params/navigation qurulması helper ilə
     const nav = ensureNav(s);
     nav.prevEl = prev ?? undefined;
     nav.nextEl = next ?? undefined;
     nav.enabled = true;
 
-    try {
-      s.navigation?.destroy?.(); // təmiz start üçün
-    } catch { }
-    try {
-      s.navigation?.init?.();
-      s.navigation?.update?.();
-    } catch { }
-    try { s.update?.(); } catch { }
-  }, [shouldShowNav, thumbsConfig.slidesPerView, validThumbs.length]);
+    try { s.navigation?.destroy?.(); } catch {}
+    try { s.navigation?.init?.(); s.navigation?.update?.(); } catch {}
+    try { s.update?.(); } catch {}
+  }, [shouldShowNav, thumbsConfig.slidesPerView, thumbs.length]);
 
   // ——— Mount guard
   if (!hasMounted) return <div style={{ minHeight: 400 }} />;
 
   // —— Endirim helper-ləri
   const basePrice = Number(product.price ?? 0);
-  const dp =
-    typeof product.discountPrice === "number"
-      ? product.discountPrice
-      : null;
+  const dp = typeof product.discountPrice === "number" ? product.discountPrice : null;
   const hasDiscount = typeof dp === "number" && dp < basePrice;
   const discountPct = hasDiscount ? Math.round(((basePrice - (dp as number)) / basePrice) * 100) : 0;
 
@@ -177,47 +165,40 @@ export default function ProductsDetail({ product }: Props) {
             pagination={{ clickable: true }}
             modules={[Pagination]}
             className={styles.mobileImageSlider}
-            initialSlide={Math.max(0, product.thumbnails?.findIndex((t) => t === activeImage) ?? 0)}
-            /* 🔽 Safari üçün vacib: */
-            style={{ height: imageSize.height }} 
+            initialSlide={Math.max(0, thumbs.findIndex((t) => t === activeImage))}
+            style={{ height: imageSize.height }}
             observer
             observeParents
             resizeObserver
             autoHeight={false}
             onInit={(s) => {
-              // ilk kadrdan sonra ölçünü yenilə
               requestAnimationFrame(() => {
-                try { s.updateSize(); s.updateSlides(); s.update(); } catch { }
+                try { s.updateSize(); s.updateSlides(); s.update(); } catch {}
               });
-              // şəkillər yüklənəndə də təkrar yenilə
-              setTimeout(() => { try { s.updateSize(); s.update(); } catch { } }, 100);
+              setTimeout(() => { try { s.updateSize(); s.update(); } catch {} }, 100);
             }}
             onSwiper={(s) => {
-              // ehtiyat üçün bir az gec daha bir update
-              setTimeout(() => { try { s.updateSize(); s.update(); } catch { } }, 0);
+              setTimeout(() => { try { s.updateSize(); s.update(); } catch {} }, 0);
             }}
-
             onSlideChange={(swiper) => {
-              const newImage = product.thumbnails?.[swiper.activeIndex];
+              const newImage = thumbs[swiper.activeIndex];
               if (newImage) setActiveImage(newImage);
             }}
           >
-            {product.thumbnails?.map((thumb, idx) =>
-              thumb?.trim() ? (
-                <SwiperSlide key={thumb || idx}>
-                  <Image
-                    src={thumb}
-                    alt={`${product.brandName}, ${product.name} — şəkil ${idx + 1}`}
-                    width={imageSize.width}
-                    height={imageSize.height}
-                    priority={idx === 0}
-                    loading={idx === 0 ? "eager" : "lazy"}
-                    className={styles.mainImageMobile}
-                    style={{ objectFit: "contain", borderRadius: 8 }}
-                  />
-                </SwiperSlide>
-              ) : null
-            )}
+            {thumbs.map((src, idx) => (
+              <SwiperSlide key={src || idx}>
+                <Image
+                  src={src || "/placeholder.png"}
+                  alt={`${product.brandName}, ${product.name} — şəkil ${idx + 1}`}
+                  width={imageSize.width}
+                  height={imageSize.height}
+                  priority={idx === 0}
+                  loading={idx === 0 ? "eager" : "lazy"}
+                  className={styles.mainImageMobile}
+                  style={{ objectFit: "contain", borderRadius: 8 }}
+                />
+              </SwiperSlide>
+            ))}
           </Swiper>
         ) : (
           <>
@@ -234,7 +215,7 @@ export default function ProductsDetail({ product }: Props) {
               )}
 
               <Swiper
-                key={`thumbs-${product.id}`} // sabit key
+                key={`thumbs-${product.id}`}
                 direction="vertical"
                 slidesPerView={thumbsConfig.slidesPerView}
                 slidesPerGroup={1}
@@ -243,11 +224,9 @@ export default function ProductsDetail({ product }: Props) {
                 modules={[Pagination, Navigation]}
                 className={`product-detail-swiper ${styles.thumbnails}`}
                 style={{
-                  // hündürlük formulla: 4 slide üçün 538px
                   height: `${calcThumbsHeight(thumbsConfig.slidesPerView)}px`,
                   maxWidth: `${thumbsConfig.width}px`,
                 }}
-                // navigation prop YOXDUR — param-ları özümüz yazırıq
                 onBeforeInit={(swiper) => {
                   const nav = ensureNav(swiper);
                   if (shouldShowNav) {
@@ -258,27 +237,17 @@ export default function ProductsDetail({ product }: Props) {
                 }}
                 onSwiper={(swiper) => {
                   swiperRef.current = swiper;
-
-                  // Bir "tick" gecikdirib, yenə də guard-larla init et
                   setTimeout(() => {
                     if (!shouldShowNav) {
-                      try { swiper.update?.(); } catch { }
+                      try { swiper.update?.(); } catch {}
                       return;
                     }
-
                     const nav = ensureNav(swiper);
                     nav.prevEl = prevRef.current ?? undefined;
                     nav.nextEl = nextRef.current ?? undefined;
                     nav.enabled = true;
-
-                    if (swiper.navigation) {
-                      try {
-                        swiper.navigation.init();
-                        swiper.navigation.update();
-                      } catch { /* noop */ }
-                    }
-
-                    try { swiper.update?.(); } catch { /* noop */ }
+                    try { swiper.navigation?.init?.(); swiper.navigation?.update?.(); } catch {}
+                    try { swiper.update?.(); } catch {}
                   }, 0);
                 }}
                 watchSlidesProgress
@@ -286,20 +255,20 @@ export default function ProductsDetail({ product }: Props) {
                 observeSlideChildren
                 resizeObserver
               >
-                {validThumbs.map((thumb, idx) => (
-                  <SwiperSlide key={thumb || idx}>
+                {thumbs.map((src, idx) => (
+                  <SwiperSlide key={src || idx}>
                     <Image
-                      src={thumb}
+                      src={src || "/placeholder.png"}
                       alt={`${product.brandName}, ${product.name} — thumbnail ${idx + 1}`}
                       width={95}
                       height={THUMB_H}
                       className={styles.thumbnailImage}
-                      onClick={() => setActiveImage(thumb)}
+                      onClick={() => setActiveImage(src)}
                       role="button"
-                      aria-pressed={activeImage === thumb}
+                      aria-pressed={activeImage === src}
                       style={{
                         cursor: "pointer",
-                        border: activeImage === thumb ? "2px solid black" : "1px solid #ccc",
+                        border: activeImage === src ? "2px solid black" : "1px solid #ccc",
                         borderRadius: 6,
                       }}
                     />
@@ -424,9 +393,9 @@ export default function ProductsDetail({ product }: Props) {
                 price,
                 discountPrice: hasDiscount ? dp : null,
                 brandName: product.brandName ?? "",
-                images: product.thumbnails || [],
-                image: product.thumbnails?.[0] || null,
-                thumbnails: product.thumbnails || [],
+                images: thumbs,
+                image: thumbs[0] || null,
+                thumbnails: thumbs,
                 title: product.name ?? undefined,
                 desc: product.description ?? undefined,
                 quantity: qty,
