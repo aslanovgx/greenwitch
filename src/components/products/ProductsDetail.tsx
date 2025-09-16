@@ -82,7 +82,6 @@ export default function ProductsDetail({ product }: Props) {
   const swiperRef = useRef<SwiperClass | null>(null);
 
   const [showMobileSlider, setShowMobileSlider] = useState(false);
-  const [hasMounted, setHasMounted] = useState(false);
 
   const [imageSize, setImageSize] = useState(() =>
     getImageSizeByWidth(typeof window !== "undefined" ? window.innerWidth : BP_LG)
@@ -106,7 +105,6 @@ export default function ProductsDetail({ product }: Props) {
       });
     };
 
-    setHasMounted(true);
     onResize();
     window.addEventListener("resize", onResize);
     return () => {

@@ -159,3 +159,29 @@
     color: red;
     margin-top: 0px;
 }
+
+
+@media (max-width: 640px) {
+    .checkoutTitle h1 {
+        font-size: 18px;
+        margin-bottom: 0px;
+        max-width: 150px;
+        padding-top: 38px;
+        padding-bottom: 5px;
+    }
+
+    .checkoutTitle h1::after {
+        width: 150px;
+    }
+
+    .checkoutForm button {
+        padding: 10px 5px;
+        background-color: #000;
+        color: white;
+        border: 1px solid #000;
+        border-radius: 12px;
+        cursor: pointer;
+        font-size: 18px;
+        transition: 0.3s ease-in-out;
+    }
+}
