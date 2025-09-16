@@ -1,7 +1,8 @@
 // src/app/products/[id]/page.tsx
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import ProductsDetail from "./ProductsDetail";
-import SimilarProducts from "./SimilarProducts";
+import ProductsDetail from "../../../components/products/ProductsDetail";
+import SimilarProducts from "@/components/products/SimilarProducts";
 import Contact from "@/components/home/Contact/Contact";
 import { getProductById, getProducts } from "@/lib/api/products";
 import { getBrands } from "@/lib/api/brand";
@@ -9,7 +10,7 @@ import type { RawProduct } from "@/types/Product";
 
 type Params = Promise<{ id: string }>;
 
-// Köməkçilər
+// -- Helpers
 const norm = (s: string | undefined | null) => String(s ?? "").trim().toLowerCase();
 const toNum = (v: unknown): number | undefined => {
   const n = Number(v);
@@ -19,7 +20,36 @@ const isValid = (v: unknown) => typeof toNum(v) === "number";
 const isRecord = (v: unknown): v is Record<string, unknown> =>
   typeof v === "object" && v !== null;
 
-// Sadə list tipi (yalnız bizə lazım olan sahələr)
+// Slug helper (kanonikal URL üçün)
+const slugify = (s: string) =>
+  s
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .trim();
+
+// --- Type-safe helperlər (any YOX) ---
+function firstThumbnail(p: unknown): string | null {
+  const thumbs = (p as { thumbnails?: unknown })?.thumbnails;
+  return Array.isArray(thumbs) && typeof thumbs[0] === "string" ? thumbs[0] : null;
+}
+function readBrandId(p: unknown): number | undefined {
+  const v = (p as { brandId?: unknown })?.brandId;
+  const n = Number(v);
+  return Number.isFinite(n) && n > 0 ? n : undefined;
+}
+function readBrandName(v: unknown): string | undefined {
+  const name = (v as { brandName?: unknown })?.brandName;
+  return typeof name === "string" ? name : undefined;
+}
+function readName(v: unknown): string | undefined {
+  const name = (v as { name?: unknown })?.name;
+  return typeof name === "string" ? name : undefined;
+}
+
+// Sadə list tipi (yalnız lazım sahələr)
 type ListItem = Pick<RawProduct, "id" | "brandId" | "brandName">;
 
 // xam list → təhlükəsiz ListItem[]
@@ -29,11 +59,11 @@ function toList(input: unknown): ListItem[] {
   for (const v of input) {
     if (!isRecord(v)) continue;
 
-    const id = toNum(v.id);
+    const id = toNum((v as { id?: unknown }).id);
     if (!id) continue;
 
-    const brandId = toNum(v.brandId);
-    const brandName = typeof v.brandName === "string" ? v.brandName : undefined;
+    const brandId = toNum((v as { brandId?: unknown }).brandId);
+    const brandName = readBrandName(v);
 
     out.push({ id, brandId, brandName });
   }
@@ -48,23 +78,67 @@ function toBrands(input: unknown): Brand[] {
   const out: Brand[] = [];
   for (const v of input) {
     if (!isRecord(v)) continue;
-    const id = toNum(v.id);
-    const name = typeof v.name === "string" ? v.name : undefined;
+    const id = toNum((v as { id?: unknown }).id);
+    const name = readName(v);
     if (id && name) out.push({ id, name });
   }
   return out;
 }
 
-export async function generateMetadata({ params }: { params: Params }) {
+// --- Dinamik metadata ---
+export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { id } = await params;
-  const product = await getProductById(Number(id)).catch(() => null);
+  const numId = Number(id);
+
+  const base = (process.env.NEXT_PUBLIC_BASE_URL ?? "").replace(/\/+$/, "");
+  const fallback: Metadata = {
+    title: "Məhsul tapılmadı | SaatAZ",
+    description: "Məhsul mövcud deyil.",
+    alternates: { canonical: `${base}/products/${id}` },
+    robots: { index: false, follow: false },
+  };
+
+  if (!Number.isFinite(numId)) return fallback;
+
+  const product = await getProductById(numId).catch(() => null);
+  if (!product) return fallback;
+
+  // Pretty canonical: /products/brand-name-product-name-123
+  const pretty = `${slugify(`${product.brandName ?? ""} ${product.name ?? ""}`)}-${numId}`;
+  const canonicalUrl = `${base}/products/${pretty}`;
+
+  const title = `${product.name} | ${product.brandName} | SaatAZ`;
+  const descAz = `${product.brandName} ${product.name} – orijinal brend saat. Rəsmi zəmanət və sərfəli qiymət.`;
+  const descEn = "Original brand watch with warranty and best price in Azerbaijan.";
+  const description = `${descAz} | ${descEn}`;
+
+  const ogImg =
+    firstThumbnail(product) ??
+    `${base}/api/og?title=${encodeURIComponent(product.name ?? "SaatAZ")}`;
 
   return {
-    title: product?.name || "Product Page",
-    description: product?.description || "Product details and information.",
+    title,
+    description,
+    alternates: { canonical: canonicalUrl },
+    openGraph: {
+      type: "website", // "product" bəzən etibarsız parse olunur
+      title,
+      description: descAz,
+      url: canonicalUrl,
+      images: [{ url: ogImg, width: 1200, height: 630, alt: product.name ?? "SaatAZ" }],
+      siteName: "SaatAZ",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: descAz,
+      images: [ogImg],
+    },
+    robots: { index: true, follow: true },
   };
 }
 
+// --- Page: SƏNİN MƏNTİQİN EYNİ QALIR ---
 export default async function Page({ params }: { params: Params }) {
   const { id } = await params;
 
@@ -81,8 +155,8 @@ export default async function Page({ params }: { params: Params }) {
     (p) => p.id !== product.id && norm(p.brandName) === target
   );
 
-  // 1) detail-dən brandId (əgər BE qaytarırsa; ProductDetail tipinə əlavə etməmisənsə belə təhlükəsiz oxuyuruq)
-  const brandIdFromDetail = toNum((product as unknown as { brandId?: unknown }).brandId);
+  // 1) detail-dən brandId (type-safe helper)
+  const brandIdFromDetail = readBrandId(product);
 
   // 2) list-dən brandId (eyni brendli məhsullardan birində varsa)
   const brandIdFromList = toNum(sameBrand.find((x) => isValid(x.brandId))?.brandId);
@@ -106,15 +180,18 @@ export default async function Page({ params }: { params: Params }) {
   let sameBrandFull: RawProduct[] = [];
   if (resolvedBrandId) {
     sameBrandFull = await getProducts({ brandId: resolvedBrandId, size: 10 }).catch(() => []);
-    // 👇 ehtiyat üçün burada da çıxarırıq
-    sameBrandFull = sameBrandFull.filter(p => Number(p?.id) !== Number(product.id));
+    // ehtiyat üçün burada da çıxarırıq
+    sameBrandFull = sameBrandFull.filter((p) => Number(p?.id) !== Number(product.id));
   }
 
   return (
     <>
       <ProductsDetail product={product} />
-      {/* sameBrand ListItem[] olsa da, SimilarProducts RawProduct[] istəyir — struktur uyğun gəlir */}
-      <SimilarProducts initialProducts={sameBrandFull} brandId={resolvedBrandId} excludeId={product.id} />
+      <SimilarProducts
+        initialProducts={sameBrandFull}
+        brandId={resolvedBrandId}
+        excludeId={product.id}
+      />
       <Contact />
     </>
   );

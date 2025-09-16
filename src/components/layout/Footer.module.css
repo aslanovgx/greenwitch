@@ -28,7 +28,7 @@
 .footer .footerBox ul li {
     color: #1E1D1D;
     font-family: Roboto;
-    font-size: 17.953px;
+    font-size: 19px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
@@ -59,7 +59,7 @@
 }
 
 .footerGradientLine {
-    margin-bottom: 53px;
+    margin-bottom: 33px;
     max-width: 1147.856px;
     height: 1.122px;
     background: linear-gradient(90deg, #FFF 0%, #000 29.38%, #000 51.41%, #000 71.33%, #FFF 100%);

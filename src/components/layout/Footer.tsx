@@ -7,7 +7,7 @@ import styles from './Footer.module.css';
 import Copyright from './../../../public/assets/footer/bx-copyright.svg.svg'
 import useIsMobile from '@/hooks/useIsMobile';
 import { FaPhone, FaLocationDot } from "react-icons/fa6";
-import { FaFacebookF, FaTwitter, FaInstagram } from "react-icons/fa";
+import { FaFacebookF, FaWhatsapp, FaInstagram } from "react-icons/fa";
 
 
 
@@ -56,9 +56,6 @@ export default function Footer() {
               <li><Link href="/products?sort=new">Yeni gələnlər</Link></li>
               <li><Link href="/products?sort=discount">Endirimdə olanlar</Link></li>
               <li><Link href="/products?sort=best">Ən çox satılanlar</Link></li>
-              {/* <li><Link href="/products?Gender=1">Kişi</Link></li>
-              <li><Link href="/products?Gender=2">Qadın</Link></li>
-              <li><Link href="/products?Gender=3">Uşaq</Link></li> */}
             </>
           )}
         </ul>
@@ -79,15 +76,10 @@ export default function Footer() {
           </li>
           {shouldShow(1) && (
             <>
-              <li><Link href="/products?categoryId=2">Kredit imkanları</Link></li>
-              <li><Link href="/products?categoryId=1">Korporativ Satış</Link></li>
-              <li><Link href="/products?sort=new">Hədiyyə Kartı</Link></li>
-              <li><Link href="/products?sort=new">Servis</Link></li>
-              {/* <li><Link href="/products?sort=discount">Endirimdə olanlar</Link></li>
-              {/* <li><Link href="/products?sort=best">Ən çox satılanlar</Link></li> */}
-              {/* <li><Link href="/products?Gender=1">Kişi</Link></li>
-              <li><Link href="/products?Gender=2">Qadın</Link></li>
-              <li><Link href="/products?Gender=3">Uşaq</Link></li> */}
+              <li><Link href="/special-offer/2">Kredit imkanları</Link></li>
+              <li><Link href="/special-offer/1">Korporativ Satış</Link></li>
+              <li><Link href="/gift-card">Hədiyyə Kartı</Link></li>
+              <li><Link href="/special-offer/3">Servis</Link></li>
             </>
           )}
         </ul>
@@ -113,10 +105,6 @@ export default function Footer() {
               <li><Link href="/about">Brendlərimiz</Link></li>
               <li><Link href="/about">Məhsul çeşidimiz</Link></li>
               <li><Link href="/about">Haradayıq?</Link></li>
-              {/* <li><Link href="/about">Missiyamız</Link></li>
-              <li><Link href="/about">Dəyərlərimiz</Link></li>
-              <li><Link href="/about">Brendlərimiz</Link></li>
-              <li><Link href="/about">Niyə Biz?</Link></li> */}
             </>
           )}
         </ul>
@@ -153,7 +141,14 @@ export default function Footer() {
               </li>
               <li className={`${styles.footerSocial} justify-end w-[100%]`}>
                 <span><FaFacebookF /></span>
-                <span><FaTwitter /></span>
+                <span> <a
+                  href="https://wa.me/994502338811"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="WhatsApp"
+                >
+                  <FaWhatsapp />
+                </a></span>
                 <a
                   href="https://instagram.com/saat_az"
                   target="_blank"

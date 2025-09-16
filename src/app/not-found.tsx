@@ -1,7 +1,15 @@
-
+// src/app/not-found.tsx
+import type { Metadata } from "next";
 import Link from "next/link";
 import "./Not-found.css";
 import MoreButton from "@/components/ui/MoreButton";
+
+// ✅ SEO metadata
+export const metadata: Metadata = {
+  title: "Səhifə tapılmadı | SaatAZ",
+  description: "Axtardığınız səhifə mövcud deyil və ya silinib.",
+  robots: { index: false, follow: false },
+};
 
 export default function NotFound() {
   return (
@@ -12,8 +20,7 @@ export default function NotFound() {
         Axtardığınız səhifə mövcud deyil və ya silinib. Lütfən, ünvanı yoxlayın
         və ya ana səhifəyə qayıdın.
       </p>
-      <Link
-        href="/">
+      <Link href="/">
         <MoreButton>Ana Səhifəyə Qayıt</MoreButton>
       </Link>
     </div>

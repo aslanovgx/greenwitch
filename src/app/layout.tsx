@@ -13,56 +13,65 @@ import { Toaster } from "react-hot-toast";
 import ScrollToTop from "@/components/common/ScrollToTop";
 import { Suspense } from "react";
 import ConsoleFilters from "@/components/dev/ConsoleFilters";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const SITE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000";
 const isProd = SITE_URL.startsWith("https://saat.az");
 
-export const robots = { index: isProd, follow: isProd };
-
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "SaatAZ | Saat Dünyası, Brand Watches",
-  description: "SaatAZ – Azərbaycanda orijinal brend saatların rəsmi satış ünvanı. Premium keyfiyyət, zəmanət və sərfəli qiymətlər.",
+  title: {
+    default: "SaatAZ | Saat Dünyası, Brand Watches",
+    template: "%s | SaatAZ",
+  },
+  description:
+    "SaatAZ – Azərbaycanda orijinal brend saatların rəsmi satış ünvanı. Premium keyfiyyət, zəmanət və sərfəli qiymətlər. | SaatAZ – Official destination for brand watches in Azerbaijan. Premium quality, warranty, and best prices.",
   icons: {
     icon: [
       { url: "/favicon.svg", type: "image/svg+xml" },
       { url: "/favicon.ico", type: "image/x-icon" },
       { url: "/favicon.png", type: "image/png" },
-    ]
+    ],
   },
   openGraph: {
     title: "SaatAZ | Saat Dünyası, Brand Watches",
-    description: "Azərbaycanda orijinal brend saatlar. Premium keyfiyyət, zəmanət və sərfəli qiymətlər. Saat Dünyasına xoş gəlmisiniz!",
+    description:
+      "SaatAZ – Azərbaycanda orijinal brend saatların rəsmi satış ünvanı. Premium keyfiyyət, zəmanət və sərfəli qiymətlər. | SaatAZ – Official destination for brand watches in Azerbaijan. Premium quality, warranty, and best prices.",
     type: "website",
     locale: "az_AZ",
     url: SITE_URL,
     images: [{ url: `${SITE_URL}/og-image.jpg`, width: 1200, height: 630, alt: "SaatAZ" }],
+    siteName: "SaatAZ",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SaatAZ | Saat Dünyası, Brand Watches",
+    description:
+      "Orijinal brend saatlar. Rəsmi zəmanət və sərfəli qiymətlər.",
+    images: [`${SITE_URL}/og-image.jpg`],
   },
   alternates: { canonical: SITE_URL },
+  robots: { index: isProd, follow: isProd },
 };
-
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="az">
       <head>
+        {/* icons metadata artıq favicon-u verir, amma bu da qala bilər */}
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
       </head>
-
-      {/* ✅ Sticky footer skeleti */}
       <body className={`${montserrat.variable} ${lato.variable} antialiased min-h-screen flex flex-col`}>
         <ConsoleFilters />
 
         <SearchProvider>
           <FavoriteProvider>
             <BagProvider>
-
-              {/* ✅ Navbar Suspense skeleton: hündürlüyü Navbar-la eyni saxla */}
               <Suspense fallback={<div className="h-16 md:h-20" aria-hidden="true" />}>
                 <Navbar />
               </Suspense>
 
-              {/* ✅ Kontent sahəsi footer-i aşağı itələyir */}
               <main className="flex-1">{children}</main>
 
               <ScrollToTop />
@@ -81,6 +90,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </BagProvider>
           </FavoriteProvider>
         </SearchProvider>
+
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
