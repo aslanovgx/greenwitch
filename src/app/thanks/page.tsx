@@ -2,7 +2,6 @@
 
 import ThanksPage from "@/components/thanks/ThanksPage";
 import type { Metadata } from "next";
-import Link from "next/link";
 
 // ✅ SEO metadata
 export const metadata: Metadata = {
