@@ -1,5 +1,5 @@
 // src/app/page.tsx
-export const revalidate = 60; // ✅ ISR: 60 saniyədən bir yenilə
+export const revalidate = 60;
 
 import type { Metadata } from "next";
 import Banner from "@/components/home/Banner/Banner";
@@ -16,20 +16,25 @@ import { getProducts } from "@/lib/api/products";
 import { getInfoSections } from "@/lib/api/infoSections";
 import type { Product } from "@/types/Product";
 
-const SITE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000";
+const isProd =
+  process.env.VERCEL_ENV === "production" &&
+  /^https?:\/\/(?!.*\.vercel\.app)(?!.*localhost)/i.test(
+    process.env.NEXT_PUBLIC_BASE_URL || ""
+  );
 
 export const metadata: Metadata = {
   title: "SaatAZ – Orijinal Brend Saatların Ünvanı",
   description:
     "SaatAZ – Azərbaycanda orijinal kişi, qadın və uşaq saatlarının rəsmi satış ünvanı. Premium keyfiyyət, zəmanət və sərfəli qiymətlər. Brend saatlar burada!",
-  alternates: { canonical: SITE_URL },
+  // ✅ Home üçün canonical yol kimi verilir
+  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
-    url: SITE_URL,
     title: "SaatAZ – Orijinal Brend Saatların Ünvanı",
     description:
       "Orijinal kişi, qadın və uşaq saat modelləri. Premium keyfiyyət və sərfəli qiymət.",
-    images: [{ url: `${SITE_URL}/og-image.jpg`, width: 1200, height: 630, alt: "SaatAZ" }],
+    // ✅ metadataBase (layout.tsx) sayəsində nisbi yol işləyir
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "SaatAZ" }],
     siteName: "SaatAZ",
     locale: "az_AZ",
   },
@@ -38,16 +43,14 @@ export const metadata: Metadata = {
     title: "SaatAZ – Orijinal Brend Saatların Ünvanı",
     description:
       "Azərbaycanda premium brend saatlar. Rəsmi zəmanət və sərfəli qiymətlər.",
-    images: [`${SITE_URL}/og-image.jpg`],
+    images: ["/og-image.jpg"],
   },
-  robots: { index: true, follow: true },
+  // ✅ yalnız prod-da index/follow
+  robots: { index: isProd, follow: isProd },
 };
 
 export default async function Home() {
-  // SSR: məhsullar
   const allProducts: Product[] = await getProducts();
-
-  // SSR: banner üçün info sections
   const allSections = await getInfoSections();
 
   const toBool = (v: unknown): boolean => {

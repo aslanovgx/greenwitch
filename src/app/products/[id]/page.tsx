@@ -30,10 +30,22 @@ const slugify = (s: string) =>
     .replace(/-+/g, "-")
     .trim();
 
+// --- ABSOLUTE image helper (OG üçün həmişə tam URL) ---
+const FILE_HOST = (process.env.NEXT_PUBLIC_FILE_HOST ?? "https://api.saat.az").replace(/\/+$/, "");
+function toAbsoluteImageUrl(path?: string | null): string | null {
+  if (!path) return null;
+  if (/^https?:\/\//i.test(path)) return path;
+  const clean = String(path).replace(/^\/+/, "");
+  return `${FILE_HOST}/${clean}`;
+}
+
 // --- Type-safe helperlər (any YOX) ---
 function firstThumbnail(p: unknown): string | null {
   const thumbs = (p as { thumbnails?: unknown })?.thumbnails;
-  return Array.isArray(thumbs) && typeof thumbs[0] === "string" ? thumbs[0] : null;
+  if (Array.isArray(thumbs) && typeof thumbs[0] === "string") {
+    return toAbsoluteImageUrl(thumbs[0]);
+  }
+  return null;
 }
 function readBrandId(p: unknown): number | undefined {
   const v = (p as { brandId?: unknown })?.brandId;
@@ -114,7 +126,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
   const ogImg =
     firstThumbnail(product) ??
-    `${base}/api/og?title=${encodeURIComponent(product.name ?? "SaatAZ")}`;
+    `${base}/og-image.jpg`;
 
   return {
     title,

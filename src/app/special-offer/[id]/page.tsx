@@ -8,7 +8,6 @@ type Props = {
   params: Promise<{ id: string }>;
 };
 
-// helper: sections[0].text (string | string[]) -> string
 function textToDescription(txt: string | string[] | undefined, max = 300): string {
   const raw = Array.isArray(txt) ? txt.join(" ") : (txt ?? "");
   const s = raw.trim().replace(/\s+/g, " ");
@@ -18,9 +17,7 @@ function textToDescription(txt: string | string[] | undefined, max = 300): strin
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const offer: Offer | undefined = specialOffers[id];
-
-  const base = (process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000").replace(/\/+$/, "");
-  const canonical = `${base}/special-offer/${id}`;
+  const canonical = `/special-offer/${id}`;
 
   if (!offer) {
     return {
@@ -33,12 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const title = `${offer.title} | Xüsusi Təklif | SaatAZ`;
   const description = textToDescription(offer.sections?.[0]?.text);
-
-  // OG/Twitter şəkli: ilk şəkil varsa onu götür, yoxdursa fallback
-  const firstImg = offer.images?.[0];
-  const ogUrl = firstImg
-    ? (firstImg.startsWith("http") ? firstImg : `${base}${firstImg}`)
-    : `${base}/og-image.jpg`;
+  const firstImg = offer.images?.[0] ?? "/og-image.jpg";
 
   return {
     title,
@@ -46,18 +38,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: { canonical },
     openGraph: {
       type: "website",
-      url: canonical,
       siteName: "SaatAZ",
       locale: "az_AZ",
       title,
       description,
-      images: [{ url: ogUrl, width: 1200, height: 630, alt: offer.title }],
+      images: [{ url: firstImg, width: 1200, height: 630, alt: offer.title }],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [ogUrl],
+      images: [firstImg],
     },
     robots: { index: true, follow: true },
   };

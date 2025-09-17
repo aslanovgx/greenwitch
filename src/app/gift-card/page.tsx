@@ -29,36 +29,26 @@ const giftCardContent: Offer = {
   ],
 };
 
-const SITE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000";
-
 export const metadata: Metadata = {
   title: "Hədiyyə Kartı | SaatAZ",
   description:
     "SaatAZ Hədiyyə Kartı – sevdiklərinizə sərbəst seçim imkanı verən, həm praktiki, həm də zövqlü hədiyyə. Klassik və Premium kart variantları ilə fərqli hədiyyə təcrübəsi.",
-  alternates: { canonical: `${SITE_URL}/gift-card` },
+  alternates: { canonical: "/gift-card" },
   openGraph: {
     type: "website",
-    url: `${SITE_URL}/gift-card`,
     siteName: "SaatAZ",
     locale: "az_AZ",
     title: "Hədiyyə Kartı | SaatAZ",
     description:
       "Sevdikləriniz üçün sərbəst seçim imkanı. Klassik və Premium SaatAZ hədiyyə kartları.",
-    images: [
-      {
-        url: `${SITE_URL}${giftCardContent.images[0]}`,
-        width: 1200,
-        height: 630,
-        alt: "SaatAZ Hədiyyə Kartı",
-      },
-    ],
+    images: [{ url: giftCardContent.images[0], width: 1200, height: 630, alt: "SaatAZ Hədiyyə Kartı" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Hədiyyə Kartı | SaatAZ",
     description:
       "SaatAZ Hədiyyə Kartı – sevdiklərinizə sərbəst seçim imkanı verən mükəmməl hədiyyə.",
-    images: [`${SITE_URL}${giftCardContent.images[0]}`],
+    images: [giftCardContent.images[0]],
   },
   robots: { index: true, follow: true },
 };

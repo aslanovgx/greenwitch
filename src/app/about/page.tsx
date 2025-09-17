@@ -46,36 +46,26 @@ const aboutContent: Offer = {
   ],
 };
 
-const SITE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000";
-
 export const metadata: Metadata = {
   title: "Haqqımızda | SaatAZ",
   description:
     "SaatAZ və BayGroup – Azərbaycanda rəsmi brend distributor. Fossil, Emporio Armani, Michael Kors, Diesel və digər brendlərin orijinal saatlarının rəsmi satış ünvanı.",
-  alternates: { canonical: `${SITE_URL}/about` },
+  alternates: { canonical: "/about" },
   openGraph: {
     type: "website",
-    url: `${SITE_URL}/about`,
-    siteName: "SaatAZ",
-    locale: "az_AZ",
     title: "Haqqımızda | SaatAZ",
     description:
       "BayGroup və SaatAZ – Azərbaycanda premium brend saatların rəsmi distribyutoru. Missiyamız, dəyərlərimiz və məhsul çeşidimiz haqqında daha ətraflı öyrənin.",
-    images: [
-      {
-        url: `${SITE_URL}${aboutContent.images[0]}`,
-        width: 1200,
-        height: 630,
-        alt: "SaatAZ Haqqımızda",
-      },
-    ],
+    images: [{ url: aboutContent.images[0], width: 1200, height: 630, alt: "SaatAZ Haqqımızda" }],
+    siteName: "SaatAZ",
+    locale: "az_AZ",
   },
   twitter: {
     card: "summary_large_image",
     title: "Haqqımızda | SaatAZ",
     description:
       "Azərbaycanda premium brend saatların rəsmi distribyutoru SaatAZ və BayGroup haqqında ətraflı məlumat.",
-    images: [`${SITE_URL}${aboutContent.images[0]}`],
+    images: [aboutContent.images[0]],
   },
   robots: { index: true, follow: true },
 };

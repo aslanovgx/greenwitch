@@ -3,7 +3,7 @@ User-agent: *
 Disallow: /
 
 # Host
-Host: http://localhost:3000
+Host: https://saat.az
 
 # Sitemaps
-Sitemap: http://localhost:3000/sitemap.xml
+Sitemap: https://saat.az/sitemap.xml

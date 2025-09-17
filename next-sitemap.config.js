@@ -1,13 +1,14 @@
 // next-sitemap.config.js
-/** @type {import('next-sitemap').IConfig} */
+const VERCEL_ENV = process.env.VERCEL_ENV;
+const isProd = VERCEL_ENV === 'production';
 
-// Vercel konteksti
-const VERCEL_ENV = process.env.VERCEL_ENV; // 'production' | 'preview' | 'development'
-
-// URL-ləri yığırıq
 const PROD_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ||
+  process.env.NEXT_PUBLIC_BASE_URL ||
   (process.env.VERCEL_PROJECT_PRODUCTION_URL && `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`);
+
+if (isProd && (!PROD_URL || /\.vercel\.app|localhost/.test(PROD_URL))) {
+  throw new Error('Prod build üçün NEXT_PUBLIC_BASE_URL = https://saat.az verilməlidir.');
+}
 
 const PREVIEW_URL =
   process.env.NEXT_PUBLIC_PREVIEW_URL ||
@@ -15,34 +16,19 @@ const PREVIEW_URL =
 
 const LOCAL_URL = 'http://localhost:3000';
 
-// Hansı siteUrl?
-const siteUrl =
-  VERCEL_ENV === 'production'
-    ? (PROD_URL || LOCAL_URL)
-    : (PREVIEW_URL || PROD_URL || LOCAL_URL);
+const siteUrl = isProd ? (PROD_URL || LOCAL_URL) : (PREVIEW_URL || PROD_URL || LOCAL_URL);
 
-// Preview/dev-də indeksləməni bağlayaq
-const isIndexable = VERCEL_ENV === 'production' && siteUrl && !/localhost|\.vercel\.app$/i.test(siteUrl);
+const isIndexable =
+  isProd && typeof siteUrl === 'string' && /^https?:\/\/(?!.*\.vercel\.app)(?!.*localhost)/i.test(siteUrl);
 
 module.exports = {
   siteUrl,
   generateRobotsTxt: true,
-  // Preview və Development mühitində bütün səhifələri blokla
+  outDir: 'public',
+  sitemapSize: 7000,
+  trailingSlash: false,
   robotsTxtOptions: isIndexable
-    ? {
-        policies: [{ userAgent: '*', allow: '/' }],
-        // istəsən sitemap-ları ayrıca göstərə bilərsən
-        // additionalSitemaps: [`${siteUrl}/server-sitemap.xml`],
-      }
-    : {
-        policies: [{ userAgent: '*', disallow: '/' }],
-      },
-  exclude: [
-    '/admin/*',                  // sənin istəklərin
-    ...(isIndexable ? [] : ['*']) // prod deyilsə — hər şeyi exclude et
-  ],
-  // İstəsən:
-  // generateIndexSitemap: true,
-  // changefreq: 'daily',
-  // priority: 0.7,
+    ? { host: siteUrl, sitemap: `${siteUrl}/sitemap.xml`, policies: [{ userAgent: '*', allow: '/' }] }
+    : { host: siteUrl, sitemap: `${siteUrl}/sitemap.xml`, policies: [{ userAgent: '*', disallow: '/' }] },
+  exclude: ['/admin/*', ...(isIndexable ? [] : ['*'])],
 };
