@@ -72,11 +72,11 @@ const watches = [
   {
     name: "CASIO",
     src: "/assets/home/olivia/casio.png",
-    width: 7,
+    width: 80,
     height: 100,
     className: styles.casio,
     descClass: styles.descCasio,
-    brandId: 2,
+    brandId: 7,
   },
   {
     name: "EMPORIO ARMANI",

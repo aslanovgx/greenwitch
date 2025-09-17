@@ -134,11 +134,22 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <span>
-                  <FaLocationDot />
-                </span>
-                Nizami küçəsi 96C, AF Mall, 3-cü mərtəbə, Bakı, Azərbaycan
+                <a
+                  href="https://www.google.com/maps?q=40.38510387502671, 49.812435981451"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-start gap-2"
+                >
+                  <span>
+                    <FaLocationDot />
+                  </span>
+                  <span>
+                    Ahmad Jamil str. 64/66 <br />
+                    Baku, Azerbaijan; AZ1141
+                  </span>
+                </a>
               </li>
+
               <li className={`${styles.footerSocial} justify-end w-[100%]`}>
                 <span><FaFacebookF /></span>
                 <span> <a
