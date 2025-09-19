@@ -10,7 +10,29 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
+  // Ignore-lar
+  { ignores: ["node_modules/**", ".next/**", "dist/**", "out/**"] },
+
+  // Next.js + TypeScript qaydaları
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+
+  // Layihə qaydaları
+  {
+    rules: {
+      "no-console": ["warn", { allow: ["warn", "error"] }],
+      "@typescript-eslint/no-unused-vars": ["warn", {
+        argsIgnorePattern: "^_",
+        varsIgnorePattern: "^_",
+      }],
+      "react-hooks/exhaustive-deps": "warn",
+      "import/order": ["error", {
+        groups: [["builtin", "external", "internal"]],
+        "newlines-between": "always",
+        alphabetize: { order: "asc", caseInsensitive: true }
+      }],
+      "tailwindcss/classnames-order": "warn"
+    },
+  },
 ];
 
 export default eslintConfig;

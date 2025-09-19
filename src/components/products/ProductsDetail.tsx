@@ -17,6 +17,15 @@ import type { Swiper as SwiperClass } from "swiper";
 import type { SwiperOptions, NavigationOptions } from "swiper/types";
 import { buildImageUrl } from "@/utils/images";
 
+// —— Thumb şəkillərini öncədən yükləmək üçün helper
+function prefetchImage(url?: string) {
+  if (!url || typeof window === "undefined") return;
+  const img = new window.Image();
+  img.decoding = "async";
+  img.loading = "eager";
+  img.src = url;
+}
+
 // —— Breakpoint-lar
 const BP_SM = 640;
 const BP_MD = 769;
@@ -67,6 +76,20 @@ export default function ProductsDetail({ product }: Props) {
   );
   const thumbs = useMemo(() => validThumbsRaw.map(buildImageUrl), [validThumbsRaw]);
 
+  // ——— Bütün şəkilləri mount-da öncədən yüklə
+  useEffect(() => {
+    thumbs.forEach((u) => prefetchImage(u));
+  }, [thumbs]);
+  
+  // useEffect(() => {
+  //   const run = () => thumbs.forEach((u) => prefetchImage(u));
+  //   if (typeof window !== "undefined" && "requestIdleCallback" in window) {
+  //     (window as any).requestIdleCallback(run, { timeout: 1500 });
+  //   } else {
+  //     // Safari/ios fallback
+  //     setTimeout(run, 200);
+  //   }
+  // }, [thumbs]);
   // ——— State
   const [activeImage, setActiveImage] = useState<string | null>(() => thumbs[0] ?? null);
   useEffect(() => { setActiveImage(thumbs[0] ?? null); }, [thumbs]);
@@ -253,7 +276,9 @@ export default function ProductsDetail({ product }: Props) {
                       width={95}
                       height={THUMB_H}
                       className={styles.thumbnailImage}
-                      onClick={() => setActiveImage(src)}
+                      onMouseEnter={() => prefetchImage(src)}                   // NEW
+                      onFocus={() => prefetchImage(src)}                        // NEW
+                      onClick={() => { prefetchImage(src); setActiveImage(src); }} // NEW
                       role="button"
                       aria-pressed={activeImage === src}
                       style={{
@@ -281,12 +306,13 @@ export default function ProductsDetail({ product }: Props) {
             {activeImage && (
               <div className={styles.mainImage}>
                 <ImageMagnifierBG
+                  key={activeImage}
                   src={activeImage}
                   width={imageSize.width}
                   height={imageSize.height}
                   zoom={1.8}
                   isRound={false}
-                  hiResSrc={`/api/proxy-image?url=${encodeURIComponent(activeImage)}`}
+                  priority={true}
                 />
               </div>
             )}

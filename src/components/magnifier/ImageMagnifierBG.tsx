@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useRef, useState, useCallback } from "react";
 
 type Props = {
     src: string;
@@ -10,6 +10,7 @@ type Props = {
     lensMin?: number;  // minimum lens ölçüsü
     isRound?: boolean;
     hiResSrc?: string; // 👈 əlavə
+    priority?: boolean;
 };
 
 export default function ImageMagnifierBG({
@@ -20,6 +21,7 @@ export default function ImageMagnifierBG({
     lensMin = 40,
     isRound = false,
     hiResSrc,
+    priority = false,
 }: Props) {
     const wrapRef = useRef<HTMLDivElement>(null);
     const [show, setShow] = useState(false);
@@ -29,6 +31,7 @@ export default function ImageMagnifierBG({
     // Next/Image yüklənəndən sonra optimized eyni-origin URL (CORS-free)
     const [bgUrl, setBgUrl] = useState<string>(src);
     const [natural, setNatural] = useState({ w: width, h: height });
+    const [hiReady, setHiReady] = useState(false)
 
     const lensSize = Math.max(lensMin, Math.min(width, height) / zoom);
     const half = lensSize / 2;
@@ -49,11 +52,25 @@ export default function ImageMagnifierBG({
         const w = img.naturalWidth || width;
         const h = img.naturalHeight || height;
         setNatural({ w, h });
-        // hiRes varsa onu, yoxdursa currentSrc-ni istifadə et
-        setBgUrl(hiResSrc || img.currentSrc || src);
-        // currentSrc = Next-in proxylənmiş eyni-origin URL-i → background üçün idealdır
-        if (img.currentSrc) setBgUrl(img.currentSrc);
+        // YALNIZ hiRes hazır DEYİLSƏ currentSrc-ə keç
+        const base = img.currentSrc || src;
+        setBgUrl((prev) => (hiReady ? prev : base)); // NEW
     };
+
+    // NEW: Hover zamanı hiRes preload
+    const preloadHiRes = useCallback(() => {
+        if (!hiResSrc || hiReady) return;
+        if (typeof window === "undefined") return; // (optional, təhlükəsiz)
+        const hi = new window.Image();
+        hi.decoding = "async";
+        hi.loading = "eager";
+        hi.src = hiResSrc;
+        hi.onload = () => {
+            setHiReady(true);
+            setBgUrl(hiResSrc);
+        };
+    }, [hiResSrc, hiReady]);
+
 
     const bgW = natural.w * zoom;
     const bgH = natural.h * zoom;
@@ -76,10 +93,10 @@ export default function ImageMagnifierBG({
                 userSelect: "none",
                 touchAction: "none",
             }}
-            onMouseEnter={() => setShow(true)}
+            onMouseEnter={() => { setShow(true); preloadHiRes(); }} // NEW
             onMouseLeave={() => setShow(false)}
             onMouseMove={(e) => handleMove(e.clientX, e.clientY)}
-            onTouchStart={() => setShow(true)}
+            onTouchStart={() => { setShow(true); preloadHiRes(); }}  // NEW
             onTouchEnd={() => setShow(false)}
             onTouchMove={(e) => {
                 const t = e.touches[0];
@@ -91,11 +108,15 @@ export default function ImageMagnifierBG({
                 src={src}
                 alt="product"
                 fill
-                sizes={`${width}px`}
+                sizes="(max-width: 640px) 420px,
+       (max-width: 768px) 300px,
+       (max-width: 1024px) 388px,
+       539px"
                 style={{ objectFit: "contain" }}
                 draggable={false}
                 onLoadingComplete={onDone}
-                priority={false}
+                priority={priority}                // NEW
+                fetchPriority={priority ? "high" : "auto"} // NEW
             />
 
             {/* Lens */}
