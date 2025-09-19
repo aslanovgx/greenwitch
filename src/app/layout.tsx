@@ -48,7 +48,12 @@ export const metadata: Metadata = {
       "SaatAZ – Azərbaycanda orijinal brend saatların rəsmi satış ünvanı. Premium keyfiyyət, zəmanət və sərfəli qiymətlər. | SaatAZ – Official destination for brand watches in Azerbaijan. Premium quality, warranty, and best prices.",
     type: "website",
     locale: "az_AZ",
-    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "SaatAZ" }],
+    images: [{
+      url: `${SITE_URL}/api/og-screenshot?path=/`,
+      width: 1200,
+      height: 630,
+      alt: "SaatAZ"
+    }],
     siteName: "SaatAZ",
   },
 
@@ -56,7 +61,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "SaatAZ | Saat Dünyası, Brand Watches",
     description: "Orijinal brend saatlar. Rəsmi zəmanət və sərfəli qiymətlər.",
-    images: ["/og-image.jpg"],
+    images: [`${SITE_URL}/api/og-screenshot?path=/`],
   },
 
   // **VACİB:** Canonical-ı layout-da vermirik ki, hər səhifə öz canonical-ını qoya bilsin
