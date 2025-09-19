@@ -17,22 +17,20 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const SITE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000";
-// Prod müəyyənləşdirmə: Vercel mühiti + real domen
+
+// Production check
 const isProd =
   process.env.VERCEL_ENV === "production" &&
   /^https?:\/\/(?!.*\.vercel\.app)(?!.*localhost)/i.test(SITE_URL);
 
 export const metadata: Metadata = {
-  // Bu baza sayəsində OG URL, canonical və s. səhifə səviyyəsində nisbidir
   metadataBase: new URL(SITE_URL),
-
   title: {
-    default: "SaatAZ | Saat Dünyası, Brand Watches",
+    default: "SaatAZ | Qol Saatları, Brend Watches",
     template: "%s | SaatAZ",
   },
   description:
-    "SaatAZ – Azərbaycanda orijinal brend saatların rəsmi satış ünvanı. Premium keyfiyyət, zəmanət və sərfəli qiymətlər. | SaatAZ – Official destination for brand watches in Azerbaijan. Premium quality, warranty, and best prices.",
-
+    "SaatAZ – Azərbaycanda orijinal qol saatlarının rəsmi satış ünvanı. Premium keyfiyyət, zəmanət və sərfəli qiymətlər. | SaatAZ – Official destination for brand watches in Azerbaijan. Premium quality, warranty, and best prices.",
   icons: {
     icon: [
       { url: "/favicon.svg", type: "image/svg+xml" },
@@ -40,33 +38,29 @@ export const metadata: Metadata = {
       { url: "/favicon.png", type: "image/png" },
     ],
   },
-
   openGraph: {
-    // OG üçün url vermirik ki, hər səhifə öz yolu ilə generasiya olunsun (metadataBase əsasında)
-    title: "SaatAZ | Saat Dünyası, Brand Watches",
+    title: "SaatAZ | Qol Saatları, Brend Watches",
     description:
-      "SaatAZ – Azərbaycanda orijinal brend saatların rəsmi satış ünvanı. Premium keyfiyyət, zəmanət və sərfəli qiymətlər. | SaatAZ – Official destination for brand watches in Azerbaijan. Premium quality, warranty, and best prices.",
+      "SaatAZ – Azərbaycanda orijinal qol saatlarının rəsmi satış ünvanı. Premium keyfiyyət, zəmanət və sərfəli qiymətlər.",
     type: "website",
     locale: "az_AZ",
-    images: [{
-      url: `${SITE_URL}/api/og-screenshot?path=/`,
-      width: 1200,
-      height: 630,
-      alt: "SaatAZ"
-    }],
+    images: [
+      {
+        url: `${SITE_URL}/api/og-screenshot?path=/&v=1`, // cache-buster
+        width: 1200,
+        height: 630,
+        alt: "SaatAZ",
+      },
+    ],
     siteName: "SaatAZ",
   },
-
   twitter: {
     card: "summary_large_image",
-    title: "SaatAZ | Saat Dünyası, Brand Watches",
-    description: "Orijinal brend saatlar. Rəsmi zəmanət və sərfəli qiymətlər.",
-    images: [`${SITE_URL}/api/og-screenshot?path=/`],
+    title: "SaatAZ | Qol Saatları, Brend Watches",
+    description:
+      "Orijinal qol saatları. Rəsmi zəmanət və sərfəli qiymətlər.",
+    images: [`${SITE_URL}/api/og-screenshot?path=/&v=1`],
   },
-
-  // **VACİB:** Canonical-ı layout-da vermirik ki, hər səhifə öz canonical-ını qoya bilsin
-  // alternates: { canonical: SITE_URL },
-
   robots: { index: isProd, follow: isProd },
 };
 
@@ -75,22 +69,73 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="az">
       <head>
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-      </head>
-      <body className={`${montserrat.variable} ${lato.variable} antialiased min-h-screen flex flex-col`}>
-        <ConsoleFilters />
 
+        {/* ✅ Organization Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(
+              {
+                "@context": "https://schema.org",
+                "@type": "Organization",
+                name: "SaatAZ",
+                url: SITE_URL,
+                logo: `${SITE_URL}/logo.png`, // daha dəqiq loqo faylı
+                image: `${SITE_URL}/api/og-screenshot?path=/&v=1`,
+                description:
+                  "SaatAZ – Azərbaycanda orijinal qol saatlarının rəsmi satış ünvanı.",
+                sameAs: [
+                  "https://www.instagram.com/saat_az",
+                  // "https://www.facebook.com/saat.az",
+                  // "https://www.linkedin.com/company/saat-az",
+                ],
+              },
+              null,
+              2
+            ),
+          }}
+        />
+
+        {/* ✅ WebSite Schema + SearchAction */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(
+              {
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                name: "SaatAZ",
+                url: SITE_URL,
+                inLanguage: "az-AZ",
+                potentialAction: {
+                  "@type": "SearchAction",
+                  target: `${SITE_URL}/search?q={search_term_string}`, // lazım gəlsə /products?search= ilə dəyiş
+                  "query-input": "required name=search_term_string",
+                },
+              },
+              null,
+              2
+            ),
+          }}
+        />
+      </head>
+      <body
+        className={`${montserrat.variable} ${lato.variable} antialiased min-h-screen flex flex-col`}
+      >
+        <ConsoleFilters />
         <SearchProvider>
           <FavoriteProvider>
             <BagProvider>
-              <Suspense fallback={<div className="h-16 md:h-20" aria-hidden="true" />}>
+              <Suspense
+                fallback={
+                  <div className="h-16 md:h-20" aria-hidden="true" />
+                }
+              >
                 <Navbar />
               </Suspense>
-
               <main className="flex-1">{children}</main>
-
               <ScrollToTop />
               <Footer />
-
               <ToastContainer
                 position="top-right"
                 autoClose={2000}
@@ -104,7 +149,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </BagProvider>
           </FavoriteProvider>
         </SearchProvider>
-
         <Analytics />
         <SpeedInsights />
       </body>
