@@ -57,8 +57,8 @@ export default function MostSales({ initialProducts = [] }: Props) {
             isMostSales
             // forceBestBadge   // <-- MostSales üçün “BEST” prioritet
             activeCategory="all"
-            activeCardId={activeCardId}
-            setActiveCardId={setActiveCardId}
+            // activeCardId={activeCardId}
+            // setActiveCardId={setActiveCardId}
           />
         ))}
       </div>

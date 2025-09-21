@@ -83,8 +83,8 @@ export default function SimilarProducts({ initialProducts = [], brandId, exclude
                 key={item.id}
                 item={item}
                 activeCategory="all"
-                activeCardId={activeCardId}
-                setActiveCardId={setActiveCardId}
+                // activeCardId={activeCardId}
+                // setActiveCardId={setActiveCardId}
               />
             ))}
           </div>

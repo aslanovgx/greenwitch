@@ -73,8 +73,8 @@ export default function Products({ initialProducts = [] }: Props) {
                         key={item.id}
                         item={item}
                         activeCategory={activeCategory}
-                        activeCardId={activeCardId}
-                        setActiveCardId={setActiveCardId}
+                        // activeCardId={activeCardId}
+                        // setActiveCardId={setActiveCardId}
                     />
                 ))}
             </div>

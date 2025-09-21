@@ -424,8 +424,8 @@ export default function FilterCards() {
             key={item.id}
             item={item}
             activeCategory={filterCategory} // badge məntiqinə bağlıdır
-            activeCardId={activeCardId}
-            setActiveCardId={setActiveCardId}
+            // activeCardId={activeCardId}
+            // setActiveCardId={setActiveCardId}
           />
         ))}
       </div>
