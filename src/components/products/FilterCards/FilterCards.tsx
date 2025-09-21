@@ -34,13 +34,18 @@ const isRecord = (v: unknown): v is Record<string, unknown> =>
   typeof v === "object" && v !== null;
 
 function parseProductsResponse(input: unknown): ListResponse<RawProduct> | { items: RawProduct[] } {
-  if (Array.isArray(input)) {
-    return { items: input as RawProduct[] };
-  }
-  if (isRecord(input) && Array.isArray(input.items)) {
-    const total = typeof input.total === "number" ? input.total : undefined;
-    const size = typeof input.size === "number" ? input.size : undefined;
-    return { items: input.items as RawProduct[], total, size };
+  if (Array.isArray(input)) return { items: input as RawProduct[] };
+  if (isRecord(input)) {
+    const arr = Array.isArray((input as any).items)
+      ? ((input as any).items as RawProduct[])
+      : Array.isArray((input as any).products)
+        ? ((input as any).products as RawProduct[])
+        : undefined;
+    if (arr) {
+      const total = typeof (input as any).total === "number" ? (input as any).total : undefined;
+      const size = typeof (input as any).size === "number" ? (input as any).size : undefined;
+      return { items: arr, total, size };
+    }
   }
   return { items: [] };
 }
@@ -176,15 +181,30 @@ export default function FilterCards() {
 
         // ─────────── NORMAL (server pagination) YALNIZ: all + orderCode YOX ───────────
         if (filterCategory === "all" && !orderCode) {
-          const resp = await getProducts({ ...baseParams, page });
+          const resp = await getProducts({ ...baseParams, page, size: UI_PAGE_SIZE, status: true });
           const parsed = parseProductsResponse(resp);
           const raw = parsed.items;
-          const adapted = adapt(raw);
+          let adapted = adapt(raw);
 
           const metaTotal: number | null =
             "total" in parsed && typeof parsed.total === "number" ? parsed.total : null;
           const metaSize: number =
             "size" in parsed && typeof parsed.size === "number" ? parsed.size : SERVER_PAGE_SIZE;
+
+
+          // 🔧 BACKFILL: status=false-lər atıldığı üçün bu səhifədə 20-dən az qalarsa, növbəti server səhifələrindən tamamla
+          if (adapted.length < UI_PAGE_SIZE) {
+            let serverPage = page + 1;
+            const MAX_SERVER_PAGES = 200;
+            while (!aborted && adapted.length < UI_PAGE_SIZE && serverPage <= MAX_SERVER_PAGES) {
+               const more = await getProducts({ ...baseParams, page: serverPage, size: UI_PAGE_SIZE, status: true });
+              const parsed2 = parseProductsResponse(more);
+              const add = adapt(parsed2.items);
+              if (add.length === 0) break;
+              adapted = adapted.concat(add).slice(0, UI_PAGE_SIZE);
+              serverPage++;
+            }
+          }
 
           // totalPages / hasMore
           // totalPages / hasMore
@@ -201,7 +221,7 @@ export default function FilterCards() {
             } else {
               // adapted.length === metaSize → bəlkə var… YOXLAYAQ
               try {
-                const resp2 = await getProducts({ ...baseParams, page: page + 1 });
+                const resp2 = await getProducts({ ...baseParams, page: page + 1, size: UI_PAGE_SIZE, status: true });
                 const parsed2 = parseProductsResponse(resp2);
                 const hasNext = (parsed2.items ?? []).length > 0;
                 setHasMore(hasNext);
@@ -231,7 +251,7 @@ export default function FilterCards() {
         // A) GLOBAL SORT lazımdırsa (orderCode var) → BÜTÜN səhifələri yığ
         if (orderCode) {
           while (!aborted && serverPage <= MAX_SERVER_PAGES) {
-            const resp = await getProducts({ ...baseParams, page: serverPage });
+            const resp = await getProducts({ ...baseParams, page: serverPage, size: UI_PAGE_SIZE, status: true });
             const parsed = parseProductsResponse(resp);
             const raw = parsed.items;
             const adapted = adapt(raw);
@@ -274,7 +294,7 @@ export default function FilterCards() {
         const maxToCollect = needCount + capExtra;
 
         while (!aborted && serverPage <= MAX_SERVER_PAGES) {
-          const resp = await getProducts({ ...baseParams, page: serverPage });
+          const resp = await getProducts({ ...baseParams, page: serverPage, size: UI_PAGE_SIZE, status: true });
           const parsed = parseProductsResponse(resp);
           const raw = parsed.items;
           const adapted = adapt(raw);
@@ -424,8 +444,8 @@ export default function FilterCards() {
             key={item.id}
             item={item}
             activeCategory={filterCategory} // badge məntiqinə bağlıdır
-            // activeCardId={activeCardId}
-            // setActiveCardId={setActiveCardId}
+          // activeCardId={activeCardId}
+          // setActiveCardId={setActiveCardId}
           />
         ))}
       </div>
