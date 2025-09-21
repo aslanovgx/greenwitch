@@ -57,7 +57,7 @@ const watches = [
     width: 110,
     height: 150,
     className: styles.frederiqueConstant,
-    descClass: styles.descfrederiqueConstant,
+    descClass: styles.descFrederiqueConstant,
     brandId: 13,
   },
   {
@@ -93,6 +93,14 @@ export default function Products() {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    watches.forEach(w => {
+      const img = new window.Image();
+      img.src = w.src;
+    });
+  }, []);
+
+  useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % 3); // 0 → 1 → 2 → 0
     }, 3000);
@@ -114,16 +122,22 @@ export default function Products() {
         />
         <div className={styles.oliviaWatches}>
           {currentWatches.map((watch) => (
-            <Image
-              key={watch.brandId ?? watch.name} // ✅ stabil key
-              src={watch.src}
-              alt={watch.name}
-              width={watch.width}
-              height={watch.height}
-              className={`object-cover absolute ${watch.className}`}
-            />
+            <div
+              key={watch.brandId ?? watch.name}
+              className={`absolute ${watch.className}`} 
+            >
+              <Image
+                src={watch.src}
+                alt={watch.name}
+                width={watch.width}       // <-- width/height saxla
+                height={watch.height}
+                style={{ display: 'block' }}  // <-- vizual sabitlik
+              // objectFit lazım deyil, çünki ölçü konkret verilmişdir
+              />
+            </div>
           ))}
         </div>
+
         <div className={`${styles.oliviaWatchesDesc}`}>
           {currentWatches.map((watch) => (
             <div
