@@ -45,10 +45,20 @@
     /* font-weight: 500; */
 }
 
-.cards:hover .cards_desc h3 {
-    padding: 0 0 5px 0;
-    /* margin: 0 0 10px 0; */
+@media (hover: hover) and (pointer: fine) {
+    .cards:hover .cards_desc h3 {
+        padding: 0 0 5px 0;
+    }
 }
+
+@media (hover: none),
+(pointer: coarse) {
+    .cards:hover .cards_desc h3 {
+        /* mobil/tablet: heç nə dəyişmə */
+        padding: 3px 0 8px 0;
+    }
+}
+
 
 .cards .cards_desc p {
     color: #1E1D1D;
@@ -161,9 +171,6 @@
         padding: 3px 0 8px 0;
     }
 
-    .cards:hover .cards_desc h3 {
-        padding: 0 0 5px 0;
-    }
 
     .cards .cards_desc p {
         font-size: 8.519px;
@@ -249,9 +256,6 @@
         padding: 3px 0 8px 0;
     }
 
-    .cards:hover .cards_desc h3 {
-        padding: 0 0 5px 0;
-    }
 
     .cards .cards_desc p {
         font-size: 8.519px;
@@ -306,7 +310,7 @@
     .cards {
         padding: 8px 8px 11px 8px;
         width: 150px;
-        height: 280px;
+        height: 285px;
         contain-intrinsic-size: 280px 150px;
     }
 
