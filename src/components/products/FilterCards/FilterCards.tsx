@@ -51,6 +51,59 @@ function parseProductsResponse(input: unknown): ListResponse<RawProduct> | { ite
 }
 
 export default function FilterCards() {
+
+  const pageSizeOf = (r: ListResponse<RawProduct> | { items: RawProduct[] }) =>
+    "size" in r && typeof r.size === "number" && r.size > 0 ? r.size : SERVER_PAGE_SIZE;
+
+  const totalOf = (r: ListResponse<RawProduct> | { items: RawProduct[] }) =>
+    "total" in r && typeof r.total === "number" ? r.total : undefined;
+
+  // add: optional filterFn
+  const fetchWindow = async (
+    baseParams: Record<string, unknown>,
+    offset: number,
+    need: number,
+    filterFn?: (r: RawProduct) => boolean
+  ): Promise<RawProduct[]> => {
+    // server page ölçüsünü öyrən
+    const probe = await getProducts({ ...baseParams, page: 1, status: true });
+    const pr0 = parseProductsResponse(probe);
+    const serverPageSize =
+      "size" in pr0 && typeof pr0.size === "number" && pr0.size > 0
+        ? pr0.size
+        : SERVER_PAGE_SIZE;
+
+    let serverPage = Math.floor(offset / serverPageSize) + 1;
+    let startInPage = offset % serverPageSize;
+
+    const out: RawProduct[] = [];
+    const MAX_SERVER_PAGES = 500;
+
+    while (out.length < need && serverPage <= MAX_SERVER_PAGES) {
+      const resp = await getProducts({ ...baseParams, page: serverPage, status: true });
+      const pr = parseProductsResponse(resp);
+      const items = pr.items ?? [];
+      if (items.length === 0) break;
+
+      // offset-dən sonrakı hissəni götür + lazım gəlsə filterlə
+      const slice = items.slice(startInPage);
+      const chunk = filterFn ? slice.filter(filterFn) : slice;
+      out.push(...chunk);
+
+      startInPage = 0;
+
+      const pageSize =
+        "size" in pr && typeof pr.size === "number" && pr.size > 0 ? pr.size : serverPageSize;
+      if (items.length < pageSize) break;
+
+      serverPage++;
+    }
+
+    return out.slice(0, need);
+  };
+
+
+
   const [activeCardId, setActiveCardId] = useState<number | null>(null);
 
 
@@ -74,6 +127,13 @@ export default function FilterCards() {
     c === "new" || c === "discount" || c === "best";
   const isOrderCode = (c?: SortCode): c is "price_asc" | "price_desc" =>
     c === "price_asc" || c === "price_desc";
+
+  // FE sort kodunu backend-in gözlədiyi string-ə çevirir
+  const mapSortToServer = (c?: SortCode): string | undefined => {
+    if (c === "price_asc") return "price_asc";
+    if (c === "price_desc") return "price_desc";
+    return undefined;
+  };
 
   const filterCategory: "all" | "new" | "discount" | "best" =
     isFilterCode(sortCode) ? sortCode : "all";
@@ -179,114 +239,56 @@ export default function FilterCards() {
             };
           });
 
-        // ─────────── NORMAL (server pagination) YALNIZ: all + orderCode YOX ───────────
-        if (filterCategory === "all" && !orderCode) {
-          const resp = await getProducts({ ...baseParams, page, size: UI_PAGE_SIZE, status: true });
+
+        // —— SERVER PAGINATION: yalnız ALL (istənilən sort-u server edəcək) ——
+        if (filterCategory === "all") {
+          const sort = mapSortToServer(sortCode);
+
+          const resp = await getProducts({
+            ...baseParams,
+            page,
+            size: UI_PAGE_SIZE,
+            status: true,
+            ...(sort ? { sort } : {}),
+          });
+
           const parsed = parseProductsResponse(resp);
-          const raw = parsed.items;
-          let adapted = adapt(raw);
+          const adapted = adapt(parsed.items ?? []);
 
-          const metaTotal: number | null =
-            "total" in parsed && typeof parsed.total === "number" ? parsed.total : null;
-          const metaSize: number =
-            "size" in parsed && typeof parsed.size === "number" ? parsed.size : SERVER_PAGE_SIZE;
-
-
-          // 🔧 BACKFILL: status=false-lər atıldığı üçün bu səhifədə 20-dən az qalarsa, növbəti server səhifələrindən tamamla
-          if (adapted.length < UI_PAGE_SIZE) {
-            let serverPage = page + 1;
-            const MAX_SERVER_PAGES = 200;
-            while (!aborted && adapted.length < UI_PAGE_SIZE && serverPage <= MAX_SERVER_PAGES) {
-               const more = await getProducts({ ...baseParams, page: serverPage, size: UI_PAGE_SIZE, status: true });
-              const parsed2 = parseProductsResponse(more);
-              const add = adapt(parsed2.items);
-              if (add.length === 0) break;
-              adapted = adapted.concat(add).slice(0, UI_PAGE_SIZE);
-              serverPage++;
-            }
-          }
-
-          // totalPages / hasMore
-          // totalPages / hasMore
-          if (metaTotal != null) {
-            const tp = Math.max(1, Math.ceil(metaTotal / metaSize));
-            setTotalPages(tp);
-            setHasMore(page < tp);
-          } else {
-            setTotalPages(null);
-
-            // ✅ Peek: yalnız ehtiyac olduqda növbəti səhifədə item var-yox de-yə baxırıq
-            if (adapted.length < metaSize) {
-              setHasMore(false); // bu səhifə full dolmayıbsa, deməli son səhifədəyik
-            } else {
-              // adapted.length === metaSize → bəlkə var… YOXLAYAQ
-              try {
-                const resp2 = await getProducts({ ...baseParams, page: page + 1, size: UI_PAGE_SIZE, status: true });
-                const parsed2 = parseProductsResponse(resp2);
-                const hasNext = (parsed2.items ?? []).length > 0;
-                setHasMore(hasNext);
-              } catch {
-                // problem olsa ehtiyatla "yox" deyək — UX olaraq səhvən boş 2-ci səhifə göstərməyək
-                setHasMore(false);
-              }
-            }
-          }
-
+          const metaTotal = totalOf(parsed);
+          const metaSize = pageSizeOf(parsed);
 
           if (!aborted) {
+            setItems(adapted);
+
+            if (metaTotal != null && metaSize && metaSize > 0) {
+              const tp = Math.max(1, Math.ceil(metaTotal / metaSize));
+              setTotalPages(tp);
+              setHasMore(page < tp);
+            } else {
+              // Ehtiyat: backend total/size qaytarmalıdır; yenə də fallback qoyuruq
+              setTotalPages(null);
+              setHasMore(adapted.length === UI_PAGE_SIZE);
+            }
+
             if (adapted.length === 0 && page > 1) {
               setQuery("page", page - 1);
               return;
             }
-            setItems(adapted);
           }
           return;
         }
+
+
+
+
 
         // ─────────── VIRTUAL ───────────
         const bag: UIProduct[] = [];
         let serverPage = 1;
         const MAX_SERVER_PAGES = 500; // təhlükəsizlik limiti
 
-        // A) GLOBAL SORT lazımdırsa (orderCode var) → BÜTÜN səhifələri yığ
-        if (orderCode) {
-          while (!aborted && serverPage <= MAX_SERVER_PAGES) {
-            const resp = await getProducts({ ...baseParams, page: serverPage, size: UI_PAGE_SIZE, status: true });
-            const parsed = parseProductsResponse(resp);
-            const raw = parsed.items;
-            const adapted = adapt(raw);
-
-            // əvvəlcə filter (əgər "all" deyilsə)
-            const filtered = filterCategory === "all" ? adapted : adapted.filter(predicate);
-            bag.push(...filtered);
-
-            const reachedEnd = adapted.length < SERVER_PAGE_SIZE; // server data bitdi
-            if (reachedEnd) break;
-
-            serverPage++;
-          }
-
-          // Bütün yığılmış nəticələr üzərində PRICE SORT
-          const sorted = sortClient(bag);
-
-          // UI slice
-          const start = (page - 1) * UI_PAGE_SIZE;
-          const end = start + UI_PAGE_SIZE;
-          const pageSlice = sorted.slice(start, end);
-
-          const hasNextUi = sorted.length > end;
-
-          if (!aborted) {
-            setItems(pageSlice);
-            setHasMore(hasNextUi);
-            setTotalPages(null); // filtrli/virtual rejimdə total məlum deyil
-            if (pageSlice.length === 0 && page > 1) {
-              setQuery("page", page - 1);
-              return;
-            }
-          }
-          return;
-        }
+        
 
         // B) YALNIZ filter=new/discount/best → cari + növbəti UI səhifə qədər yığ
         const needCount = UI_PAGE_SIZE * page;
