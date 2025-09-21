@@ -10,23 +10,23 @@ import styles from '@/components/common/ProductCard.module.css';
 import { Product } from '@/types/Product';
 import useIsTouchDevice from '@/hooks/useIsTouchDevice';
 import { useBag } from "@/context/BagContext"
-
+import { PiHeartStraight, PiHeartStraightFill } from "react-icons/pi";
 
 type Props = {
   item: Product;
   isMostSales?: boolean;
   // forceBestBadge?: boolean;
   activeCategory?: string;
-  activeCardId?: number | null;
-  setActiveCardId?: (id: number | null) => void;
+  // activeCardId?: number | null;
+  // setActiveCardId?: (id: number | null) => void;
 };
 
 function ProductCardComponent({
   item,
   isMostSales = false,
   activeCategory = 'all',
-  activeCardId,
-  setActiveCardId,
+  // activeCardId,
+  // setActiveCardId,
 }: Props) {
   const { favorites, toggleFavorite } = useFavorites();
   const router = useRouter();
@@ -37,7 +37,7 @@ function ProductCardComponent({
   useEffect(() => setMounted(true), []);
 
   const isTouch = useIsTouchDevice();
-  const isActive = isTouch && activeCardId === item.id;
+  const enableHover = !isTouch; // ✅ yalnız desktopda hover işləsin
 
   const SIZES =
     "(max-width: 640px) 150px, " +
@@ -45,23 +45,15 @@ function ProductCardComponent({
     "(max-width: 1025px) 172px, " +
     "(max-width: 1280px) 243px, " + // 1026–1280 aralığı üçün
     "243px";                        // >1280 üçün fallback
-    
+
 
 
   const cover = buildImageUrl(item.images?.[0] || "/assets/placeholders/product.png");
-const hover = item.images?.[1] ? buildImageUrl(item.images[1]) : null;
+  const hover = item.images?.[1] ? buildImageUrl(item.images[1]) : null;
 
 
   const handleClick = () => {
-    if (isTouch && setActiveCardId) {
-      if (activeCardId !== item.id) {
-        setActiveCardId(item.id);     // İlk klik: hover aç
-      } else {
-        router.push(`/products/${item.id}`); // İkinci klik: keçid
-      }
-    } else {
-      router.push(`/products/${item.id}`);   // Desktop: birbaşa keçid
-    }
+    router.push(`/products/${item.id}`);     // ✅ hər yerdə birbaşa keçid
   };
 
   const { colors, loading } = useLabelColors();
@@ -73,21 +65,21 @@ const hover = item.images?.[1] ? buildImageUrl(item.images[1]) : null;
   // 2) Badge seçimi (YENİ QAYDA)
   // — MostSales bölməsində: bestseller true-dursa, həmişə "BEST"
   // — Qalan hallarda: sənin əvvəlki qaydan eyni qalır
-  let badge: "ENDİRİM" | "NEW" | "BEST" | null = null;
+  let badge: "ENDİRİMLİ" | "YENİ" | "ƏN YAXŞI" | null = null;
 
   if (isMostSales && item.bestSeller) {
-    badge = "BEST";
+    badge = "ƏN YAXŞI";
   } else if (activeCategory === "discount") {
-    badge = hasDiscount ? "ENDİRİM" : null;
+    badge = hasDiscount ? "ENDİRİMLİ" : null;
   } else if (activeCategory === "new") {
-    badge = item.isNew ? "NEW" : null;
+    badge = item.isNew ? "YENİ" : null;
   } else if (activeCategory === "best") {
-    badge = item.bestSeller ? "BEST" : null;
+    badge = item.bestSeller ? "ƏN YAXŞI" : null;
   } else {
     // all
-    badge = hasDiscount ? "ENDİRİM"
-      : item.bestSeller ? "BEST"
-        : item.isNew ? "NEW"
+    badge = hasDiscount ? "ENDİRİMLİ"
+      : item.bestSeller ? "ƏN YAXŞI"
+        : item.isNew ? "YENİ"
           : null;
   }
 
@@ -97,12 +89,12 @@ const hover = item.images?.[1] ? buildImageUrl(item.images[1]) : null;
   //   badge === "BEST" ? 1 : badge === "NEW" ? 2 : badge === "ENDİRİM" ? 3 : null;
 
   // 4) Admin rəngi
-  const colorByBadge: Record<"BEST" | "NEW" | "ENDİRİM", string | undefined> = {
-    BEST: colors[1],     // 1 → BEST
-    NEW: colors[2],      // 2 → NEW
-    ENDİRİM: colors[3],  // 3 → ENDİRİM
+  const colorByBadge: Record<"ƏN YAXŞI" | "YENİ" | "ENDİRİMLİ", string | undefined> = {
+    "ƏN YAXŞI": colors[1],     // 1 → BEST
+    YENİ: colors[2],      // 2 → NEW
+    ENDİRİMLİ: colors[3],  // 3 → ENDİRİM
   };
-  const badgeColor = badge ? colorByBadge[badge as "BEST" | "NEW" | "ENDİRİM"] : undefined;
+  const badgeColor = badge ? colorByBadge[badge as "ƏN YAXŞI" | "YENİ" | "ENDİRİMLİ"] : undefined;
 
   // 5) Mətn kontrastı
   const pickText = (hex?: string) => {
@@ -124,7 +116,7 @@ const hover = item.images?.[1] ? buildImageUrl(item.images[1]) : null;
       rgba(255,255,255,0.90) 46%,
       rgba(255,255,255,0.20) 62%
     ), ${base}`;
-    
+
 
   // ✅ Badge-in SSR/CSR uyğunsuzluğunu önləmək üçün yalnız hazır olanda göstər
   const badgeReady = mounted && !!badge && !loading && typeof badgeColor === 'string' && badgeColor.length > 0;
@@ -140,8 +132,7 @@ const hover = item.images?.[1] ? buildImageUrl(item.images[1]) : null;
           decoding="async"
           fetchPriority="low"
           sizes={SIZES}
-          className={`w-full h-full  transition-opacity duration-600 ${!isTouch ? 'group-hover:opacity-0' : (isActive ? 'opacity-0' : 'opacity-100')
-            }`}
+          className={`w-full h-full transition-opacity duration-600 ${enableHover ? 'group-hover:opacity-0' : ''}`}
           style={{ objectFit: 'contain' }}
         />
         {hover && (
@@ -152,8 +143,7 @@ const hover = item.images?.[1] ? buildImageUrl(item.images[1]) : null;
             loading="lazy"
             decoding="async"
             sizes={SIZES}
-            className={`${styles.hoverImage}  w-full h-full absolute top-0 left-0 transition-opacity duration-700 ${!isTouch ? 'opacity-0 group-hover:opacity-100' : (isActive ? 'opacity-100' : 'opacity-0')
-              }`}
+            className={`${styles.hoverImage} w-full h-full absolute top-0 left-0 transition-opacity duration-700 ${enableHover ? 'opacity-0 group-hover:opacity-100' : 'hidden'}`}
             style={{ objectFit: 'contain' }}
           />
         )}
@@ -165,23 +155,24 @@ const hover = item.images?.[1] ? buildImageUrl(item.images[1]) : null;
 
         {hasDiscount ? (
           <div className="flex gap-2 justify-center">
-            <p className={`${!isTouch ? 'opacity-0 group-hover:opacity-100' : (isActive ? 'opacity-100' : 'opacity-0')} transition-opacity duration-700 !font-bold ${styles.normalPrice}`}>
+            <p className={`transition-opacity duration-700 !font-bold ${styles.normalPrice}`}>
               {item.price} AZN
             </p>
-            <p className={`${!isTouch ? 'opacity-0 group-hover:opacity-100' : (isActive ? 'opacity-100' : 'opacity-0')} transition-opacity duration-700 !font-bold ${styles.discountPrice}`}>
+            <p className={`transition-opacity duration-700 !font-bold ${styles.discountPrice}`}>
               {item.discountPrice} AZN
             </p>
           </div>
         ) : (
-          <p className={`${!isTouch ? 'opacity-0 group-hover:opacity-100' : (isActive ? 'opacity-100' : 'opacity-0')} transition-opacity duration-700 !font-bold`}>
+          <p className={`transition-opacity duration-700 !font-bold`}>
             {item.price} AZN
           </p>
         )}
 
+
         <div
-          className={`${styles.card_buttons} absolute bottom-0 left-0 flex transition-opacity duration-700 ${!isTouch
+          className={`${styles.card_buttons} absolute bottom-0 left-0 flex transition-opacity duration-300 ${enableHover
               ? 'opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto'
-              : (isActive ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none')
+              : 'opacity-100 pointer-events-auto' // touch-da həmişə gizli
             }`}
         >
           <button
@@ -212,26 +203,28 @@ const hover = item.images?.[1] ? buildImageUrl(item.images[1]) : null;
         className={`absolute top-3 right-3 z-10 cursor-pointer`}
       >
         {favorites.some((fav) => fav.id === item.id) ? (
-          <Heart fill="black" className={styles.heartIcon} />
+          <PiHeartStraightFill size={30} className={styles.heartIcon} />
         ) : (
-          <Heart className={styles.heartIcon} />
+          <PiHeartStraight size={30} className={styles.heartIcon} />
         )}
       </div>
 
-      {badgeReady && (
-        <div
-          className={`${styles.new_card} ${badge === 'ENDİRİM' ? styles.discountBadge : ''} absolute top-3 left-3 cursor-default`}
-          style={{
-            background: getBadgeBg(badgeColor!),
-            color: pickText(badgeColor),
-            border: "1px solid rgba(0,0,0,0.06)",
-          }}
-          suppressHydrationWarning
-        >
-          <span>{badge}</span>
-        </div>
-      )}
-    </div>
+      {
+        badgeReady && (
+          <div
+            className={`${styles.new_card} ${badge === 'ENDİRİMLİ' ? styles.discountBadge : ''} absolute top-3 left-3 cursor-default`}
+            style={{
+              background: getBadgeBg(badgeColor!),
+              color: pickText(badgeColor),
+              border: "1px solid rgba(0,0,0,0.06)",
+            }}
+            suppressHydrationWarning
+          >
+            <span>{badge}</span>
+          </div>
+        )
+      }
+    </div >
   );
 }
 

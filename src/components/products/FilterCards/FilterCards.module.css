@@ -10,3 +10,10 @@
 .cardsAnchor {
   scroll-margin-top: 80px; /* sticky header hündürlüyü */
 }
+
+@media (max-width: 640px) {
+  .filterCards {
+    padding: 30px 0 60px 0;
+  }
+  
+}
