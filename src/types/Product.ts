@@ -19,6 +19,7 @@ export type Product = {
   colorNames?: string[];     // badge/filter üçün yararlı
 
   // (opsional) başqa adlar istifadə edirsənsə
+  status?: boolean;
   title?: string;
   desc?: string;
 };
@@ -56,6 +57,8 @@ export type RawProduct = {
   caseSizeMm?: number | null;
   materialName?: string | null;
   siferblatMaterialName?: string | null;
+
+  status?: boolean | null;
 };
 
 // ProductCard propu

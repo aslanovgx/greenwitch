@@ -9,6 +9,7 @@ export type ProductFilter = {
   size?: number;
   search?: string;
   sort?: "price_asc" | "price_desc";
+  status?: boolean;
 };
 
 // Pagination meta
@@ -26,6 +27,7 @@ export type ProductListItem = {
   discountPrice?: number | null;
   brandName?: string;
   thumbnails?: string[];
+  status?: boolean; 
 };
 
 // Product detail tipi
@@ -51,6 +53,8 @@ export type ProductDetail = {
   caseSizeMm?: number;
   materialName?: string;
   siferblatMaterialName?: string;
+
+  status?: boolean; 
 };
 
 // Cavab forması iki cür ola bilər: array və ya { products, total, page, size }

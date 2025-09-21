@@ -60,7 +60,7 @@ function readName(v: unknown): string | undefined {
 }
 
 /* ---------------- Sadə list tipi ---------------- */
-type ListItem = Pick<RawProduct, "id" | "brandId" | "brandName">;
+type ListItem = Pick<RawProduct, "id" | "brandId" | "brandName"> & { status?: boolean }; // ✅
 
 function toList(input: unknown): ListItem[] {
   if (!Array.isArray(input)) return [];
@@ -71,7 +71,9 @@ function toList(input: unknown): ListItem[] {
     if (!id) continue;
     const brandId = toNum((v as { brandId?: unknown }).brandId);
     const brandName = readBrandName(v);
-    out.push({ id, brandId, brandName });
+    const status = (v as { status?: unknown }).status as boolean | undefined; // ✅
+    if (status === false) continue; // ✅ ehtiyat filtr
+    out.push({ id, brandId, brandName, status });
   }
   return out;
 }
@@ -105,7 +107,9 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   if (!Number.isFinite(numId)) return fallback;
 
   const product = await getProductById(numId).catch(() => null);
-  if (!product) return fallback;
+  if (!product || product.status === false) { // ✅ inaktiv üçün də noindex
+    return fallback;
+  }
 
   const pretty = `${slugify(`${product.brandName ?? ""} ${product.name ?? ""}`)}-${numId}`;
   const canonicalUrl = `${base}/products/${pretty}`;
@@ -143,7 +147,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 export default async function Page({ params }: { params: Params }) {
   const { id } = await params;
   const product = await getProductById(Number(id)).catch(() => null);
-  if (!product) return notFound();
+  if (!product || product.status === false) return notFound();
 
   // Şəkillər (absolute URL)
   const imagesAbs = (product.thumbnails ?? [])
@@ -183,7 +187,7 @@ export default async function Page({ params }: { params: Params }) {
   };
 
   /* ------- Related products logic (eyni qalsın) ------- */
-  const rawList = await getProducts({ size: 5 }).catch(() => []);
+  const rawList = await getProducts({ size: 5, status: true }).catch(() => []);
   const list = toList(rawList);
 
   const target = norm(product.brandName);
@@ -211,7 +215,7 @@ export default async function Page({ params }: { params: Params }) {
 
   let sameBrandFull: RawProduct[] = [];
   if (resolvedBrandId) {
-    sameBrandFull = await getProducts({ brandId: resolvedBrandId, size: 10 }).catch(() => []);
+    sameBrandFull = await getProducts({ brandId: resolvedBrandId, size: 10, status: true }).catch(() => []);
     sameBrandFull = sameBrandFull.filter((p) => Number(p?.id) !== Number(product.id));
   }
 

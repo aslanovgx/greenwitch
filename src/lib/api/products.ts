@@ -11,6 +11,7 @@ export type ProductFilter = {
   size?: number;
   search?: string;
   // sort?: "price_asc" | "price_desc";
+  status?: boolean;
 };
 
 function buildQuery(p: ProductFilter = {}) {
@@ -24,6 +25,14 @@ function buildQuery(p: ProductFilter = {}) {
   if (p.size) qp.set("size", String(p.size));
   // if (p.sort) qp.set("sort", p.sort);
   if (p.search && p.search.trim()) qp.set("q", p.search.trim()); // backend uyğunlaşsa dəyişərik
+
+   if (typeof p.status === "boolean") {
+    qp.set("status", String(p.status));
+  } else {
+    qp.set("status", "true");
+  }
+
+
   const qs = qp.toString();
   return qs ? `?${qs}` : "";
 }
@@ -32,7 +41,7 @@ export async function getProducts(params: ProductFilter = {}) {
   const path = `/Product${buildQuery(params)}`;
   const raw = await apiGet(path);
   const list = Array.isArray(raw) ? raw : Array.isArray(raw?.products) ? raw.products : [];
-  return list;
+  return list.filter((p: any) => p?.status !== false);
 }
 
 /* -------------------- Product DETAIL -------------------- */
@@ -61,6 +70,8 @@ export type ProductDetail = {
   caseSizeMm?: number;              // 27 mm
   materialName?: string;            // Keramik
   siferblatMaterialName?: string;   // Safir (dial materialı)
+
+  status?: boolean;
 };
 
 export async function getProductById(id: number): Promise<ProductDetail> {
@@ -104,5 +115,7 @@ export async function getProductById(id: number): Promise<ProductDetail> {
     caseSizeMm: toNum(p.caseSizeMm),
     materialName: p.materialName,
     siferblatMaterialName: p.siferblatMaterialName,
+
+    status: p.status === undefined ? true : Boolean(p.status),
   };
 }
