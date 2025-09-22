@@ -7,7 +7,7 @@ import styles from './Footer.module.css';
 import Copyright from './../../../public/assets/footer/bx-copyright.svg.svg'
 import useIsMobile from '@/hooks/useIsMobile';
 import { FaPhone, FaLocationDot } from "react-icons/fa6";
-import { FaFacebookF, FaWhatsapp, FaInstagram } from "react-icons/fa";
+import { FaFacebookF, FaWhatsapp, FaInstagram, FaEnvelope, FaEnvelopeOpen, FaRegEnvelope } from "react-icons/fa";
 
 
 
@@ -133,7 +133,14 @@ export default function Footer() {
                   +994 50 233 88 11
                 </a>
               </li>
-              <li> office@baygroup.az</li>
+              <li>
+                <a href="mailto:office@baygroup.az" className="flex items-center gap-2">
+                  <span>
+                    <FaEnvelope />
+                  </span>
+                  office@baygroup.az
+                </a>
+              </li>
               <li>
                 <a
                   href="https://www.google.com/maps?q=40.38510387502671, 49.812435981451"
@@ -146,7 +153,7 @@ export default function Footer() {
                   </span>
                   <span>
                     <span>Baş Ofis:</span> <br />
-                    Əhmad Cəmil küç. 64/66 
+                    Əhmad Cəmil küç. 64/66
                     Bakı, Azərbaycan; AZ1141
                   </span>
                 </a>
