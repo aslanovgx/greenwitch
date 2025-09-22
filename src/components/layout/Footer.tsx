@@ -133,6 +133,7 @@ export default function Footer() {
                   +994 50 233 88 11
                 </a>
               </li>
+              <li> office@baygroup.az</li>
               <li>
                 <a
                   href="https://www.google.com/maps?q=40.38510387502671, 49.812435981451"
@@ -144,8 +145,9 @@ export default function Footer() {
                     <FaLocationDot />
                   </span>
                   <span>
-                    Ahmad Jamil str. 64/66 <br />
-                    Baku, Azerbaijan; AZ1141
+                    <span>Baş Ofis:</span> <br />
+                    Əhmad Cəmil küç. 64/66 
+                    Bakı, Azərbaycan; AZ1141
                   </span>
                 </a>
               </li>
