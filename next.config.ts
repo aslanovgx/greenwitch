@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
         pathname: "/images/**",
       },
     ],
-    unoptimized: false,
+    unoptimized: true,
   },
   webpack(config) {
     config.module.rules.push({
