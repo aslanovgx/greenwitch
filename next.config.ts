@@ -6,10 +6,10 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "api.saat.az",
-        pathname: "/images/**",
+        pathname: "/**",
       },
     ],
-    unoptimized: true,
+    unoptimized: false,
   },
   webpack(config) {
     config.module.rules.push({
