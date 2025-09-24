@@ -65,20 +65,20 @@ function ProductCardComponent({
   // 2) Badge seçimi (YENİ QAYDA)
   // — MostSales bölməsində: bestseller true-dursa, həmişə "BEST"
   // — Qalan hallarda: sənin əvvəlki qaydan eyni qalır
-  let badge: "ENDİRİMLİ" | "YENİ" | "ƏN YAXŞI" | null = null;
+  let badge: "ENDİRİMLİ" | "YENİ" | "BEST" | null = null;
 
   if (isMostSales && item.bestSeller) {
-    badge = "ƏN YAXŞI";
+    badge = "BEST";
   } else if (activeCategory === "discount") {
     badge = hasDiscount ? "ENDİRİMLİ" : null;
   } else if (activeCategory === "new") {
     badge = item.isNew ? "YENİ" : null;
   } else if (activeCategory === "best") {
-    badge = item.bestSeller ? "ƏN YAXŞI" : null;
+    badge = item.bestSeller ? "BEST" : null;
   } else {
     // all
     badge = hasDiscount ? "ENDİRİMLİ"
-      : item.bestSeller ? "ƏN YAXŞI"
+      : item.bestSeller ? "BEST"
         : item.isNew ? "YENİ"
           : null;
   }
@@ -89,12 +89,12 @@ function ProductCardComponent({
   //   badge === "BEST" ? 1 : badge === "NEW" ? 2 : badge === "ENDİRİM" ? 3 : null;
 
   // 4) Admin rəngi
-  const colorByBadge: Record<"ƏN YAXŞI" | "YENİ" | "ENDİRİMLİ", string | undefined> = {
-    "ƏN YAXŞI": colors[1],     // 1 → BEST
+  const colorByBadge: Record<"BEST" | "YENİ" | "ENDİRİMLİ", string | undefined> = {
+    BEST: colors[1],     // 1 → BEST
     YENİ: colors[2],      // 2 → NEW
     ENDİRİMLİ: colors[3],  // 3 → ENDİRİM
   };
-  const badgeColor = badge ? colorByBadge[badge as "ƏN YAXŞI" | "YENİ" | "ENDİRİMLİ"] : undefined;
+  const badgeColor = badge ? colorByBadge[badge as "BEST" | "YENİ" | "ENDİRİMLİ"] : undefined;
 
   // 5) Mətn kontrastı
   const pickText = (hex?: string) => {
