@@ -18,8 +18,8 @@ export type CreateOrderResponse = {
 } & Record<string, unknown>;
 
 export async function createOrder(payload: CreateOrderPayload): Promise<CreateOrderResponse | null> {
-  const API = (process.env.NEXT_PUBLIC_API_URL ?? "").replace(/\/+$/, "");
-  // Qeyd: NEXT_PUBLIC_API_URL tipik olaraq .../api olur → /order ilə bitiririk
+  const API = (process.env.API_SAAT_BASE_URL ?? "").replace(/\/+$/, "");
+  // Qeyd: API_SAAT_BASE_URL tipik olaraq .../api olur → /order ilə bitiririk
   const url = `${API}/order`;
 
   const res = await fetch(url, {

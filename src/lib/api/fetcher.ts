@@ -2,7 +2,7 @@
 type FetchOpts = { revalidate?: number; cache?: RequestCache };
 
 export async function apiGet(path: string, opts: FetchOpts = {}) {
-  const BASE = (process.env.NEXT_PUBLIC_API_URL ?? '')
+  const BASE = (process.env.API_SAAT_BASE_URL ?? '')
     .trim()
     .replaceAll('"', '')
     .replace(/\/+$/, '');

@@ -14,7 +14,7 @@ export function toAbs(rel: string) {
   }
 
   // ENV-dən kök (API) götür, /api-nin sonunu kəs ki, fayl kökünə join edək
-  const API = (process.env.NEXT_PUBLIC_API_URL ?? "").trim().replaceAll('"', "");
+  const API = (process.env.API_SAAT_BASE_URL ?? "").trim().replaceAll('"', "");
   const ROOT = API.replace(/\/api\/?$/i, "").replace(/\/+$/, ""); // .../api → ...
 
   // Windows slash → / ; lider slashi sil ; "images//..." double slash-ı aradan qaldır

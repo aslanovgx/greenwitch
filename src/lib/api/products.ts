@@ -79,7 +79,7 @@ export async function getProductById(id: number): Promise<ProductDetail> {
    const p = (data?.product ?? data) as Partial<ProductDetail> & Record<string, unknown>;
 
   // relative -> absolute şəkil
-  const API = (process.env.NEXT_PUBLIC_API_URL ?? "").trim();
+  const API = (process.env.API_SAAT_BASE_URL ?? "").trim();
   const ROOT = API.replace(/\/api\/?$/i, "");
   const toAbs = (rel: string) => `${ROOT}/${String(rel ?? "").replace(/^\/+/, "")}`;
 

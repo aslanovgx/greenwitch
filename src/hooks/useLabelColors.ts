@@ -121,7 +121,7 @@ function normalizeLegacy(input: unknown): { colors: Colors; fp: string } | null 
 
 /* ── API ────────────────────────────────────────────────────────────────── */
 async function fetchColorsFromAPI(): Promise<{ colors: Colors | null; fp: string }> {
-  const base = (process.env.NEXT_PUBLIC_API_URL ?? "").replace(/\/$/, ""); // .../api
+  const base = (process.env.API_SAAT_BASE_URL ?? "").replace(/\/$/, ""); // .../api
   const url = `${base}/LabelSettings`; // ✅ doğru endpoint
 
   const res = await fetch(url, {

@@ -12,7 +12,7 @@ export default function PurchaseContent() {
   const router = useRouter();
 
   // —— API kökünü sabitlə (iki dəfə /api problemini aradan qaldırır)
-  const RAW_API = (process.env.NEXT_PUBLIC_API_URL ?? "").trim();
+  const RAW_API = (process.env.API_SAAT_BASE_URL ?? "").trim();
   const API_ROOT = RAW_API.replace(/\/$/, "");
   const API_BASE = API_ROOT.replace(/\/api$/i, "");
   const productUrl = (id: number) => `${API_BASE}/api/Product/${id}`;
