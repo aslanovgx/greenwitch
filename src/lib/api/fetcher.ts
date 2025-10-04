@@ -2,10 +2,10 @@
 type FetchOpts = { revalidate?: number; cache?: RequestCache };
 
 export async function apiGet(path: string, opts: FetchOpts = {}) {
-  const BASE = (process.env.API_SAAT_BASE_URL ?? '')
-    .trim()
-    .replaceAll('"', '')
-    .replace(/\/+$/, '');
+  const BASE = (process.env.API_SAAT_BASE_URL ?? 'https://api.saat.az/api')
+  .trim()
+  .replaceAll('"', '')
+  .replace(/\/+$/, '');
 
   // əgər path tam URL-disə (https:// ilə başlayır), BASE əlavə etmə
   const isAbs = /^https?:\/\//i.test(path);
