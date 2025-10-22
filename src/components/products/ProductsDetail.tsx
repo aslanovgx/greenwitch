@@ -80,7 +80,7 @@ export default function ProductsDetail({ product }: Props) {
   useEffect(() => {
     thumbs.forEach((u) => prefetchImage(u));
   }, [thumbs]);
-  
+
   // useEffect(() => {
   //   const run = () => thumbs.forEach((u) => prefetchImage(u));
   //   if (typeof window !== "undefined" && "requestIdleCallback" in window) {
@@ -323,10 +323,12 @@ export default function ProductsDetail({ product }: Props) {
       <div className={styles.rightSide}>
         <h1 className={styles.title}>{product.brandName}</h1>
 
-        {product.description && (
-          <p className={`${styles.desc} ${styles.descLong}`}>
+        {product.description ? (
+          <>
             {product.description} - {product.name}
-          </p>
+          </>
+        ) : (
+          product.name
         )}
 
         {[
