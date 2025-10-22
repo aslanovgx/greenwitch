@@ -151,7 +151,7 @@ function ProductCardComponent({
 
       <div className={`${styles.cards_desc}`}>
         <h3 className="transition-all duration-700">{item.brandName}</h3>
-        <p className={`${styles.clampText}`}>{item.description}</p>
+        <p className={`${styles.clampText}`}>{item.name}</p>
 
         {hasDiscount ? (
           <div className="flex gap-2 justify-center">
