@@ -15,6 +15,7 @@ import { Suspense } from "react";
 import ConsoleFilters from "@/components/dev/ConsoleFilters";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import Script from "next/script";
 
 const SITE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000";
 
@@ -22,6 +23,8 @@ const SITE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000";
 const isProd =
   process.env.VERCEL_ENV === "production" &&
   /^https?:\/\/(?!.*\.vercel\.app)(?!.*localhost)/i.test(SITE_URL);
+
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -118,6 +121,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             ),
           }}
         />
+        {GA_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '${GA_ID}');
+      `}
+            </Script>
+          </>
+        )}
       </head>
       <body
         className={`${montserrat.variable} ${lato.variable} antialiased min-h-screen flex flex-col`}
