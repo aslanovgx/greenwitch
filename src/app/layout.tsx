@@ -121,7 +121,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             ),
           }}
         />
-        {GA_ID && (
+        {isProd && GA_ID && (
           <>
             <Script
               src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
