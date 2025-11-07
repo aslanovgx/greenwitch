@@ -13,7 +13,7 @@ const watches = [
     height: 150,
     className: styles.oliviaBurton,
     descClass: styles.descOliviaBurton,
-    brandId: 12,
+    brandId: 7,
   },
   {
     name: "TOMMY HILFIGER",
@@ -22,7 +22,7 @@ const watches = [
     height: 141,
     className: styles.hilfigerGold,
     descClass: styles.descHilfigerGold,
-    brandId: 14,
+    brandId: 9,
   },
   {
     name: "MICHAEL KORS",
@@ -31,7 +31,7 @@ const watches = [
     height: 150,
     className: styles.michael,
     descClass: styles.descMichael,
-    brandId: 5,
+    brandId: 1,
   },
   {
     name: "FOSSIL",
@@ -40,7 +40,7 @@ const watches = [
     height: 150,
     className: styles.fossil,
     descClass: styles.descFossil,
-    brandId: 8,
+    brandId: 3,
   },
   {
     name: "LACOSTE",
@@ -49,7 +49,7 @@ const watches = [
     height: 141,
     className: styles.lacoste,
     descClass: styles.descLacoste,
-    brandId: 9,
+    brandId: 4,
   },
   {
     name: "FREDERIQUE CONSTANT",
@@ -58,7 +58,7 @@ const watches = [
     height: 150,
     className: styles.frederiqueConstant,
     descClass: styles.descFrederiqueConstant,
-    brandId: 13,
+    brandId: 8,
   },
   {
     name: "CALVIN KLEIN",
@@ -67,7 +67,7 @@ const watches = [
     height: 150,
     className: styles.calvinKlein,
     descClass: styles.descCalvinKlein,
-    brandId: 11,
+    brandId: 6,
   },
   {
     name: "CASIO",
@@ -76,7 +76,7 @@ const watches = [
     height: 100,
     className: styles.casio,
     descClass: styles.descCasio,
-    brandId: 7,
+    brandId: 2,
   },
   {
     name: "EMPORIO ARMANI",
@@ -85,7 +85,7 @@ const watches = [
     height: 150,
     className: styles.emporioArmani,
     descClass: styles.descEmporioArmani,
-    brandId: 10,
+    brandId: 5,
   },
 ];
 

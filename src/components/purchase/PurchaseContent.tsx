@@ -12,10 +12,12 @@ export default function PurchaseContent() {
   const router = useRouter();
 
   // —— API kökünü sabitlə (iki dəfə /api problemini aradan qaldırır)
-  const RAW_API = (process.env.API_SAAT_BASE_URL ?? "").trim();
-  const API_ROOT = RAW_API.replace(/\/$/, "");
-  const API_BASE = API_ROOT.replace(/\/api$/i, "");
-  const productUrl = (id: number) => `${API_BASE}/api/Product/${id}`;
+  // const RAW_API = (process.env.API_SAAT_BASE_URL ?? "").trim();
+  // const API_ROOT = RAW_API.replace(/\/$/, "");
+  // const API_BASE = API_ROOT.replace(/\/api$/i, "");
+  // const productUrl = (id: number) => `${API_BASE}/api/Product/${id}`;
+  const API_BASE = "https://api.saat.az/api";
+  const productUrl = (id: number) => `${API_BASE}/Product/${id}`;
 
   // —— Real stok oxuyucu (backend-də field adı fərqli ola bilər)
   async function readStockById(id: number): Promise<number> {
