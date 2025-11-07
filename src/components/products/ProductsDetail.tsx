@@ -310,8 +310,9 @@ export default function ProductsDetail({ product }: Props) {
                   src={activeImage}
                   width={imageSize.width}
                   height={imageSize.height}
+                  lensMin={260}
                   zoom={1.8}
-                  isRound={false}
+                  isRound={true}
                   priority={true}
                 />
               </div>
