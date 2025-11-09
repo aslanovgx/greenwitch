@@ -209,6 +209,8 @@ export default function ProductsDetail({ product }: Props) {
                   loading={idx === 0 ? "eager" : "lazy"}
                   className={styles.mainImageMobile}
                   style={{ objectFit: "contain", borderRadius: 8 }}
+                  draggable={false}
+                  onContextMenu={(e) => e.preventDefault()}
                 />
               </SwiperSlide>
             ))}
@@ -286,6 +288,8 @@ export default function ProductsDetail({ product }: Props) {
                         border: activeImage === src ? "2px solid black" : "1px solid #ccc",
                         borderRadius: 6,
                       }}
+                      draggable={false}
+                      onContextMenu={(e) => e.preventDefault()}
                     />
                   </SwiperSlide>
                 ))}

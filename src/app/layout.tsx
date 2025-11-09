@@ -16,6 +16,7 @@ import ConsoleFilters from "@/components/dev/ConsoleFilters";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
+import { RightClickBlocker } from "./RightClickBlocker";
 
 const SITE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000";
 
@@ -141,6 +142,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body
         className={`${montserrat.variable} ${lato.variable} antialiased min-h-screen flex flex-col`}
       >
+        <RightClickBlocker />
         <ConsoleFilters />
         <SearchProvider>
           <FavoriteProvider>

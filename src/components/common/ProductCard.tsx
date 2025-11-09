@@ -3,7 +3,7 @@ import { memo, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { buildImageUrl } from "@/utils/images";
 import useLabelColors from "@/hooks/useLabelColors";
-import { Heart } from 'lucide-react';
+// import { Heart } from 'lucide-react';
 import { useFavorites } from '@/context/FavoritesContext';
 import { useRouter } from 'next/navigation';
 import styles from '@/components/common/ProductCard.module.css';
@@ -134,6 +134,8 @@ function ProductCardComponent({
           sizes={SIZES}
           className={`w-full h-full transition-opacity duration-600 ${enableHover ? 'group-hover:opacity-0' : ''}`}
           style={{ objectFit: 'contain' }}
+          draggable={false}                          
+          onContextMenu={(e) => e.preventDefault()}
         />
         {hover && (
           <Image
@@ -145,6 +147,8 @@ function ProductCardComponent({
             sizes={SIZES}
             className={`${styles.hoverImage} w-full h-full absolute top-0 left-0 transition-opacity duration-700 ${enableHover ? 'opacity-0 group-hover:opacity-100' : 'hidden'}`}
             style={{ objectFit: 'contain' }}
+            draggable={false}  
+            onContextMenu={(e) => e.preventDefault()} 
           />
         )}
       </div>
@@ -171,8 +175,8 @@ function ProductCardComponent({
 
         <div
           className={`${styles.card_buttons} absolute bottom-0 left-0 flex transition-opacity duration-300 ${enableHover
-              ? 'opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto'
-              : 'opacity-100 pointer-events-auto' // touch-da həmişə gizli
+            ? 'opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto'
+            : 'opacity-100 pointer-events-auto' // touch-da həmişə gizli
             }`}
         >
           <button
