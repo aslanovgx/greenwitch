@@ -33,8 +33,11 @@ export default function ImageMagnifierBG({
     const [natural, setNatural] = useState({ w: width, h: height });
     const [hiReady, setHiReady] = useState(false)
 
-    const lensSize = Math.max(lensMin, Math.min(width, height) / zoom);
+    // 🔹 Lens ölçüsü — artıq LENS_MIN həqiqətən işləyir
+    const baseLens = lensMin ?? 220;
+    const lensSize = Math.min(baseLens, Math.min(width, height)); // çox böyük olmasın deyə clamp
     const half = lensSize / 2;
+
 
     const clamp = (n: number, min: number, max: number) => Math.max(min, Math.min(n, max));
 
@@ -43,8 +46,14 @@ export default function ImageMagnifierBG({
         if (!bounds) return;
         const x = clientX - bounds.left;
         const y = clientY - bounds.top;
-        setCx(clamp(x, half, width - half));
-        setCy(clamp(y, half, height - half));
+
+        // ƏVVƏL:
+        // setCx(clamp(x, half, width - half));
+        // setCy(clamp(y, half, height - half));
+
+        // YENİ:
+        setCx(clamp(x, 0, width));
+        setCy(clamp(y, 0, height));
     };
 
     // Next/Image tamam olanda: natural ölçü + optimized URL
