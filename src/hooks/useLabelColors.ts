@@ -121,8 +121,8 @@ function normalizeLegacy(input: unknown): { colors: Colors; fp: string } | null 
 
 /* ── API ────────────────────────────────────────────────────────────────── */
 async function fetchColorsFromAPI(): Promise<{ colors: Colors | null; fp: string }> {
-  const base = (process.env.API_SAAT_BASE_URL ?? "").replace(/\/$/, ""); // .../api
-  const url = `${base}/LabelSettings`; // ✅ doğru endpoint
+  const apiRoot = process.env.NEXT_PUBLIC_API_SAAT_BASE_URL || "https://api.saat.az/api";
+  const url = `${apiRoot.replace(/\/$/, "")}/LabelSettings`;
 
   const res = await fetch(url, {
     cache: "no-store",
