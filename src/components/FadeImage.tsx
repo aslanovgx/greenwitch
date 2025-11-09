@@ -24,6 +24,9 @@ export default function FadeImage({ current, previous, activeIndex, prevIndex }:
   useEffect(() => setCurrBroken(false), [current.src]);
   useEffect(() => setPrevBroken(false), [previous.src]);
 
+  const BANNER_SIZES =
+    "(max-width: 640px) 100vw, (max-width: 1024px) 60vw, (max-width: 1280px) 48vw, 52vw";
+
   return (
     <div className="relative w-full h-full">
       {/* PREVIOUS (fade-out) */}
@@ -40,7 +43,7 @@ export default function FadeImage({ current, previous, activeIndex, prevIndex }:
               src={previous.src}
               alt={previous.title}
               fill
-              sizes="100vw"
+              sizes={BANNER_SIZES}
               priority
               className="object-cover"
               onError={() => setPrevBroken(true)}
@@ -66,7 +69,7 @@ export default function FadeImage({ current, previous, activeIndex, prevIndex }:
             src={current.src}
             alt={current.title}
             fill
-            sizes="100vw"
+            sizes={BANNER_SIZES}
             priority
             className="object-cover"
             onError={() => setCurrBroken(true)}
