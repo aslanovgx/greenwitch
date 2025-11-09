@@ -311,7 +311,7 @@ export default function ProductsDetail({ product }: Props) {
                   width={imageSize.width}
                   height={imageSize.height}
                   lensMin={280}
-                  zoom={1.2}
+                  zoom={2}
                   isRound={true}
                   priority={true}
                 />

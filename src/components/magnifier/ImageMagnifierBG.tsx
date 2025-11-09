@@ -81,13 +81,16 @@ export default function ImageMagnifierBG({
     }, [hiResSrc, hiReady]);
 
 
-    const bgW = natural.w * zoom;
-    const bgH = natural.h * zoom;
-    const scaleX = natural.w / width;
-    const scaleY = natural.h / height;
+    // --- YENİ (INTUITIVE ZOOM) ---
+    const bgW = width * zoom;   // zoom=1 → fon genişliyi div genişliyi qədər
+    const bgH = height * zoom;  // zoom=1 → fon hündürlüyü div hündürlüyü qədər
 
-    const bgPosX = -(cx * scaleX * zoom - lensSize / 2);
-    const bgPosY = -(cy * scaleY * zoom - lensSize / 2);
+    // const scaleX = 1;
+    // const scaleY = 1;
+
+    // zoom indi birbaşa div-ə görə hesablanır
+    const bgPosX = -(cx * zoom - lensSize / 2);
+    const bgPosY = -(cy * zoom - lensSize / 2);
 
     return (
         <div
