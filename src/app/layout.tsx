@@ -122,13 +122,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             ),
           }}
         />
-        {isProd && GA_ID && (
+        {GA_ID && (
           <>
             <Script
               src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
               strategy="afterInteractive"
             />
-            <Script id="google-analytics" strategy="afterInteractive">
+            <Script id="ga4-init" strategy="afterInteractive">
               {`
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
@@ -138,6 +138,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </Script>
           </>
         )}
+
       </head>
       <body
         className={`${montserrat.variable} ${lato.variable} antialiased min-h-screen flex flex-col`}
