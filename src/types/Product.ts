@@ -16,6 +16,7 @@ export type Product = {
   images: string[];          // absolute URL-lər
   image?: string | null;     // bəzən tək cover kimi gəlir
   thumbnails?: string[];     // ✅ detail-də var, bəzən listdə də gələ bilər
+  webpThumbs?: string[]     // 🔹 BACKEND-dən gələn WebP thumbnail-lər
   colorNames?: string[];     // badge/filter üçün yararlı
 
   // (opsional) başqa adlar istifadə edirsənsə
@@ -43,6 +44,9 @@ export type RawProduct = {
   images?: string[] | null;
   image?: string | null;
   thumbnails?: string[] | null;  // ✅ detail uyğunluğu
+
+  // 🔹 burada da opsional saxlayırıq
+  webpThumbs?: string[] | null;
 
   colorNames?: string[] | null;
 

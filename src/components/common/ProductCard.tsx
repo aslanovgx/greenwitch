@@ -48,8 +48,26 @@ function ProductCardComponent({
 
 
 
-  const cover = buildImageUrl(item.images?.[0] || "/assets/placeholders/product.png");
-  const hover = item.images?.[1] ? buildImageUrl(item.images[1]) : null;
+  // const cover = buildImageUrl(item.images?.[0] || "/assets/placeholders/product.png");
+  // const hover = item.images?.[1] ? buildImageUrl(item.images[1]) : null;
+
+  // 1) Əvvəlcə WebP-lər, sonra PNG-lər, sonra placeholder
+  const coverSrcRaw =
+    item.webpThumbs?.[0] ??
+    item.images?.[0] ??
+    "/assets/placeholders/product.png";
+
+  const hoverSrcRaw =
+    item.webpThumbs?.[1] ??
+    item.webpThumbs?.[0] ??
+    item.images?.[1] ??
+    item.images?.[0] ??
+    null;
+
+  // 2) Hamısını yenə buildImageUrl-dən keçiririk
+  const cover = buildImageUrl(coverSrcRaw);
+  const hover = hoverSrcRaw ? buildImageUrl(hoverSrcRaw) : null;
+
 
 
   const handleClick = () => {
@@ -134,7 +152,7 @@ function ProductCardComponent({
           sizes={SIZES}
           className={`w-full h-full transition-opacity duration-600 ${enableHover ? 'group-hover:opacity-0' : ''}`}
           style={{ objectFit: 'contain' }}
-          draggable={false}                          
+          draggable={false}
           onContextMenu={(e) => e.preventDefault()}
         />
         {hover && (
@@ -147,8 +165,8 @@ function ProductCardComponent({
             sizes={SIZES}
             className={`${styles.hoverImage} w-full h-full absolute top-0 left-0 transition-opacity duration-700 ${enableHover ? 'opacity-0 group-hover:opacity-100' : 'hidden'}`}
             style={{ objectFit: 'contain' }}
-            draggable={false}  
-            onContextMenu={(e) => e.preventDefault()} 
+            draggable={false}
+            onContextMenu={(e) => e.preventDefault()}
           />
         )}
       </div>
