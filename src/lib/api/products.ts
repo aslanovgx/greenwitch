@@ -1,5 +1,31 @@
 // lib/api/products.ts
 import { apiGet } from "./fetcher";
+import type { RawProduct, Product } from "@/types/Product";
+
+function normalizeProduct(raw: RawProduct): Product {
+  return {
+    id: raw.id,
+    name: raw.name ?? "",
+    description: raw.description ?? "",
+    bestSeller: !!raw.bestSeller,
+    isNew: !!raw.isNew,
+    price: raw.price ?? 0,
+    discountPrice: raw.discountPrice ?? null,
+
+    brandName: raw.brandName ?? "",
+    brandId: raw.brandId ?? undefined,
+
+    images: raw.images ?? [],
+    image: raw.image ?? undefined,
+    thumbnails: raw.thumbnails ?? undefined,
+
+    // 🔥 Vacib yer — WebP thumbs backend-dən gələn kimi əlavə edilir
+    webpThumbs: raw.webpThumbs ?? [],
+
+    colorNames: raw.colorNames ?? undefined,
+    status: raw.status ?? true,
+  };
+}
 
 export type ProductFilter = {
   Gender?: number;
@@ -37,12 +63,21 @@ function buildQuery(p: ProductFilter = {}) {
   return qs ? `?${qs}` : "";
 }
 
-export async function getProducts(params: ProductFilter = {}) {
+export async function getProducts(params: ProductFilter = {}): Promise<Product[]> {
   const path = `/Product${buildQuery(params)}`;
   const raw = await apiGet(path);
-  const list = Array.isArray(raw) ? raw : Array.isArray(raw?.products) ? raw.products : [];
-  return list.filter((p: any) => p?.status !== false);
+
+  const list: RawProduct[] = Array.isArray(raw)
+    ? raw
+    : Array.isArray(raw?.products)
+      ? raw.products
+      : [];
+
+  return list
+    .filter((p) => p?.status !== false)
+    .map(normalizeProduct); // 🔥 Əsas dəyişiklik
 }
+
 
 /* -------------------- Product DETAIL -------------------- */
 

@@ -48,6 +48,16 @@ function ProductCardComponent({
 
 
 
+  // ✅ Debug: kartda hansı şəkillər gəlir?
+  useEffect(() => {
+    console.log("CARD DEBUG", {
+      id: item.id,
+      images: item.images,
+      webpThumbs: item.webpThumbs,
+    });
+  }, [item]);
+
+
   // const cover = buildImageUrl(item.images?.[0] || "/assets/placeholders/product.png");
   // const hover = item.images?.[1] ? buildImageUrl(item.images[1]) : null;
 
