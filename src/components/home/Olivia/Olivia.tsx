@@ -1,9 +1,9 @@
 "use client";
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
-import styles from './Olivia.module.css';
-import EyeIcon from '/public/assets/home/olivia/eye-icon.svg';
-import Link from 'next/link';
+import Image from "next/image";
+import { useEffect, useMemo, useState } from "react";
+import styles from "./Olivia.module.css";
+import EyeIcon from "/public/assets/home/olivia/eye-icon.svg";
+import Link from "next/link";
 
 const watches = [
   {
@@ -93,14 +93,6 @@ export default function Products() {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    watches.forEach(w => {
-      const img = new window.Image();
-      img.src = w.src;
-    });
-  }, []);
-
-  useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % 3); // 0 → 1 → 2 → 0
     }, 3000);
@@ -108,50 +100,78 @@ export default function Products() {
     return () => clearInterval(interval);
   }, []);
 
-  const currentWatches = watches.slice(index * 3, index * 3 + 3);
+  // Aktiv 3-lük (brandId-lər)
+  const activeIds = useMemo(() => {
+    const chunk = watches.slice(index * 3, index * 3 + 3);
+    return new Set(chunk.map((w) => w.brandId));
+  }, [index]);
 
   return (
     <div className={`${styles.oliviaGroup} flex items-center`}>
       <div className={`${styles.oliviaLeft} relative`}>
+        {/* Tövsiyə: bunu da .webp et */}
         <Image
-          src={'/assets/home/olivia/olivia-background.png'}
-          alt='olivia-background'
+          src={"/assets/home/olivia/olivia-background.webp"}
+          alt="olivia-background"
           width={447}
           height={204}
-          className={`object-cover`}
+          className="object-cover"
+          unoptimized
+          priority
         />
+
+        {/* WATCHES (hamısı DOM-da qalır) */}
         <div className={styles.oliviaWatches}>
-          {currentWatches.map((watch) => (
-            <div
-              key={watch.brandId ?? watch.name}
-              className={`absolute ${watch.className}`} 
-            >
-              <Image
-                src={watch.src}
-                alt={watch.name}
-                width={watch.width}       // <-- width/height saxla
-                height={watch.height}
-                style={{ display: 'block' }}  // <-- vizual sabitlik
-              // objectFit lazım deyil, çünki ölçü konkret verilmişdir
-              />
-            </div>
-          ))}
+          {watches.map((watch) => {
+            const active = activeIds.has(watch.brandId);
+
+            return (
+              <div
+                key={watch.brandId}
+                className={`absolute ${watch.className}`}
+                style={{
+                  opacity: active ? 1 : 0,
+                  pointerEvents: active ? "auto" : "none",
+                  transition: "opacity 250ms",
+                }}
+              >
+                <Image
+                  src={watch.src}
+                  alt={watch.name}
+                  width={watch.width}
+                  height={watch.height}
+                  unoptimized
+                  style={{ display: "block" }}
+                />
+              </div>
+            );
+          })}
         </div>
 
-        <div className={`${styles.oliviaWatchesDesc}`}>
-          {currentWatches.map((watch) => (
-            <div
-              key={watch.brandId ?? watch.name} // ✅ stabil key
-              className={`flex items-center ${watch.descClass}`}
-            >
-              <p>{watch.name}</p>
-              <Link href={`/products?brandId=${watch.brandId}`}>
-                <span className='cursor-pointer'>
-                  <EyeIcon />
-                </span>
-              </Link>
-            </div>
-          ))}
+        {/* DESCS (hamısı DOM-da qalır) */}
+        <div className={styles.oliviaWatchesDesc}>
+          {watches.map((watch) => {
+            const active = activeIds.has(watch.brandId);
+
+            return (
+              <div
+                key={watch.brandId}
+                className={`flex items-center ${watch.descClass}`}
+                style={{
+                  opacity: active ? 1 : 0,
+                  pointerEvents: active ? "auto" : "none",
+                  transition: "opacity 250ms",
+                }}
+              >
+                <p>{watch.name}</p>
+                <Link href={`/products?brandId=${watch.brandId}`}>
+                  <span className="cursor-pointer">
+                    <EyeIcon />
+                  </span>
+                </Link>
+              </div>
+            );
+          })}
         </div>
       </div>
 
@@ -161,17 +181,20 @@ export default function Products() {
             100% orijinal saatlar üçün <b>hədiyyə kartı</b> ilə ətrafınızı sevindirin.
           </p>
           <Link href="/gift-card">
-            <button className='cursor-pointer'>SİFARİŞ ET</button>
+            <button className="cursor-pointer">SİFARİŞ ET</button>
           </Link>
         </div>
 
         <div className={`${styles.handImage} relative`}>
+          {/* Tövsiyə: bunu da .webp et */}
           <Image
-            src={'/assets/home/olivia/hand.png'}
-            alt='hand'
+            src={"/assets/home/olivia/hand.webp"}
+            alt="hand"
             width={388}
             height={447}
-            className={`object-cover`}
+            className="object-cover"
+            unoptimized
+            priority
           />
         </div>
       </div>
