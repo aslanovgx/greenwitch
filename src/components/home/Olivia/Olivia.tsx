@@ -8,7 +8,7 @@ import Link from 'next/link';
 const watches = [
   {
     name: "OLIVIA BURTON",
-    src: "/assets/home/olivia/olivia-burton.png",
+    src: "/assets/home/olivia/olivia-burton.webp",
     width: 150,
     height: 150,
     className: styles.oliviaBurton,
@@ -17,7 +17,7 @@ const watches = [
   },
   {
     name: "TOMMY HILFIGER",
-    src: "/assets/home/olivia/hilfigerGold.png",
+    src: "/assets/home/olivia/hilfigerGold.webp",
     width: 106,
     height: 141,
     className: styles.hilfigerGold,
@@ -26,7 +26,7 @@ const watches = [
   },
   {
     name: "MICHAEL KORS",
-    src: "/assets/home/olivia/michael.png",
+    src: "/assets/home/olivia/michael.webp",
     width: 150,
     height: 150,
     className: styles.michael,
@@ -35,7 +35,7 @@ const watches = [
   },
   {
     name: "FOSSIL",
-    src: "/assets/home/olivia/fossil.png",
+    src: "/assets/home/olivia/fossil.webp",
     width: 155,
     height: 150,
     className: styles.fossil,
@@ -44,7 +44,7 @@ const watches = [
   },
   {
     name: "LACOSTE",
-    src: "/assets/home/olivia/lacoste.png",
+    src: "/assets/home/olivia/lacoste.webp",
     width: 86,
     height: 141,
     className: styles.lacoste,
@@ -53,7 +53,7 @@ const watches = [
   },
   {
     name: "FREDERIQUE CONSTANT",
-    src: "/assets/home/olivia/olivia-green.png",
+    src: "/assets/home/olivia/olivia-green.webp",
     width: 110,
     height: 150,
     className: styles.frederiqueConstant,
@@ -62,7 +62,7 @@ const watches = [
   },
   {
     name: "CALVIN KLEIN",
-    src: "/assets/home/olivia/calvin-klein.png",
+    src: "/assets/home/olivia/calvin-klein.webp",
     width: 90,
     height: 150,
     className: styles.calvinKlein,
@@ -71,7 +71,7 @@ const watches = [
   },
   {
     name: "CASIO",
-    src: "/assets/home/olivia/casio.png",
+    src: "/assets/home/olivia/casio.webp",
     width: 80,
     height: 100,
     className: styles.casio,
@@ -80,7 +80,7 @@ const watches = [
   },
   {
     name: "EMPORIO ARMANI",
-    src: "/assets/home/olivia/emporio-armani.png",
+    src: "/assets/home/olivia/emporio-armani.webp",
     width: 160,
     height: 150,
     className: styles.emporioArmani,
