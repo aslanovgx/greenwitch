@@ -347,7 +347,7 @@ export default function ProductsDetail({ product }: Props) {
           },
           {
             label: "Korpus ölçüsü",
-            value: product.caseSizeMm ? `${product.caseSizeMm}mm` : undefined,
+            value: product.caseSizeMm ? `${product.caseSizeMm} mm` : undefined,
           },
           {
             label: "Qiyməti",
@@ -366,7 +366,7 @@ export default function ProductsDetail({ product }: Props) {
             ) : (
               <span className={styles.priceWrapper}>
                 <span className={styles.priceSingle} aria-label={`Qiymət ${product.price} AZN`}>
-                  {product.price}AZN
+                  {product.price} AZN
                 </span>
               </span>
             ),
