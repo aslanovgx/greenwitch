@@ -196,7 +196,8 @@ export default function Navbar() {
         className={`row-2 relative mx-auto flex items-center justify-between ${fixed ? "fixed-row" : ""}`}
       >
         {/* Search */}
-        <SearchInput onFocusOpenModal={() => setIsModalOpen(true)}
+        <SearchInput
+          // onFocusOpenModal={() => setIsModalOpen(true)}
           onUserType={() => setTouched(true)} />
 
         {/* Mobile Burger Icon */}
