@@ -108,7 +108,7 @@ export default function Navbar() {
 
     if (q.length < 2) {
       setFilteredResults([]);
-      // setIsModalOpen(false); // boş query-də modalı bağla (istəyinə görə aça da bilərik)
+      setIsModalOpen(false);
       setLoading(false);
       return;
     }
@@ -123,11 +123,14 @@ export default function Navbar() {
         if (!mounted) return;
 
         setFilteredResults(results);
-        setIsModalOpen(true);
+
+        // setIsModalOpen(true);
+        setIsModalOpen(results.length > 0);
       } catch (e) {
         console.error("Search FE error:", e);
         if (!mounted) return;
         setFilteredResults([]);
+        setIsModalOpen(false);
       } finally {
         if (mounted) setLoading(false);
       }
@@ -148,9 +151,10 @@ export default function Navbar() {
 
   // ——— Mobil search ikonuna kliklə modalı aç
   const openSearchManually = () => {
-    // if (filteredResults.length > 0) setIsModalOpen(true);
-    setIsModalOpen(true);
+    if (filteredResults.length > 0) setIsModalOpen(true);
   };
+
+  
 
   return (
     <nav className="w-full bg-white">

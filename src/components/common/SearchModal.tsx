@@ -7,6 +7,7 @@ import { X } from "lucide-react";
 type SearchResult = {
   id: number;
   brandName: string;
+  name: string;
   description: string;
   price: number | string;
   discountPrice?: number | string | null;
@@ -57,7 +58,7 @@ export default function SearchModal({
           onClick={onClose}
           className="absolute top-3 right-3 text-gray-600 hover:text-black"
         >
-          <X />
+          <X className="cursor-pointer" />
         </button>
 
         <h2 className="text-lg font-semibold mb-4">
@@ -109,10 +110,18 @@ export default function SearchModal({
                       />
                     </div>
                     <div className="min-w-0">
-                      <p className="text-sm font-medium truncate">{r.brandName}</p>
-                      <p className="text-xs text-gray-600 line-clamp-2">
-                        {r.description}
+                      {/* Brand */}
+                      <p className="text-[15px] font-semibold text-gray-900 leading-tight truncate">
+                        {r.brandName}
                       </p>
+
+                      {/* Product name */}
+                      <p className="text-[13px] text-gray-600 leading-tight truncate">
+                        {r.name}
+                      </p>
+                      {/* <p className="text-xs text-gray-600 line-clamp-2">
+                        {r.description}
+                      </p> */}
 
                       {hasDiscount ? (
                         <div className="flex items-center gap-2 mt-1">
@@ -138,6 +147,18 @@ export default function SearchModal({
             })}
           </ul>
         )}
+        {/* CTA: hamısını gör */}
+        {/* {!loading && results.length > 0 && q.length >= 2 && (
+          <div className="mt-4 pt-4 border-t">
+            <Link
+              href={`/products?search=${encodeURIComponent(q)}`}
+              onClick={onClose}
+              className="block w-full text-center text-sm font-semibold text-gray-900 hover:underline"
+            >
+              Hamısını gör
+            </Link>
+          </div>
+        )} */}
 
         {/* Tapılmadı */}
         {showEmpty && (
