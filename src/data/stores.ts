@@ -44,12 +44,12 @@ export const stores: Store[] = [
     name: "Sumqayıt şəhəri, Üzeyir Hacıbəyov küç. (Bravosuperstore)",
     phone: "+994 50 233 35 05",
     hours: "Hər gün 10:00 – 21:00",
-    location: { lat: 40.379929, lng: 49.813423 }
+    location: { lat: 40.573788210884395, lng: 49.69076226784037 }
   },
   {
     name: "Zefir Mall ( 1-ci mərtəbə )",
     phone: "+994 50 233 35 06",
     hours: "Hər gün 10:00 – 22:00",
-    location: { lat: 40.37657551072271, lng: 49.79402273861551 } 
+    location: { lat: 40.37663801605793, lng: 49.794042847122185 } 
   },
 ];
