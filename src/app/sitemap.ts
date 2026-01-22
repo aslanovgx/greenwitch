@@ -5,15 +5,6 @@ import { getProducts } from "@/lib/api/products";
 /* -------------------- Const & Utils -------------------- */
 const BASE_URL = (process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000").replace(/\/+$/, "");
 
-const slugify = (s: string) =>
-  (s || "")
-    .toLowerCase()
-    .normalize("NFKD")
-    .replace(/[^\w\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-")
-    .trim();
-
 const isRecord = (v: unknown): v is Record<string, unknown> =>
   typeof v === "object" && v !== null;
 
@@ -21,9 +12,6 @@ const toNum = (v: unknown): number | undefined => {
   const n = Number(v);
   return Number.isFinite(n) ? n : undefined;
 };
-
-const toStr = (v: unknown): string | undefined =>
-  typeof v === "string" ? v : undefined;
 
 const toDate = (v: unknown): Date | undefined => {
   if (v instanceof Date && !Number.isNaN(+v)) return v;
@@ -37,8 +25,6 @@ const toDate = (v: unknown): Date | undefined => {
 /* -------------------- Minimal Product type -------------------- */
 type ProductMinimal = {
   id: number;
-  name?: string;
-  brandName?: string;
   updatedAt?: Date;
   createdAt?: Date;
 };
@@ -49,12 +35,10 @@ function toProductMinimal(x: unknown): ProductMinimal | null {
   const id = toNum(x.id);
   if (!id) return null;
 
-  const name = toStr(x.name);
-  const brandName = toStr(x.brandName);
   const updatedAt = toDate(x.updatedAt);
   const createdAt = toDate(x.createdAt);
 
-  return { id, name, brandName, updatedAt, createdAt };
+  return { id, updatedAt, createdAt };
 }
 
 /* -------------------- Sitemap -------------------- */
@@ -79,24 +63,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       const p = toProductMinimal(item);
       if (!p) continue;
 
-      const brand = p.brandName ?? "";
-      const name = p.name ?? "";
-      const pretty = `${slugify(`${brand} ${name}`)}-${p.id}`;
-
       const lastModified = p.updatedAt ?? p.createdAt ?? now;
 
       urls.push({
-        url: `${BASE_URL}/products/${pretty}`,
+        url: `${BASE_URL}/products/${p.id}`, // ✅ slug-suz
         lastModified,
         changeFrequency: "weekly",
         priority: 0.8,
       });
     }
   } catch {
-    // API xətti olsa, sitemap yenə də statik hissələrlə qayıdır
+    // ignore
   }
-
-  // 3) Kampaniyalar (istəsən sonradan burada əlavə edərsən)
 
   return urls;
 }

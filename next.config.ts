@@ -18,15 +18,6 @@ const nextConfig: NextConfig = {
     });
     return config;
   },
-  async rewrites() {
-    return [
-      {
-        // /products/rolex-submariner-48 → /products/48
-        source: "/products/:slug-:id(\\d+)",
-        destination: "/products/:id",
-      },
-    ];
-  },
 };
 
 export default nextConfig;

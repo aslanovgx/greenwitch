@@ -20,15 +20,6 @@ const isValid = (v: unknown) => typeof toNum(v) === "number";
 const isRecord = (v: unknown): v is Record<string, unknown> =>
   typeof v === "object" && v !== null;
 
-const slugify = (s: string) =>
-  s
-    .toLowerCase()
-    .normalize("NFKD")
-    .replace(/[^\w\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-")
-    .trim();
-
 const FILE_HOST = (process.env.NEXT_PUBLIC_FILE_HOST ?? "https://api.saat.az").replace(/\/+$/, "");
 function toAbsoluteImageUrl(path?: string | null): string | null {
   if (!path) return null;
@@ -111,8 +102,8 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     return fallback;
   }
 
-  const pretty = `${slugify(`${product.brandName ?? ""} ${product.name ?? ""}`)}-${numId}`;
-  const canonicalUrl = `${base}/products/${pretty}`;
+  const canonicalUrl = `${base}/products/${numId}`;
+
 
   const title = `${product.name} | ${product.brandName} | SaatAZ`;
   const descAz = `${product.brandName} ${product.name} – orijinal brend saat. Rəsmi zəmanət və sərfəli qiymət.`;

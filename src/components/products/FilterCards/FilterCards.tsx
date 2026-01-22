@@ -187,12 +187,20 @@ export default function FilterCards() {
     router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
   };
 
-  /* Filter/sort dəyişəndə page=1 */
+  const didMountRef = useRef(false);
+
   useEffect(() => {
+    if (!didMountRef.current) {
+      didMountRef.current = true;
+      return; // ilk mount-da reset ETMƏ
+    }
+
     const current = Number(sp.get("page")) || 1;
     if (current !== 1) setQuery("page", 1);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [brandId, genderId, shapeId, colorId, categoryId, sortCode]);
+
 
   useEffect(() => {
     let aborted = false;
@@ -288,7 +296,7 @@ export default function FilterCards() {
         let serverPage = 1;
         const MAX_SERVER_PAGES = 500; // təhlükəsizlik limiti
 
-        
+
 
         // B) YALNIZ filter=new/discount/best → cari + növbəti UI səhifə qədər yığ
         const needCount = UI_PAGE_SIZE * page;

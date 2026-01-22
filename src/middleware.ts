@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(req: NextRequest) {
-  const url = req.nextUrl;
+  const url = req.nextUrl.clone(); // ✅ clone
 
   // /products?page=1 → /products (SEO canonical)
   if (url.pathname === "/products" && url.searchParams.get("page") === "1") {
@@ -15,7 +15,7 @@ export function middleware(req: NextRequest) {
   const m = url.pathname.match(/^\/products\/[^/]+-(\d+)$/);
   if (m) {
     const id = m[1];
-    const rewriteUrl = url.clone();
+    const rewriteUrl = req.nextUrl.clone(); // ✅ ayrıca clone
     rewriteUrl.pathname = `/products/${id}`;
     return NextResponse.rewrite(rewriteUrl);
   }
@@ -23,5 +23,4 @@ export function middleware(req: NextRequest) {
   return NextResponse.next();
 }
 
-// /products və bütün alt yollar
 export const config = { matcher: ["/products", "/products/:path*"] };
