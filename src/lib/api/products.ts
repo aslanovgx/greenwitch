@@ -38,6 +38,10 @@ export type ProductFilter = {
   search?: string;
   // sort?: "price_asc" | "price_desc";
   status?: boolean;
+
+  bestSeller?: boolean;
+  isNew?: boolean;
+  hasDiscount?: boolean;
 };
 
 function buildQuery(p: ProductFilter = {}) {
@@ -51,6 +55,10 @@ function buildQuery(p: ProductFilter = {}) {
   if (p.size) qp.set("size", String(p.size));
   // if (p.sort) qp.set("sort", p.sort);
   if (p.search && p.search.trim()) qp.set("q", p.search.trim()); // backend uyğunlaşsa dəyişərik
+
+  if (typeof p.bestSeller === "boolean") qp.set("BestSeller", String(p.bestSeller));
+  if (typeof p.isNew === "boolean") qp.set("IsNew", String(p.isNew));
+  if (typeof p.hasDiscount === "boolean") qp.set("HasDiscount", String(p.hasDiscount));
 
    if (typeof p.status === "boolean") {
     qp.set("status", String(p.status));

@@ -60,9 +60,10 @@ export default async function Home() {
     return false;
   };
 
-  const initialBestSellers: Product[] = (allProducts ?? [])
-    .filter((p) => toBool(p.bestSeller as unknown))
-    .slice(0, 5);
+  const initialBestSellers = await getProducts({
+    bestSeller: true,
+    size: 5, // əgər backend dəstəkləyirsə
+  });
 
   return (
     <>
