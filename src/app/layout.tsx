@@ -89,9 +89,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 description:
                   "SaatAZ – Azərbaycanda orijinal qol saatlarının rəsmi satış ünvanı.",
                 sameAs: [
-                  "https://www.instagram.com/saat_az",
-                  // "https://www.facebook.com/saat.az",
-                  // "https://www.linkedin.com/company/saat-az",
+                  "https://www.instagram.com/greenwich.aze",
                 ],
               },
               null,

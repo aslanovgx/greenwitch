@@ -177,8 +177,8 @@ export default function Navbar() {
         <a href="tel:+994502338811" className="fixedNumber">
           <BsTelephone /> +994 50 233 88 11
         </a>
-        <a href="https://instagram.com/saat_az" target="_blank" rel="noopener noreferrer" className="fixedSocialMedia">
-          <FaInstagram /> saat_az
+        <a href="https://instagram.com/greenwich.aze" target="_blank" rel="noopener noreferrer" className="fixedSocialMedia">
+          <FaInstagram /> greenwich.aze
         </a>
       </div>
 
@@ -187,8 +187,8 @@ export default function Navbar() {
         <a href="tel:+994502338811" className="fixedNumber">
           <BsTelephone /> +994 50 233 88 11
         </a>
-        <a href="https://instagram.com/saat_az" target="_blank" rel="noopener noreferrer" className="fixedSocialMedia">
-          <FaInstagram /> saat_az
+        <a href="https://instagram.com/greenwich.aze" target="_blank" rel="noopener noreferrer" className="fixedSocialMedia">
+          <FaInstagram /> greenwich.aze
         </a>
       </div>
 

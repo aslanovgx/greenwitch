@@ -170,7 +170,7 @@ export default function Footer() {
                   <FaWhatsapp />
                 </a></span>
                 <a
-                  href="https://instagram.com/saat_az"
+                  href="https://instagram.com/greenwich.aze"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
