@@ -143,7 +143,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="https://www.google.com/maps?q=40.38510387502671, 49.812435981451"
+                  href="https://www.google.com/maps?q=40.379978, 49.813496"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-start gap-2"
@@ -153,7 +153,7 @@ export default function Footer() {
                   </span>
                   <span>
                     <span>Baş Ofis:</span> <br />
-                    Əhmad Cəmil küç. 64/66
+                    Əhməd Cəmil küç. 64/66
                     Bakı, Azərbaycan; AZ1141
                   </span>
                 </a>

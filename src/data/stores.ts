@@ -38,13 +38,13 @@ export const stores: Store[] = [
     name: "Port Baku Mall ( 1-ci mərtəbə )",
     phone: "+994 50 233 35 04",
     hours: "Hər gün 10:00 – 22:00",
-    location: { lat: 40.37523150186601, lng: 49.86026654904935 } 
+    location: { lat: 40.376171, lng: 49.860352 } 
   },
   {
     name: "Sumqayıt şəhəri, Üzeyir Hacıbəyov küç. (Bravosuperstore)",
     phone: "+994 50 233 35 05",
     hours: "Hər gün 10:00 – 21:00",
-    location: { lat: 40.573788210884395, lng: 49.69076226784037 }
+    location: { lat: 40.573597, lng: 49.690796 }
   },
   {
     name: "Zefir Mall ( 1-ci mərtəbə )",
