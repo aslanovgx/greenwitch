@@ -50,15 +50,14 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const allProducts: Product[] = await getProducts();
-  const allSections = await getInfoSections();
+   const allSections = await getInfoSections();
 
-  const toBool = (v: unknown): boolean => {
-    if (typeof v === "boolean") return v;
-    if (typeof v === "number") return v === 1;
-    if (typeof v === "string") return v.toLowerCase() === "true";
-    return false;
-  };
+
+  const homeAll = await getProducts({ page: 1, size: 5, status: true });
+  const homeNew = await getProducts({ page: 1, size: 5, isNew: true, status: true });
+  const homeDiscount = await getProducts({ page: 1, size: 5, hasDiscount: true, status: true });
+
+  // const allSections = await getInfoSections();
 
   const initialBestSellers = await getProducts({
     bestSeller: true,
@@ -72,7 +71,11 @@ export default async function Home() {
       </section>
 
       <section>
-        <Products initialProducts={allProducts} />
+        <Products
+          initialAll={homeAll}
+          initialNew={homeNew}
+          initialDiscount={homeDiscount}
+        />
       </section>
 
       <section><Olivia /></section>

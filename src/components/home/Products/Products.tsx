@@ -9,10 +9,20 @@ import MoreButton from "@/components/ui/MoreButton";
 import Link from "next/link";
 import { buildImageUrl } from "@/utils/images";
 
-type Props = { initialProducts?: RawProduct[] };
+type Props = {
+  initialAll?: RawProduct[];
+  initialNew?: RawProduct[];
+  initialDiscount?: RawProduct[];
+};
 
 
-export default function Products({ initialProducts = [] }: Props) {
+
+export default function Products({
+  initialAll = [],
+  initialNew = [],
+  initialDiscount = [],
+}: Props) {
+
     const [activeCardId, setActiveCardId] = useState<number | null>(null);
     const [activeCategory, setActiveCategory] = useState<"all" | "new" | "discount">("all");
     const [visibleCount] = useState<number>(5);
@@ -42,15 +52,17 @@ export default function Products({ initialProducts = [] }: Props) {
         };
     }, []);
 
-    const products = useMemo(() => initialProducts.map(adapt), [initialProducts, adapt]);
+    const selectedRaw = useMemo(() => {
+  if (activeCategory === "new") return initialNew;
+  if (activeCategory === "discount") return initialDiscount;
+  return initialAll;
+}, [activeCategory, initialAll, initialNew, initialDiscount]);
 
-    const filteredProducts = useMemo(() => {
-        if (activeCategory === "new") return products.filter((p) => p.isNew);
-        if (activeCategory === "discount") return products.filter((p) => p.discountPrice != null && p.discountPrice < p.price);
-        return products;
-    }, [products, activeCategory]);
+const products = useMemo(() => selectedRaw.map(adapt), [selectedRaw, adapt]);
 
-    const visible = useMemo(() => filteredProducts.slice(0, visibleCount), [filteredProducts, visibleCount]);
+
+    const visible = useMemo(() => products.slice(0, visibleCount), [products, visibleCount]);
+
 
     return (
         <>
@@ -79,7 +91,7 @@ export default function Products({ initialProducts = [] }: Props) {
                 ))}
             </div>
 
-            {filteredProducts.length > visibleCount && (
+            {products.length > visibleCount && (
                 <Link href="/products" scroll={true}>
                     <MoreButton>Daha çox</MoreButton>
                 </Link>
