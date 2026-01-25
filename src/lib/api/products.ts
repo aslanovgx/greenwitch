@@ -56,7 +56,7 @@ function buildQuery(p: ProductFilter = {}) {
   if (p.size) qp.set("size", String(p.size));
   // if (p.sort) qp.set("sort", p.sort);
   if (p.sort) qp.set("sort", p.sort);
-  if (p.search && p.search.trim()) qp.set("q", p.search.trim()); // backend uyğunlaşsa dəyişərik
+  if (p.search && p.search.trim()) qp.set("Search", p.search.trim());
 
   if (typeof p.bestSeller === "boolean") qp.set("BestSeller", String(p.bestSeller));
   if (typeof p.isNew === "boolean") qp.set("IsNew", String(p.isNew));

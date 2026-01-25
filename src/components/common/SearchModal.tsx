@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { X } from "lucide-react";
 
-type SearchResult = {
+export type SearchResult = {
   id: number;
   brandName: string;
   name: string;

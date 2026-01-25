@@ -23,9 +23,14 @@ import { PiMapPinAreaLight } from "react-icons/pi";
 import { PiWatchLight } from "react-icons/pi";
 
 // FE search util
-import { feSearchAll, rawToCard, type FeSearchResult } from "@/lib/utils/searchService";
+// import { feSearchAll, rawToCard, type FeSearchResult } from "@/lib/utils/searchService";
 
+import { getProducts } from "@/lib/api/products";
+import type { Product as ApiProduct } from "@/types/Product";
 
+import type { SearchResult } from "@/components/common/SearchModal";
+
+import { buildImageUrl } from "@/utils/images";
 
 export default function Navbar() {
   const [fixed, setFixed] = useState(false);
@@ -39,7 +44,7 @@ export default function Navbar() {
   // Daha çevik UX üçün 350ms
   const debouncedSearchTerm = useDebounce(searchTerm, 350);
 
-  const [filteredResults, setFilteredResults] = useState<FeSearchResult[]>([]);
+  const [filteredResults, setFilteredResults] = useState<SearchResult[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // YENİ:
@@ -102,7 +107,6 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // ——— Yeganə axtarış effekti (FE aggregate + cache)
   useEffect(() => {
     const q = debouncedSearchTerm.trim();
 
@@ -118,19 +122,37 @@ export default function Navbar() {
 
     (async () => {
       try {
-        const raw = await feSearchAll(q, {}, { maxPages: 6, maxResults: 400, pageSizeHint: 20 });
-        const results = raw.slice(0, 20).map(rawToCard);
+        const list = await getProducts({
+          search: q,
+          status: true,
+          page: 1,
+          size: 20,
+        });
+
         if (!mounted) return;
+
+        const results: SearchResult[] = list.slice(0, 20).map((p) => ({
+          id: Number(p.id),
+          brandName: String(p.brandName ?? ""),
+          name: String(p.name ?? ""),
+          description: String(p.description ?? ""),
+          price: p.price ?? 0,
+          discountPrice: p.discountPrice ?? null,
+          image:
+            Array.isArray(p.images) && p.images[0]
+              ? buildImageUrl(p.images[0])
+              : null,
+        }));
 
         setFilteredResults(results);
 
-        // setIsModalOpen(true);
-        setIsModalOpen(results.length > 0);
+        // modal açıq qalsın (tapılmadı mesajı da görünsün)
+        setIsModalOpen(true);
       } catch (e) {
-        console.error("Search FE error:", e);
+        console.error("Search API error:", e);
         if (!mounted) return;
         setFilteredResults([]);
-        setIsModalOpen(false);
+        setIsModalOpen(true); // yenə açıq qalsın, "tapılmadı" göstərsin
       } finally {
         if (mounted) setLoading(false);
       }
@@ -154,7 +176,7 @@ export default function Navbar() {
     if (filteredResults.length > 0) setIsModalOpen(true);
   };
 
-  
+
 
   return (
     <nav className="w-full bg-white">
