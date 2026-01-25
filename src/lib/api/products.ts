@@ -37,6 +37,7 @@ export type ProductFilter = {
   size?: number;
   search?: string;
   // sort?: "price_asc" | "price_desc";
+  sort?: "price_asc" | "price_desc";
   status?: boolean;
 
   bestSeller?: boolean;
@@ -54,13 +55,14 @@ function buildQuery(p: ProductFilter = {}) {
   if (p.page) qp.set("page", String(p.page));
   if (p.size) qp.set("size", String(p.size));
   // if (p.sort) qp.set("sort", p.sort);
+  if (p.sort) qp.set("sort", p.sort);
   if (p.search && p.search.trim()) qp.set("q", p.search.trim()); // backend uyğunlaşsa dəyişərik
 
   if (typeof p.bestSeller === "boolean") qp.set("BestSeller", String(p.bestSeller));
   if (typeof p.isNew === "boolean") qp.set("IsNew", String(p.isNew));
   if (typeof p.hasDiscount === "boolean") qp.set("HasDiscount", String(p.hasDiscount));
 
-   if (typeof p.status === "boolean") {
+  if (typeof p.status === "boolean") {
     qp.set("status", String(p.status));
   } else {
     qp.set("status", "true");
@@ -119,7 +121,7 @@ export type ProductDetail = {
 
 export async function getProductById(id: number): Promise<ProductDetail> {
   const data = await apiGet(`/Product/${id}`);
-   const p = (data?.product ?? data) as Partial<ProductDetail> & Record<string, unknown>;
+  const p = (data?.product ?? data) as Partial<ProductDetail> & Record<string, unknown>;
 
   // relative -> absolute şəkil
   const API = (process.env.API_SAAT_BASE_URL ?? "").trim();

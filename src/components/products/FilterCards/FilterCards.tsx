@@ -58,54 +58,6 @@ export default function FilterCards() {
   const totalOf = (r: ListResponse<RawProduct> | { items: RawProduct[] }) =>
     "total" in r && typeof r.total === "number" ? r.total : undefined;
 
-  // add: optional filterFn
-  const fetchWindow = async (
-    baseParams: Record<string, unknown>,
-    offset: number,
-    need: number,
-    filterFn?: (r: RawProduct) => boolean
-  ): Promise<RawProduct[]> => {
-    // server page ölçüsünü öyrən
-    const probe = await getProducts({ ...baseParams, page: 1, status: true });
-    const pr0 = parseProductsResponse(probe);
-    const serverPageSize =
-      "size" in pr0 && typeof pr0.size === "number" && pr0.size > 0
-        ? pr0.size
-        : SERVER_PAGE_SIZE;
-
-    let serverPage = Math.floor(offset / serverPageSize) + 1;
-    let startInPage = offset % serverPageSize;
-
-    const out: RawProduct[] = [];
-    const MAX_SERVER_PAGES = 500;
-
-    while (out.length < need && serverPage <= MAX_SERVER_PAGES) {
-      const resp = await getProducts({ ...baseParams, page: serverPage, status: true });
-      const pr = parseProductsResponse(resp);
-      const items = pr.items ?? [];
-      if (items.length === 0) break;
-
-      // offset-dən sonrakı hissəni götür + lazım gəlsə filterlə
-      const slice = items.slice(startInPage);
-      const chunk = filterFn ? slice.filter(filterFn) : slice;
-      out.push(...chunk);
-
-      startInPage = 0;
-
-      const pageSize =
-        "size" in pr && typeof pr.size === "number" && pr.size > 0 ? pr.size : serverPageSize;
-      if (items.length < pageSize) break;
-
-      serverPage++;
-    }
-
-    return out.slice(0, need);
-  };
-
-
-
-  const [activeCardId, setActiveCardId] = useState<number | null>(null);
-
 
   const sp = useSearchParams();
   const router = useRouter();
@@ -122,49 +74,21 @@ export default function FilterCards() {
   const s = sp.get("sort");
   const sortCode: SortCode | undefined = isValidSort(s) ? (s as SortCode) : undefined;
 
-  // FILTER (kateqoriya) vs ORDER (qiymət sırası)
-  const isFilterCode = (c?: SortCode): c is "new" | "discount" | "best" =>
-    c === "new" || c === "discount" || c === "best";
-  const isOrderCode = (c?: SortCode): c is "price_asc" | "price_desc" =>
-    c === "price_asc" || c === "price_desc";
+  const mapSortToServerParams = (c?: SortCode): Record<string, unknown> => {
+  if (!c) return {};
 
-  // FE sort kodunu backend-in gözlədiyi string-ə çevirir
-  const mapSortToServer = (c?: SortCode): string | undefined => {
-    if (c === "price_asc") return "price_asc";
-    if (c === "price_desc") return "price_desc";
-    return undefined;
-  };
+  if (c === "price_asc" || c === "price_desc") {
+    return { sort: c }; // products.ts bunu "sort" query-yə çevirir
+  }
 
-  const filterCategory: "all" | "new" | "discount" | "best" =
-    isFilterCode(sortCode) ? sortCode : "all";
-  const orderCode: "price_asc" | "price_desc" | undefined =
-    isOrderCode(sortCode) ? sortCode : undefined;
+  if (c === "discount") return { hasDiscount: true };
+  if (c === "new") return { isNew: true };
+  if (c === "best") return { bestSeller: true };
 
-  // FE predicate (server filtr etmir deyə)
-  const hasDiscount = (p: UIProduct) =>
-    typeof p.discountPrice === "number" && p.discountPrice < p.price;
+  return {};
+};
 
-  const predicate = (p: UIProduct) => {
-    switch (filterCategory) {
-      case "new": return p.isNew === true;
-      case "discount": return hasDiscount(p);
-      case "best": return p.bestSeller === true;
-      default: return true;
-    }
-  };
 
-  // Qiyməti (endirim nəzərə alınaraq) hesabla
-  const priceOf = (p: UIProduct) =>
-    typeof p.discountPrice === "number" && p.discountPrice < p.price
-      ? p.discountPrice
-      : p.price;
-
-  // FE sort
-  const sortClient = (arr: UIProduct[]) => {
-    if (!orderCode) return arr;
-    const sign = orderCode === "price_asc" ? 1 : -1;
-    return [...arr].sort((a, b) => (priceOf(a) - priceOf(b)) * sign);
-  };
 
   // page (1-based)
   const page = toPageOr1(sp.get("page"));
@@ -249,93 +173,40 @@ export default function FilterCards() {
 
 
         // —— SERVER PAGINATION: yalnız ALL (istənilən sort-u server edəcək) ——
-        if (filterCategory === "all") {
-          const sort = mapSortToServer(sortCode);
 
-          const resp = await getProducts({
-            ...baseParams,
-            page,
-            size: UI_PAGE_SIZE,
-            status: true,
-            ...(sort ? { sort } : {}),
-          });
 
-          const parsed = parseProductsResponse(resp);
-          const adapted = adapt(parsed.items ?? []);
+        const extraParams = mapSortToServerParams(sortCode);
 
-          const metaTotal = totalOf(parsed);
-          const metaSize = pageSizeOf(parsed);
+        const resp = await getProducts({
+          ...baseParams,
+          ...extraParams,
+          page,
+          size: UI_PAGE_SIZE,
+          status: true,
+        });
 
-          if (!aborted) {
-            setItems(adapted);
+        const parsed = parseProductsResponse(resp);
+        const adapted = adapt(parsed.items ?? []);
 
-            if (metaTotal != null && metaSize && metaSize > 0) {
-              const tp = Math.max(1, Math.ceil(metaTotal / metaSize));
-              setTotalPages(tp);
-              setHasMore(page < tp);
-            } else {
-              // Ehtiyat: backend total/size qaytarmalıdır; yenə də fallback qoyuruq
-              setTotalPages(null);
-              setHasMore(adapted.length === UI_PAGE_SIZE);
-            }
+        const metaTotal = totalOf(parsed);
+        const metaSize = pageSizeOf(parsed);
 
-            if (adapted.length === 0 && page > 1) {
-              setQuery("page", page - 1);
-              return;
-            }
-          }
+        setItems(adapted);
+
+        if (metaTotal != null && metaSize && metaSize > 0) {
+          const tp = Math.max(1, Math.ceil(metaTotal / metaSize));
+          setTotalPages(tp);
+          setHasMore(page < tp);
+        } else {
+          setTotalPages(null);
+          setHasMore(adapted.length === UI_PAGE_SIZE);
+        }
+
+        if (adapted.length === 0 && page > 1) {
+          setQuery("page", page - 1);
           return;
         }
 
-
-
-
-
-        // ─────────── VIRTUAL ───────────
-        const bag: UIProduct[] = [];
-        let serverPage = 1;
-        const MAX_SERVER_PAGES = 500; // təhlükəsizlik limiti
-
-
-
-        // B) YALNIZ filter=new/discount/best → cari + növbəti UI səhifə qədər yığ
-        const needCount = UI_PAGE_SIZE * page;
-        const capExtra = UI_PAGE_SIZE;
-        const maxToCollect = needCount + capExtra;
-
-        while (!aborted && serverPage <= MAX_SERVER_PAGES) {
-          const resp = await getProducts({ ...baseParams, page: serverPage, size: UI_PAGE_SIZE, status: true });
-          const parsed = parseProductsResponse(resp);
-          const raw = parsed.items;
-          const adapted = adapt(raw);
-
-          // yalnız filter tətbiq olunur (price sort yoxdur)
-          const filtered = adapted.filter(predicate);
-          bag.push(...filtered);
-
-          const reachedEnd = adapted.length < SERVER_PAGE_SIZE;
-          const enoughNow = bag.length >= maxToCollect;
-          if (reachedEnd || enoughNow) break;
-
-          serverPage++;
-        }
-
-        // UI slice (filter-only)
-        const start = (page - 1) * UI_PAGE_SIZE;
-        const end = start + UI_PAGE_SIZE;
-        const pageSlice = bag.slice(start, end);
-
-        const hasNextUi = bag.length > end;
-
-        if (!aborted) {
-          setItems(pageSlice);
-          setHasMore(hasNextUi);
-          setTotalPages(null);
-          if (pageSlice.length === 0 && page > 1) {
-            setQuery("page", page - 1);
-            return;
-          }
-        }
       } catch {
         if (page > 1) setQuery("page", page - 1);
         setError("Məhsulları yükləmək mümkün olmadı.");
@@ -349,12 +220,7 @@ export default function FilterCards() {
 
     return () => { aborted = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [brandId, genderId, shapeId, colorId, categoryId, sortCode, filterCategory, page]);
-
-  useEffect(() => {
-    setActiveCardId(null);
   }, [brandId, genderId, shapeId, colorId, categoryId, sortCode, page]);
-
 
   /* Handlers (CLICK → dərhal scroll 0) */
   const goToPage = (p: number) => {
@@ -426,13 +292,14 @@ export default function FilterCards() {
   if (!items.length) {
     return (
       <div className="py-10 text-center">
-        {filterCategory === "new"
+        {sortCode === "new"
           ? "Yeni məhsul tapılmadı."
-          : filterCategory === "discount"
+          : sortCode === "discount"
             ? "Endirimli məhsul tapılmadı."
-            : filterCategory === "best"
+            : sortCode === "best"
               ? "Çox satılan məhsul tapılmadı."
               : "Məhsul tapılmadı."}
+
       </div>
     );
   }
@@ -445,7 +312,6 @@ export default function FilterCards() {
         onTouchStart={(e) => {
           // kartın özünə/uşaqlarına toxunmadıqda aktivliyi söndür
           if (!(e.target as HTMLElement).closest("[data-card-id]")) {
-            setActiveCardId(null);
           }
         }}
       >
@@ -453,9 +319,11 @@ export default function FilterCards() {
           <ProductCard
             key={item.id}
             item={item}
-            activeCategory={filterCategory} // badge məntiqinə bağlıdır
-          // activeCardId={activeCardId}
-          // setActiveCardId={setActiveCardId}
+            activeCategory={
+              sortCode === "new" || sortCode === "discount" || sortCode === "best"
+                ? sortCode
+                : "all"
+            }
           />
         ))}
       </div>
