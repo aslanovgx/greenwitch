@@ -18,6 +18,7 @@ export type SearchResult = {
 type Props = {
   isOpen: boolean;
   onClose: () => void;
+  onClear?: () => void;
   results: SearchResult[];
   total?: number;
   limit?: number;
@@ -29,6 +30,7 @@ type Props = {
 export default function SearchModal({
   isOpen,
   onClose,
+  onClear,
   results,
   total,
   limit = 5,
@@ -160,12 +162,15 @@ export default function SearchModal({
         )}
         {/* CTA: hamısını gör */}
         {showMoreBtn && (
-  <div className="mt-4 pt-4 border-t flex justify-center">
-    <Link
-      // href={`/products?search=${encodeURIComponent(q)}`}
-      href={'/products'}
-      onClick={onClose}
-      className="
+          <div className="mt-4 pt-4 border-t flex justify-center">
+            <Link
+              // href={`/products?search=${encodeURIComponent(q)}`}
+              href={'/products'}
+              onClick={() => {
+                onClose();
+                onClear?.();
+              }}
+              className="
         inline-flex items-center justify-center
         h-9
         px-6
@@ -178,11 +183,11 @@ export default function SearchModal({
         transition-colors
         duration-200
       "
-    >
-      Daha çox →
-    </Link>
-  </div>
-)}
+            >
+              Daha çox →
+            </Link>
+          </div>
+        )}
 
 
 

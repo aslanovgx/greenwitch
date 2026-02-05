@@ -40,7 +40,7 @@ export default function Navbar() {
   const [wishlistOpen, setWishlistOpen] = useState(false);
   const [baglistOpen, setBaglistOpen] = useState(false);
 
-  const { searchTerm } = useSearch();
+  const { searchTerm, setSearchTerm } = useSearch();
   // Daha çevik UX üçün 350ms
   const debouncedSearchTerm = useDebounce(searchTerm, 350);
 
@@ -56,6 +56,13 @@ export default function Navbar() {
 
   const pathname = usePathname();
   const params = useSearchParams();
+
+  useEffect(() => {
+    if (!pathname.startsWith("/products")) {
+      setSearchTerm("");
+    }
+  }, [pathname, setSearchTerm]);
+
 
   const activeGenderId = Number(params.get("Gender") || 0);
   const activeCategoryId = Number(params.get("categoryId") || 0);
@@ -185,6 +192,7 @@ export default function Navbar() {
 
 
 
+
   return (
     <nav className="w-full bg-white">
       <div
@@ -289,6 +297,12 @@ export default function Navbar() {
       <SearchModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        onClear={() => {
+          setSearchTerm("");
+          setTouched(false);
+          setFilteredResults([]);
+          setSearchTotal(0);
+        }}
         results={filteredResults}
         total={searchTotal}
         limit={5}
