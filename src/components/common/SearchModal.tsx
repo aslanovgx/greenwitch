@@ -33,7 +33,7 @@ export default function SearchModal({
   onClear,
   results,
   total,
-  limit = 5,
+  limit = 20,
   query = "",
   touched = false,
   loading = false,
@@ -76,7 +76,7 @@ export default function SearchModal({
 
         <h2 className="text-lg font-semibold mb-4">
           Axtarış nəticələri
-          {!loading && q.length >= 2 ? ` (${totalSafe})` : ""}
+          {/* {!loading && q.length >= 2 ? ` (${totalSafe})` : ""} */}
         </h2>
 
         {/* İlk dəfə inputa klik ediləndə yönləndirici mesaj */}
@@ -161,7 +161,7 @@ export default function SearchModal({
           </ul>
         )}
         {/* CTA: hamısını gör */}
-        {showMoreBtn && (
+        {/* {showMoreBtn && (
           <div className="mt-4 pt-4 border-t flex justify-center">
             <Link
               // href={`/products?search=${encodeURIComponent(q)}`}
@@ -187,7 +187,7 @@ export default function SearchModal({
               Daha çox →
             </Link>
           </div>
-        )}
+        )} */}
 
 
 

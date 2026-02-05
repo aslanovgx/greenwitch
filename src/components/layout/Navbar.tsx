@@ -137,7 +137,7 @@ export default function Navbar() {
           search: q,
           status: true,
           page: 1,
-          size: 5,
+          size: 20,
         });
 
         if (!mounted) return;
@@ -305,7 +305,7 @@ export default function Navbar() {
         }}
         results={filteredResults}
         total={searchTotal}
-        limit={5}
+        limit={20}
         query={searchTerm}
         touched={touched}
         loading={loading}
