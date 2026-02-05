@@ -25,7 +25,7 @@ import { PiWatchLight } from "react-icons/pi";
 // FE search util
 // import { feSearchAll, rawToCard, type FeSearchResult } from "@/lib/utils/searchService";
 
-import { getProducts } from "@/lib/api/products";
+import { getProductsPaged } from "@/lib/api/products";
 import type { Product as ApiProduct } from "@/types/Product";
 
 import type { SearchResult } from "@/components/common/SearchModal";
@@ -66,6 +66,8 @@ export default function Navbar() {
     (activeCategoryId === 1 || (activeCategoryId === 0 && activeGenderId > 0));
 
   const isAccessoriesActive = isProducts && activeCategoryId === 2;
+
+  const [searchTotal, setSearchTotal] = useState(0);
 
   // ——— isActive: item obyektini qəbul edir
   const isActive = useCallback(
@@ -112,9 +114,11 @@ export default function Navbar() {
 
     if (q.length < 2) {
       setFilteredResults([]);
+      setSearchTotal(0);
       setIsModalOpen(false);
       setLoading(false);
       return;
+
     }
 
     let mounted = true;
@@ -122,16 +126,16 @@ export default function Navbar() {
 
     (async () => {
       try {
-        const list = await getProducts({
+        const res = await getProductsPaged({
           search: q,
           status: true,
           page: 1,
-          size: 20,
+          size: 5,
         });
 
         if (!mounted) return;
 
-        const results: SearchResult[] = list.slice(0, 20).map((p) => ({
+        const results: SearchResult[] = res.items.map((p) => ({
           id: Number(p.id),
           brandName: String(p.brandName ?? ""),
           name: String(p.name ?? ""),
@@ -145,14 +149,15 @@ export default function Navbar() {
         }));
 
         setFilteredResults(results);
-
-        // modal açıq qalsın (tapılmadı mesajı da görünsün)
+        setSearchTotal(res.total);
         setIsModalOpen(true);
       } catch (e) {
         console.error("Search API error:", e);
         if (!mounted) return;
         setFilteredResults([]);
-        setIsModalOpen(true); // yenə açıq qalsın, "tapılmadı" göstərsin
+        setSearchTotal(0);
+        setIsModalOpen(true);
+
       } finally {
         if (mounted) setLoading(false);
       }
@@ -173,7 +178,9 @@ export default function Navbar() {
 
   // ——— Mobil search ikonuna kliklə modalı aç
   const openSearchManually = () => {
-    if (filteredResults.length > 0) setIsModalOpen(true);
+    // if (filteredResults.length > 0) setIsModalOpen(true);
+    setTouched(true);
+    setIsModalOpen(true);
   };
 
 
@@ -283,6 +290,8 @@ export default function Navbar() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         results={filteredResults}
+        total={searchTotal}
+        limit={5}
         query={searchTerm}
         touched={touched}
         loading={loading}

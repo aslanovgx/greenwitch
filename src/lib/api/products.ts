@@ -164,3 +164,39 @@ export async function getProductById(id: number): Promise<ProductDetail> {
     status: p.status === undefined ? true : Boolean(p.status),
   };
 }
+
+export type PagedResponse<T> = {
+  items: T[];
+  total: number;
+};
+
+export async function getProductsPaged(
+  params: ProductFilter = {}
+): Promise<PagedResponse<Product>> {
+  const path = `/Product${buildQuery(params)}`;
+  const raw = await apiGet(path);
+
+  // API müxtəlif formatlarda gələ bilər: array / {products: []} / {items: []} və s.
+  const list: RawProduct[] = Array.isArray(raw)
+    ? raw
+    : Array.isArray(raw?.products)
+      ? raw.products
+      : Array.isArray(raw?.items)
+        ? raw.items
+        : Array.isArray(raw?.data)
+          ? raw.data
+          : [];
+
+  // total adları da fərqli ola bilər: total / Total / count və s.
+  const totalRaw =
+    raw?.total ?? raw?.Total ?? raw?.count ?? raw?.Count ?? raw?.totalCount ?? raw?.TotalCount;
+
+  const items = list
+    .filter((p) => p?.status !== false)
+    .map(normalizeProduct);
+
+  const total =
+    Number.isFinite(Number(totalRaw)) ? Number(totalRaw) : items.length;
+
+  return { items, total };
+}

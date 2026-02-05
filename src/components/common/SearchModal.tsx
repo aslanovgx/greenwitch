@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { X } from "lucide-react";
+import MoreButton from "@/components/ui/MoreButton";
 
 export type SearchResult = {
   id: number;
@@ -18,6 +19,8 @@ type Props = {
   isOpen: boolean;
   onClose: () => void;
   results: SearchResult[];
+  total?: number;
+  limit?: number;
   query?: string;
   touched?: boolean;
   loading?: boolean;
@@ -27,6 +30,8 @@ export default function SearchModal({
   isOpen,
   onClose,
   results,
+  total,
+  limit = 5,
   query = "",
   touched = false,
   loading = false,
@@ -48,8 +53,14 @@ export default function SearchModal({
     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg==";
 
   const q = query.trim();
-  const showEmpty = (q.length >= 2 || touched) && !loading && results.length === 0;
+
+  const shownResults = results.slice(0, limit);
+
+  const totalSafe = typeof total === "number" ? total : results.length;
+  const showEmpty = (q.length >= 2 || touched) && !loading && totalSafe === 0;
   const showInitial = !loading && !touched && q.length === 0;
+
+  const showMoreBtn = !loading && q.length >= 2 && totalSafe > shownResults.length;
 
   return (
     <div className="fixed inset-0 bg-black/30 z-50 flex justify-center items-center">
@@ -63,7 +74,7 @@ export default function SearchModal({
 
         <h2 className="text-lg font-semibold mb-4">
           Axtarış nəticələri
-          {!loading && results.length > 0 ? ` (${results.length})` : ""}
+          {!loading && q.length >= 2 ? ` (${totalSafe})` : ""}
         </h2>
 
         {/* İlk dəfə inputa klik ediləndə yönləndirici mesaj */}
@@ -77,9 +88,9 @@ export default function SearchModal({
         {loading && <p className="text-sm text-gray-600">Axtarılır…</p>}
 
         {/* Nəticələr */}
-        {!loading && results.length > 0 && (
+        {!loading && shownResults.length > 0 && (
           <ul className="space-y-3">
-            {results.map((r) => {
+            {shownResults.map((r) => {
               const basePrice = Number(r.price ?? 0);
               const dp =
                 r.discountPrice == null
@@ -148,17 +159,32 @@ export default function SearchModal({
           </ul>
         )}
         {/* CTA: hamısını gör */}
-        {/* {!loading && results.length > 0 && q.length >= 2 && (
-          <div className="mt-4 pt-4 border-t">
-            <Link
-              href={`/products?search=${encodeURIComponent(q)}`}
-              onClick={onClose}
-              className="block w-full text-center text-sm font-semibold text-gray-900 hover:underline"
-            >
-              Hamısını gör
-            </Link>
-          </div>
-        )} */}
+        {showMoreBtn && (
+  <div className="mt-4 pt-4 border-t flex justify-center">
+    <Link
+      // href={`/products?search=${encodeURIComponent(q)}`}
+      href={'/products'}
+      onClick={onClose}
+      className="
+        inline-flex items-center justify-center
+        h-9
+        px-6
+        rounded-lg
+       border border-black
+        bg-black text-white
+        text-md font-semibold
+        hover:bg-white hover:text-black
+        hover:scale-[1.02]
+        transition-colors
+        duration-200
+      "
+    >
+      Daha çox →
+    </Link>
+  </div>
+)}
+
+
 
         {/* Tapılmadı */}
         {showEmpty && (
