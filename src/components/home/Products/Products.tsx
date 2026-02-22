@@ -8,6 +8,7 @@ import ProductCard from "@/components/common/ProductCard";
 import MoreButton from "@/components/ui/MoreButton";
 import Link from "next/link";
 import { buildImageUrl } from "@/utils/images";
+import type { UrlObject } from "url";
 
 type Props = {
   initialAll?: RawProduct[];
@@ -60,6 +61,11 @@ export default function Products({
 
   const products = useMemo(() => selectedRaw.map(adapt), [selectedRaw, adapt]);
 
+  const moreHref = useMemo<UrlObject>(() => {
+  if (activeCategory === "new") return { pathname: "/products", query: { sort: "new" } };
+  if (activeCategory === "discount") return { pathname: "/products", query: { sort: "discount" } };
+  return { pathname: "/products" };
+}, [activeCategory]);
 
   const visible = useMemo(() => products.slice(0, visibleCount), [products, visibleCount]);
 
@@ -96,7 +102,7 @@ export default function Products({
                     <MoreButton>Daha çox</MoreButton>
                 </Link>
             )} */}
-      <Link href="/products" scroll>
+      <Link href={moreHref} scroll>
         <MoreButton>Daha çox</MoreButton>
       </Link>
 
