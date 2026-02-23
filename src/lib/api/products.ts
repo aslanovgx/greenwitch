@@ -117,6 +117,7 @@ export type ProductDetail = {
   siferblatMaterialName?: string;   // Safir (dial materialı)
 
   status?: boolean;
+  categoryId?: number;
 };
 
 export async function getProductById(id: number): Promise<ProductDetail> {
@@ -150,6 +151,9 @@ export async function getProductById(id: number): Promise<ProductDetail> {
     genderName: p.genderName,
     shapeName: p.shapeName,
     categoryName: p.categoryName,
+
+    categoryId: p.categoryId ? Number(p.categoryId) : undefined,
+
     thumbnails: thumbs,
     colorNames: Array.isArray(p.colorNames) ? p.colorNames : undefined,
 

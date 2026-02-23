@@ -172,6 +172,9 @@ export default function ProductsDetail({ product }: Props) {
   const hasDiscount = typeof dp === "number" && dp < basePrice;
   const discountPct = hasDiscount ? Math.round(((basePrice - (dp as number)) / basePrice) * 100) : 0;
 
+  // const isWatch = product.categoryId === 1;
+  // const isAccessory = product.categoryId === 2;
+
   return (
     <div className={styles.products_detail}>
       <div className={styles.leftSide}>
@@ -380,7 +383,15 @@ export default function ProductsDetail({ product }: Props) {
             </p>
           ))}
 
-        <p className={`${styles.desc} ${styles.descInfo}`}>100% Original / 2 il Zəmanətli</p>
+        {/* <p className={`${styles.desc} ${styles.descInfo}`}>100% Original / 2 il Zəmanətli</p> */}
+
+        <p className={`${styles.desc} ${styles.descInfo}`}>
+          {product.categoryId === 1
+            ? "100% Original / 2 il Zəmanətli"
+            : product.categoryId === 2
+              ? "100% Original"
+              : ""}
+        </p>
 
         <div className={styles.buyRow}>
           <input
