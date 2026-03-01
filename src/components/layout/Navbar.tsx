@@ -21,6 +21,7 @@ import { FaInstagram } from "react-icons/fa";
 import { BsTelephone } from "react-icons/bs";
 import { PiMapPinAreaLight } from "react-icons/pi";
 import { PiWatchLight } from "react-icons/pi";
+import { FaWhatsapp } from "react-icons/fa";
 
 // FE search util
 // import { feSearchAll, rawToCard, type FeSearchResult } from "@/lib/utils/searchService";
@@ -211,8 +212,13 @@ export default function Navbar() {
 
         <TextSwitcher texts={textSwitcherTexts} onIndexChange={setCurrentTextIndex} />
 
-        <a href="tel:+994502338811" className="fixedNumber">
-          <BsTelephone /> +994 50 233 88 11
+        <a
+          href="https://wa.me/994502338811"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="fixedNumber"
+        >
+          <FaWhatsapp /> +994 50 233 88 11
         </a>
         <a href="https://instagram.com/greenwich.aze" target="_blank" rel="noopener noreferrer" className="fixedSocialMedia">
           <FaInstagram /> greenwich.aze
@@ -221,9 +227,14 @@ export default function Navbar() {
 
       {/* Mobile-only top strip */}
       <div className="row-1-mobile">
-        <a href="tel:+994502338811" className="fixedNumber">
-          <BsTelephone /> +994 50 233 88 11
-        </a>
+        <a
+          href="https://wa.me/994502338811"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="fixedNumber"
+        >
+          <FaWhatsapp /> +994 50 233 88 11
+        </a>dl
         <a href="https://instagram.com/greenwich.aze" target="_blank" rel="noopener noreferrer" className="fixedSocialMedia">
           <FaInstagram /> greenwich.aze
         </a>
