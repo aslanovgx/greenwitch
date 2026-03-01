@@ -100,7 +100,7 @@ export default function PurchaseContent() {
             <div className={`${styles.transportPart} mb-4`}>
               <span>
                 Standart Çatdırılma:
-                <span>5-6 İş Günü Ərzində</span>
+                <span>1 İş Günü Ərzində</span>
               </span>
               <span>Pulsuz</span>
             </div>
@@ -210,7 +210,7 @@ export default function PurchaseContent() {
           <div className={`${styles.transportPart} mb-4`}>
             <span>
               Standart Çatdırılma:
-              <span>5-6 İş Günü Ərzində</span>
+              <span>1 İş Günü Ərzində</span>
             </span>
             <span>Pulsuz</span>
           </div>
