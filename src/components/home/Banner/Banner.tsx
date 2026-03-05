@@ -46,7 +46,7 @@ export default function Banner({ initialSections = [] }: { initialSections?: Inf
         {curr.images.map((img, idx) => (
           <div key={`${img.src}-${idx}`} className={`relative ${styles[`banner_${idx + 1}`]}`}>
             {img.url ? (
-              <a href={img.url} target="_blank" rel="noopener noreferrer">
+              <a href={img.url} rel="noopener noreferrer">
                 <FadeImage
                   current={{ src: curr.images[idx].src, title: curr.images[idx].alt }}
                   previous={{ src: prev.images[idx].src, title: prev.images[idx].alt }}

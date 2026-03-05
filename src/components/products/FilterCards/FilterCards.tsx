@@ -330,12 +330,12 @@ export default function FilterCards() {
 
       {/* Pagination */}
       <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
-        <button className="px-3 py-2 border rounded-md disabled:opacity-50" onClick={onClickFirst} disabled={page <= 1} aria-label="Birinci">
-          <ChevronsLeft className="w-4 h-4" />
+        <button className="px-3 text-[18px] py-2  rounded-md disabled:opacity-50" onClick={onClickFirst} disabled={page <= 1} aria-label="Birinci">
+          <ChevronsLeft className="w-6 h-6" />
         </button>
 
-        <button className="px-3 py-2 border rounded-md disabled:opacity-50" onClick={onClickPrev} disabled={page <= 1} aria-label="Əvvəlki">
-          <ChevronLeft className="w-4 h-4" />
+        <button className="px-3 py-2 text-[18px]  rounded-md disabled:opacity-50" onClick={onClickPrev} disabled={page <= 1} aria-label="Əvvəlki">
+          <ChevronLeft className="w-6 h-6" />
         </button>
 
         {totalPages && showLeftEllipsis && <span className="px-2 select-none">…</span>}
@@ -344,7 +344,7 @@ export default function FilterCards() {
           <button
             key={p}
             onClick={() => goToPage(p)}
-            className={`px-3 py-2 border rounded-md ${p === page ? "bg-black text-white" : ""}`}
+            className={`px-3 py-2 text-[25px]  rounded-md ${p === page ? " text-[#4d33de]" : ""}`}
             aria-current={p === page ? "page" : undefined}
           >
             {p}
@@ -354,22 +354,22 @@ export default function FilterCards() {
         {showRightEllipsis && <span className="px-2 select-none">…</span>}
 
         <button
-          className="px-3 py-2 border rounded-md disabled:opacity-50"
+          className="px-3 py-2  rounded-md disabled:opacity-50"
           onClick={onClickNext}
           disabled={totalPages != null ? page >= totalPages : !hasMore}
           aria-label="Sonraki"
         >
-          <ChevronRight className="w-4 h-4" />
+          <ChevronRight className="w-6 h-6" />
         </button>
 
         <button
-          className="px-3 py-2 border rounded-md disabled:opacity-50"
+          className="px-3 py-2 rounded-md disabled:opacity-50"
           onClick={onClickLast}
           disabled={!(totalPages && page < totalPages)}
           aria-label="Son"
           title="Son"
         >
-          <ChevronsRight className="w-4 h-4" />
+          <ChevronsRight className="w-6 h-6" />
         </button>
       </div>
     </div>

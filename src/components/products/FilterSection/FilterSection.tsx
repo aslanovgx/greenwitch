@@ -32,6 +32,8 @@ export default function FilterSection() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
+  const [brandsLoading, setBrandsLoading] = useState(false);
+
   // UI-də görünən seçilmiş label-lar
   const [selectedFilters, setSelectedFilters] = useState<{
     cins?: string;
@@ -65,18 +67,18 @@ export default function FilterSection() {
         setShapes(s ?? []);
         setColors(c ?? []);
 
-        const brandId   = Number(searchParams.get("brandId") || 0);
-        const genderId  = Number(searchParams.get("Gender") || 0);   // <— Gender (int)
-        const colorId   = Number(searchParams.get("colorId") || 0);
-        const shapeId   = Number(searchParams.get("shapeId") || 0);
-        const sortCode  = searchParams.get("sort") || "";
+        const brandId = Number(searchParams.get("brandId") || 0);
+        const genderId = Number(searchParams.get("Gender") || 0);   // <— Gender (int)
+        const colorId = Number(searchParams.get("colorId") || 0);
+        const shapeId = Number(searchParams.get("shapeId") || 0);
+        const sortCode = searchParams.get("sort") || "";
 
         setSelectedFilters({
           brendler: (b ?? []).find(x => x.id === brandId)?.name,
-          cins:     GENDER_STATIC.find(x => x.id === genderId)?.name,   // <— id -> name
-          reng:     (c ?? []).find(x => x.id === colorId)?.name,
-          forma:    (s ?? []).find(x => x.id === shapeId)?.name,
-          sirala:   isValidSort(sortCode) ? SORT_CODE_TO_LABEL[sortCode] : undefined,
+          cins: GENDER_STATIC.find(x => x.id === genderId)?.name,   // <— id -> name
+          reng: (c ?? []).find(x => x.id === colorId)?.name,
+          forma: (s ?? []).find(x => x.id === shapeId)?.name,
+          sirala: isValidSort(sortCode) ? SORT_CODE_TO_LABEL[sortCode] : undefined,
         });
       } catch (e) {
         console.error("FilterSection fetch error:", e);
@@ -88,10 +90,30 @@ export default function FilterSection() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+  (async () => {
+    try {
+      const gender = Number(searchParams.get("Gender") || 0);
+      const categoryId = Number(searchParams.get("categoryId") || 0);
+
+      // ✅ heç biri yoxdursa: hamısını çək
+      const b = await getBrands(
+        gender || categoryId
+          ? { Gender: gender || undefined, categoryId: categoryId || undefined, status: true }
+          : {} // filtersiz
+      );
+
+      setBrands(b ?? []);
+    } catch (e) {
+      console.error("Brand refetch error:", e);
+    }
+  })();
+}, [searchParams.get("Gender"), searchParams.get("categoryId")]);
+
   /* Options (memo) */
-  const brandOptions  = useMemo(() => brands.map(b => b.name), [brands]);
-  const shapeOptions  = useMemo(() => shapes.map(s => s.name), [shapes]);
-  const colorOptions  = useMemo(() => colors.map(c => c.name), [colors]);
+  const brandOptions = useMemo(() => brands.map(b => b.name), [brands]);
+  const shapeOptions = useMemo(() => shapes.map(s => s.name), [shapes]);
+  const colorOptions = useMemo(() => colors.map(c => c.name), [colors]);
   const genderOptions = useMemo(() => GENDER_STATIC.map(g => g.name), []); // <— string[]
 
   /* URL yazıcı util */
@@ -107,9 +129,18 @@ export default function FilterSection() {
   /* Seçim handler-ları */
   const onSelectGender = (label?: string) => {
     const id = GENDER_STATIC.find(x => x.name === label)?.id;
-    setSelectedFilters(prev => ({ ...prev, cins: label }));
+
+    setSelectedFilters(prev => ({ ...prev, cins: label, brendler: undefined }));
     setOpenFilter(null);
-    writeQuery("Gender", id ? String(id) : undefined);   // <— Gender=int
+
+    const sp = new URLSearchParams(searchParams.toString());
+    sp.delete("page");
+    sp.delete("brandId"); // ✅ brand reset
+    if (id) sp.set("Gender", String(id));
+    else sp.delete("Gender");
+
+    const qs = sp.toString();
+    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
   };
   const onSelectBrand = (label?: string) => {
     const id = brands.find(x => x.name === label)?.id;
@@ -140,19 +171,19 @@ export default function FilterSection() {
   useEffect(() => {
     if (!brands.length && !shapes.length && !colors.length) return;
 
-    const brandId   = Number(searchParams.get("brandId") || 0);
-    const genderId  = Number(searchParams.get("Gender") || 0);  // <— Gender (int)
-    const colorId   = Number(searchParams.get("colorId") || 0);
-    const shapeId   = Number(searchParams.get("shapeId") || 0);
-    const sortCode  = searchParams.get("sort") || "";
+    const brandId = Number(searchParams.get("brandId") || 0);
+    const genderId = Number(searchParams.get("Gender") || 0);  // <— Gender (int)
+    const colorId = Number(searchParams.get("colorId") || 0);
+    const shapeId = Number(searchParams.get("shapeId") || 0);
+    const sortCode = searchParams.get("sort") || "";
 
     setSelectedFilters(prev => ({
       ...prev,
       brendler: brands.find(x => x.id === brandId)?.name,
-      cins:     GENDER_STATIC.find(x => x.id === genderId)?.name, // <— id -> name
-      reng:     colors.find(x => x.id === colorId)?.name,
-      forma:    shapes.find(x => x.id === shapeId)?.name,
-      sirala:   isValidSort(sortCode) ? SORT_CODE_TO_LABEL[sortCode] : undefined,
+      cins: GENDER_STATIC.find(x => x.id === genderId)?.name, // <— id -> name
+      reng: colors.find(x => x.id === colorId)?.name,
+      forma: shapes.find(x => x.id === shapeId)?.name,
+      sirala: isValidSort(sortCode) ? SORT_CODE_TO_LABEL[sortCode] : undefined,
     }));
   }, [searchParams, brands, shapes, colors]);
 
@@ -173,7 +204,7 @@ export default function FilterSection() {
 
         <FilterItem
           title="Brendlər"
-          options={loading ? [] : brandOptions}
+          options={loading || brandsLoading ? [] : brandOptions}
           selected={selectedFilters.brendler}
           onSelect={onSelectBrand}
           onClear={() => onSelectBrand(undefined)}
