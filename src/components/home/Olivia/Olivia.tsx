@@ -109,7 +109,6 @@ export default function Products() {
   return (
     <div className={`${styles.oliviaGroup} flex items-center`}>
       <div className={`${styles.oliviaLeft} relative`}>
-        {/* Tövsiyə: bunu da .webp et */}
         <Image
           src={"/assets/home/olivia/olivia-background.webp"}
           alt="olivia-background"
@@ -120,7 +119,6 @@ export default function Products() {
           priority
         />
 
-        {/* WATCHES (hamısı DOM-da qalır) */}
         <div className={styles.oliviaWatches}>
           {watches.map((watch) => {
             const active = activeIds.has(watch.brandId);
@@ -148,7 +146,6 @@ export default function Products() {
           })}
         </div>
 
-        {/* DESCS (hamısı DOM-da qalır) */}
         <div className={styles.oliviaWatchesDesc}>
           {watches.map((watch) => {
             const active = activeIds.has(watch.brandId);
@@ -164,7 +161,7 @@ export default function Products() {
                 }}
               >
                 <p>{watch.name}</p>
-                <Link href={`/products?brandId=${watch.brandId}`}>
+                <Link href={`/products?categoryId=1&brandId=${watch.brandId}`}>
                   <span className="cursor-pointer">
                     <EyeIcon />
                   </span>
@@ -186,7 +183,6 @@ export default function Products() {
         </div>
 
         <div className={`${styles.handImage} relative`}>
-          {/* Tövsiyə: bunu da .webp et */}
           <Image
             src={"/assets/home/olivia/hand.webp"}
             alt="hand"
