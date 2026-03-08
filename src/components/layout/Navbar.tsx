@@ -234,7 +234,7 @@ export default function Navbar() {
           className="fixedNumber"
         >
           <FaWhatsapp /> +994 50 233 88 11
-        </a>dl
+        </a>
         <a href="https://instagram.com/greenwich.aze" target="_blank" rel="noopener noreferrer" className="fixedSocialMedia">
           <FaInstagram /> greenwich.aze
         </a>
