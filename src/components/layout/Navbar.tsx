@@ -309,9 +309,9 @@ export default function Navbar() {
           <div className="relative flex justify-center items-center favorite-icon">
             <FavoritesButton onClick={() => setWishlistOpen(true)} />
           </div>
-          {/* <Link href="/location">
-            <PiMapPinAreaLight />
-          </Link> */}
+          <Link href="/location">
+            <PiMapPinAreaLight className="locationIcon"/>
+          </Link>
           <button
             type="button"
             onClick={openSearchManually}

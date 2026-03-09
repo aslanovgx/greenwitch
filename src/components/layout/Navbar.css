@@ -173,6 +173,10 @@
   display: none;
 }
 
+.mobileSearchIcon {
+  display: none;
+}
+
 @media (max-width: 1280px) {
   .row_3 ul li {
     font-size: 16px;
@@ -403,6 +407,13 @@
 
   /* ----- */
 
+  .mobileSearchIcon {
+    display: block;
+  }
+
+  .locationIcon {
+    display: none;
+  }
 
   .mobileNavbar {
     overflow: hidden;
