@@ -99,7 +99,7 @@ export default function MobileSearchOverlay({
         </div>
       </div>
 
-      <div className="h-[calc(100vh-77px)] overflow-y-auto px-4 pb-12 pt-4">
+      <div className="h-[calc(100vh-77px)] overflow-y-auto px-4 pb-15 pt-4">
         {showInitial && (
           <div className="space-y-6">
             <p className="text-[15px] leading-6 text-[#2B2B2B]">
