@@ -22,6 +22,9 @@ import { BsTelephone } from "react-icons/bs";
 import { PiMapPinAreaLight } from "react-icons/pi";
 import { PiWatchLight } from "react-icons/pi";
 import { FaWhatsapp } from "react-icons/fa";
+import { PiMagnifyingGlass } from "react-icons/pi";
+
+import MobileSearchOverlay from "@/components/common/MobileSearchOverlay";
 
 // FE search util
 // import { feSearchAll, rawToCard, type FeSearchResult } from "@/lib/utils/searchService";
@@ -77,6 +80,8 @@ export default function Navbar() {
 
   const [searchTotal, setSearchTotal] = useState(0);
 
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
+
   // ——— isActive: item obyektini qəbul edir
   const isActive = useCallback(
     (item: { label: string; href: string }) => {
@@ -117,6 +122,19 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+
+  const [isMobileView, setIsMobileView] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobileView(window.innerWidth <= 768);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   useEffect(() => {
     const q = debouncedSearchTerm.trim();
 
@@ -126,7 +144,6 @@ export default function Navbar() {
       setIsModalOpen(false);
       setLoading(false);
       return;
-
     }
 
     let mounted = true;
@@ -158,14 +175,20 @@ export default function Navbar() {
 
         setFilteredResults(results);
         setSearchTotal(res.total);
-        setIsModalOpen(true);
+
+        if (!isMobileView) {
+          setIsModalOpen(true);
+        }
       } catch (e) {
         console.error("Search API error:", e);
         if (!mounted) return;
+
         setFilteredResults([]);
         setSearchTotal(0);
-        setIsModalOpen(true);
 
+        if (!isMobileView) {
+          setIsModalOpen(true);
+        }
       } finally {
         if (mounted) setLoading(false);
       }
@@ -174,7 +197,7 @@ export default function Navbar() {
     return () => {
       mounted = false;
     };
-  }, [debouncedSearchTerm]);
+  }, [debouncedSearchTerm, isMobileView]);
 
   // ——— Mobil menyuda body scroll lock
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -186,11 +209,15 @@ export default function Navbar() {
 
   // ——— Mobil search ikonuna kliklə modalı aç
   const openSearchManually = () => {
-    // if (filteredResults.length > 0) setIsModalOpen(true);
-    setTouched(true);
-    setIsModalOpen(true);
+    setIsMobileSearchOpen(true);
   };
 
+  useEffect(() => {
+    if (isMobileSearchOpen) lockBodyScroll();
+    else unlockBodyScroll();
+
+    return () => unlockBodyScroll();
+  }, [isMobileSearchOpen]);
 
 
 
@@ -282,9 +309,16 @@ export default function Navbar() {
           <div className="relative flex justify-center items-center favorite-icon">
             <FavoritesButton onClick={() => setWishlistOpen(true)} />
           </div>
-          <Link href="/location">
+          {/* <Link href="/location">
             <PiMapPinAreaLight />
-          </Link>
+          </Link> */}
+          <button
+            type="button"
+            onClick={openSearchManually}
+            className="mobileSearchIcon"
+          >
+            <PiMagnifyingGlass />
+          </button>
         </div>
       </div>
 
@@ -305,22 +339,45 @@ export default function Navbar() {
       <BaglistDrawer isOpen={baglistOpen} onClose={() => setBaglistOpen(false)} />
 
       {/* Search Modal */}
-      <SearchModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onClear={() => {
+      {!isMobileView && (
+        <SearchModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onClear={() => {
+            setSearchTerm("");
+            setTouched(false);
+            setFilteredResults([]);
+            setSearchTotal(0);
+          }}
+          results={filteredResults}
+          total={searchTotal}
+          limit={20}
+          query={searchTerm}
+          touched={touched}
+          loading={loading}
+        />
+      )}
+
+      <MobileSearchOverlay
+        isOpen={isMobileSearchOpen}
+        onClose={() => {
+          setIsMobileSearchOpen(false);
           setSearchTerm("");
-          setTouched(false);
           setFilteredResults([]);
           setSearchTotal(0);
+          setTouched(false);
+        }}
+        query={searchTerm}
+        onQueryChange={(value) => {
+          setSearchTerm(value);
+          setTouched(true);
         }}
         results={filteredResults}
         total={searchTotal}
         limit={20}
-        query={searchTerm}
-        touched={touched}
         loading={loading}
       />
+
 
       {/* Mobile menu */}
       {isMenuOpen && (

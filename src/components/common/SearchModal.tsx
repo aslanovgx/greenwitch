@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { X } from "lucide-react";
-import MoreButton from "@/components/ui/MoreButton";
+// import MoreButton from "@/components/ui/MoreButton";
 
 export type SearchResult = {
   id: number;
