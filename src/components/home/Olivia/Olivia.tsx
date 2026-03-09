@@ -76,7 +76,7 @@ const watches = [
     height: 100,
     className: styles.dkny,
     descClass: styles.descDkny,
-    brandId: 2,
+    brandId: 14,
   },
   {
     name: "EMPORIO ARMANI",
