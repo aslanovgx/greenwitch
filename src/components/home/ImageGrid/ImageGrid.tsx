@@ -1,8 +1,11 @@
 "use client";
 
-import styles from './ImageGrid.module.css';
-import FadeImage from "@/components/FadeImage"; // path düzgün olmalıdır
+import { useState } from "react";
+import styles from "./ImageGrid.module.css";
+import FadeImage from "@/components/FadeImage";
 import useAutoSlide from "@/hooks/useAutoSlide";
+import type { VisualSection } from "@/lib/api/visualSections";
+import { buildImageUrl } from "@/utils/images";
 
 type ImageData = {
   src: string;
@@ -15,28 +18,49 @@ type ImageSet = {
   rightBottom: ImageData;
 };
 
-const imageSets: ImageSet[] = [
-  {
-    left: { src: "/assets/home/imageGrid/hilfiger.png", title: "hilfiger" },
-    rightTop: { src: "/assets/home/imageGrid/olivia-black.jpg", title: "olivia burton" },
-    rightBottom: { src: "/assets/home/imageGrid/olivia-pink.jpg", title: "olivia burton" },
-  },
-  {
-    left: { src: "/assets/home/imageGrid/frederique.jpg", title: "frederique Constant" },
-    rightTop: { src: "/assets/home/imageGrid/fossil.png", title: "fossil" },
-    rightBottom: { src: "/assets/home/imageGrid/swiss.png", title: "swiss-military" },
-  },
-];
+function sectionsToImageSets(sections: VisualSection[] = []): ImageSet[] {
+  return (sections ?? [])
+    .filter((section) => section.status)
+    .map((section) => {
+      const images = section.images ?? [];
 
-export default function ImageGrid() {
-  const { activeIndex, prevIndex } = useAutoSlide(imageSets.length);
+      if (images.length < 3) return null;
 
-  const curr = imageSets[activeIndex];
-  const prev = imageSets[prevIndex];
+      return {
+        left: {
+          src: buildImageUrl(images[0].imagePath),
+          title: `visual-section-${section.id}-left`,
+        },
+        rightTop: {
+          src: buildImageUrl(images[1].imagePath),
+          title: `visual-section-${section.id}-right-top`,
+        },
+        rightBottom: {
+          src: buildImageUrl(images[2].imagePath),
+          title: `visual-section-${section.id}-right-bottom`,
+        },
+      };
+    })
+    .filter(Boolean) as ImageSet[];
+}
+
+export default function ImageGrid({
+  initialSections = [],
+}: {
+  initialSections?: VisualSection[];
+}) {
+  const [imageSets] = useState<ImageSet[]>(() => sectionsToImageSets(initialSections));
+
+  const slideCount = Math.max(imageSets.length, 1);
+  const { activeIndex, prevIndex } = useAutoSlide(slideCount);
+
+  if (!imageSets.length) return null;
+
+  const curr = imageSets[activeIndex % imageSets.length];
+  const prev = imageSets[prevIndex % imageSets.length];
 
   return (
     <div className={`${styles.ImageGrid} flex flex-wrap justify-self-center mx-auto`}>
-      {/* SOL */}
       <div className={`${styles.leftImage} relative`}>
         <div className={`${styles.img} relative`}>
           <FadeImage
@@ -48,7 +72,6 @@ export default function ImageGrid() {
         </div>
       </div>
 
-      {/* SAĞ */}
       <div className={`${styles.rightImage} flex flex-col`}>
         <div className={`${styles.img} relative`}>
           <FadeImage
@@ -58,6 +81,7 @@ export default function ImageGrid() {
             prevIndex={prevIndex}
           />
         </div>
+
         <div className={`${styles.img} relative`}>
           <FadeImage
             current={curr.rightBottom}

@@ -14,7 +14,8 @@ import Contact from "@/components/home/Contact/Contact";
 
 import { getProducts } from "@/lib/api/products";
 import { getInfoSections } from "@/lib/api/infoSections";
-import type { Product } from "@/types/Product";
+import { getVisualSections } from "@/lib/api/visualSections";
+// import type { Product } from "@/types/Product";
 
 const isProd =
   process.env.VERCEL_ENV === "production" &&
@@ -61,8 +62,10 @@ export default async function Home() {
 
   const initialBestSellers = await getProducts({
     bestSeller: true,
-    size: 5, // əgər backend dəstəkləyirsə
+    size: 5,
   });
+
+  const visualSections = await getVisualSections();
 
   return (
     <>
@@ -87,7 +90,7 @@ export default async function Home() {
 
       <section><SpecialOffer /></section>
       <section><IconInfo /></section>
-      <section><ImageGrid /></section>
+     <section><ImageGrid initialSections={visualSections} /></section>
       <section><Contact /></section>
     </>
   );
