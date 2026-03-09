@@ -185,3 +185,16 @@
         transition: 0.3s ease-in-out;
     }
 }
+
+@media (max-width: 375px) {
+    .phoneInputWrapper {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .prefixSelect,
+    .phoneNumberInput {
+        min-width: 0;
+    }
+}
