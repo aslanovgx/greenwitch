@@ -234,15 +234,15 @@ export default function CheckoutForm() {
             id="fullName"
             type="text"
             name="fullName"
-            placeholder="Ad Soyad"
+            placeholder="Ad və soyadınızı daxil edin"
             onChange={handleChange}
             onBlur={handleBlur}
             className={
               errors.fullName
                 ? styles.errorField
                 : form.fullName && !errorMessages.fullName
-                ? styles.successField
-                : ""
+                  ? styles.successField
+                  : ""
             }
           />
           {errorMessages.fullName && <div className={styles.errorMessage}>{errorMessages.fullName}</div>}
@@ -262,15 +262,15 @@ export default function CheckoutForm() {
             id="mail"
             type="email"
             name="mail"
-            placeholder="example@mail.com"
+            placeholder="example@gmail.com"
             onChange={handleChange}
             onBlur={handleBlur}
             className={
               errorMessages.mail
                 ? styles.errorField
                 : form.mail && !errorMessages.mail
-                ? styles.successField
-                : ""
+                  ? styles.successField
+                  : ""
             }
           />
           {errorMessages.mail && <div className={styles.errorMessage}>{errorMessages.mail}</div>}
@@ -288,8 +288,8 @@ export default function CheckoutForm() {
               errors.city
                 ? styles.errorField
                 : form.city && !errorMessages.city
-                ? styles.successField
-                : ""
+                  ? styles.successField
+                  : ""
             }
             required
           >
@@ -307,7 +307,7 @@ export default function CheckoutForm() {
             id="location"
             type="text"
             name="location"
-            placeholder="Küçə, bina, mənzil və s."
+            placeholder="Çatdırılma ünvanını daxil edin"
             onChange={handleChange}
           />
         </div>
@@ -317,7 +317,7 @@ export default function CheckoutForm() {
           <textarea
             id="additionalInfo"
             name="additionalInfo"
-            placeholder="Əlavə qeyd və s."
+            placeholder="Sifarişlə bağlı əlavə qeydlərinizi yazın"
             onChange={(e) => { handleChange(e); handleTextareaResize(); }}
             onInput={handleTextareaResize}
             ref={textareaRef}
