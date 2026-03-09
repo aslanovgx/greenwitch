@@ -88,9 +88,9 @@
     left: 85px;
 }
 
-.oliviaWatches .casio {
-    top: -3px;
-    right: 78px;
+.oliviaWatches .dkny {
+    top: -23px;
+    right: 32px;
 }
 
 .oliviaWatches .emporioArmani {
@@ -157,7 +157,7 @@
     left: 28px;
 }
 
-.oliviaWatchesDesc .descCasio {
+.oliviaWatchesDesc .descDkny {
     top: -55px;
     right: 44px;
 }
@@ -256,18 +256,18 @@
         left: 60px;
     }
 
-    .oliviaWatches .casio {
-        width: 54px;
-        height: 98px;
-        top: 3px;
-        right: 52px;
+    .oliviaWatches .dkny {
+        width: 108px;
+        height: 97px;
+        top: -4px;
+        right: 26px;
     }
 
     .oliviaWatches .emporioArmani {
-        width: 90px;
+        width: 102px;
         height: 89px;
         bottom: 51%;
-        left: 38%;
+        left: 36%;
     }
 
     .oliviaWatchesDesc div {

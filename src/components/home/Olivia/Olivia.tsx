@@ -70,12 +70,12 @@ const watches = [
     brandId: 6,
   },
   {
-    name: "CASIO",
-    src: "/assets/home/olivia/casio.webp",
-    width: 80,
+    name: "DKNY",
+    src: "/assets/home/olivia/dkny.png",
+    width: 170,
     height: 100,
-    className: styles.casio,
-    descClass: styles.descCasio,
+    className: styles.dkny,
+    descClass: styles.descDkny,
     brandId: 2,
   },
   {
@@ -94,7 +94,7 @@ export default function Products() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setIndex((prev) => (prev + 1) % 3); // 0 → 1 → 2 → 0
+      setIndex((prev) => (prev + 1) % 3);
     }, 3000);
 
     return () => clearInterval(interval);
