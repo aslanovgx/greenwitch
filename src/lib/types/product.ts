@@ -24,7 +24,7 @@ export type ProductListItem = {
   id: number;
   name: string;
   price: number;
-  discountPrice?: number | null;
+  finalPrice?: number | null;
   brandName?: string;
   thumbnails?: string[];
   status?: boolean; 
@@ -36,7 +36,7 @@ export type ProductDetail = {
   name: string;
   description: string;
   price: number;
-  discountPrice: number | null;
+  finalPrice: number | null;
   bestSeller: boolean;
   isNew: boolean;
 

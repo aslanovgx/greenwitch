@@ -33,7 +33,7 @@ export default function PurchaseContent() {
   // —— Endirimi nəzərə alaraq vahid qiymət
   const getUnitPrice = (item: Product & { quantity: number }) => {
     const price = Number(item.price ?? 0);
-    const dp = typeof item.discountPrice === "number" ? item.discountPrice : null;
+    const dp = typeof item.finalPrice === "number" ? item.finalPrice : null;
     const hasDiscount = dp !== null && dp < price;
     return hasDiscount ? dp : price;
   };
@@ -118,8 +118,8 @@ export default function PurchaseContent() {
           {bagItems.map((item) => {
             const unit = getUnitPrice(item);
             const hasDiscount =
-              typeof item.discountPrice === "number" &&
-              item.discountPrice < Number(item.price ?? 0);
+              typeof item.finalPrice === "number" &&
+              item.finalPrice < Number(item.price ?? 0);
 
             return (
               <div key={item.id} className={styles.itemBag}>
@@ -147,7 +147,7 @@ export default function PurchaseContent() {
                         <span className="line-through opacity-60 mr-2">
                           {Number(item.price ?? 0).toFixed(2)}₼
                         </span>
-                        <span>{Number(item.discountPrice).toFixed(2)}₼</span>
+                        <span>{Number(item.finalPrice).toFixed(2)}₼</span>
                       </p>
                     ) : (
                       <p className="">

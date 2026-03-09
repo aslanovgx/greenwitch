@@ -5,7 +5,7 @@ export const ProductListItemSchema = z.object({
   id: z.number(),
   name: z.string(),
   price: z.number(),
-  discountPrice: z.number().nullable().optional(),
+  finalPrice: z.number().nullable().optional(),
   brandName: z.string().optional(),
   thumbnails: z.array(z.string()).optional(),
 });
@@ -15,7 +15,7 @@ export const ProductDetailSchema = z.object({
   name: z.string(),
   description: z.string().default(""),
   price: z.number(),
-  discountPrice: z.number().nullable(),
+  finalPrice: z.number().nullable(),
   bestSeller: z.boolean(),
   isNew: z.boolean(),
   brandName: z.string(),

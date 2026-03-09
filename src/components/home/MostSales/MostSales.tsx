@@ -17,7 +17,7 @@ type APIProduct = {
   bestSeller?: boolean | string | number;
   isNew?: boolean | string | number;
   price?: number;
-  discountPrice?: number | null;
+  finalPrice?: number | null;
   brandName?: string;
 };
 
@@ -37,7 +37,7 @@ export default function MostSales({ initialProducts = [] }: Props) {
       bestSeller: !!p.bestSeller,
       isNew: !!p.isNew,
       price: Number(p.price ?? 0),
-      discountPrice: p.discountPrice ?? null,
+      finalPrice: p.finalPrice ?? null,
       brandName: p.brandName ?? "",
       images,
     };

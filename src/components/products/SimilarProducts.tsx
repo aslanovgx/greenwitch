@@ -43,7 +43,7 @@ export default function SimilarProducts({ initialProducts = [], brandId, exclude
     bestSeller: !!p.bestSeller,
     isNew: !!p.isNew,
     price: toNum(p.price),
-    discountPrice: p.discountPrice == null ? null : toNum(p.discountPrice),
+    finalPrice: p.finalPrice == null ? null : toNum(p.finalPrice),
     brandName: p.brandName ?? "",
     images,
     // optional sahələr UI type-də opsional olduğuna görə verməyə ehtiyac yoxdur

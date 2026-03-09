@@ -166,7 +166,7 @@ export default function Navbar() {
           name: String(p.name ?? ""),
           description: String(p.description ?? ""),
           price: p.price ?? 0,
-          discountPrice: p.discountPrice ?? null,
+          finalPrice: p.finalPrice ?? null,
           image:
             Array.isArray(p.images) && p.images[0]
               ? buildImageUrl(p.images[0])

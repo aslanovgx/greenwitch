@@ -168,7 +168,7 @@ export default function ProductsDetail({ product }: Props) {
 
   // —— Endirim helper-ləri
   const basePrice = Number(product.price ?? 0);
-  const dp = typeof product.discountPrice === "number" ? product.discountPrice : null;
+  const dp = typeof product.finalPrice === "number" ? product.finalPrice : null;
   const hasDiscount = typeof dp === "number" && dp < basePrice;
   const discountPct = hasDiscount ? Math.round(((basePrice - (dp as number)) / basePrice) * 100) : 0;
 
@@ -425,7 +425,7 @@ export default function ProductsDetail({ product }: Props) {
                 bestSeller: false,
                 isNew: false,
                 price,
-                discountPrice: hasDiscount ? dp : null,
+                finalPrice: hasDiscount ? dp : null,
                 brandName: product.brandName ?? "",
                 images: thumbs,
                 image: thumbs[0] || null,

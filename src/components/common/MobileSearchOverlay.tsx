@@ -166,11 +166,11 @@ export default function MobileSearchOverlay({
               {shownResults.map((r) => {
                 const basePrice = Number(r.price ?? 0);
                 const dp =
-                  r.discountPrice == null
+                  r.finalPrice == null
                     ? null
-                    : typeof r.discountPrice === "number"
-                    ? r.discountPrice
-                    : Number(r.discountPrice) || null;
+                    : typeof r.finalPrice === "number"
+                    ? r.finalPrice
+                    : Number(r.finalPrice) || null;
 
                 const hasDiscount = dp != null && dp < basePrice;
                 const discountPct =

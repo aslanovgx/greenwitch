@@ -43,7 +43,7 @@ export const BagProvider = ({ children }: { children: React.ReactNode }) => {
           i.id === item.id ? { ...i, quantity: i.quantity + qty } : i
         );
       }
-      // price/discountPrice artıq number gəlir; heç nəyi "təmizləməyə" ehtiyac yoxdur
+
       return [...prev, { ...item, quantity: qty }];
     });
   };

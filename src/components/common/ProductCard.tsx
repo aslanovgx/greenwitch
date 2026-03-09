@@ -88,7 +88,7 @@ function ProductCardComponent({
 
   // 1) Endirim var?
   const hasDiscount =
-    typeof item.discountPrice === "number" && item.discountPrice < item.price;
+    typeof item.finalPrice === "number" && item.finalPrice < item.price;
 
   // 2) Badge seçimi (YENİ QAYDA)
   // — MostSales bölməsində: bestseller true-dursa, həmişə "BEST"
@@ -191,7 +191,7 @@ function ProductCardComponent({
               {item.price} AZN
             </p>
             <p className={`transition-opacity duration-700 !font-bold ${styles.discountPrice}`}>
-              {item.discountPrice} AZN
+              {item.finalPrice} AZN
             </p>
           </div>
         ) : (

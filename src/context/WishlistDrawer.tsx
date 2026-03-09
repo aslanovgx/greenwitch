@@ -19,7 +19,7 @@ export default function WishlistDrawer({
   if (!isOpen) return null;
 
   const hasDiscount = (p: Product): boolean =>
-    typeof p.discountPrice === "number" && p.discountPrice < p.price;
+    typeof p.finalPrice === "number" && p.finalPrice < p.price;
 
 
   return (
@@ -71,7 +71,7 @@ export default function WishlistDrawer({
                     {Number(product.price).toFixed(2)} AZN
                   </span>
                   <span className="text-red-950 font-bold text-sm">
-                    {Number(product.discountPrice).toFixed(2)} AZN
+                    {Number(product.finalPrice).toFixed(2)} AZN
                   </span>
                 </div>
               ) : (

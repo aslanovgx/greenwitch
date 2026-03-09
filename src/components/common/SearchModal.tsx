@@ -11,7 +11,7 @@ export type SearchResult = {
   name: string;
   description: string;
   price: number | string;
-  discountPrice?: number | string | null;
+  finalPrice?: number | string | null;
   image?: string | null;
 };
 
@@ -95,11 +95,11 @@ export default function SearchModal({
             {shownResults.map((r) => {
               const basePrice = Number(r.price ?? 0);
               const dp =
-                r.discountPrice == null
+                r.finalPrice == null
                   ? null
-                  : typeof r.discountPrice === "number"
-                    ? r.discountPrice
-                    : Number(r.discountPrice) || null;
+                  : typeof r.finalPrice === "number"
+                    ? r.finalPrice
+                    : Number(r.finalPrice) || null;
               const hasDiscount = dp != null && dp < basePrice;
               const discountPct =
                 hasDiscount && basePrice > 0

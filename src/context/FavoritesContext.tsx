@@ -37,7 +37,7 @@ function normalizeProduct(p: Product): Product {
     description: p.description ?? p.desc ?? "",
     images,
     price: Number(p.price ?? 0),
-    discountPrice: typeof p.discountPrice === "number" ? p.discountPrice : null,
+    finalPrice: typeof p.finalPrice === "number" ? p.finalPrice : null,
     bestSeller: typeof p.bestSeller === "boolean" ? p.bestSeller : toBool(p.bestSeller as unknown),
     isNew: typeof p.isNew === "boolean" ? p.isNew : toBool(p.isNew as unknown),
     brandName: p.brandName ?? "",

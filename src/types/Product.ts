@@ -8,7 +8,7 @@ export type Product = {
   bestSeller: boolean;
   isNew: boolean;
   price: number;
-  discountPrice: number | null;
+  finalPrice: number | null;
 
   brandName: string;
   brandId?: number;          // ✅ list/detail bəzən lazım olur
@@ -33,7 +33,7 @@ export type RawProduct = {
   description?: string | null;
 
   price?: number | null;
-  discountPrice?: number | null;
+  finalPrice?: number | null;
 
   bestSeller?: boolean | null;
   isNew?: boolean | null;

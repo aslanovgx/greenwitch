@@ -22,10 +22,10 @@ export default function BaglistDrawer({
 
   const getUnitPrice = (item: Product & { quantity: number }) => {
     const hasDiscount =
-      typeof item.discountPrice === "number" &&
+      typeof item.finalPrice === "number" &&
       typeof item.price === "number" &&
-      item.discountPrice < item.price;
-    return hasDiscount ? item.discountPrice : item.price;
+      item.finalPrice < item.price;
+    return hasDiscount ? item.finalPrice : item.price;
   };
 
 
@@ -85,15 +85,15 @@ export default function BaglistDrawer({
                   </p>
 
                   {/* Qiymət vizualı: endirim varsa iki qiymət göstər */}
-                  {typeof item.discountPrice === "number" &&
+                  {typeof item.finalPrice === "number" &&
                     typeof item.price === "number" &&
-                    item.discountPrice < item.price ? (
+                    item.finalPrice < item.price ? (
                     <div className="flex items-center gap-2">
                       <span className="line-through opacity-60 text-sm">
                         {item.price.toFixed(2)} AZN
                       </span>
                       <span className="text-red-950 font-bold text-sm">
-                        {item.discountPrice.toFixed(2)} AZN
+                        {item.finalPrice.toFixed(2)} AZN
                       </span>
                     </div>
                   ) : (

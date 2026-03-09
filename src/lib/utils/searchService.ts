@@ -8,7 +8,7 @@ export type FeSearchResult = {
   brandName: string;
   description: string;
   price: number;
-  discountPrice: number | null;
+  finalPrice: number | null;
   image?: string | null;
 };
 
@@ -53,11 +53,11 @@ export function rawToCard(p: RawProduct): FeSearchResult {
 
   const priceNum = typeof p.price === "number" ? p.price : Number(p.price) || 0;
   const discountNum =
-    p.discountPrice == null
+    p.finalPrice == null
       ? null
-      : typeof p.discountPrice === "number"
-      ? p.discountPrice
-      : Number(p.discountPrice) || 0;
+      : typeof p.finalPrice === "number"
+      ? p.finalPrice
+      : Number(p.finalPrice) || 0;
 
   return {
     id: Number(p.id),
@@ -65,7 +65,7 @@ export function rawToCard(p: RawProduct): FeSearchResult {
     brandName: String(p.brandName ?? ""),
     description: String(p.description ?? ""),
     price: priceNum,
-    discountPrice: discountNum,
+    finalPrice: discountNum,
     image: firstImage ? buildImageUrl(firstImage) : null,
   };
 }

@@ -10,7 +10,7 @@ function normalizeProduct(raw: RawProduct): Product {
     bestSeller: !!raw.bestSeller,
     isNew: !!raw.isNew,
     price: raw.price ?? 0,
-    discountPrice: raw.discountPrice ?? null,
+    finalPrice: raw.finalPrice ?? null,
 
     brandName: raw.brandName ?? "",
     brandId: raw.brandId ?? undefined,
@@ -96,7 +96,7 @@ export type ProductDetail = {
   name: string;
   description: string;
   price: number;
-  discountPrice: number | null;
+  finalPrice: number | null;
   bestSeller: boolean;
   isNew: boolean;
 
@@ -140,10 +140,10 @@ export async function getProductById(id: number): Promise<ProductDetail> {
     name: String(p.name ?? ""),
     description: String(p.description ?? ""),
     price: Number(p.price ?? 0),
-    discountPrice:
-      p.discountPrice === null || p.discountPrice === undefined
+    finalPrice:
+      p.finalPrice === null || p.finalPrice === undefined
         ? null
-        : Number(p.discountPrice),
+        : Number(p.finalPrice),
     bestSeller: Boolean(p.bestSeller),
     isNew: Boolean(p.isNew),
 

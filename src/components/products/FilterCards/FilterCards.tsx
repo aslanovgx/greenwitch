@@ -149,11 +149,11 @@ export default function FilterCards() {
             const priceNum =
               typeof p.price === "number" ? p.price : Number(p.price) || 0;
             const discountNum =
-              p.discountPrice == null
+              p.finalPrice == null
                 ? null
-                : (typeof p.discountPrice === "number"
-                  ? p.discountPrice
-                  : (Number(p.discountPrice) || 0));
+                : (typeof p.finalPrice === "number"
+                  ? p.finalPrice
+                  : (Number(p.finalPrice) || 0));
 
             const imgs = (Array.isArray(p.images) ? p.images : [])
               .filter((x): x is string => typeof x === "string" && x.trim() !== "")
@@ -166,7 +166,7 @@ export default function FilterCards() {
               bestSeller: !!p.bestSeller,
               isNew: !!p.isNew,
               price: priceNum,
-              discountPrice: discountNum,
+              finalPrice: discountNum,
               brandName: String(p.brandName ?? ""),
               images: imgs,
             };

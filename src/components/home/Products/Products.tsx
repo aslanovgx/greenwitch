@@ -47,7 +47,7 @@ export default function Products({
       bestSeller: !!p.bestSeller,
       isNew: !!p.isNew,
       price: Number(p.price ?? 0),
-      discountPrice: p.discountPrice ?? null,
+      finalPrice: p.finalPrice ?? null,
       brandName: p.brandName ?? "",
       images,
     };
