@@ -637,3 +637,13 @@
         width: 190px;
     }
 }
+
+@media (max-width: 375px) {
+  .purchaseContent .leftSide,
+  .purchaseContent .rightSide {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin: 0;
+  }
+}
