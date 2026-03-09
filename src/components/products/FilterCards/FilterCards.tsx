@@ -6,7 +6,8 @@ import styles from "./FilterCards.module.css";
 import cardStyles from "@/components/common/ProductCard.module.css";
 import ProductCard from "@/components/common/ProductCard";
 import type { Product as UIProduct, RawProduct } from "@/types/Product";
-import { getProducts } from "@/lib/api/products";
+// import { getProducts } from "@/lib/api/products";
+import { getProductsPaged } from "@/lib/api/products";
 import { isValidSort, SortCode } from "@/constants/sort";
 import { scrollToTop } from "@/utils/scrollToTop";
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
@@ -75,18 +76,18 @@ export default function FilterCards() {
   const sortCode: SortCode | undefined = isValidSort(s) ? (s as SortCode) : undefined;
 
   const mapSortToServerParams = (c?: SortCode): Record<string, unknown> => {
-  if (!c) return {};
+    if (!c) return {};
 
-  if (c === "price_asc" || c === "price_desc") {
-    return { sort: c }; // products.ts bunu "sort" query-yə çevirir
-  }
+    if (c === "price_asc" || c === "price_desc") {
+      return { sort: c }; // products.ts bunu "sort" query-yə çevirir
+    }
 
-  if (c === "discount") return { hasDiscount: true };
-  if (c === "new") return { isNew: true };
-  if (c === "best") return { bestSeller: true };
+    if (c === "discount") return { hasDiscount: true };
+    if (c === "new") return { isNew: true };
+    if (c === "best") return { bestSeller: true };
 
-  return {};
-};
+    return {};
+  };
 
 
 
@@ -177,7 +178,7 @@ export default function FilterCards() {
 
         const extraParams = mapSortToServerParams(sortCode);
 
-        const resp = await getProducts({
+        const resp = await getProductsPaged({
           ...baseParams,
           ...extraParams,
           page,
@@ -185,15 +186,13 @@ export default function FilterCards() {
           status: true,
         });
 
-        const parsed = parseProductsResponse(resp);
-        const adapted = adapt(parsed.items ?? []);
-
-        const metaTotal = totalOf(parsed);
-        const metaSize = pageSizeOf(parsed);
+        const adapted = adapt(resp.items ?? []);
+        const metaTotal = resp.total;
+        const metaSize = UI_PAGE_SIZE;
 
         setItems(adapted);
 
-        if (metaTotal != null && metaSize && metaSize > 0) {
+        if (metaTotal != null && metaSize > 0) {
           const tp = Math.max(1, Math.ceil(metaTotal / metaSize));
           setTotalPages(tp);
           setHasMore(page < tp);
@@ -222,6 +221,7 @@ export default function FilterCards() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [brandId, genderId, shapeId, colorId, categoryId, sortCode, page]);
 
+
   /* Handlers (CLICK → dərhal scroll 0) */
   const goToPage = (p: number) => {
     const target = Math.max(1, p);
@@ -234,28 +234,43 @@ export default function FilterCards() {
   const onClickNext = () => goToPage(page + 1);
   const onClickLast = () => { if (totalPages) goToPage(totalPages); };
 
-  // Rəqəmsal düymələr
+
+
   const windowPages = useMemo(() => {
-    if (totalPages && totalPages >= 1) {
-      const around = 2;
-      let pages: number[] = [];
-      const start = Math.max(1, page - around);
-      const end = Math.min(totalPages, page + around);
-      for (let p = start; p <= end; p++) pages.push(p);
-      if (!pages.includes(1)) pages = [1, ...pages];
-      if (!pages.includes(totalPages)) pages = [...pages, totalPages];
-      return Array.from(new Set(pages)).sort((a, b) => a - b);
+    if (!totalPages || totalPages < 1) {
+      const set = new Set<number>([1, page]);
+      if (hasMore) set.add(page + 1);
+      return Array.from(set).filter((n) => n >= 1).sort((a, b) => a - b);
     }
-    // virtual rejimdə minimal göstəriş
-    const set = new Set<number>([1, page]);
-    if (hasMore) set.add(page + 1);
-    return Array.from(set).filter(n => n >= 1).sort((a, b) => a - b);
+
+    if (totalPages <= 5) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+
+    let start = page - 2;
+    let end = page + 2;
+
+    if (start < 1) {
+      start = 1;
+      end = 5;
+    }
+
+    if (end > totalPages) {
+      end = totalPages;
+      start = totalPages - 4;
+    }
+
+    const pages: number[] = [];
+    for (let p = start; p <= end; p++) {
+      pages.push(p);
+    }
+
+    return pages;
   }, [page, totalPages, hasMore]);
 
-  const showLeftEllipsis = totalPages ? windowPages[0] > 1 : page - 2 > 1;
-  const showRightEllipsis = totalPages
-    ? windowPages[windowPages.length - 1] < (totalPages ?? 1)
-    : hasMore;
+  const showLeftEllipsis = !!totalPages && windowPages[0] > 2;
+  const showRightEllipsis =
+    !!totalPages && windowPages[windowPages.length - 1] < totalPages - 1;
 
   /* Render */
   if (loading) {
@@ -330,21 +345,44 @@ export default function FilterCards() {
 
       {/* Pagination */}
       <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
-        <button className="px-3 text-[18px] py-2  rounded-md disabled:opacity-50" onClick={onClickFirst} disabled={page <= 1} aria-label="Birinci">
+        <button
+          className="px-3 py-2 rounded-md disabled:opacity-50"
+          onClick={onClickFirst}
+          disabled={page <= 1}
+          aria-label="Birinci"
+        >
           <ChevronsLeft className="w-6 h-6" />
         </button>
 
-        <button className="px-3 py-2 text-[18px]  rounded-md disabled:opacity-50" onClick={onClickPrev} disabled={page <= 1} aria-label="Əvvəlki">
+        <button
+          className="px-3 py-2 rounded-md disabled:opacity-50"
+          onClick={onClickPrev}
+          disabled={page <= 1}
+          aria-label="Əvvəlki"
+        >
           <ChevronLeft className="w-6 h-6" />
         </button>
 
-        {totalPages && showLeftEllipsis && <span className="px-2 select-none">…</span>}
+
+        {/* 1 ... 5 6 7 8 9 ... 121 */}
+
+        {/* {totalPages && !windowPages.includes(1) && (
+          <button
+            onClick={() => goToPage(1)}
+            className={`px-3 py-2 text-[25px] rounded-md ${page === 1 ? "text-[#4d33de]" : ""}`}
+            aria-current={page === 1 ? "page" : undefined}
+          >
+            1
+          </button>
+        )} */}
+
+        {/* {showLeftEllipsis && <span className="px-2 select-none">…</span>} */}
 
         {windowPages.map((p) => (
           <button
             key={p}
             onClick={() => goToPage(p)}
-            className={`px-3 py-2 text-[25px]  rounded-md ${p === page ? " text-[#4d33de]" : ""}`}
+            className={`px-3 py-2 text-[25px] rounded-md ${p === page ? "text-[#4d33de]" : ""}`}
             aria-current={p === page ? "page" : undefined}
           >
             {p}
@@ -353,8 +391,18 @@ export default function FilterCards() {
 
         {showRightEllipsis && <span className="px-2 select-none">…</span>}
 
+        {totalPages && !windowPages.includes(totalPages) && (
+          <button
+            onClick={() => goToPage(totalPages)}
+            className={`px-3 py-2 text-[25px] rounded-md ${page === totalPages ? "text-[#4d33de]" : ""}`}
+            aria-current={page === totalPages ? "page" : undefined}
+          >
+            {totalPages}
+          </button>
+        )}
+
         <button
-          className="px-3 py-2  rounded-md disabled:opacity-50"
+          className="px-3 py-2 rounded-md disabled:opacity-50"
           onClick={onClickNext}
           disabled={totalPages != null ? page >= totalPages : !hasMore}
           aria-label="Sonraki"
