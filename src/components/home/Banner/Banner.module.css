@@ -75,11 +75,21 @@
 @media (max-width: 640px) {
   .row_4 {
     display: block;
-    padding: 0 16px;
+    padding: 0;
   }
 
   .row_4 .banner_1,
   .banner_3 {
     display: none;
+  }
+
+  .row_4 .banner_2 {
+    padding: 0 10px;
+  }
+
+  .row_4 .banner_2 img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
   }
 }

@@ -33,7 +33,11 @@ function sectionsToSets(sections: InfoSection[] = []): BannerSet[] {
 export default function Banner({ initialSections = [] }: { initialSections?: InfoSection[] }) {
   const [sets] = useState<BannerSet[]>(() => sectionsToSets(initialSections));
   const slideCount = Math.max(sets.length, 1);
+
   const { activeIndex, prevIndex } = useAutoSlide(slideCount);
+
+  // const activeIndex = 0;
+  // const prevIndex = 0;
 
   if (!sets.length) return null;
 
