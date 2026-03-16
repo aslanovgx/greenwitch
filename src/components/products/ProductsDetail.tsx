@@ -175,6 +175,38 @@ export default function ProductsDetail({ product }: Props) {
   // const isWatch = product.categoryId === 1;
   // const isAccessory = product.categoryId === 2;
 
+  const detailRows = [
+    { label: "Cins", value: product.genderName },
+    { label: "Şüşə", value: product.siferblatMaterialName },
+    { label: "Material", value: product.materialName },
+    { label: "Qaş materialı", value: product.stoneMaterialName },
+    { label: "Kəmər materialı", value: product.strapMaterialName },
+    { label: "Aksesuar tipi", value: product.accessoryTypeName },
+    { label: "Mexanizm", value: product.mechanismName },
+    {
+      label: "Suyadavamlılıq",
+      value:
+        product.waterResistanceAtm !== undefined && product.waterResistanceAtm !== null
+          ? `${product.waterResistanceAtm} ATM`
+          : undefined,
+    },
+    {
+      label: "Korpus ölçüsü",
+      value:
+        product.caseSizeMm !== undefined && product.caseSizeMm !== null
+          ? `${product.caseSizeMm} mm`
+          : undefined,
+    },
+    {
+      label: "Korpus qalınlığı",
+      value:
+        product.caseThicknessMm !== undefined && product.caseThicknessMm !== null
+          ? `${product.caseThicknessMm} mm`
+          : undefined,
+    },
+    { label: "Ölçü", value: product.size },
+  ];
+
   return (
     <div className={styles.products_detail}>
       <div className={styles.leftSide}>
@@ -343,24 +375,44 @@ export default function ProductsDetail({ product }: Props) {
           { label: "Cins", value: product.genderName },
           { label: "Şüşə", value: product.siferblatMaterialName },
           { label: "Material", value: product.materialName },
+          { label: "Qaş materialı", value: product.stoneMaterialName },
+          { label: "Kəmər materialı", value: product.strapMaterialName },
+          { label: "Aksesuar tipi", value: product.accessoryTypeName },
           { label: "Mexanizm", value: product.mechanismName },
           {
             label: "Suyadavamlılıq",
-            value: product.waterResistanceAtm ? `${product.waterResistanceAtm} ATM` : undefined,
+            value:
+              product.waterResistanceAtm !== undefined && product.waterResistanceAtm !== null
+                ? `${product.waterResistanceAtm} ATM`
+                : undefined,
           },
           {
             label: "Korpus ölçüsü",
-            value: product.caseSizeMm ? `${product.caseSizeMm} mm` : undefined,
+            value:
+              product.caseSizeMm !== undefined && product.caseSizeMm !== null
+                ? `${product.caseSizeMm} mm`
+                : undefined,
+          },
+          {
+            label: "Korpus qalınlığı",
+            value:
+              product.caseThicknessMm !== undefined && product.caseThicknessMm !== null
+                ? `${product.caseThicknessMm} mm`
+                : undefined,
+          },
+          {
+            label: "Ölçü",
+            value: product.size,
           },
           {
             label: "Qiyməti",
             value: hasDiscount ? (
               <span className={styles.priceWrapper}>
                 <span className={styles.priceOld} aria-label={`Köhnə qiymət ${basePrice} AZN`}>
-                  {basePrice}AZN
+                  {basePrice} AZN
                 </span>
                 <span className={styles.priceNew} aria-label={`Endirimli qiymət ${dp} AZN`}>
-                  {dp}AZN
+                  {dp} AZN
                 </span>
                 <span className={styles.desc_badge} aria-label={`Endirim faizi ${discountPct}%`}>
                   -{discountPct}%

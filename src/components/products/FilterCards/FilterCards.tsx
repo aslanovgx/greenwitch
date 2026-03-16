@@ -70,6 +70,7 @@ export default function FilterCards() {
   const shapeId = toPosIntOrUndef(sp.get("shapeId"));
   const colorId = toPosIntOrUndef(sp.get("colorId"));
   const categoryId = toPosIntOrUndef(sp.get("categoryId"));
+  const accessoryTypeId = toPosIntOrUndef(sp.get("accessoryTypeId"));
 
   // URL → sort
   const s = sp.get("sort");
@@ -124,7 +125,7 @@ export default function FilterCards() {
     if (current !== 1) setQuery("page", 1);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [brandId, genderId, shapeId, colorId, categoryId, sortCode]);
+  }, [brandId, genderId, shapeId, accessoryTypeId, colorId, categoryId, sortCode]);
 
 
   useEffect(() => {
@@ -139,6 +140,7 @@ export default function FilterCards() {
           ...(brandId ? { brandId } : {}),
           ...(genderId ? { Gender: genderId } : {}),
           ...(shapeId ? { shapeId } : {}),
+          ...(accessoryTypeId ? { accessoryTypeId } : {}),
           ...(colorId ? { colorId } : {}),
           ...(categoryId ? { categoryId } : {}),
         };
@@ -219,7 +221,7 @@ export default function FilterCards() {
 
     return () => { aborted = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [brandId, genderId, shapeId, colorId, categoryId, sortCode, page]);
+  }, [brandId, genderId, shapeId, accessoryTypeId, colorId, categoryId, sortCode, page]);
 
 
   /* Handlers (CLICK → dərhal scroll 0) */
@@ -346,7 +348,7 @@ export default function FilterCards() {
       {/* Pagination */}
       <div className="mt-6 hidden sm:flex flex-wrap items-center justify-center gap-2">
         <button
-          className="px-3 py-2 rounded-md disabled:opacity-50"
+          className="px-3 py-2 rounded-md disabled:opacity-50 cursor-pointer"
           onClick={onClickFirst}
           disabled={page <= 1}
           aria-label="Birinci"
@@ -355,7 +357,7 @@ export default function FilterCards() {
         </button>
 
         <button
-          className="px-3 py-2 rounded-md disabled:opacity-50"
+          className="px-3 py-2 rounded-md disabled:opacity-50 cursor-pointer"
           onClick={onClickPrev}
           disabled={page <= 1}
           aria-label="Əvvəlki"
@@ -364,25 +366,11 @@ export default function FilterCards() {
         </button>
 
 
-        {/* 1 ... 5 6 7 8 9 ... 121 */}
-
-        {/* {totalPages && !windowPages.includes(1) && (
-          <button
-            onClick={() => goToPage(1)}
-            className={`px-3 py-2 text-[25px] rounded-md ${page === 1 ? "text-[#4d33de]" : ""}`}
-            aria-current={page === 1 ? "page" : undefined}
-          >
-            1
-          </button>
-        )} */}
-
-        {/* {showLeftEllipsis && <span className="px-2 select-none">…</span>} */}
-
         {windowPages.map((p) => (
           <button
             key={p}
             onClick={() => goToPage(p)}
-            className={`px-3 py-2 text-[25px] rounded-md ${p === page ? "text-[#4d33de]" : ""}`}
+            className={`px-3 py-2 text-[25px] rounded-md cursor-pointer ${p === page ? "text-[#4d33de]" : ""}`}
             aria-current={p === page ? "page" : undefined}
           >
             {p}
@@ -394,7 +382,7 @@ export default function FilterCards() {
         {totalPages && !windowPages.includes(totalPages) && (
           <button
             onClick={() => goToPage(totalPages)}
-            className={`px-3 py-2 text-[25px] rounded-md ${page === totalPages ? "text-[#4d33de]" : ""}`}
+            className={`px-3 py-2 text-[25px] rounded-md cursor-pointer ${page === totalPages ? "text-[#4d33de]" : ""}`}
             aria-current={page === totalPages ? "page" : undefined}
           >
             {totalPages}
@@ -402,7 +390,7 @@ export default function FilterCards() {
         )}
 
         <button
-          className="px-3 py-2 rounded-md disabled:opacity-50"
+          className="px-3 py-2 rounded-md disabled:opacity-50 cursor-pointer"
           onClick={onClickNext}
           disabled={totalPages != null ? page >= totalPages : !hasMore}
           aria-label="Sonraki"
@@ -411,7 +399,7 @@ export default function FilterCards() {
         </button>
 
         <button
-          className="px-3 py-2 rounded-md disabled:opacity-50"
+          className="px-3 py-2 rounded-md disabled:opacity-50 cursor-pointer"
           onClick={onClickLast}
           disabled={!(totalPages && page < totalPages)}
           aria-label="Son"
@@ -427,7 +415,7 @@ export default function FilterCards() {
         <button
           onClick={onClickFirst}
           disabled={page <= 1}
-          className="p-2 disabled:opacity-40"
+          className="p-2 disabled:opacity-40 cursor-pointer"
         >
           <ChevronsLeft className="w-5 h-5" />
         </button>
@@ -435,7 +423,7 @@ export default function FilterCards() {
         <button
           onClick={onClickPrev}
           disabled={page <= 1}
-          className="p-2 disabled:opacity-40"
+          className="p-2 disabled:opacity-40 cursor-pointer"
         >
           <ChevronLeft className="w-5 h-5" />
         </button>
@@ -447,7 +435,7 @@ export default function FilterCards() {
         <button
           onClick={onClickNext}
           disabled={totalPages != null ? page >= totalPages : !hasMore}
-          className="p-2 disabled:opacity-40"
+          className="p-2 disabled:opacity-40 cursor-pointer"
         >
           <ChevronRight className="w-5 h-5" />
         </button>
@@ -455,7 +443,7 @@ export default function FilterCards() {
         <button
           onClick={onClickLast}
           disabled={!(totalPages && page < totalPages)}
-          className="p-2 disabled:opacity-40"
+          className="p-2 disabled:opacity-40 cursor-pointer"
         >
           <ChevronsRight className="w-5 h-5" />
         </button>

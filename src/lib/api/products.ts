@@ -31,6 +31,7 @@ export type ProductFilter = {
   Gender?: number;
   brandId?: number;
   shapeId?: number;
+  accessoryTypeId?: number;
   categoryId?: number;
   colorId?: number;
   page?: number;
@@ -50,6 +51,7 @@ function buildQuery(p: ProductFilter = {}) {
   if (p.Gender) qp.set("Gender", String(p.Gender));
   if (p.brandId) qp.set("brandId", String(p.brandId));
   if (p.shapeId) qp.set("shapeId", String(p.shapeId));
+  if (p.accessoryTypeId) qp.set("accessoryTypeId", String(p.accessoryTypeId));
   if (p.categoryId) qp.set("categoryId", String(p.categoryId));
   if (p.colorId) qp.set("colorId", String(p.colorId));
   if (p.page) qp.set("page", String(p.page));
@@ -100,7 +102,6 @@ export type ProductDetail = {
   bestSeller: boolean;
   isNew: boolean;
 
-  // mövcud sahələr
   brandName: string;
   genderName?: string;
   shapeName?: string;
@@ -108,13 +109,24 @@ export type ProductDetail = {
   thumbnails: string[];
   colorNames?: string[];
 
-  // 🔥 yeni sahələr (JSON nümunəsinə görə)
   stock?: number;
   mechanismName?: string;           // Kvars və s.
   waterResistanceAtm?: number;      // 10 ATM
   caseSizeMm?: number;              // 27 mm
   materialName?: string;            // Keramik
   siferblatMaterialName?: string;   // Safir (dial materialı)
+
+  caseThicknessMm?: number;
+  size?: string;
+
+  stoneMaterialId?: number | null;
+  stoneMaterialName?: string | null;
+
+  strapMaterialId?: number | null;
+  strapMaterialName?: string | null;
+
+  accessoryTypeId?: number | null;
+  accessoryTypeName?: string | null;
 
   status?: boolean;
   categoryId?: number;
@@ -124,14 +136,12 @@ export async function getProductById(id: number): Promise<ProductDetail> {
   const data = await apiGet(`/Product/${id}`);
   const p = (data?.product ?? data) as Partial<ProductDetail> & Record<string, unknown>;
 
-  // relative -> absolute şəkil
   const API = (process.env.API_SAAT_BASE_URL ?? "").trim();
   const ROOT = API.replace(/\/api\/?$/i, "");
   const toAbs = (rel: string) => `${ROOT}/${String(rel ?? "").replace(/^\/+/, "")}`;
 
   const thumbs = Array.isArray(p.thumbnails) ? p.thumbnails.map(toAbs) : [];
 
-  // rəqəmsal sahələri təhlükəsiz tipə salaq
   const toNum = (v: unknown): number | undefined =>
     Number.isFinite(Number(v)) ? Number(v) : undefined;
 
@@ -148,22 +158,36 @@ export async function getProductById(id: number): Promise<ProductDetail> {
     isNew: Boolean(p.isNew),
 
     brandName: String(p.brandName ?? ""),
-    genderName: p.genderName,
-    shapeName: p.shapeName,
-    categoryName: p.categoryName,
+    genderName: typeof p.genderName === "string" ? p.genderName : undefined,
+    shapeName: typeof p.shapeName === "string" ? p.shapeName : undefined,
+    categoryName: typeof p.categoryName === "string" ? p.categoryName : undefined,
 
-    categoryId: p.categoryId ? Number(p.categoryId) : undefined,
+    categoryId: p.categoryId == null ? undefined : Number(p.categoryId),
 
     thumbnails: thumbs,
     colorNames: Array.isArray(p.colorNames) ? p.colorNames : undefined,
 
-    // yeni sahələr
     stock: toNum(p.stock),
-    mechanismName: p.mechanismName,
+    mechanismName: typeof p.mechanismName === "string" ? p.mechanismName : undefined,
     waterResistanceAtm: toNum(p.waterResistanceAtm),
     caseSizeMm: toNum(p.caseSizeMm),
-    materialName: p.materialName,
-    siferblatMaterialName: p.siferblatMaterialName,
+    caseThicknessMm: toNum(p.caseThicknessMm),
+    size: typeof p.size === "string" ? p.size : undefined,
+    materialName: typeof p.materialName === "string" ? p.materialName : undefined,
+    siferblatMaterialName:
+      typeof p.siferblatMaterialName === "string" ? p.siferblatMaterialName : undefined,
+
+    stoneMaterialId: p.stoneMaterialId == null ? null : Number(p.stoneMaterialId),
+    stoneMaterialName:
+      p.stoneMaterialName == null ? null : String(p.stoneMaterialName),
+
+    strapMaterialId: p.strapMaterialId == null ? null : Number(p.strapMaterialId),
+    strapMaterialName:
+      p.strapMaterialName == null ? null : String(p.strapMaterialName),
+
+    accessoryTypeId: p.accessoryTypeId == null ? null : Number(p.accessoryTypeId),
+    accessoryTypeName:
+      p.accessoryTypeName == null ? null : String(p.accessoryTypeName),
 
     status: p.status === undefined ? true : Boolean(p.status),
   };

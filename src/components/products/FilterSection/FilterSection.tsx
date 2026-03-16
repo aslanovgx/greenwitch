@@ -8,6 +8,7 @@ import FilterItem from "@/components/Filter/FilterItem";
 import { getBrands } from "@/lib/api/brand";
 import { getShapes } from "@/lib/api/shape";
 import { getColors } from "@/lib/api/color";
+import { getAccessoryTypes } from "@/lib/api/accessoryType";
 
 type Opt = { id: number; name: string };
 
@@ -25,12 +26,17 @@ export default function FilterSection() {
   const [brands, setBrands] = useState<Opt[]>([]);
   const [shapes, setShapes] = useState<Opt[]>([]);
   const [colors, setColors] = useState<Opt[]>([]);
+  const [accessoryTypes, setAccessoryTypes] = useState<Opt[]>([]);
+
   const [loading, setLoading] = useState(true);
 
   // URL sync
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+
+  const categoryId = Number(searchParams.get("categoryId") || 0);
+  const isAccessoryPage = categoryId === 2;
 
   const [brandsLoading, setBrandsLoading] = useState(false);
 
@@ -40,6 +46,7 @@ export default function FilterSection() {
     brendler?: string;
     reng?: string;
     forma?: string;
+    nov?: string;
     sirala?: string;
   }>({});
 
@@ -62,27 +69,40 @@ export default function FilterSection() {
     (async () => {
       try {
         setLoading(true);
-        const [b, s, c] = await Promise.all([getBrands(), getShapes(), getColors()]);
+        const [b, s, c, a] = await Promise.all([
+          getBrands(),
+          getShapes(),
+          getColors(),
+          getAccessoryTypes(),
+        ]);
+
         setBrands(b ?? []);
         setShapes(s ?? []);
         setColors(c ?? []);
+        setAccessoryTypes(a ?? []);
 
         const brandId = Number(searchParams.get("brandId") || 0);
-        const genderId = Number(searchParams.get("Gender") || 0);   // <— Gender (int)
+        const genderId = Number(searchParams.get("Gender") || 0);
         const colorId = Number(searchParams.get("colorId") || 0);
         const shapeId = Number(searchParams.get("shapeId") || 0);
+        const accessoryTypeId = Number(searchParams.get("accessoryTypeId") || 0);
+
         const sortCode = searchParams.get("sort") || "";
 
         setSelectedFilters({
           brendler: (b ?? []).find(x => x.id === brandId)?.name,
-          cins: GENDER_STATIC.find(x => x.id === genderId)?.name,   // <— id -> name
+          cins: GENDER_STATIC.find(x => x.id === genderId)?.name,
           reng: (c ?? []).find(x => x.id === colorId)?.name,
           forma: (s ?? []).find(x => x.id === shapeId)?.name,
+          nov: (a ?? []).find(x => x.id === accessoryTypeId)?.name,
           sirala: isValidSort(sortCode) ? SORT_CODE_TO_LABEL[sortCode] : undefined,
         });
       } catch (e) {
         console.error("FilterSection fetch error:", e);
-        setBrands([]); setShapes([]); setColors([]);
+        setBrands([]);
+        setShapes([]);
+        setColors([]);
+        setAccessoryTypes([]);
       } finally {
         setLoading(false);
       }
@@ -91,30 +111,34 @@ export default function FilterSection() {
   }, []);
 
   useEffect(() => {
-  (async () => {
-    try {
-      const gender = Number(searchParams.get("Gender") || 0);
-      const categoryId = Number(searchParams.get("categoryId") || 0);
+    (async () => {
+      try {
+        const gender = Number(searchParams.get("Gender") || 0);
+        const categoryId = Number(searchParams.get("categoryId") || 0);
 
-      // ✅ heç biri yoxdursa: hamısını çək
-      const b = await getBrands(
-        gender || categoryId
-          ? { Gender: gender || undefined, categoryId: categoryId || undefined, status: true }
-          : {} // filtersiz
-      );
+        // ✅ heç biri yoxdursa: hamısını çək
+        const b = await getBrands(
+          gender || categoryId
+            ? { Gender: gender || undefined, categoryId: categoryId || undefined, status: true }
+            : {} // filtersiz
+        );
 
-      setBrands(b ?? []);
-    } catch (e) {
-      console.error("Brand refetch error:", e);
-    }
-  })();
-}, [searchParams.get("Gender"), searchParams.get("categoryId")]);
+        setBrands(b ?? []);
+      } catch (e) {
+        console.error("Brand refetch error:", e);
+      }
+    })();
+  }, [searchParams.get("Gender"), searchParams.get("categoryId")]);
 
   /* Options (memo) */
   const brandOptions = useMemo(() => brands.map(b => b.name), [brands]);
   const shapeOptions = useMemo(() => shapes.map(s => s.name), [shapes]);
   const colorOptions = useMemo(() => colors.map(c => c.name), [colors]);
   const genderOptions = useMemo(() => GENDER_STATIC.map(g => g.name), []); // <— string[]
+  const accessoryTypeOptions = useMemo(
+    () => accessoryTypes.map(x => x.name),
+    [accessoryTypes]
+  );
 
   /* URL yazıcı util */
   const writeQuery = (key: string, value?: string) => {
@@ -160,6 +184,12 @@ export default function FilterSection() {
     setOpenFilter(null);
     writeQuery("shapeId", id ? String(id) : undefined);
   };
+  const onSelectAccessoryType = (label?: string) => {
+    const id = accessoryTypes.find(x => x.name === label)?.id;
+    setSelectedFilters(prev => ({ ...prev, nov: label }));
+    setOpenFilter(null);
+    writeQuery("accessoryTypeId", id ? String(id) : undefined);
+  };
   const onSelectSort = (label?: string) => {
     const code = label ? SORT_LABEL_TO_CODE[label as keyof typeof SORT_LABEL_TO_CODE] : undefined;
     setSelectedFilters(prev => ({ ...prev, sirala: label }));
@@ -169,12 +199,14 @@ export default function FilterSection() {
 
   /* URL dəyişəndə label-ları yenilə */
   useEffect(() => {
-    if (!brands.length && !shapes.length && !colors.length) return;
+    if (!brands.length && !shapes.length && !colors.length && !accessoryTypes.length) return;
 
     const brandId = Number(searchParams.get("brandId") || 0);
     const genderId = Number(searchParams.get("Gender") || 0);  // <— Gender (int)
     const colorId = Number(searchParams.get("colorId") || 0);
     const shapeId = Number(searchParams.get("shapeId") || 0);
+    const accessoryTypeId = Number(searchParams.get("accessoryTypeId") || 0);
+
     const sortCode = searchParams.get("sort") || "";
 
     setSelectedFilters(prev => ({
@@ -183,9 +215,10 @@ export default function FilterSection() {
       cins: GENDER_STATIC.find(x => x.id === genderId)?.name, // <— id -> name
       reng: colors.find(x => x.id === colorId)?.name,
       forma: shapes.find(x => x.id === shapeId)?.name,
+      nov: accessoryTypes.find(x => x.id === accessoryTypeId)?.name,
       sirala: isValidSort(sortCode) ? SORT_CODE_TO_LABEL[sortCode] : undefined,
     }));
-  }, [searchParams, brands, shapes, colors]);
+  }, [searchParams, brands, shapes, colors, accessoryTypes]);
 
   return (
     <div ref={filterRef} className={styles.flterSection}>
@@ -222,15 +255,28 @@ export default function FilterSection() {
           toggle={() => toggleFilter("reng")}
         />
 
-        <FilterItem
-          title="Forma"
-          options={loading ? [] : shapeOptions}
-          selected={selectedFilters.forma}
-          onSelect={onSelectShape}
-          onClear={() => onSelectShape(undefined)}
-          isOpen={openFilter === "forma"}
-          toggle={() => toggleFilter("forma")}
-        />
+        {!isAccessoryPage && (
+          <FilterItem
+            title="Forma"
+            options={loading ? [] : shapeOptions}
+            selected={selectedFilters.forma}
+            onSelect={onSelectShape}
+            onClear={() => onSelectShape(undefined)}
+            isOpen={openFilter === "forma"}
+            toggle={() => toggleFilter("forma")}
+          />
+        )}
+        {isAccessoryPage && (
+          <FilterItem
+            title="Növ"
+            options={loading ? [] : accessoryTypeOptions}
+            selected={selectedFilters.nov}
+            onSelect={onSelectAccessoryType}
+            onClear={() => onSelectAccessoryType(undefined)}
+            isOpen={openFilter === "nov"}
+            toggle={() => toggleFilter("nov")}
+          />
+        )}
       </ul>
 
       <ul className={styles.rightSide}>

@@ -18,7 +18,7 @@ import textSwitcherTexts from "@/components/layout/textSwitcherTexts";
 // import type { RawProduct } from "@/types/Product";
 import { usePathname, useSearchParams } from "next/navigation";
 import { FaInstagram } from "react-icons/fa";
-import { BsTelephone } from "react-icons/bs";
+// import { BsTelephone } from "react-icons/bs";
 import { PiMapPinAreaLight } from "react-icons/pi";
 import { PiWatchLight } from "react-icons/pi";
 import { FaWhatsapp } from "react-icons/fa";
@@ -61,6 +61,19 @@ export default function Navbar() {
   const pathname = usePathname();
   const params = useSearchParams();
 
+  const buildMergedHref = (href: string) => {
+    const url = new URL(href, "http://dummy");
+    const newParams = new URLSearchParams(url.search);
+
+    const merged = new URLSearchParams(params.toString());
+
+    newParams.forEach((value, key) => {
+      merged.set(key, value);
+    });
+
+    return `${url.pathname}?${merged.toString()}`;
+  };
+
   useEffect(() => {
     if (!pathname.startsWith("/products")) {
       setSearchTerm("");
@@ -72,10 +85,8 @@ export default function Navbar() {
   const activeCategoryId = Number(params.get("categoryId") || 0);
 
   const isProducts = pathname?.startsWith("/products");
-  const isWatchesActive =
-    isProducts &&
-    (activeCategoryId === 1 || (activeCategoryId === 0 && activeGenderId > 0));
 
+  const isWatchesActive = isProducts && activeCategoryId === 1;
   const isAccessoriesActive = isProducts && activeCategoryId === 2;
 
   const [searchTotal, setSearchTotal] = useState(0);
@@ -310,7 +321,7 @@ export default function Navbar() {
             <FavoritesButton onClick={() => setWishlistOpen(true)} />
           </div>
           <Link href="/location">
-            <PiMapPinAreaLight className="locationIcon"/>
+            <PiMapPinAreaLight className="locationIcon" />
           </Link>
           <button
             type="button"
@@ -326,7 +337,10 @@ export default function Navbar() {
         <ul className="flex justify-center items-center menuItemsList">
           {finalMenu.map((item, i) => (
             <li key={i}>
-              <Link href={item.href} className={`menuLink ${isActive(item) ? "active" : ""}`}>
+              <Link
+                href={buildMergedHref(item.href)}
+                className={`menuLink ${isActive(item) ? "active" : ""}`}
+              >
                 {item.label}
               </Link>
             </li>
@@ -396,7 +410,10 @@ export default function Navbar() {
                 >
                   {item.label}
                 </Link>
-                <Link href={item.href} onClick={() => setIsMenuOpen(false)}>
+                <Link
+                  href={buildMergedHref(item.href)}
+                  onClick={() => setIsMenuOpen(false)}
+                >
                   <span>
                     <Image
                       src={"/assets/icons/right-arrow.svg"}

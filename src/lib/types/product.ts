@@ -3,6 +3,7 @@ export type ProductFilter = {
   Gender?: number;
   brandId?: number;
   shapeId?: number;
+  accessoryTypeId?: number;
   categoryId?: number;
   colorId?: number;
   page?: number;
@@ -27,7 +28,7 @@ export type ProductListItem = {
   finalPrice?: number | null;
   brandName?: string;
   thumbnails?: string[];
-  status?: boolean; 
+  status?: boolean;
 };
 
 // Product detail tipi
@@ -54,7 +55,7 @@ export type ProductDetail = {
   materialName?: string;
   siferblatMaterialName?: string;
 
-  status?: boolean; 
+  status?: boolean;
 };
 
 // Cavab forması iki cür ola bilər: array və ya { products, total, page, size }
