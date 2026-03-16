@@ -63,8 +63,13 @@ export default function Navbar() {
 
   const buildMergedHref = (href: string) => {
     const url = new URL(href, "http://dummy");
-    const newParams = new URLSearchParams(url.search);
 
+    // məhsul olmayan səhifələrdə merge etmə
+    if (url.pathname !== "/products") {
+      return href;
+    }
+
+    const newParams = new URLSearchParams(url.search);
     const merged = new URLSearchParams(params.toString());
 
     newParams.forEach((value, key) => {
@@ -402,9 +407,12 @@ export default function Navbar() {
 
           <ul className="flex">
             {finalMenu.map((item, idx) => (
-              <li key={idx} className="flex justify-between items-center cursor-pointer">
+              <li
+                key={idx}
+                className={`flex justify-between items-center cursor-pointer mobileMenuItem ${isActive(item) ? "active" : ""}`}
+              >
                 <Link
-                  href={item.href}
+                  href={buildMergedHref(item.href)}
                   onClick={() => setIsMenuOpen(false)}
                   className={`menuLink ${isActive(item) ? "active" : ""}`}
                 >
